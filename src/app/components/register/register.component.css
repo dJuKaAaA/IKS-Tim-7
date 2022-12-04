@@ -1,10 +1,10 @@
-#mainImage {
+#main-image {
     height: 100%;
     width: 35%;
     position: fixed;
 }
 
-#taxiIcon {
+#taxi-icon {
     width: 40%;
     height: 40%;
     opacity: 0.75;
@@ -12,23 +12,28 @@
 
 form {
     position: absolute;
-    display: inline-block;
+    display: block;
     margin: auto;
-    top: 25%;
-    left: 45%;
+    top: 15%;
+    left: 40%;
 }
 
 form>table>tr>td {
-    padding: 20px 30px;
-}
-
-form>table>tr>td>input {
-    display: block;
-    width: 250px;
+    padding: 20px 60px;
 }
 
 button {
     padding: 30px 50px;
     font-size: large;
     margin: 15px 0;
+}
+
+form>table>tr>td a {
+    text-decoration: none;
+    margin-left: 10px;
+    color: blue;
+}
+
+.form-text-field {
+    width: 350px !important;
 }

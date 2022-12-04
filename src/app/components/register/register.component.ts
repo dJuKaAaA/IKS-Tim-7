@@ -12,6 +12,8 @@ export class RegisterComponent {
   mainImagePath: string = "../../../assets/pexels-alex-9878865.jpg"
   taxiIconPath: string = "../../../assets/taxi.png";
 
+  textInputSize = "400px";
+
   repeatedPassword: string = "";
   termAndPrivacyAgreement: boolean = false;
 
