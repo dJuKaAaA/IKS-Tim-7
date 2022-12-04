@@ -1,3 +1,5 @@
 <p *ngFor="let vehicle of vehicles">
-  {{ vehicle.id }}, {{ vehicle.registrationPlate }}
+  <!-- {{ vehicle.id }}, {{ vehicle.registrationPlate }} -->
+  {{ vehicle | json }}
 </p>
+<router-outlet></router-outlet>

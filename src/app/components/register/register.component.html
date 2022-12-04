@@ -1,0 +1,108 @@
+<img [src]="mainImagePath" id="mainImage" />
+<form #registerForm="ngForm" (ngSubmit)="onSubmit()">
+    <table>
+        <tr>
+            <td>
+                <label for="name">Name</label>
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    required
+                    [(ngModel)]="passenger.name"
+                    />
+            </td>
+            <td>
+                <label for="surname">Surname</label>
+                <input
+                    type="text"
+                    id="surname"
+                    name="surname"
+                    required
+                    [(ngModel)]="passenger.surname"
+                    />
+            </td>
+
+        </tr>
+        <tr>
+            <td>
+                <label for="telephoneNumber">Telephone number</label>
+                <input
+                    type="text"
+                    id="telephoneNumber"
+                    name="telephoneNumber"
+                    required
+                    [(ngModel)]="passenger.telephoneNumber"
+                    />
+            </td>
+            <td>
+                <label for="email">Email</label>
+                <input
+                    type="text"
+                    id="email"
+                    name="email"
+                    required
+                    [(ngModel)]="passenger.email"
+                    />
+            </td>
+
+        </tr>
+        <tr>
+            <td>
+                <label for="address">Address</label>
+                <input
+                    type="text"
+                    id="address"
+                    name="address"
+                    required
+                    [(ngModel)]="passenger.address"
+                    />
+            </td>
+            <td>
+                <label for="password">Password</label>
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    required
+                    [(ngModel)]="passenger.password"
+                    />
+            </td>
+
+        </tr>
+        <tr>
+            <td>
+                <label for="confirmPassword">Confirm password</label>
+                <input
+                    type="password"
+                    id="confirmPassword"
+                    name="name"
+                    required
+                    [(ngModel)]="repeatedPassword"
+                    />
+            </td>
+            <td rowspan="2">
+                <img [src]="taxiIconPath" id="taxiIcon" />
+            </td>
+
+        </tr>
+        <tr>
+            <td>
+                <div>
+                    <input
+                        type="checkbox"
+                        id="term-and-privacy-policy"
+                        name="term-and-privacy-policy"
+                        />
+                    <label for="term-and-privacy-policy">I agree to all Term and Privacy Policy</label>
+                </div>
+                <button type="submit">Create account</button>
+                <div>
+                    <label for="existing-account">Already have an account?</label>
+                    <a id="existing-account" href="">Log in</a>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+</form>

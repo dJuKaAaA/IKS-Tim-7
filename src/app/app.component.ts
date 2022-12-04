@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { VehicleService } from './services/vehicle.service';
-import { Vehicle } from './interfaces/Vehicle';
+import Vehicle from './interfaces/Vehicle';
 
 @Component({
   selector: 'app-root',
