@@ -1,0 +1,107 @@
+
+* {
+    box-sizing: border-box;
+    overflow: hidden;
+}
+#container{
+    height: 100vh;
+    overflow: hidden;
+}
+textarea{
+    resize: none;
+    padding: 5px;
+}
+
+#leftSection{
+    width: 49%;
+    display: inline-block;
+    height: 100vh;
+}
+
+#imgSection{
+    background-image: url("assets/images/Group18.png");
+    height: 100%;
+    width: 80%;
+}
+
+#rightSection{
+    width: 48%;
+    display: inline-block;
+    font-family: 'Rubik', sans-serif;
+    float: right;
+}
+
+#rightSection h1{
+    line-height: 55px;
+}
+
+.textFieldBox{
+}
+
+.textFieldBox p{
+    margin: 5px 0px 5px 0px;
+}
+
+.gridArea{
+    display: grid;
+    grid-template-columns: 300px 300px;
+    row-gap: 10px;
+    /* column-gap: 50px; */
+}
+
+#centerContainer{
+    display: flex;
+    /* align-items: center; */
+    justify-content: center;
+    flex-direction: column;
+    height: 100vh;
+    width: 100%;
+}
+
+.buttonSection{
+    display: inline;
+}
+
+.marginBottomLarge{
+    margin-bottom: 70px;
+}
+.marginBottomMedium{
+    margin-bottom: 50px;
+}
+
+button{
+    margin-right: 20px;
+    width: 200px;
+    padding: 10px 20px 10px 20px;
+    background-color: #3F51B5;
+    border: none;
+    border-radius: 3px;
+    color: white;
+    font-family: 'Rubik', sans-serif;
+    font-size: 12px;
+
+}
+
+.buttonSection a{
+    margin-right: 20px;
+    width: 200px;
+    padding: 10px 20px 10px 20px;
+    background-color: #3F51B5;
+    border: none;
+    border-radius: 3px;
+    color: white;
+    font-family: 'Rubik', sans-serif;
+    font-size: 12px;
+    text-decoration: none;
+}
+
+p b{
+    color: #3F51B5;
+}
+
+#profilePicture{
+    width: 100px;
+}
+
+a{text-decoration: none;}
+
