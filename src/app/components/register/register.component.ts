@@ -36,7 +36,7 @@ export class RegisterComponent {
 
   }
 
-  onSubmit() {
+  createAccount() {
     this.passengerService.create(this.passenger);
   }
 
