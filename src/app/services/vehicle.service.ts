@@ -3,7 +3,7 @@ import Vehicle from '../interfaces/Vehicle';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-const API_URL: string = "http://localhost:8081/api/v1/vehicle"
+const API_URL: string = "http://localhost:8081/api/v1/vehicle";
 
 @Injectable({
   providedIn: 'root',

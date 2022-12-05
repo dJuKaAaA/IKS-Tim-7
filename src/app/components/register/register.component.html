@@ -104,7 +104,7 @@
         <tr>
             <td>
                 <div>
-                    <mat-checkbox id="term-and-privacy-policy">I agree to all Term and Privacy Policy</mat-checkbox>
+                    <mat-checkbox id="term-and-privacy-policy" (change)="termsAndConditionsOnChecked($event)">I agree to all the Terms and Conditions</mat-checkbox>
                 </div>
                 <button type="submit" mat-raised-button color="primary">Create account</button>
                 <div>

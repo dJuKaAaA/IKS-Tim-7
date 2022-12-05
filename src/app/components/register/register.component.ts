@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { Passenger } from 'src/app/model/passenger.model';
+import { PassengerService } from 'src/app/services/passenger.service';
 
 @Component({
   selector: 'app-register',
@@ -9,13 +10,11 @@ import { Passenger } from 'src/app/model/passenger.model';
 })
 export class RegisterComponent {
 
-  mainImagePath: string = "../../../assets/pexels-alex-9878865.jpg"
+  mainImagePath: string = "../../../assets/register-side-img.png"
   taxiIconPath: string = "../../../assets/taxi.png";
 
-  textInputSize = "400px";
-
   repeatedPassword: string = "";
-  termAndPrivacyAgreement: boolean = false;
+  termsAndConditionsAgreement: boolean = false;
 
   passenger: Passenger = {
     name: "", 
@@ -29,12 +28,21 @@ export class RegisterComponent {
 
   submitted: boolean = false;
 
-  onSubmit() {
-    this.submitted = !this.submitted;
+  constructor(private passengerService: PassengerService) {
+
   }
 
   ngOnInit(): void {
 
   }
+
+  onSubmit() {
+    this.passengerService.create(this.passenger);
+  }
+
+  termsAndConditionsOnChecked(event: any) {
+    this.termsAndConditionsAgreement = event.checked;
+  }
+
 
 }
