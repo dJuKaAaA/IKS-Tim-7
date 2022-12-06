@@ -6,5 +6,4 @@ export interface Passenger {
     email:String;
     address:String;
     password:String;
-
 }

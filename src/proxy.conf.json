@@ -1,0 +1,6 @@
+{
+    "/api/passenger/1": {
+      "target": "http://localhost:8081",
+      "secure": false
+    }
+}
