@@ -1,0 +1,35 @@
+<img [src]="bgImagePath" id="bg-img" />
+
+<div id="sign-up-now-div">
+    <h1>Get in the driver's seat and get paid</h1>
+    <h2>Ride with the best and be the best.</h2>
+    <button mat-raised-button color="primary" (click)="goToRegister()">Register now</button>
+</div>
+
+<form id="search-location-form" #searchLocationForm="ngForm">
+    <mat-form-field [ngClass]="'search-location-input'">
+        <mat-label>Enter pickup location</mat-label>
+        <input 
+            matInput 
+            name="pickup-location"
+            type="text"
+            /> 
+        <mat-icon matSuffix>room</mat-icon>
+    </mat-form-field>
+    <mat-form-field [ngClass]="'search-location-input'">
+        <mat-label>Enter destination</mat-label>
+        <input 
+            matInput 
+            name="destination"
+            type="text"
+            />
+        <mat-icon matSuffix>room</mat-icon>
+    </mat-form-field>
+    <button type="submit" mat-raised-button color="primary">Show route</button>
+</form>
+
+<a href="#search-location-form" id="redirect-to-map">
+    SEE ALL AVAILABLE VEHICLES AND ROUTES
+</a>
+
+<app-map></app-map>

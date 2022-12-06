@@ -9,10 +9,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatInputModule } from '@angular/material/input'
+import { MatInputModule } from '@angular/material/input';
+import { UnregisteredHomeComponent } from './components/unregistered-home/unregistered-home.component'
+import { MatIconModule } from '@angular/material/icon';
+import { MapComponent } from './components/map/map.component'
+
 
 @NgModule({
-  declarations: [AppComponent, RegisterComponent],
+  declarations: [AppComponent, RegisterComponent, UnregisteredHomeComponent, MapComponent],
   imports: [
     BrowserModule,
     AppRoutingModule, 
@@ -23,6 +27,7 @@ import { MatInputModule } from '@angular/material/input'
     MatButtonModule,
     MatCheckboxModule,
     MatInputModule,
+    MatIconModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

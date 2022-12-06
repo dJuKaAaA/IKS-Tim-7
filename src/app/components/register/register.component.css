@@ -4,6 +4,10 @@
     position: fixed;
 }
 
+h1 {
+    font-size: xx-large;
+}
+
 #taxi-icon {
     width: 40%;
     height: 40%;
@@ -14,8 +18,9 @@ form {
     position: absolute;
     display: block;
     margin: auto;
-    top: 15%;
+    top: 12%;
     left: 40%;
+    right: 0;
 }
 
 form>table>tr>td {
@@ -24,8 +29,8 @@ form>table>tr>td {
 
 button {
     padding: 30px 50px;
-    font-size: large;
-    margin: 15px 0;
+    font-size: 24px;
+    margin: 20px 0;
 }
 
 form>table>tr>td a {
