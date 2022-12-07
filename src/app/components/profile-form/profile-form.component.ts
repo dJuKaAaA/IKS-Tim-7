@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { PassengerService } from 'app/services/passenger.service';
+import { PassengerService } from 'src/app/services/passenger.service';
 import { FormBuilder, NgForm } from '@angular/forms';
-import { Passenger } from 'app/models/passenger.model';
+import { Passenger } from 'src/app/model/passenger.model';
 
 @Component({
   selector: 'app-profile-form',

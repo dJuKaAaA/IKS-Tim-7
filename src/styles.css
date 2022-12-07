@@ -1,4 +1,16 @@
-body{
-    margin: 0px;
-    padding: 0px;
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  padding: 0px;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+:root {
+  --primary-blue: #3f51b5;
+}
+.content {
+  margin-top: 65px;
 }

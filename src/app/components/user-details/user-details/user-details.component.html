@@ -1,0 +1,35 @@
+<div class="user-info-container">
+  <div class="profile-image">
+    <app-profile-image-edit></app-profile-image-edit>
+  </div>
+  <div class="hr"></div>
+  <div class="user-info-items">
+    <div class="user-info-item">
+      <div>Name</div>
+      <div class="user-info-item-value">{{ passenger.name }}</div>
+    </div>
+    <div class="user-info-item">
+      <div>Lastname</div>
+      <div class="user-info-item-value">{{ passenger.surname }}</div>
+    </div>
+    <div class="user-info-item">
+      <div>Email</div>
+      <div class="user-info-item-value">{{ passenger.email }}</div>
+    </div>
+    <div class="user-info-item">
+      <div>Phone</div>
+      <div class="user-info-item-value">{{ passenger.telephoneNumber }}</div>
+    </div>
+    <div class="user-info-item">
+      <div>Address</div>
+      <div class="user-info-item-value">{{ passenger.address }}</div>
+    </div>
+    <div class="user-info-item">
+      <div>Role</div>
+      <div class="user-info-item-value">Passenger</div>
+    </div>
+  </div>
+  <div class="btn-container">
+    <button class="btn" role="button">EDIT PROFILE</button>
+  </div>
+</div>

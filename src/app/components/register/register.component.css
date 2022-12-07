@@ -1,0 +1,45 @@
+#main-image {
+    height: 100%;
+    width: 32%;
+    position: fixed;
+}
+
+h1 {
+    font-size: 36px;
+    color: rgb(88, 88, 88);
+    margin-bottom: 50px;
+}
+
+#taxi-icon {
+    width: 40%;
+    height: 40%;
+    opacity: 0.75;
+}
+
+form {
+    position: absolute;
+    display: block;
+    margin: auto;
+    top: 12%;
+    left: 40%;
+}
+
+form>table>tr>td {
+    padding: 20px 60px;
+}
+
+button {
+    padding: 30px 50px;
+    font-size: large;
+    margin: 15px 0;
+}
+
+form>table>tr>td a {
+    text-decoration: none;
+    margin-left: 10px;
+    color: blue;
+}
+
+.form-text-field {
+    width: 350px !important;
+}
