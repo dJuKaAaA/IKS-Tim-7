@@ -13,7 +13,7 @@ export class UserDetailsComponent implements OnInit {
   constructor(private passengerService: PassengerService) {}
   ngOnInit(): void {
     this.passengerService
-      .getPassenger(1)
+      .getPassenger(7)
       .subscribe((data) => (this.passenger = data));
   }
 }

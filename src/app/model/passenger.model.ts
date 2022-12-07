@@ -1,9 +1,10 @@
 export interface Passenger {
-  id: number;
-  name: String;
-  surname: String;
-  profilePicture: String;
-  telephoneNumber: String;
-  email: String;
-  address: String;
+  id?: number;
+  name: string;
+  surname: string;
+  profilePicture: string;
+  telephoneNumber: string;
+  email: string;
+  address: string;
+  password?: string,
 }

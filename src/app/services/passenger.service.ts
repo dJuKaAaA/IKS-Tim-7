@@ -1,16 +1,24 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { Passenger } from '../model/passenger.model';
+import { Observable } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { NgForm } from '@angular/forms';
+
+const API_URL: string = "http://localhost:8081/";
+
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class PassengerService {
-  private apiURL: string = `http://localhost:8081/api/passenger/{id}`;
-  constructor(private http: HttpClient) {}
+
+  constructor(private http: HttpClient) { }
+
+  public create(passenger: Passenger): Observable<Passenger> {
+    return this.http.post<Passenger>(API_URL + "api/passenger", passenger);
+  }
 
   public getPassenger(passengerId: number): Observable<Passenger> {
-    this.apiURL = `http://localhost:8081/api/passenger/${passengerId}`;
-    return this.http.get<Passenger>(this.apiURL);
+    return this.http.get<Passenger>(API_URL + "api/passenger/" + passengerId);
   }
+
 }

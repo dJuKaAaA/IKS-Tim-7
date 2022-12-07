@@ -1,0 +1,121 @@
+<img [src]="mainImagePath" id="main-image" />
+<form #registerForm="ngForm" (ngSubmit)="createAccount()">
+    <h1>Register</h1>
+    <table>
+        <tr>
+            <td>
+                <mat-form-field [ngClass]="'form-text-field'">
+                    <mat-label>Name</mat-label>
+                    <input
+                        matInput
+                        type="text"
+                        id="name"
+                        name="name"
+                        required
+                        [(ngModel)]="passenger.name"
+                        />
+                </mat-form-field>
+            </td>
+            <td>
+                <mat-form-field [ngClass]="'form-text-field'">
+                    <mat-label>Surname</mat-label>
+                    <input
+                        matInput
+                        type="text"
+                        name="surname"
+                        required
+                        [(ngModel)]="passenger.surname"
+                        />
+                </mat-form-field>
+            </td>
+
+        </tr>
+        <tr>
+            <td>
+                <mat-form-field [ngClass]="'form-text-field'">
+                    <mat-label>Telephone number</mat-label>
+                    <input
+                        matInput
+                        type="text"
+                        name="telephoneNumber"
+                        required
+                        [(ngModel)]="passenger.telephoneNumber"
+                        />
+                </mat-form-field>
+            </td>
+            <td>
+                <mat-form-field [ngClass]="'form-text-field'">
+                    <mat-label>Email</mat-label>
+                    <input
+                        matInput
+                        type="text"
+                        name="email"
+                        required
+                        [(ngModel)]="passenger.email"
+                        />
+                </mat-form-field>
+            </td>
+
+        </tr>
+        <tr>
+            <td>
+                <mat-form-field [ngClass]="'form-text-field'">
+                    <mat-label>Address</mat-label>
+                    <input
+                        matInput
+                        type="text"
+                        name="address"
+                        required
+                        [(ngModel)]="passenger.address"
+                        />
+                </mat-form-field>
+            </td>
+            <td>
+                <mat-form-field [ngClass]="'form-text-field'">
+                    <mat-label>Password</mat-label>
+                    <input
+                        matInput
+                        type="password"
+                        name="password"
+                        required
+                        [(ngModel)]="passenger.password"
+                        />
+                </mat-form-field>
+            </td>
+
+        </tr>
+        <tr>
+            <td>
+                <mat-form-field [ngClass]="'form-text-field'">
+                    <mat-label>Confirm password</mat-label>
+                    <input
+                        matInput
+                        type="password"
+                        name="repeatedPassword"
+                        required
+                        [(ngModel)]="repeatedPassword"
+                        />
+                </mat-form-field>
+            </td>
+            <td rowspan="2">
+                <img [src]="taxiIconPath" id="taxi-icon" />
+            </td>
+
+        </tr>
+        <tr>
+            <td>
+                <div>
+                    <mat-checkbox 
+                        checked="{{termsAndConditionsAgreement}}"
+                        id="term-and-privacy-policy"
+                        (change)="termsAndConditionsOnChecked($event)">I agree to all the Terms and Conditions</mat-checkbox>
+                </div>
+                <button 
+                    type="submit"
+                    mat-raised-button color="primary"
+                    [disabled]="!termsAndConditionsAgreement || repeatedPassword != passenger.password">Create account</button>
+            </td>
+        </tr>
+    </table>
+
+</form>
