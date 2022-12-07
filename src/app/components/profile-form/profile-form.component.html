@@ -32,3 +32,8 @@
         <p id = "forgotPassword">Forgot your password? <a href = "#"><b>Reset now</b></a></p>
     </div>  
 </form>
+
+<div id="notification" [style.top] = "notificationOffset">
+    <p>Data saved</p>
+    <p (click)="closeNotification()" id="ok"><b>OK</b></p>
+</div>
