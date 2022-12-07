@@ -1,5 +1,6 @@
 <img [src]="mainImagePath" id="main-image" />
 <form #registerForm="ngForm" (ngSubmit)="createAccount()">
+    <h1>Register</h1>
     <table>
         <tr>
             <td>
@@ -104,13 +105,15 @@
         <tr>
             <td>
                 <div>
-                    <mat-checkbox id="term-and-privacy-policy" (change)="termsAndConditionsOnChecked($event)">I agree to all the Terms and Conditions</mat-checkbox>
+                    <mat-checkbox 
+                        checked="{{termsAndConditionsAgreement}}"
+                        id="term-and-privacy-policy"
+                        (change)="termsAndConditionsOnChecked($event)">I agree to all the Terms and Conditions</mat-checkbox>
                 </div>
-                <button type="submit" mat-raised-button color="primary">Create account</button>
-                <div>
-                    <label for="existing-account">Already have an account?</label>
-                    <a id="existing-account" href="">Log in</a>
-                </div>
+                <button 
+                    type="submit"
+                    mat-raised-button color="primary"
+                    [disabled]="!termsAndConditionsAgreement || repeatedPassword != passenger.password">Create account</button>
             </td>
         </tr>
     </table>

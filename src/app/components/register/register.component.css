@@ -4,6 +4,12 @@
     position: fixed;
 }
 
+h1 {
+    font-size: 36px;
+    color: rgb(88, 88, 88);
+    margin-bottom: 50px;
+}
+
 #taxi-icon {
     width: 40%;
     height: 40%;
@@ -14,7 +20,7 @@ form {
     position: absolute;
     display: block;
     margin: auto;
-    top: 15%;
+    top: 12%;
     left: 40%;
 }
 

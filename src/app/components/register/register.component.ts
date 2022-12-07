@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { OnInit } from '@angular/core';
+import { NgForm } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Passenger } from 'src/app/model/passenger.model';
 import { PassengerService } from 'src/app/services/passenger.service';
 
@@ -26,9 +28,7 @@ export class RegisterComponent {
     password: ""
   };
 
-  submitted: boolean = false;
-
-  constructor(private passengerService: PassengerService) {
+  constructor(private passengerService: PassengerService, private router: Router) {
 
   }
 
@@ -37,7 +37,22 @@ export class RegisterComponent {
   }
 
   createAccount() {
-    this.passengerService.create(this.passenger);
+    this.passengerService.create(this.passenger).subscribe();
+    alert("Passenger successfully created!");
+
+    // reseting the form
+    this.passenger = {
+      name: "", 
+      surname: "", 
+      profilePicture: "", 
+      telephoneNumber: "",
+      email: "",
+      address: "", 
+      password: ""
+    };
+    this.repeatedPassword = "";
+    this.termsAndConditionsAgreement = false;
+    
   }
 
   termsAndConditionsOnChecked(event: any) {
