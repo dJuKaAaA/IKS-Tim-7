@@ -7,13 +7,6 @@ import { Vehicle } from './interfaces/Vehicle';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent implements OnInit {
+export class AppComponent{
   title = 'IKS-Tim-7';
-  vehicles: Vehicle[] = [];
-
-  constructor(private vehicleService: VehicleService) {}
-
-  ngOnInit(): void {
-    this.vehicleService.findAll().subscribe((data) => (this.vehicles = data));
-  }
 }

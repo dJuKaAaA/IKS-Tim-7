@@ -7,7 +7,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
   providedIn: 'root',
 })
 export class VehicleService {
-  private apiURL: string = 'http://localhost:8081/api/v1/vehicle';
+  private apiURL: string = 'http://localhost:8081/api/vehicle';
 
   constructor(private http: HttpClient) {}
 
