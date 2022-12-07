@@ -7,4 +7,8 @@ import { Component } from '@angular/core';
 })
 export class MapComponent {
 
+  lat: number = 45.0;
+  lng: number = 12.0;
+  zoom: number = 10.0;
+
 }

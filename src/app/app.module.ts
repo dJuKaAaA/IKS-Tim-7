@@ -13,7 +13,7 @@ import { MatInputModule } from '@angular/material/input';
 import { UnregisteredHomeComponent } from './components/unregistered-home/unregistered-home.component'
 import { MatIconModule } from '@angular/material/icon';
 import { MapComponent } from './components/map/map.component'
-
+import { AgmCoreModule } from '@agm/core'
 
 @NgModule({
   declarations: [AppComponent, RegisterComponent, UnregisteredHomeComponent, MapComponent],
@@ -28,6 +28,9 @@ import { MapComponent } from './components/map/map.component'
     MatCheckboxModule,
     MatInputModule,
     MatIconModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyBhkYW5Ov_CmvpXPNwHfmm7jYMqD-0Nheo',
+    })
   ],
   providers: [],
   bootstrap: [AppComponent],
