@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { EditProfileComponent } from './components/edit-profile/edit-profile.component';
+import { ProfileFormComponent } from './components/profile-form/profile-form.component';
 import { RegisterComponent } from './components/register/register.component';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -28,6 +30,8 @@ import { UserDetailsComponent } from './components/user-details/user-details/use
     ProfileImageEditComponent,
     UserDetailsComponent,
     RegisterComponent,
+    EditProfileComponent,
+    ProfileFormComponent,
   ],
   imports: [
     BrowserModule,
