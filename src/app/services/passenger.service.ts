@@ -17,4 +17,8 @@ export class PassengerService {
     return this.http.post<Passenger>(API_URL + "api/passenger", passenger);
   }
 
+  public getPassenger(passengerId: number): Observable<Passenger> {
+    return this.http.get<Passenger>(API_URL + "api/passenger/" + passengerId);
+  }
+
 }
