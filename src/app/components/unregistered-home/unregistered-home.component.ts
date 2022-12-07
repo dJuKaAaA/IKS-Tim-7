@@ -15,8 +15,12 @@ export class UnregisteredHomeComponent {
 
   }
 
-  goToRegister() {
+  goToRegister(): void {
     this.router.navigate(["register"]);
+  }
+
+  goToMaps(): void {
+    window.scrollTo(0,document.body.scrollHeight);
   }
 
 }

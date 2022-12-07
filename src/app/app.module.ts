@@ -29,7 +29,7 @@ import { AgmCoreModule } from '@agm/core'
     MatInputModule,
     MatIconModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyBhkYW5Ov_CmvpXPNwHfmm7jYMqD-0Nheo',
+      apiKey: 'AIzaSyCV2ZilS9MYRgLzsQ0FnkNLxbeNYSKdtNI',
     })
   ],
   providers: [],

@@ -28,8 +28,8 @@
     <button type="submit" mat-raised-button color="primary">Show route</button>
 </form>
 
-<a href="#search-location-form" id="redirect-to-map">
+<p (click)="goToMaps()" id="redirect-to-map">
     SEE ALL AVAILABLE VEHICLES AND ROUTES
-</a>
+</p>
 
-<app-map></app-map>
+<app-map id="nesto"></app-map>
