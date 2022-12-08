@@ -1,0 +1,23 @@
+table {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+td {
+    padding: 1vmin 0;
+}
+
+.field {
+    font-size: 2vmin;
+}
+
+.value {
+    font-size: 4vmin;
+    line-height: 4vmin;
+}
+
+td {
+    max-width: 50vmin;
+}
+
