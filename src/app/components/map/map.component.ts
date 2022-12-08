@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { GMAPILocation } from 'src/app/model/gmapilocation.model';
 import { GMAPIRoute } from 'src/app/model/gmapiroute.model';
@@ -15,7 +15,7 @@ export class MapComponent implements OnInit {
   startingZoom: number = 10.0;
  
   // TODO: change this dummy data later
-  markers: Array<GMAPILocation> = [
+  @Input() markers: Array<GMAPILocation> = [
     {
       lat: 51.673858,
       lng: 7.815982,
@@ -36,7 +36,7 @@ export class MapComponent implements OnInit {
     }
   ]
 
-  routes: Array<GMAPIRoute> = [
+  @Input() routes: Array<GMAPIRoute> = [
     {
       origin: {
         lat: 51.673858,
