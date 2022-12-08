@@ -5,13 +5,9 @@
 }
 
 h1 {
-<<<<<<< HEAD
-    font-size: xx-large;
-=======
     font-size: 36px;
     color: rgb(88, 88, 88);
     margin-bottom: 50px;
->>>>>>> 8feb9ccf3cfda68c1f167b32dd0932e158850980
 }
 
 #taxi-icon {
