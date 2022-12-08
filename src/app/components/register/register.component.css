@@ -5,9 +5,13 @@
 }
 
 h1 {
+<<<<<<< HEAD
+    font-size: xx-large;
+=======
     font-size: 36px;
     color: rgb(88, 88, 88);
     margin-bottom: 50px;
+>>>>>>> 8feb9ccf3cfda68c1f167b32dd0932e158850980
 }
 
 #taxi-icon {
@@ -22,6 +26,7 @@ form {
     margin: auto;
     top: 12%;
     left: 40%;
+    right: 0;
 }
 
 form>table>tr>td {
@@ -30,8 +35,8 @@ form>table>tr>td {
 
 button {
     padding: 30px 50px;
-    font-size: large;
-    margin: 15px 0;
+    font-size: 24px;
+    margin: 20px 0;
 }
 
 form>table>tr>td a {
