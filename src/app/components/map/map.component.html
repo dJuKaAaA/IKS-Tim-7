@@ -1,53 +1,32 @@
-<h1>DRIVER MAP</h1>
+<agm-map
+  [latitude]="startingLatitude"
+  [longitude]="startingLongitude"
+  [zoom]="startingZoom"
+  [disableDefaultUI]="false"
+  style="width: 100%; height: 100%;" >
 
-<div id="map">
-  <agm-map
-    [latitude]="lat"
-    [longitude]="lng"
-    [zoom]="zoom"
-    [disableDefaultUI]="false"
-    style="width: 100%; height: 100%;" >
-  
-    <agm-marker
-        [latitude]="lat"
-        [longitude]="lng">
-    
-    </agm-marker>
-  
-  </agm-map>
-</div>
+  <agm-marker
+    *ngFor="let m of markers"
+    [latitude]="m.lat"
+    [longitude]="m.lng"
+    [label]="m.label"
+    [markerDraggable]="m.draggable"
+    [iconUrl]="'../../../assets/smaller-car-icon.png'">
+     
+    <agm-info-window>
+      <strong>Label: {{m.label}}</strong><br/>
+      <strong>Latitude: {{m.lat}}</strong><br/>
+      <strong>Longitude: {{m.lng}}</strong>
+      <p><strong>Fuck off</strong></p>
+    </agm-info-window>  
+   
+  </agm-marker>
 
-<form id="search-route-form" #searchLocationForm="ngForm" (ngSubmit)="scheduleMessage()">
-  <mat-form-field class="search-route-input">
-      <mat-label>Enter pickup location</mat-label>
-      <input 
-          matInput 
-          name="pickup-location"
-          type="text"
-          /> 
-      <mat-icon matSuffix>room</mat-icon>
-  </mat-form-field>
-  <mat-form-field class="search-route-input">
-      <mat-label>Enter destination</mat-label>
-      <input 
-          matInput 
-          name="destination"
-          type="text"
-          />
-      <mat-icon matSuffix>room</mat-icon>
-  </mat-form-field>
+  <!-- potreban billing :( -->
+  <!-- <agm-direction
+    *ngFor="let route of routes"
+    [origin]="route.origin"
+    [destination]="route.destination">
+  </agm-direction> -->
 
-  <table>
-    <tr>
-      <th>Estimated time</th>
-      <th>Estimated price</th>
-    </tr>
-    <tr>
-      <td>15:36</td>
-      <td>1350</td>
-    </tr>
-  </table>
-  <p><i>This price is estimated and might vary slightly depending on the drivers car</i></p>
-
-  <button type="submit" mat-raised-button color="primary">Schedule</button> 
-</form>
+</agm-map>

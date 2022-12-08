@@ -14,6 +14,7 @@ import { UnregisteredHomeComponent } from './components/unregistered-home/unregi
 import { MatIconModule } from '@angular/material/icon';
 import { MapComponent } from './components/map/map.component'
 import { AgmCoreModule } from '@agm/core'
+import { AgmDirectionModule } from 'agm-direction';
 
 @NgModule({
   declarations: [AppComponent, RegisterComponent, UnregisteredHomeComponent, MapComponent],
@@ -30,7 +31,8 @@ import { AgmCoreModule } from '@agm/core'
     MatIconModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyCV2ZilS9MYRgLzsQ0FnkNLxbeNYSKdtNI',
-    })
+    }),
+    AgmDirectionModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -9,11 +9,7 @@ import Vehicle from './interfaces/Vehicle';
 })
 export class AppComponent implements OnInit {
   title = 'IKS-Tim-7';
-  vehicles: Vehicle[] = [];
-
-  constructor(private vehicleService: VehicleService) {}
 
   ngOnInit(): void {
-    this.vehicleService.findAll().subscribe((data) => (this.vehicles = data));
   }
 }
