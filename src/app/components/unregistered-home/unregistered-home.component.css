@@ -52,3 +52,7 @@
     text-decoration: underline;
     cursor: pointer;
 }
+
+#routes-vehicles-map {
+    width: 100px;
+}

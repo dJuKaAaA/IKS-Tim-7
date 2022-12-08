@@ -2,7 +2,7 @@
   z-index: 99;
   top: 0;
   left: 0;
-  position: fixed;
+  position: static;
   display: flex;
   justify-content: space-between;
   color: var(--primary-blue);
