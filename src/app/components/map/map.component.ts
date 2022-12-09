@@ -2,8 +2,8 @@ import { Component, Input } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { GMAPILocation } from 'src/app/model/gmapilocation.model';
 import { GMAPIRoute } from 'src/app/model/gmapiroute.model';
-import * as tt from '@tomtom-international/web-sdk-maps';
-import * as tt2 from '@tomtom-international/web-sdk-services';
+import * as ttMap from '@tomtom-international/web-sdk-maps';
+import * as ttService from '@tomtom-international/web-sdk-services';
 import { Observable } from 'rxjs';
 import { Subscriber } from 'rxjs';
 import * as mapboxgl from 'mapbox-gl';
@@ -20,58 +20,45 @@ import { Location as GGCJLocation } from 'src/app/model/location.model';
 })
 export class MapComponent implements OnInit {
 
-  rideRoutes: Array<GGCJRoute> = [];
-  locationMarkers: Array<GGCJLocation> = [];
-  startAddress: string = "";
-  endAddress: string = "";
+  @Input() rideRoutes: Array<GGCJRoute> = [];
+  @Input() rideLocations: Array<GGCJLocation> = [];
+  @Input() startAddress: string = "";
+  @Input() endAddress: string = "";
 
-  map: any;  
-  private markers: Array<tt.Marker> = [];
-  private routes: Array<tt2.Route> = [];
+  @Input() startingLongitude: number = 19.16;
+  @Input() startingLatitude: number = 42.5;
+  @Input() startingZoom: number = 12.0;
+
+  private map: any;
+  private markers: Array<ttMap.Marker> = [];
+  private routes: Array<ttService.Route> = [];
 
   private ttApiKey: string = 'urES86sMdjoeMbhSLu9EK3ksu0Jjpb91';
-
-  startingLongitude: number = 19.16;
-  startingLatitude: number = 42.5;
-  startingZoom: number = 12.0;
 
   constructor(private ttGeolocationService: TomTomGeolocationService) {}
 
   ngOnInit(): void {
     this.loadMap();
-
-    // creating markers
-    const marker1: tt.Marker = new tt.Marker({draggable: true})
-      .setLngLat([this.startingLongitude, this.startingLatitude])
-      .addTo(this.map);
-    this.markers.push(marker1);
-
-    const marker2: tt.Marker = new tt.Marker({draggable: true})
-      .setLngLat([this.startingLongitude, this.startingLatitude - 0.01])
-      .addTo(this.map);
-    this.markers.push(marker2);
-
+    this.show();
   }
 
-  getLocationFromAddress(address: string): GGCJLocation {
-    let location: GGCJLocation = {
-      longitude: NaN,
-      latitude: NaN
-    };
+  private getLocationFromAddress(address: string): GGCJLocation {
+    let location: GGCJLocation = new GGCJLocation(NaN, NaN, {});
     this.ttGeolocationService.geolocate(address, this.ttApiKey).subscribe(responseObj => {
       const ttGeolocationResponse: TomTomGeolocationResponse = responseObj;
       if (ttGeolocationResponse.results.length != 0) {
-        location = {
-          longitude: ttGeolocationResponse.results[0].position.lon,
-          latitude: ttGeolocationResponse.results[0].position.lat,
-          address: ttGeolocationResponse.results[0].address
+        // for now, only the first element found will be shown 
+        location = new GGCJLocation(
+          ttGeolocationResponse.results[0].position.lon,
+          ttGeolocationResponse.results[0].position.lat,
+          ttGeolocationResponse.results[0].address);
         }
-      }
     });
     return location;
+
   }
 
-  makeRouteFromAddresses(): void {
+  private makeRouteFromAddresses(): void {
     const isLocationValid = function(location: GGCJLocation): boolean {
       return (Number.isNaN(location.longitude) || Number.isNaN(location.latitude));
     }
@@ -83,57 +70,63 @@ export class MapComponent implements OnInit {
       alert("Invalid location")  // Temporary alert, TODO: Make it prettier
       return;
     }
-
+    const route: GGCJRoute = new GGCJRoute(startLocation, endLocation);
+    this.rideRoutes.push(route);
   }
 
-  findLocationFromAddress() {
-
+  show() {
+    this.showMarkers();
+    this.showRoutes();
   }
 
-  showRoutes(): void {
-
-  }
-
-  drawRoute(): void {
-
-    // showing route on map
-    const marker1 = this.markers[0];
-    const marker2 = this.markers[1];
-    const routeOptions: tt2.CalculateRouteOptions = {
-      key: this.ttApiKey,
-      locations: [marker1.getLngLat(), marker2.getLngLat()]
+  private showMarkers() {
+    for (let location of this.rideLocations) {
+      const marker: ttMap.Marker = new ttMap.Marker({draggable: false})
+        .setLngLat([location.longitude, location.latitude])
+        .addTo(this.map);
+      this.markers.push(marker);
     }
-    tt2.services.calculateRoute(routeOptions).then(
-      (routeData: any) => {
-        console.log(routeData.toGeoJson());
-        let routeLayer = this.map.addLayer({
-          'id': 'route ' + marker1.getLngLat() + ' ' + marker2.getLngLat(),
-          'type': 'line',
-          'source': {
-            'type': 'geojson',
-            'data': routeData.toGeoJson(),
-          },
-          'paint': {
-            'line-color': 'red',
-            'line-width': 5
-          }
-        });
-        this.routes.push(routeLayer);
+  }
 
+  private showRoutes(): void {
+    for (let route of this.rideRoutes) {
+      const routeOption: ttService.CalculateRouteOptions = {
+        key: this.ttApiKey,
+        locations: [
+          [route.startPoint.longitude, route.startPoint.latitude],
+          [route.endPoint.longitude, route.endPoint.latitude]
+        ]
       }
-    );
+      ttService.services.calculateRoute(routeOption).then(
+        (routeData: any) => {
+          let routeLayer = this.map.addLayer({
+            'id': 'route ' + route.toString(),
+            'type': 'line',
+            'source': {
+              'type': 'geojson',
+              'data': routeData.toGeoJson(),
+            },
+            'paint': {
+              'line-color': 'red',
+              'line-width': 5
+            }
+          });
+          this.routes.push(routeLayer);
+        }
+      );
+    }
   }
 
   private loadMap(): void {
-    this.map = tt.map({
+    this.map = ttMap.map({
       key: this.ttApiKey,
       container: 'map',
       center: [this.startingLongitude, this.startingLatitude],
       zoom: this.startingZoom
     });
 
-    this.map.addControl(new tt.FullscreenControl());
-    this.map.addControl(new tt.NavigationControl());
+    this.map.addControl(new ttMap.FullscreenControl());
+    this.map.addControl(new ttMap.NavigationControl());
 
     // getting current position and setting map focus on it
     // this.ttGeolocationService.getCurrentPosition()
