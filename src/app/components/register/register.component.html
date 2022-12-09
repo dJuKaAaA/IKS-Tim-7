@@ -104,11 +104,6 @@
         <tr>
             <td>
                 <div>
-<<<<<<< HEAD
-                    <mat-checkbox id="term-and-privacy-policy" (change)="termsAndConditionsOnChecked($event)">I agree to all the Terms and Conditions</mat-checkbox>
-                </div>
-                <button type="submit" mat-raised-button color="primary">Create account</button>
-=======
                     <mat-checkbox 
                         checked="{{termsAndConditionsAgreement}}"
                         id="term-and-privacy-policy"
@@ -118,7 +113,6 @@
                     type="submit"
                     mat-raised-button color="primary"
                     [disabled]="!termsAndConditionsAgreement || repeatedPassword != passenger.password">Create account</button>
->>>>>>> 8feb9ccf3cfda68c1f167b32dd0932e158850980
             </td>
         </tr>
     </table>
