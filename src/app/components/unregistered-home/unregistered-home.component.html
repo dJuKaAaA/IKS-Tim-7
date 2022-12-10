@@ -32,28 +32,23 @@
     SEE ALL AVAILABLE VEHICLES AND ROUTES
 </p>
 
-<app-map 
-    id="nesto"
-    [startingLatitude]="45.25455"
-    [startingLongitude]="19.84258"
-    [startingZoom]="15"
-    [rideLocations]="locations"
-    [rideRoutes]="routes">
-</app-map>
+<h1>DRIVER MAP</h1>
+<div id="routes-vehicles-map">
+    <app-map></app-map>
+</div>
+<div id="route-information">
+    <app-ride-details
+        [destination]="'Placeholder destination'"
+        [departure]="'Placeholder departure'"
+        [departureDate]="'N/A'"
+        [departureTime]="'N/A'"
+        [duration]="'N/A'">
 
-<!-- test for finding routes by start address and end address -->
-<form #showAddressesRoute="ngForm" (submit)="showRouteForAddresses()">
-    <label for="start-address">Start address</label>
-    <input
-        type="text"
-        name="start-address"
-        [(ngModel)]="startAddress" />
-    <label for="end-address">End address</label>
-    <input
-        type="text"
-        name="end-address"
-        [(ngModel)]="endAddress" />
-    <button type="submit">Show route</button>
-</form>
-
-<button (click)="clearMap()">Clear map</button>
+    </app-ride-details>
+    <button
+        id="unavailable-schedule-button" 
+        mat-raised-button color="primary"
+        (click)="failSchedule()">
+        Schedule
+    </button>
+</div>

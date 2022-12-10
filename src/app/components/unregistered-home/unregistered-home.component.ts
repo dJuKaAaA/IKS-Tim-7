@@ -53,5 +53,8 @@ export class UnregisteredHomeComponent {
     this.mapComponent.clearMap();
   }
 
+  failSchedule() {
+    alert("You need to be logged in to schedule a ride")
+  }
 
 }
