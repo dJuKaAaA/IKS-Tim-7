@@ -19,22 +19,11 @@
     font-size: 22px;
 }
 
-#search-location-form {
+#search-location-form-upper {
     position: absolute;
-    top: 35%;
-    left: 65%;
-}
-
-#search-location-form button {
-    display: block;
-    width: 150px;
-    height: 50px;
-    font-size: 16px;
-}
-
-.search-location-input {
-    display: block;
-    width: 500px !important;
+    top: 40%;
+    right: 5%;
+    width: 60vmin;
 }
 
 #redirect-to-map {
@@ -67,8 +56,12 @@
     width: 50vmin;
     display: inline-block;
     vertical-align: top;
+    margin-top: 2vmin;
     margin-left: 10vmin;
-    margin-top: 10vmin;
+}
+
+#search-location-form-lower {
+    margin-bottom: 4vmin;
 }
 
 h1 {
@@ -79,8 +72,16 @@ h1 {
 }
 
 #unavailable-schedule-button {
-    margin-top: 8vmin;
+    margin-top: 1vmin;
     width: 100%;
     font-size: large;
     height: 8vmin;
+}
+
+#unavailable-schedule-label {
+    width: 100%;
+    text-align: center;
+    margin-top: 0.5vmin;
+    font-size: 1.5vmin;
+    font-style: italic;
 }

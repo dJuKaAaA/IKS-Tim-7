@@ -24,6 +24,7 @@ import { ProfileImageEditComponent } from './components/profile-image-edit/profi
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { UserDetailsComponent } from './components/user-details/user-details/user-details.component';
 import { RideDetailsComponent } from './components/ride-details/ride-details.component';
+import { AddressRouteFormComponent } from './components/address-route-form/address-route-form.component';
 
 
 @NgModule({
@@ -40,6 +41,7 @@ import { RideDetailsComponent } from './components/ride-details/ride-details.com
     RideDetailsComponent,
     UnregisteredHomeComponent,
     MapComponent,
+    AddressRouteFormComponent,
   ],
   imports: [
     BrowserModule,
