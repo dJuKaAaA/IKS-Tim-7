@@ -1,4 +1,5 @@
 import { Component, Input } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { MapComponent } from '../map/map.component';
 
 @Component({
@@ -8,14 +9,17 @@ import { MapComponent } from '../map/map.component';
 })
 export class AddressRouteFormComponent {
 
-  @Input() startAddress: string = "";
-  @Input() endAddress: string = "";
+  @Input() startAddressControl = new FormControl("");
+  @Input() endAddressControl = new FormControl("");
   @Input() mapComponent: MapComponent;
   @Input() callbackFunc = (): void => {};
 
+
   showRoute(): void {
     this.mapComponent.clearMap();
-    this.mapComponent.showRouteFromAddresses(this.startAddress, this.endAddress);
+    let startAddress: string = this.startAddressControl.value || "";
+    let endAddress: string = this.endAddressControl.value || "";
+    this.mapComponent.showRouteFromAddresses(startAddress, endAddress);
     this.callbackFunc();
   }
 

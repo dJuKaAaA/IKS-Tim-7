@@ -8,8 +8,8 @@
 
 <div id="search-location-form-upper">
     <app-address-route-form
-        [startAddress]="startAddress"
-        [endAddress]="endAddress"
+        [startAddressControl]="startAddressControl"
+        [endAddressControl]="endAddressControl"
         [mapComponent]="mapComponent"
         [callbackFunc]="goToMaps">
     </app-address-route-form>
@@ -27,16 +27,16 @@
 <div id="route-information">
     <div id="search-location-form-lower">
         <app-address-route-form
-        [startAddress]="startAddress"
-        [endAddress]="endAddress"
+        [startAddressControl]="startAddressControl"
+        [endAddressControl]="endAddressControl"
         [mapComponent]="mapComponent">
 
         </app-address-route-form>
     </div>
     <div id="route-details">
         <app-ride-details
-        [destination]="this.startAddress"
-        [departure]="this.endAddress"
+        [destination]="this.startAddressControl.value || ''"
+        [departure]="this.endAddressControl.value  || ''"
         [departureDate]="'N/A'"
         [departureTime]="'N/A'"
         [duration]="'N/A'">

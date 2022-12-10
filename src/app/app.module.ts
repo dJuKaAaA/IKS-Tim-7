@@ -25,6 +25,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { UserDetailsComponent } from './components/user-details/user-details/user-details.component';
 import { RideDetailsComponent } from './components/ride-details/ride-details.component';
 import { AddressRouteFormComponent } from './components/address-route-form/address-route-form.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -58,7 +59,8 @@ import { AddressRouteFormComponent } from './components/address-route-form/addre
       apiKey: 'AIzaSyCV2ZilS9MYRgLzsQ0FnkNLxbeNYSKdtNI',
     }),
     AgmDirectionModule,
-    MatToolbarModule
+    MatToolbarModule,
+    ReactiveFormsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

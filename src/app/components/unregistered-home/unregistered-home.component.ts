@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, NgModule, ViewChild } from '@angular/core';
 import { OnInit } from '@angular/core';
+import { Form, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Location } from 'src/app/model/location.model';
 import { Route } from 'src/app/model/route.model';
@@ -19,8 +20,8 @@ export class UnregisteredHomeComponent {
   locations: Array<Location> = [];
   routes: Array<Route> = []
 
-  startAddress: string = ""
-  endAddress: string = ""
+  startAddressControl: FormControl = new FormControl("");
+  endAddressControl: FormControl = new FormControl("");
 
   constructor(private router: Router) {
 
@@ -32,15 +33,6 @@ export class UnregisteredHomeComponent {
 
   goToMaps(): void {
     window.scrollTo(0,document.body.scrollHeight);
-  }
-
-  showRouteForAddresses(): void {
-    this.mapComponent.showRouteFromAddresses(this.startAddress, this.endAddress);
-    this.goToMaps();
-  }
-
-  clearMap(): void {
-    this.mapComponent.clearMap();
   }
 
   failSchedule() {

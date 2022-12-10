@@ -5,7 +5,8 @@
             matInput 
             name="pickup-location"
             type="text"
-            [(ngModel)]="startAddress"
+            [formControl]="startAddressControl"
+            [value]="startAddressControl.value || ''"
             /> 
         <mat-icon matSuffix>room</mat-icon>
     </mat-form-field>
@@ -15,7 +16,8 @@
             matInput 
             name="destination"
             type="text"
-            [(ngModel)]="endAddress"
+            [formControl]="endAddressControl"
+            [value]="endAddressControl.value || ''"
             />
         <mat-icon matSuffix>room</mat-icon>
     </mat-form-field>
