@@ -7,7 +7,12 @@
 </div>
 
 <div id="search-location-form-upper">
-    <app-address-route-form></app-address-route-form>
+    <app-address-route-form
+        [startAddress]="startAddress"
+        [endAddress]="endAddress"
+        [mapComponent]="mapComponent"
+        [callbackFunc]="goToMaps">
+    </app-address-route-form>
 </div>
 
 <p (click)="goToMaps()" id="redirect-to-map">
@@ -21,12 +26,17 @@
 </div>
 <div id="route-information">
     <div id="search-location-form-lower">
-        <app-address-route-form></app-address-route-form>
+        <app-address-route-form
+        [startAddress]="startAddress"
+        [endAddress]="endAddress"
+        [mapComponent]="mapComponent">
+
+        </app-address-route-form>
     </div>
     <div id="route-details">
         <app-ride-details
-        [destination]="'Placeholder destination'"
-        [departure]="'Placeholder departure'"
+        [destination]="this.startAddress"
+        [departure]="this.endAddress"
         [departureDate]="'N/A'"
         [departureTime]="'N/A'"
         [duration]="'N/A'">
