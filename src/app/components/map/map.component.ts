@@ -27,6 +27,8 @@ export class MapComponent implements OnInit {
   @Input() startingLatitude: number = 42.5;
   @Input() startingZoom: number = 12.0;
 
+  private flyToZoom: number = 15.0;
+
   private map: any;
   private markers: Array<ttMap.Marker> = [];
   private routes: Array<ttService.Route> = [];
@@ -84,6 +86,12 @@ export class MapComponent implements OnInit {
         } else {
           this.rideRoutes.push(route);
           this.showRoute(route);
+
+          // focus on the start point
+          this.map.flyTo({
+            center: { lat: route.startPoint.latitude, lon: route.startPoint.longitude },
+            zoom: this.flyToZoom
+          });
         }
       });
 
