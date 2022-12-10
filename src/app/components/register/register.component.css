@@ -22,6 +22,7 @@ form {
     margin: auto;
     top: 12%;
     left: 40%;
+    right: 0;
 }
 
 form>table>tr>td {
@@ -30,8 +31,8 @@ form>table>tr>td {
 
 button {
     padding: 30px 50px;
-    font-size: large;
-    margin: 15px 0;
+    font-size: 24px;
+    margin: 20px 0;
 }
 
 form>table>tr>td a {
@@ -42,4 +43,11 @@ form>table>tr>td a {
 
 .form-text-field {
     width: 350px !important;
+}
+
+.nesto {
+    position: absolute;
+    top: 30%;
+    right: 0;
+    margin-right: 100px;
 }

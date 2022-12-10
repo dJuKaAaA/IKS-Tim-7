@@ -9,7 +9,6 @@
                     <input
                         matInput
                         type="text"
-                        id="name"
                         name="name"
                         required
                         [(ngModel)]="passenger.name"
@@ -104,18 +103,19 @@
         </tr>
         <tr>
             <td>
-                <div>
-                    <mat-checkbox 
-                        checked="{{termsAndConditionsAgreement}}"
-                        id="term-and-privacy-policy"
-                        (change)="termsAndConditionsOnChecked($event)">I agree to all the Terms and Conditions</mat-checkbox>
-                </div>
+                <mat-checkbox 
+                    checked="{{termsAndConditionsAgreement}}"
+                    id="term-and-privacy-policy"
+                    (change)="termsAndConditionsOnChecked($event)">
+                    I agree to all the Terms and Conditions
+                </mat-checkbox>
                 <button 
                     type="submit"
                     mat-raised-button color="primary"
-                    [disabled]="!termsAndConditionsAgreement || repeatedPassword != passenger.password">Create account</button>
+                    [disabled]="!termsAndConditionsAgreement || repeatedPassword != passenger.password">
+                    Create account
+                </button>
             </td>
         </tr>
     </table>
-
 </form>

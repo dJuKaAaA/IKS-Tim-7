@@ -1,0 +1,86 @@
+#bg-img {
+    width: 100vw;
+}
+
+#sign-up-now-div {
+    position: absolute;
+    top: 40%;
+    left: 7%;
+    color: white;
+}
+
+#sign-up-now-div>h1 {
+    font-size: xx-large;
+}
+
+#sign-up-now-div>button {
+    width: 200px;
+    height: 60px;
+    font-size: 22px;
+}
+
+#search-location-form {
+    position: absolute;
+    top: 35%;
+    left: 65%;
+}
+
+#search-location-form button {
+    display: block;
+    width: 150px;
+    height: 50px;
+    font-size: 16px;
+}
+
+.search-location-input {
+    display: block;
+    width: 500px !important;
+}
+
+#redirect-to-map {
+    position: absolute;
+    top: 90%;
+    left: 0;
+    right: 0;
+    font-size: 45px;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+}
+
+#redirect-to-map:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#routes-vehicles-map {
+    width: 60%;
+    height: 90%;
+    z-index: 100;
+    margin-left: 2vmin;
+    margin-bottom: 2vmin;
+    display: inline-block;
+
+}
+
+#route-information {
+    width: 50vmin;
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 10vmin;
+    margin-top: 10vmin;
+}
+
+h1 {
+    text-align: center;
+    font-size: 40px;
+    margin-top: 20px;
+    font-weight: bold;
+}
+
+#unavailable-schedule-button {
+    margin-top: 8vmin;
+    width: 100%;
+    font-size: large;
+    height: 8vmin;
+}

@@ -5,13 +5,14 @@ import { UserDetailsComponent } from './components/user-details/user-details/use
 import { RegisterComponent } from './components/register/register.component';
 import { RideHistoryInformationComponent } from './components/ride-history-information/ride-history-information/ride-history-information.component';
 
+import { UnregisteredHomeComponent } from './components/unregistered-home/unregistered-home.component';
+import { RideDetailsComponent } from './components/ride-details/ride-details.component';
+
 const routes: Routes = [
   { path: 'editProfile', component: EditProfileComponent },
   { path: 'register', component: RegisterComponent },
-  {
-    path: 'passengerDetails',
-    component: UserDetailsComponent,
-  },
+  { path: 'unregistered-home', component: UnregisteredHomeComponent },
+  { path: 'passengerDetails', component: UserDetailsComponent },
   { path: 'userRideHistory', component: RideHistoryInformationComponent },
 ];
 
