@@ -8,6 +8,7 @@ h1 {
     font-size: 36px;
     color: rgb(88, 88, 88);
     margin-bottom: 50px;
+    font-family: 'Montserrat', sans-serif;
 }
 
 #taxi-icon {
@@ -20,7 +21,7 @@ form {
     position: absolute;
     display: block;
     margin: auto;
-    top: 12%;
+    top: 15%;
     left: 40%;
     right: 0;
 }

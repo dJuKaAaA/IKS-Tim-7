@@ -11,12 +11,17 @@
 
 #sign-up-now-div>h1 {
     font-size: xx-large;
+    font-family: 'Montserrat', sans-serif;
+}
+
+h2 {
+    font-family: 'Montserrat', sans-serif;
 }
 
 #sign-up-now-div>button {
-    width: 200px;
-    height: 60px;
-    font-size: 22px;
+    width: 25vmin;
+    height: 5vmin;
+    font-size: 2.5vmin;
 }
 
 #search-location-form-upper {
@@ -31,7 +36,7 @@
     top: 90%;
     left: 0;
     right: 0;
-    font-size: 45px;
+    font-size: 5vmin;
     color: white;
     text-align: center;
     text-decoration: none;
@@ -69,6 +74,7 @@ h1 {
     font-size: 40px;
     margin-top: 20px;
     font-weight: bold;
+    font-family: 'Montserrat', sans-serif;
 }
 
 #unavailable-schedule-button {
