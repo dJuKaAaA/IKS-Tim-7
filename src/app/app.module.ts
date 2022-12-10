@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatInputModule } from '@angular/material/input'
+import { MatInputModule } from '@angular/material/input';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NavbarComponent } from './components/navbar/navbar/navbar.component';
 import { NavbarMainSectionComponent } from './components/navbar-main-section/navbar-main-section/navbar-main-section.component';
@@ -19,7 +19,11 @@ import { ProfileImageEditComponent } from './components/profile-image-edit/profi
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { UserDetailsComponent } from './components/user-details/user-details/user-details.component';
-
+import { RideHistoryCardComponent } from './components/ride-history-card/ride-history-card/ride-history-card.component';
+import { RideHistoryInformationComponent } from './components/ride-history-information/ride-history-information/ride-history-information.component';
+import { MatSelectModule } from '@angular/material/select';
+import { MatTableModule } from '@angular/material/table';
+import { StarComponent } from './components/star/star.component';
 
 @NgModule({
   declarations: [
@@ -32,10 +36,13 @@ import { UserDetailsComponent } from './components/user-details/user-details/use
     RegisterComponent,
     EditProfileComponent,
     ProfileFormComponent,
+    RideHistoryCardComponent,
+    RideHistoryInformationComponent,
+    StarComponent,
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule, 
+    AppRoutingModule,
     HttpClientModule,
     FormsModule,
     BrowserAnimationsModule,
@@ -50,6 +57,8 @@ import { UserDetailsComponent } from './components/user-details/user-details/use
     MatToolbarModule,
     MatButtonModule,
     MatIconModule,
+    MatSelectModule,
+    MatTableModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

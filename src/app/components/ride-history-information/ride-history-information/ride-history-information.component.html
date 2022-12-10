@@ -1,0 +1,81 @@
+<div class="content">
+  <div class="div1">
+    <div class="div1-in1">
+      <div class="select-box-container">
+        <mat-form-field class="select-box">
+          <mat-label>SORT BY</mat-label>
+          <mat-select
+            [(ngModel)]="sortCriteria"
+            (ngModelChange)="onChangeSortCriteria()"
+          >
+            <mat-option value="ascStartDate">asc start date</mat-option>
+            <mat-option value="descStartDate">desc start date</mat-option>
+            <mat-option value="ascEndDate">asc end date</mat-option>
+            <mat-option value="descEndDate">desc end date</mat-option>
+            <mat-option value="ascRoute">asc route</mat-option>
+            <mat-option value="descRoute">desc route</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+        <ng-container matColumnDef="route">
+          <th mat-header-cell *matHeaderCellDef>Route</th>
+          <td mat-cell *matCellDef="let element">{{ element.route }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="departureLocation">
+          <th mat-header-cell *matHeaderCellDef>Departure location</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.departureLocation }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="destinationLocation">
+          <th mat-header-cell *matHeaderCellDef>Destination Location</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.destinationLocation }}
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      </table>
+
+      <hr class="hr1" />
+      <div class="ride-info-container">
+        <div class="">
+          <p class="ride-text">Destination date</p>
+          <p class="ride-value-text">{{ destinationDate }}</p>
+        </div>
+        <div>
+          <p class="ride-text">Destination time</p>
+          <p class="ride-value-text">{{ destinationTime }}</p>
+        </div>
+
+        <div>
+          <p class="ride-text">Travel duration</p>
+          <p class="ride-value-text">{{ travelDuration }}</p>
+        </div>
+
+        <div>
+          <p class="ride-text">Price</p>
+          <p class="ride-value-text">{{ price }}</p>
+        </div>
+      </div>
+      <hr />
+      <button class="btn">Display Details</button>
+    </div>
+    <div class="vl"></div>
+  </div>
+
+  <div class="div2">
+    <div *ngFor="let ride of ridesObject.results">
+      <app-ride-history-card
+        [vehicleRating]="avgVehicleReviewRating"
+        [driverRating]="avgDriverReviewRating"
+        [ride]="ride"
+        (routeEvent)="displayRoutesInTable($event)"
+      ></app-ride-history-card>
+    </div>
+  </div>
+</div>

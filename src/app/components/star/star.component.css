@@ -1,0 +1,12 @@
+.star-container {
+  display: flex;
+}
+
+.star {
+  padding-left: 5px;
+  margin-top: 7px;
+}
+
+.star > img {
+  padding-left: 10px;
+}
