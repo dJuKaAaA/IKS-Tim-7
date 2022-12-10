@@ -1,7 +1,5 @@
 import { Component, Input } from '@angular/core';
 import { OnInit } from '@angular/core';
-import { GMAPILocation } from 'src/app/model/gmapilocation.model';
-import { GMAPIRoute } from 'src/app/model/gmapiroute.model';
 import * as ttMap from '@tomtom-international/web-sdk-maps';
 import * as ttService from '@tomtom-international/web-sdk-services';
 import { Observable } from 'rxjs';
@@ -12,6 +10,8 @@ import { TomTomGeolocationService } from 'src/app/services/tom-tom-geolocation.s
 import { TomTomGeolocationResponse } from 'src/app/model/tom-tom-geolocation-response.model';
 import { Route as GGCJRoute } from 'src/app/model/route.model';
 import { Location as GGCJLocation } from 'src/app/model/location.model';
+import { RouterTestingModule } from '@angular/router/testing';
+import * as tt from '@tomtom-international/web-sdk-maps';
 
 @Component({
   selector: 'app-map',
@@ -22,8 +22,6 @@ export class MapComponent implements OnInit {
 
   @Input() rideRoutes: Array<GGCJRoute> = [];
   @Input() rideLocations: Array<GGCJLocation> = [];
-  @Input() startAddress: string = "";
-  @Input() endAddress: string = "";
 
   @Input() startingLongitude: number = 19.16;
   @Input() startingLatitude: number = 42.5;
@@ -42,79 +40,134 @@ export class MapComponent implements OnInit {
     this.show();
   }
 
-  private getLocationFromAddress(address: string): GGCJLocation {
-    let location: GGCJLocation = new GGCJLocation(NaN, NaN, {});
-    this.ttGeolocationService.geolocate(address, this.ttApiKey).subscribe(responseObj => {
-      const ttGeolocationResponse: TomTomGeolocationResponse = responseObj;
-      if (ttGeolocationResponse.results.length != 0) {
-        // for now, only the first element found will be shown 
-        location = new GGCJLocation(
-          ttGeolocationResponse.results[0].position.lon,
-          ttGeolocationResponse.results[0].position.lat,
-          ttGeolocationResponse.results[0].address);
-        }
-    });
-    return location;
-
-  }
-
-  private makeRouteFromAddresses(): void {
+  public showRouteFromAddresses(startAddress: string, endAddress: string): void {
     const isLocationValid = function(location: GGCJLocation): boolean {
       return (Number.isNaN(location.longitude) || Number.isNaN(location.latitude));
     }
 
-    let startLocation: GGCJLocation = this.getLocationFromAddress(this.endAddress);
-    let endLocation: GGCJLocation = this.getLocationFromAddress(this.endAddress);
-
-    if (isLocationValid(startLocation) || isLocationValid(endLocation)) {
-      alert("Invalid location")  // Temporary alert, TODO: Make it prettier
-      return;
-    }
-    const route: GGCJRoute = new GGCJRoute(startLocation, endLocation);
-    this.rideRoutes.push(route);
-  }
-
-  show() {
-    this.showMarkers();
-    this.showRoutes();
-  }
-
-  private showMarkers() {
-    for (let location of this.rideLocations) {
-      const marker: ttMap.Marker = new ttMap.Marker({draggable: false})
-        .setLngLat([location.longitude, location.latitude])
-        .addTo(this.map);
-      this.markers.push(marker);
-    }
-  }
-
-  private showRoutes(): void {
-    for (let route of this.rideRoutes) {
-      const routeOption: ttService.CalculateRouteOptions = {
-        key: this.ttApiKey,
-        locations: [
-          [route.startPoint.longitude, route.startPoint.latitude],
-          [route.endPoint.longitude, route.endPoint.latitude]
-        ]
+    let startLocation: GGCJLocation = new GGCJLocation(NaN, NaN, {});
+    let endLocation: GGCJLocation = new GGCJLocation(NaN, NaN, {});
+    
+    // getting the start address
+    this.ttGeolocationService.geolocate(startAddress, this.ttApiKey).subscribe(responseObj => {
+      const ttGeolocationResponse: TomTomGeolocationResponse = responseObj;
+      if (ttGeolocationResponse.results.length != 0) {
+        // for now, only the first element found will be shown
+        startLocation = new GGCJLocation(
+          ttGeolocationResponse.results[0].position.lat,
+          ttGeolocationResponse.results[0].position.lon,
+          ttGeolocationResponse.results[0].address);
       }
-      ttService.services.calculateRoute(routeOption).then(
-        (routeData: any) => {
-          let routeLayer = this.map.addLayer({
-            'id': 'route ' + route.toString(),
-            'type': 'line',
-            'source': {
-              'type': 'geojson',
-              'data': routeData.toGeoJson(),
-            },
-            'paint': {
-              'line-color': 'red',
-              'line-width': 5
-            }
-          });
-          this.routes.push(routeLayer);
+
+      // after getting the start address we get the end address 
+      // by nesting the end address request into start address request
+      this.ttGeolocationService.geolocate(endAddress, this.ttApiKey).subscribe(responseObj => {
+        const ttGeolocationResponse: TomTomGeolocationResponse = responseObj;
+        if (ttGeolocationResponse.results.length != 0) {
+          // for now, only the first element found will be shown
+          endLocation = new GGCJLocation(
+            ttGeolocationResponse.results[0].position.lat,
+            ttGeolocationResponse.results[0].position.lon,
+            ttGeolocationResponse.results[0].address);
         }
-      );
+
+        // after sending the requests, we check to see if the requests found the locations
+        if (isLocationValid(startLocation) || isLocationValid(endLocation)) {
+          alert("Location(s) not found")  // Temporary alert, TODO: Make it prettier
+          return;
+        }
+
+        // after validations, we show the route on the map
+        const route: GGCJRoute = new GGCJRoute(startLocation, endLocation);
+        if (this.checkRouteExists(route)) {
+          alert("This route is already shown on the map");
+        } else {
+          this.rideRoutes.push(route);
+          this.showRoute(route);
+        }
+      });
+
+   });
+
+  }
+
+  public clearMap() {
+    this.markers = [];
+    this.routes = [];
+    this.rideLocations = [];
+    this.rideRoutes = [];
+    this.map.remove();
+    this.loadMap();
+  }
+
+  public show() {
+    this.showAllMarkers();
+    this.showAllRoutes();
+  }
+
+  private showAllMarkers() {
+    for (let location of this.rideLocations) {
+      this.showMarker(location);
     }
+  }
+
+  private showMarker(location: GGCJLocation) {
+    const marker: ttMap.Marker = new ttMap.Marker({draggable: false})
+      .setLngLat([location.longitude, location.latitude])
+      .addTo(this.map);
+    this.markers.push(marker);
+  }
+
+  private showAllRoutes(): void {
+    for (let route of this.rideRoutes) {
+      // creating markers for route display
+      this.showRoute(route);
+    }
+  }
+
+  private checkRouteExists(route: GGCJRoute) {
+    let retVal: boolean = false;
+    console.log(route);
+    this.rideRoutes.forEach(element => {
+      console.log(element);
+      if (element.toString() == route.toString()){
+        retVal = true;
+        return;
+      }
+    });
+    return retVal;
+  }
+
+  private showRoute(route: GGCJRoute): void {
+    this.showMarker(route.startPoint);
+    this.showMarker(route.endPoint);
+
+    // showing route on map
+    const routeOptions: ttService.CalculateRouteOptions = {
+      key: this.ttApiKey,
+      locations: [
+        [route.startPoint.longitude, route.startPoint.latitude],
+        [route.endPoint.longitude, route.endPoint.latitude]
+      ]
+    }
+    ttService.services.calculateRoute(routeOptions).then(
+      (routeData: any) => {
+        route.distanceInMeters = routeData.routes[0].summary.lengthInMeters;
+        let routeLayer = this.map.addLayer({
+          'id': 'route ' + route.toString(),
+          'type': 'line',
+          'source': {
+            'type': 'geojson',
+            'data': routeData.toGeoJson(),
+          },
+          'paint': {
+            'line-color': 'red',
+            'line-width': 5
+          }
+        });
+        this.routes.push(routeLayer);
+      }
+    );
   }
 
   private loadMap(): void {
@@ -150,5 +203,5 @@ export class MapComponent implements OnInit {
     //   marker.setPopup(popup).togglePopup();
     // });
   }
-  
+
 }

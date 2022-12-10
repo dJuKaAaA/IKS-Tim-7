@@ -34,8 +34,26 @@
 
 <app-map 
     id="nesto"
-    [startingLatitude]="45.24628246945485"
-    [startingLongitude]="19.85170752737503"
-    [startingZoom]="18"
+    [startingLatitude]="45.25455"
+    [startingLongitude]="19.84258"
+    [startingZoom]="15"
     [rideLocations]="locations"
-    [rideRoutes]="routes"></app-map>
+    [rideRoutes]="routes">
+</app-map>
+
+<!-- test for finding routes by start address and end address -->
+<form #showAddressesRoute="ngForm" (submit)="showRouteForAddresses()">
+    <label for="start-address">Start address</label>
+    <input
+        type="text"
+        name="start-address"
+        [(ngModel)]="startAddress" />
+    <label for="end-address">End address</label>
+    <input
+        type="text"
+        name="end-address"
+        [(ngModel)]="endAddress" />
+    <button type="submit">Show route</button>
+</form>
+
+<button (click)="clearMap()">Clear map</button>
