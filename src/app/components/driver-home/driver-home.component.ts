@@ -72,7 +72,8 @@ export class DriverHomeComponent implements OnInit {
               "address": "Dunavski Park, Novi Sad, 21101, Srbija",
               "latitude": 45.25534,
               "longitude": 19.85144
-            }
+            },
+            "distanceInMeters": NaN
           }
         ],
         "status": "PENDING"
@@ -97,7 +98,7 @@ export class DriverHomeComponent implements OnInit {
       this.routes.push(new Route(route.departure, route.destination));
     }
     this.mapComponent.showRoutes(this.routes);
-    this.mapComponent.focusOnPoint(this.routes[0].startPoint);
+    this.mapComponent.focusOnPoint(this.routes[0].departure);
   }
 
 }

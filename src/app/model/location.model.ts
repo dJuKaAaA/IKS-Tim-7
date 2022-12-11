@@ -6,3 +6,4 @@ export class Location {
         return "[" + this.latitude + ", " + this.longitude + "]";
     }
 }
+

@@ -2,16 +2,10 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { OnInit } from '@angular/core';
 import * as ttMap from '@tomtom-international/web-sdk-maps';
 import * as ttService from '@tomtom-international/web-sdk-services';
-import { Observable } from 'rxjs';
-import { Subscriber } from 'rxjs';
-import * as mapboxgl from 'mapbox-gl';
-import { HttpClient } from '@angular/common/http';
 import { TomTomGeolocationService } from 'src/app/services/tom-tom-geolocation.service';
 import { TomTomGeolocationResponse } from 'src/app/model/tom-tom-geolocation-response.model';
 import { Route as GGCJRoute } from 'src/app/model/route.model';
 import { Location as GGCJLocation } from 'src/app/model/location.model';
-import { RouterTestingModule } from '@angular/router/testing';
-import * as tt from '@tomtom-international/web-sdk-maps';
 
 @Component({
   selector: 'app-map',
@@ -113,7 +107,7 @@ export class MapComponent implements OnInit {
           this.showRoute(route);
 
           // focus on the start point
-          this.focusOnPoint(route.startPoint);
+          this.focusOnPoint(route.departure);
         }
       });
    });
@@ -172,15 +166,15 @@ export class MapComponent implements OnInit {
   }
 
   private showRoute(route: GGCJRoute): void {
-    this.showMarker(route.startPoint);
-    this.showMarker(route.endPoint);
+    this.showMarker(route.departure);
+    this.showMarker(route.destination);
 
     // showing route on map
     const routeOptions: ttService.CalculateRouteOptions = {
       key: this.ttApiKey,
       locations: [
-        [route.startPoint.longitude, route.startPoint.latitude],
-        [route.endPoint.longitude, route.endPoint.latitude]
+        [route.departure.longitude, route.departure.latitude],
+        [route.destination.longitude, route.destination.latitude]
       ]
     }
     ttService.services.calculateRoute(routeOptions).then(
