@@ -5,6 +5,7 @@ import { UserDetailsComponent } from './components/user-details/user-details/use
 import { RegisterComponent } from './components/register/register.component';
 import { UnregisteredHomeComponent } from './components/unregistered-home/unregistered-home.component';
 import { RideDetailsComponent } from './components/ride-details/ride-details.component';
+import { DriverHomeComponent } from './components/driver-home/driver-home.component';
 
 const routes: Routes = [
   {path: 'editProfile', component: EditProfileComponent},
@@ -14,6 +15,7 @@ const routes: Routes = [
     path: 'passenger-details',
     component: UserDetailsComponent,
   },
+  {path: 'driver-home', component: DriverHomeComponent}
 ];
 
 @NgModule({
