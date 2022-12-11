@@ -114,7 +114,7 @@ export class MapComponent implements OnInit {
 
           // focus on the start point
           this.map.flyTo({
-            center: { lat: route.startPoint.latitude, lon: route.startPoint.longitude },
+            center: { lat: route.departure.latitude, lon: route.departure.longitude },
             zoom: this.flyToZoom
           });
         }
@@ -172,15 +172,15 @@ export class MapComponent implements OnInit {
 
   private showRoute(route: GGCJRoute): void {
     console.log(this.rideRoutes);
-    this.showMarker(route.startPoint);
-    this.showMarker(route.endPoint);
+    this.showMarker(route.departure);
+    this.showMarker(route.destination);
 
     // showing route on map
     const routeOptions: ttService.CalculateRouteOptions = {
       key: this.ttApiKey,
       locations: [
-        [route.startPoint.longitude, route.startPoint.latitude],
-        [route.endPoint.longitude, route.endPoint.latitude]
+        [route.departure.longitude, route.departure.latitude],
+        [route.destination.longitude, route.destination.latitude]
       ]
     }
     ttService.services.calculateRoute(routeOptions).then(
