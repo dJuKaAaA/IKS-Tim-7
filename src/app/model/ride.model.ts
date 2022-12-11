@@ -6,12 +6,14 @@ export interface Ride {
   id: number;
   locations: Route[];
   startTime: String;
-  endTime: String;
+  endTime: string;
   totalCost: number;
+  driver: SimpleUser
   passengers: SimpleUser[];
   estimatedTimeInMinutes: number;
-  vehicleType: String;
+  vehicleType: string;
   babyTransport: boolean;
   petTransport: boolean;
   rejection: Rejection;
+  status: string
 }

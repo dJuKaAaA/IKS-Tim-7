@@ -1,0 +1,32 @@
+#driver-map-container {
+    width: 60%;
+    height: 88%;
+    display: inline-block;
+    margin: 2vmin;
+}
+
+#scheduled-rides {
+    width: 65vmin;
+    max-height: 83%;
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 2.5vmin;
+    margin-left: 2vmin;
+    overflow-y: scroll;
+    padding: 2vmin;
+    border-radius: 2vmin;
+    /* box-shadow: 0px 0px 5px rgb(95, 95, 95); */
+    border: 2px dashed rgb(190, 190, 190);
+}
+
+.schedule-ride {
+    margin: 2vmin;
+    border-radius: 5vmin;
+    padding: 2vmin;
+    box-shadow: 2px 2px 10px rgb(95, 95, 95);
+}
+
+#scheduled-rides button {
+    margin: 2vmin;
+    width: 15vmin;
+}

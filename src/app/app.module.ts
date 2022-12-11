@@ -33,6 +33,8 @@ import { AddressRouteFormComponent } from './components/address-route-form/addre
 import { LoginComponent } from './components/login/login.component';
 import { DriverProfileDetailsComponent } from './components/driver-profile-details/driver-profile-details.component';
 import { NgImageSliderModule } from 'ng-image-slider';
+import { DriverHomeComponent } from './components/driver-home/driver-home.component';
+import { MatCardModule } from '@angular/material/card'
 
 @NgModule({
   declarations: [
@@ -54,6 +56,7 @@ import { NgImageSliderModule } from 'ng-image-slider';
     AddressRouteFormComponent,
     LoginComponent,
     DriverProfileDetailsComponent,
+    DriverHomeComponent,
   ],
   imports: [
     BrowserModule,
@@ -77,6 +80,7 @@ import { NgImageSliderModule } from 'ng-image-slider';
     MatToolbarModule,
     ReactiveFormsModule,
     NgImageSliderModule,
+    MatCardModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
