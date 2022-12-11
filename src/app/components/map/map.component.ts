@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { OnInit } from '@angular/core';
 import * as ttMap from '@tomtom-international/web-sdk-maps';
 import * as ttService from '@tomtom-international/web-sdk-services';
@@ -20,12 +20,19 @@ import * as tt from '@tomtom-international/web-sdk-maps';
 })
 export class MapComponent implements OnInit {
 
-  @Input() rideRoutes: Array<GGCJRoute> = [];
   @Input() rideLocations: Array<GGCJLocation> = [];
+  @Input() rideRoutes: Array<GGCJRoute> = [];
 
   @Input() startingLongitude: number = 19.16;
   @Input() startingLatitude: number = 42.5;
   @Input() startingZoom: number = 12.0;
+
+  @Output() rideLocationsEvent: EventEmitter<Array<GGCJLocation>> = new EventEmitter<Array<GGCJLocation>>;
+  @Output() rideRoutesEvent: EventEmitter<Array<GGCJRoute>> = new EventEmitter<Array<GGCJRoute>>;
+
+  notifyRideLocationsUpdate() { this.rideLocationsEvent.emit(this.rideLocations); }
+
+  notifyRideRoutesUpdate() { this.rideRoutesEvent.emit(this.rideRoutes); }
 
   private flyToZoom: number = 15.0;
 
@@ -40,6 +47,16 @@ export class MapComponent implements OnInit {
   ngOnInit(): void {
     this.loadMap();
     this.show();
+  }
+
+  private appendRideRoute(route: GGCJRoute) {
+    this.rideRoutes.push(route);
+    this.notifyRideRoutesUpdate();
+  }
+
+  private appendRideLocation(location: GGCJLocation) {
+    this.rideLocations.push(location);
+    this.notifyRideLocationsUpdate();
   }
 
   public showRouteFromAddresses(startAddress: string, endAddress: string): void {
@@ -60,8 +77,7 @@ export class MapComponent implements OnInit {
       const ttGeolocationResponse: TomTomGeolocationResponse = responseObj;
       if (ttGeolocationResponse.results.length != 0) {
         // for now, only the first element found will be shown
-        const address = ttGeolocationResponse.results[0].address.freeFormAddress + 
-          ttGeolocationResponse.results[0].address.country;
+        const address: string = ttGeolocationResponse.results[0].address.freeformAddress + ", " + ttGeolocationResponse.results[0].address.country;
         startLocation = new GGCJLocation(
           ttGeolocationResponse.results[0].position.lat,
           ttGeolocationResponse.results[0].position.lon,
@@ -74,12 +90,11 @@ export class MapComponent implements OnInit {
         const ttGeolocationResponse: TomTomGeolocationResponse = responseObj;
         if (ttGeolocationResponse.results.length != 0) {
           // for now, only the first element found will be shown
-          const address = ttGeolocationResponse.results[0].address.freeFormAddress + 
-            ttGeolocationResponse.results[0].address.country;
+          const address: string = ttGeolocationResponse.results[0].address.freeformAddress + ", " + ttGeolocationResponse.results[0].address.country;
           endLocation = new GGCJLocation(
             ttGeolocationResponse.results[0].position.lat,
             ttGeolocationResponse.results[0].position.lon,
-            ttGeolocationResponse.results[0].address.country);
+            address);
         }
 
         // after sending the requests, we check to see if the requests found the locations
@@ -93,7 +108,8 @@ export class MapComponent implements OnInit {
         if (this.checkRouteExists(route)) {
           alert("This route is already shown on the map");
         } else {
-          this.rideRoutes.push(route);
+          this.appendRideRoute(route);
+          this.notifyRideRoutesUpdate();
           this.showRoute(route);
 
           // focus on the start point
@@ -144,7 +160,6 @@ export class MapComponent implements OnInit {
 
   private checkRouteExists(route: GGCJRoute) {
     let retVal: boolean = false;
-    console.log(route);
     this.rideRoutes.forEach(element => {
       console.log(element);
       if (element.toString() == route.toString()){
@@ -156,6 +171,7 @@ export class MapComponent implements OnInit {
   }
 
   private showRoute(route: GGCJRoute): void {
+    console.log(this.rideRoutes);
     this.showMarker(route.startPoint);
     this.showMarker(route.endPoint);
 

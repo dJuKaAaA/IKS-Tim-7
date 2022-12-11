@@ -14,7 +14,6 @@ export class AddressRouteFormComponent {
   @Input() mapComponent: MapComponent;
   @Input() callbackFunc = (): void => {};
 
-
   showRoute(): void {
     this.mapComponent.clearMap();
     let startAddress: string = this.startAddressControl.value || "";

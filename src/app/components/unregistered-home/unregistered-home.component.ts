@@ -31,6 +31,10 @@ export class UnregisteredHomeComponent {
     this.router.navigate(["register"]);
   }
 
+  updateRoutes(routes: Array<Route>) {
+    this.routes = routes;
+  }
+
   goToMaps(): void {
     window.scrollTo(0,document.body.scrollHeight);
   }
