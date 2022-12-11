@@ -9,11 +9,11 @@
     <mat-card *ngFor="let scheduledRide of scheduledRides" class="schedule-ride">
         <mat-card-content>
             <mat-card-title>Passengers</mat-card-title>
-            <mat-card-subtitle *ngFor="let passenger of scheduledRide.passengers">
-                {{passenger.email}}
-            </mat-card-subtitle>
+                <mat-card-subtitle *ngFor="let passenger of scheduledRide.passengers" class="passengers">
+                    {{passenger.email}}
+                </mat-card-subtitle>
             <mat-card-title>Time</mat-card-title>
-            <mat-card-subtitle>{{scheduledRide.startTime}}</mat-card-subtitle>
+            <mat-card-subtitle class="start-time">{{scheduledRide.startTime}}</mat-card-subtitle>
         </mat-card-content>
         <mat-card-actions>
             <button mat-raised-button color="primary" (click)="startRide(scheduledRide)">Start</button>
