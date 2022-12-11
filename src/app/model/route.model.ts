@@ -1,11 +1,12 @@
-import { Location as GGCJLocation } from './location.model';
+import { Location } from './location.model';
 
 export class Route {
     public distanceInMeters = NaN;
     // TODO: Add ride later
-    constructor(public startPoint: GGCJLocation, public endPoint: GGCJLocation) {}
+    constructor(public departure: Location, public destination: Location) {}
 
     toString(): string {
-        return "(" + this.startPoint.toString() + ", " + this.endPoint.toString() + ")"
+        return "(" + this.departure.toString() + ", " + this.destination.toString() + ")"
     }
 }
+

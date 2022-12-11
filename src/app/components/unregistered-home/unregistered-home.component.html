@@ -38,8 +38,8 @@
     </div>
     <div id="route-details">
         <app-ride-details
-        [destination]="(this.routes.length > 0) ? (this.routes[0].startPoint.address) : ''"
-        [departure]="(this.routes.length > 0) ? (this.routes[0].endPoint.address) : ''"
+        [destination]="(this.routes.length > 0) ? (this.routes[0].departure.address) : ''"
+        [departure]="(this.routes.length > 0) ? (this.routes[0].destination.address) : ''"
         [departureDate]="'N/A'"
         [departureTime]="'N/A'"
         [duration]="'N/A'"
