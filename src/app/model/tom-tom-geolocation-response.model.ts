@@ -20,7 +20,7 @@ interface TomTomGeolocationAddress {
     countryCode: string,
     countryCodeISO3: string,
     countrySubdivision: string,
-    freeFormAddress: string,
+    freeformAddress: string,
     localName: string,
     postalCode: string,
     streetName: string,

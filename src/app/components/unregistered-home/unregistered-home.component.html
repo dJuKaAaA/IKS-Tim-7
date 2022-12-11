@@ -22,7 +22,10 @@
 <h1>DRIVER MAP</h1>
 
 <div id="routes-vehicles-map">
-    <app-map></app-map>
+    <app-map 
+        (rideRoutesEvent)="updateRoutes($event)">
+
+    </app-map>
 </div>
 <div id="route-information">
     <div id="search-location-form-lower">
@@ -35,8 +38,8 @@
     </div>
     <div id="route-details">
         <app-ride-details
-        [destination]="this.startAddressControl.value || ''"
-        [departure]="this.endAddressControl.value  || ''"
+        [destination]="(this.routes.length > 0) ? (this.routes[0].startPoint.address) : ''"
+        [departure]="(this.routes.length > 0) ? (this.routes[0].endPoint.address) : ''"
         [departureDate]="'N/A'"
         [departureTime]="'N/A'"
         [duration]="'N/A'">
@@ -45,7 +48,8 @@
     <button
         id="unavailable-schedule-button" 
         mat-raised-button color="primary"
-        [disabled]="true">
+        (click)="nesto()"
+        [disabled]="false">
         Schedule
     </button>
     <p

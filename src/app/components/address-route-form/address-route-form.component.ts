@@ -14,13 +14,11 @@ export class AddressRouteFormComponent {
   @Input() mapComponent: MapComponent;
   @Input() callbackFunc = (): void => {};
 
-
   showRoute(): void {
     this.mapComponent.clearMap();
     let startAddress: string = this.startAddressControl.value || "";
     let endAddress: string = this.endAddressControl.value || "";
     this.mapComponent.showRouteFromAddresses(startAddress, endAddress);
-    this.callbackFunc();
   }
 
 }
