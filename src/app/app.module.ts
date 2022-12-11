@@ -34,7 +34,8 @@ import { LoginComponent } from './components/login/login.component';
 import { DriverProfileDetailsComponent } from './components/driver-profile-details/driver-profile-details.component';
 import { NgImageSliderModule } from 'ng-image-slider';
 import { DriverHomeComponent } from './components/driver-home/driver-home.component';
-import { MatCardModule } from '@angular/material/card'
+import { MatCardModule } from '@angular/material/card';
+import { DriverCurrentRideComponent } from './components/driver-current-ride/driver-current-ride.component'
 
 @NgModule({
   declarations: [
@@ -57,6 +58,7 @@ import { MatCardModule } from '@angular/material/card'
     LoginComponent,
     DriverProfileDetailsComponent,
     DriverHomeComponent,
+    DriverCurrentRideComponent,
   ],
   imports: [
     BrowserModule,

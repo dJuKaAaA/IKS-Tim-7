@@ -8,6 +8,7 @@ import { RideHistoryInformationComponent } from './components/ride-history-infor
 import { UnregisteredHomeComponent } from './components/unregistered-home/unregistered-home.component';
 import { RideDetailsComponent } from './components/ride-details/ride-details.component';
 import { DriverHomeComponent } from './components/driver-home/driver-home.component';
+import { DriverCurrentRideComponent } from './components/driver-current-ride/driver-current-ride.component';
 
 const routes: Routes = [
   { path: 'editProfile', component: EditProfileComponent },
@@ -22,7 +23,8 @@ const routes: Routes = [
     path: 'passenger-details',
     component: UserDetailsComponent,
   },
-  {path: 'driver-home', component: DriverHomeComponent}
+  {path: 'driver-home', component: DriverHomeComponent},
+  {path: 'driver-current-ride', component: DriverCurrentRideComponent},
 ];
 
 @NgModule({

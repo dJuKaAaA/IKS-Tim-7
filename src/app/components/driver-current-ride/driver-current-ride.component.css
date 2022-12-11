@@ -1,0 +1,29 @@
+#driver-map-container {
+    width: 60%;
+    height: 88%;
+    display: inline-block;
+    margin: 2vmin;
+}
+
+#ride-information {
+    width: 50vmin;
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 5vmin;
+    margin-left: 10vmin;
+}
+
+#button-layout {
+    margin-top: 8vmin;
+    width: 100%;
+}
+
+#button-layout tr td {
+    padding: 1vmin;
+}
+
+button {
+    width: 100%;
+    padding: 4vmin;
+    font-size: 2vmin;
+}
