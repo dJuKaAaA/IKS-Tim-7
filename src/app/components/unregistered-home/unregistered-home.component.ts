@@ -35,8 +35,4 @@ export class UnregisteredHomeComponent {
     window.scrollTo(0,document.body.scrollHeight);
   }
 
-  failSchedule() {
-    alert("You need to be logged in to schedule a ride")
-  }
-
 }
