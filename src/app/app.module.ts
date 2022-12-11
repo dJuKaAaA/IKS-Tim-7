@@ -27,6 +27,8 @@ import { RideDetailsComponent } from './components/ride-details/ride-details.com
 import { AddressRouteFormComponent } from './components/address-route-form/address-route-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from './components/login/login.component';
+import { DriverHomeComponent } from './components/driver-home/driver-home.component';
+import { MatCardModule } from '@angular/material/card'
 
 
 @NgModule({
@@ -45,6 +47,7 @@ import { LoginComponent } from './components/login/login.component';
     MapComponent,
     AddressRouteFormComponent,
     LoginComponent,
+    DriverHomeComponent,
   ],
   imports: [
     BrowserModule,
@@ -63,6 +66,7 @@ import { LoginComponent } from './components/login/login.component';
     AgmDirectionModule,
     MatToolbarModule,
     ReactiveFormsModule,
+    MatCardModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

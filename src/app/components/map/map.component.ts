@@ -20,8 +20,8 @@ import * as tt from '@tomtom-international/web-sdk-maps';
 })
 export class MapComponent implements OnInit {
 
-  @Input() rideLocations: Array<GGCJLocation> = [];
-  @Input() rideRoutes: Array<GGCJRoute> = [];
+  @Input() ggcjLocations: Array<GGCJLocation> = [];
+  @Input() ggcjRoutes: Array<GGCJRoute> = [];
 
   @Input() startingLongitude: number = 19.16;
   @Input() startingLatitude: number = 42.5;
@@ -30,9 +30,9 @@ export class MapComponent implements OnInit {
   @Output() rideLocationsEvent: EventEmitter<Array<GGCJLocation>> = new EventEmitter<Array<GGCJLocation>>;
   @Output() rideRoutesEvent: EventEmitter<Array<GGCJRoute>> = new EventEmitter<Array<GGCJRoute>>;
 
-  notifyRideLocationsUpdate() { this.rideLocationsEvent.emit(this.rideLocations); }
+  notifyRideLocationsUpdate() { this.rideLocationsEvent.emit(this.ggcjLocations); }
 
-  notifyRideRoutesUpdate() { this.rideRoutesEvent.emit(this.rideRoutes); }
+  notifyRideRoutesUpdate() { this.rideRoutesEvent.emit(this.ggcjRoutes); }
 
   private flyToZoom: number = 15.0;
 
@@ -46,16 +46,16 @@ export class MapComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadMap();
-    this.show();
+    this.show(this.ggcjLocations, this.ggcjRoutes);
   }
 
   private appendRideRoute(route: GGCJRoute) {
-    this.rideRoutes.push(route);
+    this.ggcjRoutes.push(route);
     this.notifyRideRoutesUpdate();
   }
 
   private appendRideLocation(location: GGCJLocation) {
-    this.rideLocations.push(location);
+    this.ggcjLocations.push(location);
     this.notifyRideLocationsUpdate();
   }
 
@@ -113,33 +113,35 @@ export class MapComponent implements OnInit {
           this.showRoute(route);
 
           // focus on the start point
-          this.map.flyTo({
-            center: { lat: route.startPoint.latitude, lon: route.startPoint.longitude },
-            zoom: this.flyToZoom
-          });
+          this.focusOnPoint(route.startPoint);
         }
       });
-
    });
+  }
 
+  public focusOnPoint(location: GGCJLocation) {
+    this.map.flyTo({
+      center: { lat: location.latitude, lon: location.longitude },
+      zoom: this.flyToZoom
+    });
   }
 
   public clearMap() {
     this.markers = [];
     this.routes = [];
-    this.rideLocations = [];
-    this.rideRoutes = [];
+    this.ggcjLocations = [];
+    this.ggcjRoutes = [];
     this.map.remove();
     this.loadMap();
   }
 
-  public show() {
-    this.showAllMarkers();
-    this.showAllRoutes();
+  public show(locations: Array<GGCJLocation>, routes: Array<GGCJRoute>) {
+    this.showMarkers(locations);
+    this.showRoutes(routes);
   }
 
-  private showAllMarkers() {
-    for (let location of this.rideLocations) {
+  public showMarkers(locations: Array<GGCJLocation>) {
+    for (let location of locations) {
       this.showMarker(location);
     }
   }
@@ -151,8 +153,8 @@ export class MapComponent implements OnInit {
     this.markers.push(marker);
   }
 
-  private showAllRoutes(): void {
-    for (let route of this.rideRoutes) {
+  public showRoutes(routes: Array<GGCJRoute>): void {
+    for (let route of routes) {
       // creating markers for route display
       this.showRoute(route);
     }
@@ -160,8 +162,7 @@ export class MapComponent implements OnInit {
 
   private checkRouteExists(route: GGCJRoute) {
     let retVal: boolean = false;
-    this.rideRoutes.forEach(element => {
-      console.log(element);
+    this.ggcjRoutes.forEach(element => {
       if (element.toString() == route.toString()){
         retVal = true;
         return;
@@ -171,7 +172,6 @@ export class MapComponent implements OnInit {
   }
 
   private showRoute(route: GGCJRoute): void {
-    console.log(this.rideRoutes);
     this.showMarker(route.startPoint);
     this.showMarker(route.endPoint);
 
