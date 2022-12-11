@@ -21,13 +21,8 @@ export class PassengerService {
     return this.http.get<Passenger>(API_URL + "api/passenger/" + passengerId);
   }
 
-  public updatePassenger(form : NgForm): Boolean{
-    try{
-      this.http.put(API_URL + "api/passenger/2", form.value).subscribe(data => console.log(data));
-    }catch{
-      return false;
-    }
-    return true;
+  public updatePassenger(form : NgForm): Observable<any>{
+    return this.http.put(API_URL + "api/passenger/2", form.value)
   }
 
 }

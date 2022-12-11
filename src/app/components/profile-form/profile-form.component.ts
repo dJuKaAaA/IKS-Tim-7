@@ -12,17 +12,29 @@ export class ProfileFormComponent{
 
   passenger = {} as Passenger;
   notificationOffset:String = "-70px";
+  notificationText:String = "Data saved";
   succesfull : Boolean = true;
 
   constructor(private passengerService : PassengerService) {}
 
   onSubmit(f: NgForm): void {
     // Process checkout data here
-    this.succesfull = this.passengerService.updatePassenger(f);
-    this.notificationOffset = "30px";
-    setTimeout(()=>{
-      this.notificationOffset = "-70px"
+    this.passengerService.updatePassenger(f).subscribe({
+      next: () => {
+        this.notificationText = "Data saved";
+        this.notificationOffset = "30px";
+        setTimeout(()=>{
+        this.notificationOffset = "-70px"
     }, 3000);
+      },
+      error: () => {
+        this.notificationText = "Error occured";
+        this.notificationOffset = "30px";
+        setTimeout(()=>{
+        this.notificationOffset = "-70px"
+        }, 3000);
+      }
+    });
   }
 
   closeNotification(): void{

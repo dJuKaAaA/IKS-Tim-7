@@ -19,6 +19,7 @@ import { ProfileImageEditComponent } from './components/profile-image-edit/profi
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { UserDetailsComponent } from './components/user-details/user-details/user-details.component';
+import { AdminHomepageComponent } from './components/admin-homepage/admin-homepage.component';
 
 
 @NgModule({
@@ -32,6 +33,7 @@ import { UserDetailsComponent } from './components/user-details/user-details/use
     RegisterComponent,
     EditProfileComponent,
     ProfileFormComponent,
+    AdminHomepageComponent,
   ],
   imports: [
     BrowserModule,
