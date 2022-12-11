@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { EditProfileComponent } from './components/edit-profile/edit-profile.component';
 import { ProfileFormComponent } from './components/profile-form/profile-form.component';
 import { RegisterComponent } from './components/register/register.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -29,6 +29,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { StarComponent } from './components/star/star.component';
 import { RideDetailsComponent } from './components/ride-details/ride-details.component';
+import { DriverProfileDetailsComponent } from './components/driver-profile-details/driver-profile-details.component';
+import { NgImageSliderModule } from 'ng-image-slider';
 
 @NgModule({
   declarations: [
@@ -47,6 +49,7 @@ import { RideDetailsComponent } from './components/ride-details/ride-details.com
     RideDetailsComponent,
     UnregisteredHomeComponent,
     MapComponent,
+    DriverProfileDetailsComponent,
   ],
   imports: [
     BrowserModule,
@@ -62,10 +65,12 @@ import { RideDetailsComponent } from './components/ride-details/ride-details.com
     MatSelectModule,
     MatTableModule,
     MatToolbarModule,
+    ReactiveFormsModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyCV2ZilS9MYRgLzsQ0FnkNLxbeNYSKdtNI',
+      apiKey: 'AIzaSyCV2ZilS9MYRgLzsQ0FnkNLabeNYSKdtNI',
     }),
     AgmDirectionModule,
+    NgImageSliderModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
