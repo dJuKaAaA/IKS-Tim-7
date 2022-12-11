@@ -20,8 +20,8 @@ import * as tt from '@tomtom-international/web-sdk-maps';
 })
 export class MapComponent implements OnInit {
 
-  @Input() rideLocations: Array<GGCJLocation> = [];
-  @Input() rideRoutes: Array<GGCJRoute> = [];
+  @Input() ggcjLocations: Array<GGCJLocation> = [];
+  @Input() ggcjRoutes: Array<GGCJRoute> = [];
 
   @Input() startingLongitude: number = 19.16;
   @Input() startingLatitude: number = 42.5;
@@ -30,9 +30,9 @@ export class MapComponent implements OnInit {
   @Output() rideLocationsEvent: EventEmitter<Array<GGCJLocation>> = new EventEmitter<Array<GGCJLocation>>;
   @Output() rideRoutesEvent: EventEmitter<Array<GGCJRoute>> = new EventEmitter<Array<GGCJRoute>>;
 
-  notifyRideLocationsUpdate() { this.rideLocationsEvent.emit(this.rideLocations); }
+  notifyRideLocationsUpdate() { this.rideLocationsEvent.emit(this.ggcjLocations); }
 
-  notifyRideRoutesUpdate() { this.rideRoutesEvent.emit(this.rideRoutes); }
+  notifyRideRoutesUpdate() { this.rideRoutesEvent.emit(this.ggcjRoutes); }
 
   private flyToZoom: number = 15.0;
 
@@ -50,12 +50,12 @@ export class MapComponent implements OnInit {
   }
 
   private appendRideRoute(route: GGCJRoute) {
-    this.rideRoutes.push(route);
+    this.ggcjRoutes.push(route);
     this.notifyRideRoutesUpdate();
   }
 
   private appendRideLocation(location: GGCJLocation) {
-    this.rideLocations.push(location);
+    this.ggcjLocations.push(location);
     this.notifyRideLocationsUpdate();
   }
 
@@ -127,8 +127,8 @@ export class MapComponent implements OnInit {
   public clearMap() {
     this.markers = [];
     this.routes = [];
-    this.rideLocations = [];
-    this.rideRoutes = [];
+    this.ggcjLocations = [];
+    this.ggcjRoutes = [];
     this.map.remove();
     this.loadMap();
   }
@@ -139,7 +139,7 @@ export class MapComponent implements OnInit {
   }
 
   private showAllMarkers() {
-    for (let location of this.rideLocations) {
+    for (let location of this.ggcjLocations) {
       this.showMarker(location);
     }
   }
@@ -152,7 +152,7 @@ export class MapComponent implements OnInit {
   }
 
   private showAllRoutes(): void {
-    for (let route of this.rideRoutes) {
+    for (let route of this.ggcjRoutes) {
       // creating markers for route display
       this.showRoute(route);
     }
@@ -160,7 +160,7 @@ export class MapComponent implements OnInit {
 
   private checkRouteExists(route: GGCJRoute) {
     let retVal: boolean = false;
-    this.rideRoutes.forEach(element => {
+    this.ggcjRoutes.forEach(element => {
       console.log(element);
       if (element.toString() == route.toString()){
         retVal = true;
@@ -171,7 +171,7 @@ export class MapComponent implements OnInit {
   }
 
   private showRoute(route: GGCJRoute): void {
-    console.log(this.rideRoutes);
+    console.log(this.ggcjRoutes);
     this.showMarker(route.startPoint);
     this.showMarker(route.endPoint);
 

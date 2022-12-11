@@ -1,6 +1,5 @@
-import { AfterViewInit, Component, NgModule, ViewChild } from '@angular/core';
-import { OnInit } from '@angular/core';
-import { Form, FormControl } from '@angular/forms';
+import { Component, ViewChild } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Location } from 'src/app/model/location.model';
 import { Route } from 'src/app/model/route.model';
