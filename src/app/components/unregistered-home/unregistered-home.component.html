@@ -42,7 +42,8 @@
         [departure]="(this.routes.length > 0) ? (this.routes[0].endPoint.address) : ''"
         [departureDate]="'N/A'"
         [departureTime]="'N/A'"
-        [duration]="'N/A'">
+        [duration]="'N/A'"
+        [distance]="(this.routes.length > 0) ? (this.routes[0].distanceInMeters + 'm') : ''">
     </app-ride-details>
     </div>
     <button
