@@ -9,6 +9,13 @@
     color: white;
 }
 
+.login-popup {
+    width: 20vw;
+    position: absolute;
+    right: 5%;
+    top: 67px;
+}
+
 #sign-up-now-div>h1 {
     font-size: xx-large;
     font-family: 'Montserrat', sans-serif;

@@ -1,0 +1,16 @@
+form {
+    width: 100%;
+    background-color: white;
+    padding: 2vmin;
+    border-radius: 2.5vmin;
+}
+
+.user-info-input {
+    width: 100%;
+}
+
+button {
+    width: 100%;
+    padding: 2.25vmin 0;
+    font-size: 2.25vmin;
+}

@@ -1,0 +1,24 @@
+<form>
+    <mat-form-field class="user-info-input">
+        <mat-label>Email</mat-label>
+        <input
+            type="email"
+            name="login-email"
+            [(ngModel)]="email"
+            matInput
+            />
+    </mat-form-field>
+    <mat-form-field class="user-info-input">
+        <mat-label>Password</mat-label>
+        <input
+            type="password"
+            name="login-password"
+            [(ngModel)]="password"
+            matInput
+            />
+    </mat-form-field>
+    <button type="submit" mat-raised-button color="primary">Login</button>
+</form>
+
+<p>{{email}}</p>
+<p>{{password}}</p>
