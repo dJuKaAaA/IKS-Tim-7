@@ -6,49 +6,50 @@
     <button mat-raised-button color="primary" (click)="goToRegister()">Register now</button>
 </div>
 
-<form id="search-location-form" #searchLocationForm="ngForm">
-    <mat-form-field [ngClass]="'search-location-input'">
-        <mat-label>Enter pickup location</mat-label>
-        <input 
-            matInput 
-            name="pickup-location"
-            type="text"
-            /> 
-        <mat-icon matSuffix>room</mat-icon>
-    </mat-form-field>
-    <mat-form-field [ngClass]="'search-location-input'">
-        <mat-label>Enter destination</mat-label>
-        <input 
-            matInput 
-            name="destination"
-            type="text"
-            />
-        <mat-icon matSuffix>room</mat-icon>
-    </mat-form-field>
-    <button type="submit" mat-raised-button color="primary">Show route</button>
-</form>
+<div id="search-location-form-upper">
+    <app-address-route-form
+        [startAddressControl]="startAddressControl"
+        [endAddressControl]="endAddressControl"
+        [mapComponent]="mapComponent"
+        [callbackFunc]="goToMaps">
+    </app-address-route-form>
+</div>
 
 <p (click)="goToMaps()" id="redirect-to-map">
     SEE ALL AVAILABLE VEHICLES AND ROUTES
 </p>
 
 <h1>DRIVER MAP</h1>
+
 <div id="routes-vehicles-map">
     <app-map></app-map>
 </div>
 <div id="route-information">
-    <app-ride-details
-        [destination]="'Placeholder destination'"
-        [departure]="'Placeholder departure'"
+    <div id="search-location-form-lower">
+        <app-address-route-form
+        [startAddressControl]="startAddressControl"
+        [endAddressControl]="endAddressControl"
+        [mapComponent]="mapComponent">
+
+        </app-address-route-form>
+    </div>
+    <div id="route-details">
+        <app-ride-details
+        [destination]="this.startAddressControl.value || ''"
+        [departure]="this.endAddressControl.value  || ''"
         [departureDate]="'N/A'"
         [departureTime]="'N/A'"
         [duration]="'N/A'">
-
     </app-ride-details>
+    </div>
     <button
         id="unavailable-schedule-button" 
         mat-raised-button color="primary"
-        (click)="showRouteForAddresses()">
+        [disabled]="true">
         Schedule
     </button>
+    <p
+        id="unavailable-schedule-label">
+        You need to be logged in to use this feature
+    </p>
 </div>
