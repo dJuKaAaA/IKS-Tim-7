@@ -25,8 +25,8 @@ export class UnregisteredHomeComponent {
   ];
   routes: Array<Route> = [
     new Route(
-      new Location(45.25628246945484, 19.85170752737503, {}),
-      new Location(45.556058433301284, 19.845757083194272, {})
+      new Location(45.25628246945484, 19.85170752737503, ""),
+      new Location(45.556058433301284, 19.845757083194272, "")
     )
   ]
 
@@ -46,6 +46,8 @@ export class UnregisteredHomeComponent {
   }
 
   showRouteForAddresses(): void {
+    this.startAddress = "Skopska 30A, Podgorica";
+    this.endAddress = "Ivana Vujosevica 2, Podgorica";
     this.mapComponent.showRouteFromAddresses(this.startAddress, this.endAddress);
   }
 

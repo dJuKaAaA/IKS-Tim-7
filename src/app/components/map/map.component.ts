@@ -47,18 +47,25 @@ export class MapComponent implements OnInit {
       return (Number.isNaN(location.longitude) || Number.isNaN(location.latitude));
     }
 
-    let startLocation: GGCJLocation = new GGCJLocation(NaN, NaN, {});
-    let endLocation: GGCJLocation = new GGCJLocation(NaN, NaN, {});
-    
+    if (startAddress == "" || endAddress == "") {
+      alert("Address field cannot be empty");
+      return;
+    }
+
+    let startLocation: GGCJLocation = new GGCJLocation(NaN, NaN, "");
+    let endLocation: GGCJLocation = new GGCJLocation(NaN, NaN, "");
+
     // getting the start address
     this.ttGeolocationService.geolocate(startAddress, this.ttApiKey).subscribe(responseObj => {
       const ttGeolocationResponse: TomTomGeolocationResponse = responseObj;
       if (ttGeolocationResponse.results.length != 0) {
         // for now, only the first element found will be shown
+        const address = ttGeolocationResponse.results[0].address.freeFormAddress + 
+          ttGeolocationResponse.results[0].address.country;
         startLocation = new GGCJLocation(
           ttGeolocationResponse.results[0].position.lat,
           ttGeolocationResponse.results[0].position.lon,
-          ttGeolocationResponse.results[0].address);
+          address);
       }
 
       // after getting the start address we get the end address 
@@ -67,10 +74,12 @@ export class MapComponent implements OnInit {
         const ttGeolocationResponse: TomTomGeolocationResponse = responseObj;
         if (ttGeolocationResponse.results.length != 0) {
           // for now, only the first element found will be shown
+          const address = ttGeolocationResponse.results[0].address.freeFormAddress + 
+            ttGeolocationResponse.results[0].address.country;
           endLocation = new GGCJLocation(
             ttGeolocationResponse.results[0].position.lat,
             ttGeolocationResponse.results[0].position.lon,
-            ttGeolocationResponse.results[0].address);
+            ttGeolocationResponse.results[0].address.country);
         }
 
         // after sending the requests, we check to see if the requests found the locations
