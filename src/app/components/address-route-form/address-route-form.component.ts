@@ -19,6 +19,7 @@ export class AddressRouteFormComponent {
     let startAddress: string = this.startAddressControl.value || "";
     let endAddress: string = this.endAddressControl.value || "";
     this.mapComponent.showRouteFromAddresses(startAddress, endAddress);
+    this.callbackFunc();
   }
 
 }
