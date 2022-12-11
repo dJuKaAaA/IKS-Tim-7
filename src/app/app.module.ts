@@ -26,6 +26,7 @@ import { UserDetailsComponent } from './components/user-details/user-details/use
 import { RideDetailsComponent } from './components/ride-details/ride-details.component';
 import { AddressRouteFormComponent } from './components/address-route-form/address-route-form.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { LoginComponent } from './components/login/login.component';
 
 
 @NgModule({
@@ -43,6 +44,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     UnregisteredHomeComponent,
     MapComponent,
     AddressRouteFormComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
