@@ -39,12 +39,4 @@ export class UnregisteredHomeComponent {
     window.scrollTo(0,document.body.scrollHeight);
   }
 
-  nesto() {
-    // this.routes[0] = new Route(
-    //   new Location(1, 1, "Hello"),
-    //   new Location(1, 1, "World")
-    // );
-    console.log(this.routes);
-  }
-
 }
