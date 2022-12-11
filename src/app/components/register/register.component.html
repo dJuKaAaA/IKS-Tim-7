@@ -1,4 +1,8 @@
-<img [src]="mainImagePath" id="main-image" />
+<div id="side-img-container">
+    <img [src]="mainImagePath" id="main-image" />
+    <span id="side-img-message">A few clicks away from creating your Go Go CarJet account</span>
+
+</div>
 <form #registerForm="ngForm" (ngSubmit)="createAccount()">
     <h1>Register</h1>
     <table>
