@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Document } from 'src/app/model/document.model';
 import { Driver } from 'src/app/model/driver.model';
 import { Vehicle } from 'src/app/model/vehicle.model';
@@ -61,7 +62,7 @@ export class DriverProfileDetailsComponent implements OnInit {
     },
   ];
 
-  constructor(private driverService: DriverService) {}
+  constructor(private driverService: DriverService, private router: Router) {}
   ngOnInit(): void {
     this.driverService.getDriver(1).subscribe((data) => (this.driver = data));
     this.driverService
@@ -103,5 +104,12 @@ export class DriverProfileDetailsComponent implements OnInit {
   closeVehicle(): void {
     this.profileInfo = true;
     this.vehicleDetails = false;
+  }
+
+  // prosledjivanje iz komponente
+  redirectToDriverEditProfile() {
+    this.router.navigateByUrl('/driver-edit-profile', {
+      state: { driver: this.driver, documents: this.documents },
+    });
   }
 }

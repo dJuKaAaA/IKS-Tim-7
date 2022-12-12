@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { EditProfileComponent } from './components/edit-profile/edit-profile.component';
-import { UserDetailsComponent } from './components/user-details/user-details/user-details.component';
 import { RegisterComponent } from './components/register/register.component';
 import { RideHistoryInformationComponent } from './components/ride-history-information/ride-history-information/ride-history-information.component';
 
@@ -10,17 +9,17 @@ import { RideDetailsComponent } from './components/ride-details/ride-details.com
 import { DriverHomeComponent } from './components/driver-home/driver-home.component';
 import { DriverProfileDetailsComponent } from './components/driver-profile-details/driver-profile-details.component';
 import { DriverEditProfileComponent } from './components/driver-edit-profile/driver-edit-profile/driver-edit-profile.component';
+import { PassengerProfileDetailsComponent } from './components/passenger-profile-details/passenger-profile-details.component';
 
 const routes: Routes = [
   { path: 'editProfile', component: EditProfileComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'unregistered-home', component: UnregisteredHomeComponent },
-  { path: 'passengerDetails', component: UserDetailsComponent },
   { path: 'userRideHistory', component: RideHistoryInformationComponent },
   { path: 'editProfile', component: EditProfileComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'unregistered-home', component: UnregisteredHomeComponent },
-  { path: 'passenger-details', component: UserDetailsComponent },
+  { path: 'passenger-profile', component: PassengerProfileDetailsComponent },
   { path: 'driver-home', component: DriverHomeComponent },
   { path: 'driver-profile', component: DriverProfileDetailsComponent },
   { path: 'driver-edit-profile', component: DriverEditProfileComponent },

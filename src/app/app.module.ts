@@ -22,7 +22,6 @@ import { NavbarMainSectionComponent } from './components/navbar-main-section/nav
 import { NavbarLoginRegistrationSectionComponent } from './components/navbar-login-registration-section/navbar-login-registration-section/navbar-login-registration-section.component';
 import { ProfileImageEditComponent } from './components/profile-image-edit/profile-image-edit/profile-image-edit.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { UserDetailsComponent } from './components/user-details/user-details/user-details.component';
 import { RideHistoryCardComponent } from './components/ride-history-card/ride-history-card/ride-history-card.component';
 import { RideHistoryInformationComponent } from './components/ride-history-information/ride-history-information/ride-history-information.component';
 import { MatSelectModule } from '@angular/material/select';
@@ -40,7 +39,8 @@ import { EditProfileFormComponent } from './components/edit-profile-form/edit-pr
 import { UserInfoComponent } from './components/user-info/user-info.component';
 import { ImageSliderComponent } from './components/image-slider/image-slider.component';
 import { VehicleInfoComponent } from './components/vehicle-info/vehicle-info.component';
-import { CustomBtn1Component } from './components/custom-btn1/custom-btn1.component'
+import { CustomBtn1Component } from './components/custom-btn1/custom-btn1.component';
+import { PassengerProfileDetailsComponent } from './components/passenger-profile-details/passenger-profile-details.component';
 
 @NgModule({
   declarations: [
@@ -49,7 +49,6 @@ import { CustomBtn1Component } from './components/custom-btn1/custom-btn1.compon
     NavbarMainSectionComponent,
     NavbarLoginRegistrationSectionComponent,
     ProfileImageEditComponent,
-    UserDetailsComponent,
     RegisterComponent,
     EditProfileComponent,
     ProfileFormComponent,
@@ -69,6 +68,7 @@ import { CustomBtn1Component } from './components/custom-btn1/custom-btn1.compon
     ImageSliderComponent,
     VehicleInfoComponent,
     CustomBtn1Component,
+    PassengerProfileDetailsComponent,
   ],
   imports: [
     BrowserModule,
