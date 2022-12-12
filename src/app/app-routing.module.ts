@@ -8,6 +8,8 @@ import { RideHistoryInformationComponent } from './components/ride-history-infor
 import { UnregisteredHomeComponent } from './components/unregistered-home/unregistered-home.component';
 import { RideDetailsComponent } from './components/ride-details/ride-details.component';
 import { DriverHomeComponent } from './components/driver-home/driver-home.component';
+import { DriverProfileDetailsComponent } from './components/driver-profile-details/driver-profile-details.component';
+import { DriverEditProfileComponent } from './components/driver-edit-profile/driver-edit-profile/driver-edit-profile.component';
 
 const routes: Routes = [
   { path: 'editProfile', component: EditProfileComponent },
@@ -15,14 +17,13 @@ const routes: Routes = [
   { path: 'unregistered-home', component: UnregisteredHomeComponent },
   { path: 'passengerDetails', component: UserDetailsComponent },
   { path: 'userRideHistory', component: RideHistoryInformationComponent },
-  {path: 'editProfile', component: EditProfileComponent},
-  {path: "register", component: RegisterComponent},
-  {path: "unregistered-home", component: UnregisteredHomeComponent},
-  {
-    path: 'passenger-details',
-    component: UserDetailsComponent,
-  },
-  {path: 'driver-home', component: DriverHomeComponent}
+  { path: 'editProfile', component: EditProfileComponent },
+  { path: 'register', component: RegisterComponent },
+  { path: 'unregistered-home', component: UnregisteredHomeComponent },
+  { path: 'passenger-details', component: UserDetailsComponent },
+  { path: 'driver-home', component: DriverHomeComponent },
+  { path: 'driver-profile', component: DriverProfileDetailsComponent },
+  { path: 'driver-edit-profile', component: DriverEditProfileComponent },
 ];
 
 @NgModule({

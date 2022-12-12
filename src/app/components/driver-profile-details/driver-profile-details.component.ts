@@ -17,12 +17,13 @@ export interface SliderImage {
   styleUrls: ['./driver-profile-details.component.css'],
 })
 export class DriverProfileDetailsComponent implements OnInit {
-  driver: Driver = {} as Driver;
+  public driver: Driver = {} as Driver;
   vehicle: Vehicle = {} as Vehicle;
   documents: Document[] = [];
 
   driverRating: number = 0;
   vehicleRating: number = 0;
+
   imgSlider: boolean = false;
   profileInfo: boolean = true;
   vehicleDetails: boolean = false;

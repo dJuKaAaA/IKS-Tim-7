@@ -1,0 +1,46 @@
+<div class="container">
+  <mat-icon (click)="closeVehicle()">close</mat-icon>
+  <div class="info">
+    <h3>Vehicle review</h3>
+    <div class="info_data">
+      <div class="data">
+        <h4>Vehicle Type</h4>
+        <b
+          ><p>{{ vehicle.vehicleType }}</p></b
+        >
+      </div>
+      <div class="data">
+        <h4>Model</h4>
+        <b
+          ><p>{{ vehicle.model }}</p></b
+        >
+      </div>
+    </div>
+    <div class="info_data">
+      <div class="data">
+        <h4>License Number</h4>
+        <b
+          ><p>{{ vehicle.licenseNumber }}</p></b
+        >
+      </div>
+      <div class="data">
+        <h4>Passenger Seats</h4>
+        <b
+          ><p>{{ vehicle.passengerSeats }}</p></b
+        >
+      </div>
+    </div>
+    <div class="info_data">
+      <div class="data">
+        <h4>Baby Transport</h4>
+        <b *ngIf="vehicle.babyTransport"><p>Allowed</p></b>
+        <b *ngIf="!vehicle.babyTransport"><p>Forbidden</p></b>
+      </div>
+      <div class="data">
+        <h4>Pet Transport</h4>
+        <b *ngIf="vehicle.petTransport"><p>Allowed</p></b>
+        <b *ngIf="!vehicle.petTransport"><p>Forbidden</p></b>
+      </div>
+    </div>
+  </div>
+</div>

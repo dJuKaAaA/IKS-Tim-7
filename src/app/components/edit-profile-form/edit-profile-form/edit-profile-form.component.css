@@ -1,11 +1,7 @@
 #centerContainer {
   display: flex;
-  /* align-items: center; */
   justify-content: center;
   flex-direction: column;
-  /* align-items: center; */
-  height: 100vh;
-  width: 100%;
 }
 
 .gridArea {
@@ -15,6 +11,10 @@
   column-gap: 50px;
 }
 
+.buttonSection {
+  display: inline;
+}
+
 .marginBottomLarge {
   margin-bottom: 70px;
 }
@@ -22,15 +22,16 @@
   margin-bottom: 50px;
 }
 button {
-  margin-right: 20px;
   width: 200px;
-  padding: 10px 20px 10px 20px;
-  background-color: #3f51b5;
+  padding: 13px 20px 13px 20px;
   border: none;
   border-radius: 3px;
   color: white;
   font-family: "Rubik", sans-serif;
-  font-size: 12px;
+  font-size: 13px;
+  text-align: center;
+  text-transform: uppercase;
+  cursor: pointer;
 }
 
 .buttonSection a {
@@ -55,9 +56,6 @@ p b {
 
 a {
   text-decoration: none;
-}
-
-.textFieldBox {
 }
 
 .textFieldBox p {
@@ -96,6 +94,10 @@ input {
 
 #submit {
   cursor: pointer;
+}
+
+#forgotPassword {
+  margin-top: 10%;
 }
 
 @media screen and (max-width: 1200px) {
