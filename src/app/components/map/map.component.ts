@@ -6,6 +6,7 @@ import { TomTomGeolocationService } from 'src/app/services/tom-tom-geolocation.s
 import { TomTomGeolocationResponse } from 'src/app/model/tom-tom-geolocation-response.model';
 import { Route as GGCJRoute } from 'src/app/model/route.model';
 import { Location as GGCJLocation } from 'src/app/model/location.model';
+import { outputAst } from '@angular/compiler';
 
 @Component({
   selector: 'app-map',
@@ -14,25 +15,21 @@ import { Location as GGCJLocation } from 'src/app/model/location.model';
 })
 export class MapComponent implements OnInit {
 
-  @Input() ggcjLocations: Array<GGCJLocation> = [];
-  @Input() ggcjRoutes: Array<GGCJRoute> = [];
+  ggcjRoutes: Array<GGCJRoute> = [];
 
   @Input() startingLongitude: number = 19.16;
   @Input() startingLatitude: number = 42.5;
   @Input() startingZoom: number = 12.0;
 
-  @Output() rideLocationsEvent: EventEmitter<Array<GGCJLocation>> = new EventEmitter<Array<GGCJLocation>>;
-  @Output() rideRoutesEvent: EventEmitter<Array<GGCJRoute>> = new EventEmitter<Array<GGCJRoute>>;
+  @Output() routeEmitter: EventEmitter<GGCJRoute> = new EventEmitter<GGCJRoute>();
 
-  notifyRideLocationsUpdate() { this.rideLocationsEvent.emit(this.ggcjLocations); }
-
-  notifyRideRoutesUpdate() { this.rideRoutesEvent.emit(this.ggcjRoutes); }
+  notifyRoute(route: GGCJRoute) {
+    this.routeEmitter.emit(route);
+  }
 
   private flyToZoom: number = 15.0;
 
   private map: any;
-  private markers: Array<ttMap.Marker> = [];
-  private routes: Array<ttService.Route> = [];
 
   private ttApiKey: string = 'urES86sMdjoeMbhSLu9EK3ksu0Jjpb91';
 
@@ -40,17 +37,6 @@ export class MapComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadMap();
-    this.show(this.ggcjLocations, this.ggcjRoutes);
-  }
-
-  private appendRideRoute(route: GGCJRoute) {
-    this.ggcjRoutes.push(route);
-    this.notifyRideRoutesUpdate();
-  }
-
-  private appendRideLocation(location: GGCJLocation) {
-    this.ggcjLocations.push(location);
-    this.notifyRideLocationsUpdate();
   }
 
   public showRouteFromAddresses(startAddress: string, endAddress: string): void {
@@ -98,12 +84,11 @@ export class MapComponent implements OnInit {
         }
 
         // after validations, we show the route on the map
-        const route: GGCJRoute = new GGCJRoute(startLocation, endLocation);
+        const route: GGCJRoute = new GGCJRoute(startLocation, endLocation, 0);
         if (this.checkRouteExists(route)) {
           alert("This route is already shown on the map");
         } else {
-          this.appendRideRoute(route);
-          this.notifyRideRoutesUpdate();
+          this.ggcjRoutes.push(route);
           this.showRoute(route);
 
           // focus on the start point
@@ -121,37 +106,15 @@ export class MapComponent implements OnInit {
   }
 
   public clearMap() {
-    this.markers = [];
-    this.routes = [];
-    this.ggcjLocations = [];
     this.ggcjRoutes = [];
     this.map.remove();
     this.loadMap();
   }
 
-  public show(locations: Array<GGCJLocation>, routes: Array<GGCJRoute>) {
-    this.showMarkers(locations);
-    this.showRoutes(routes);
-  }
-
-  public showMarkers(locations: Array<GGCJLocation>) {
-    for (let location of locations) {
-      this.showMarker(location);
-    }
-  }
-
-  private showMarker(location: GGCJLocation) {
+  public showMarker(location: GGCJLocation) {
     const marker: ttMap.Marker = new ttMap.Marker({draggable: false})
       .setLngLat([location.longitude, location.latitude])
       .addTo(this.map);
-    this.markers.push(marker);
-  }
-
-  public showRoutes(routes: Array<GGCJRoute>): void {
-    for (let route of routes) {
-      // creating markers for route display
-      this.showRoute(route);
-    }
   }
 
   private checkRouteExists(route: GGCJRoute) {
@@ -165,7 +128,7 @@ export class MapComponent implements OnInit {
     return retVal;
   }
 
-  private showRoute(route: GGCJRoute): void {
+  public showRoute(route: GGCJRoute): void {
     this.showMarker(route.departure);
     this.showMarker(route.destination);
 
@@ -180,6 +143,7 @@ export class MapComponent implements OnInit {
     ttService.services.calculateRoute(routeOptions).then(
       (routeData: any) => {
         route.distanceInMeters = routeData.routes[0].summary.lengthInMeters;
+        this.notifyRoute(route);
         let routeLayer = this.map.addLayer({
           'id': 'route ' + route.toString(),
           'type': 'line',
@@ -192,7 +156,6 @@ export class MapComponent implements OnInit {
             'line-width': 5
           }
         });
-        this.routes.push(routeLayer);
       }
     );
   }

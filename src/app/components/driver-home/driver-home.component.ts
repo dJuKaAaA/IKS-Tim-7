@@ -2,7 +2,6 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Ride } from 'src/app/model/ride.model';
 import { Route } from 'src/app/model/route.model';
 import { MapComponent } from '../map/map.component';
-import { Location } from 'src/app/model/location.model';
 
 @Component({
   selector: 'app-driver-home',
@@ -95,9 +94,10 @@ export class DriverHomeComponent implements OnInit {
     this.routes = [];
     this.mapComponent.clearMap();
     for (let route of ride.locations) {
-      this.routes.push(new Route(route.departure, route.destination));
+      let r: Route = new Route(route.departure, route.destination, route.distanceInMeters); 
+      this.routes.push(r);
+      this.mapComponent.showRoute(r);
     }
-    this.mapComponent.showRoutes(this.routes);
     this.mapComponent.focusOnPoint(this.routes[0].departure);
   }
 

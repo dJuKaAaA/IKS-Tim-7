@@ -17,7 +17,11 @@ export class UnregisteredHomeComponent {
   bgImagePath: string = "../../../assets/unregistered-home-bg-img.png"
 
   locations: Array<Location> = [];
-  routes: Array<Route> = []
+  route: Route = new Route(
+    new Location(NaN, NaN, ""),
+    new Location(NaN, NaN, ""),
+    0
+  );
 
   startAddressControl: FormControl = new FormControl("");
   endAddressControl: FormControl = new FormControl("");
@@ -30,8 +34,8 @@ export class UnregisteredHomeComponent {
     this.router.navigate(["register"]);
   }
 
-  updateRoutes(routes: Array<Route>) {
-    this.routes = routes;
+  updateRoute(route: Route) {
+    this.route = route;
   }
 
   goToMaps(): void {
