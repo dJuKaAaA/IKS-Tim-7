@@ -34,7 +34,13 @@ import { LoginComponent } from './components/login/login.component';
 import { DriverProfileDetailsComponent } from './components/driver-profile-details/driver-profile-details.component';
 import { NgImageSliderModule } from 'ng-image-slider';
 import { DriverHomeComponent } from './components/driver-home/driver-home.component';
-import { MatCardModule } from '@angular/material/card'
+import { MatCardModule } from '@angular/material/card';
+import { DriverEditProfileComponent } from './components/driver-edit-profile/driver-edit-profile/driver-edit-profile.component';
+import { EditProfileFormComponent } from './components/edit-profile-form/edit-profile-form/edit-profile-form.component';
+import { UserInfoComponent } from './components/user-info/user-info.component';
+import { ImageSliderComponent } from './components/image-slider/image-slider.component';
+import { VehicleInfoComponent } from './components/vehicle-info/vehicle-info.component';
+import { CustomBtn1Component } from './components/custom-btn1/custom-btn1.component'
 
 @NgModule({
   declarations: [
@@ -57,6 +63,12 @@ import { MatCardModule } from '@angular/material/card'
     LoginComponent,
     DriverProfileDetailsComponent,
     DriverHomeComponent,
+    DriverEditProfileComponent,
+    EditProfileFormComponent,
+    UserInfoComponent,
+    ImageSliderComponent,
+    VehicleInfoComponent,
+    CustomBtn1Component,
   ],
   imports: [
     BrowserModule,
