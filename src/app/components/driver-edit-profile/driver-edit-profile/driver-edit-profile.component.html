@@ -1,4 +1,4 @@
-<div class="wrapper">
+<div *ngIf="profileInfo" class="wrapper">
   <div class="left">
     <img
       src="https://1.bp.blogspot.com/-vhmWFWO2r8U/YLjr2A57toI/AAAAAAAACO4/0GBonlEZPmAiQW4uvkCTm5LvlJVd_-l_wCNcBGAsYHQ/s16000/team-1-2.jpg"
@@ -19,9 +19,32 @@
 
     <div>
       <app-edit-profile-form
+        (changePasswordEvent)="changePassword()"
+        (displayDocumentsEvent)="displayDocuments()"
         [displayDriverUI]="true"
         [user]="driver"
       ></app-edit-profile-form>
     </div>
   </div>
+</div>
+
+<app-image-slider
+  (closeImageSliderEvent)="hideSlideBar()"
+  [imgCollection]="imgCollection"
+  *ngIf="imgSlider"
+></app-image-slider>
+
+<div class="buttons-delete-upload">
+  <app-custom-btn1
+    (click)="uploadDocument()"
+    [content]="'Upload'"
+    [customColor]="'btn-blue'"
+    *ngIf="imgSlider"
+  ></app-custom-btn1>
+  <app-custom-btn1
+    (click)="deleteDocument()"
+    [content]="'Delete'"
+    [customColor]="'btn-blue'"
+    *ngIf="imgSlider"
+  ></app-custom-btn1>
 </div>
