@@ -22,28 +22,25 @@
 <h1>DRIVER MAP</h1>
 
 <div id="routes-vehicles-map">
-    <app-map 
-        (rideRoutesEvent)="updateRoutes($event)">
-
-    </app-map>
+    <app-map (routeEmitter)="updateRoute($event)"></app-map>
 </div>
 <div id="route-information">
     <div id="search-location-form-lower">
         <app-address-route-form
-        [startAddressControl]="startAddressControl"
-        [endAddressControl]="endAddressControl"
-        [mapComponent]="mapComponent">
+            [startAddressControl]="startAddressControl"
+            [endAddressControl]="endAddressControl"
+            [mapComponent]="mapComponent">
 
         </app-address-route-form>
     </div>
     <div id="route-details">
         <app-ride-details
-        [destination]="(this.routes.length > 0) ? (this.routes[0].departure.address) : ''"
-        [departure]="(this.routes.length > 0) ? (this.routes[0].destination.address) : ''"
+        [destination]="this.route.departure.address"
+        [departure]="this.route.destination.address"
         [departureDate]="'N/A'"
         [departureTime]="'N/A'"
         [duration]="'N/A'"
-        [distance]="(this.routes.length > 0) ? (this.routes[0].distanceInMeters + 'm') : ''">
+        [distance]="this.route.distanceInMeters + 'm' ">
     </app-ride-details>
     </div>
     <button
