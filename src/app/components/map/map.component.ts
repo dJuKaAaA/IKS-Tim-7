@@ -52,8 +52,8 @@ export class MapComponent implements OnInit {
     this.ggcjLocations.push(location);
     this.notifyRideLocationsUpdate();
   }
-
-  public showRouteFromAddresses(startAddress: string, endAddress: string): void {
+  
+  public showRouteFromAddresses(startAddress: string, endAddress: string) {
     const isLocationValid = function(location: GGCJLocation): boolean {
       return (Number.isNaN(location.longitude) || Number.isNaN(location.latitude));
     }
