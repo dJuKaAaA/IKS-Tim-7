@@ -14,7 +14,7 @@ import * as tt from '@tomtom-international/web-sdk-maps';
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
 })
-export class MapComponent implements OnInit {
+export class MapComponent {
 
   ggcjRoutes: Array<GGCJRoute> = [];
 
@@ -35,10 +35,6 @@ export class MapComponent implements OnInit {
   private ttApiKey: string = 'urES86sMdjoeMbhSLu9EK3ksu0Jjpb91';
 
   constructor(private ttGeolocationService: TomTomGeolocationService) {}
-
-  ngOnInit(): void {
-    this.loadMap();
-  }
 
   public showRouteFromAddresses(startAddress: string, endAddress: string): void {
     const isLocationValid = function(location: GGCJLocation): boolean {
@@ -161,7 +157,7 @@ export class MapComponent implements OnInit {
     );
   }
 
-  private loadMap(): void {
+  public loadMap(): void {
     this.map = ttMap.map({
       key: this.ttApiKey,
       container: 'map',

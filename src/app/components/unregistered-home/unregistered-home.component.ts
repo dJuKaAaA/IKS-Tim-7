@@ -1,6 +1,7 @@
-import { Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
+import { map } from '@tomtom-international/web-sdk-maps';
 import { Location } from 'src/app/model/location.model';
 import { Route } from 'src/app/model/route.model';
 import { MapComponent } from '../map/map.component';
@@ -10,7 +11,7 @@ import { MapComponent } from '../map/map.component';
   templateUrl: './unregistered-home.component.html',
   styleUrls: ['./unregistered-home.component.css']
 })
-export class UnregisteredHomeComponent {
+export class UnregisteredHomeComponent implements AfterViewInit {
 
   @ViewChild(MapComponent) mapComponent: MapComponent;
 
@@ -28,6 +29,10 @@ export class UnregisteredHomeComponent {
 
   constructor(private router: Router) {
 
+  }
+
+  ngAfterViewInit(): void {
+    this.mapComponent.loadMap();
   }
 
   goToRegister(): void {

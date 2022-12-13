@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MapComponent } from '../map/map.component';
 
 @Component({
   selector: 'app-address-route-form',

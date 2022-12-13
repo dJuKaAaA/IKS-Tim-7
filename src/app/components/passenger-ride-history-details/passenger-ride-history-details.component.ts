@@ -42,6 +42,7 @@ export class PassengerRideHistoryDetailsComponent
     private tomTomService: TomTomGeolocationService
   ) {}
   ngAfterViewInit(): void {
+    this.mapComponent.loadMap();
     this.ride.locations.forEach((route) => {
       this.mapComponent.showRouteFromAddresses(
         route.departure.address,
