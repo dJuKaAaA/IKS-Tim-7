@@ -7,6 +7,7 @@ import { TomTomGeolocationResponse } from 'src/app/model/tom-tom-geolocation-res
 import { Route as GGCJRoute } from 'src/app/model/route.model';
 import { Location as GGCJLocation } from 'src/app/model/location.model';
 import { outputAst } from '@angular/compiler';
+import * as tt from '@tomtom-international/web-sdk-maps';
 
 @Component({
   selector: 'app-map',
@@ -53,7 +54,7 @@ export class MapComponent implements OnInit {
     let endLocation: GGCJLocation = new GGCJLocation(NaN, NaN, "");
 
     // getting the start address
-    this.ttGeolocationService.geolocate(startAddress, this.ttApiKey).subscribe(responseObj => {
+    this.ttGeolocationService.getGeocode(startAddress).subscribe(responseObj => {
       const ttGeolocationResponse: TomTomGeolocationResponse = responseObj;
       if (ttGeolocationResponse.results.length != 0) {
         // for now, only the first element found will be shown
@@ -66,7 +67,7 @@ export class MapComponent implements OnInit {
 
       // after getting the start address we get the end address 
       // by nesting the end address request into start address request
-      this.ttGeolocationService.geolocate(endAddress, this.ttApiKey).subscribe(responseObj => {
+      this.ttGeolocationService.getGeocode(endAddress).subscribe(responseObj => {
         const ttGeolocationResponse: TomTomGeolocationResponse = responseObj;
         if (ttGeolocationResponse.results.length != 0) {
           // for now, only the first element found will be shown
@@ -133,12 +134,12 @@ export class MapComponent implements OnInit {
     this.showMarker(route.destination);
 
     // showing route on map
-    const routeOptions: ttService.CalculateRouteOptions = {
+    const routeOptions: ttService.CalculateRouteOptions = {  // TODO: change to CalculateReachableRouteOptions
       key: this.ttApiKey,
       locations: [
         [route.departure.longitude, route.departure.latitude],
         [route.destination.longitude, route.destination.latitude]
-      ]
+      ],
     }
     ttService.services.calculateRoute(routeOptions).then(
       (routeData: any) => {
