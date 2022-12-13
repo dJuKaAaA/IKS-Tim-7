@@ -41,6 +41,9 @@ import { ImageSliderComponent } from './components/image-slider/image-slider.com
 import { VehicleInfoComponent } from './components/vehicle-info/vehicle-info.component';
 import { CustomBtn1Component } from './components/custom-btn1/custom-btn1.component';
 import { PassengerProfileDetailsComponent } from './components/passenger-profile-details/passenger-profile-details.component';
+import { ReviewsComponent } from './components/reviews/reviews.component';
+import { PassengerRideHistoryDetailsComponent } from './components/passenger-ride-history-details/passenger-ride-history-details.component';
+import { SimpleUserInfoComponent } from './components/simple-user-info/simple-user-info.component';
 
 @NgModule({
   declarations: [
@@ -69,6 +72,9 @@ import { PassengerProfileDetailsComponent } from './components/passenger-profile
     VehicleInfoComponent,
     CustomBtn1Component,
     PassengerProfileDetailsComponent,
+    ReviewsComponent,
+    PassengerRideHistoryDetailsComponent,
+    SimpleUserInfoComponent,
   ],
   imports: [
     BrowserModule,
