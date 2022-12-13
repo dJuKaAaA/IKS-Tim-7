@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MapComponent } from '../map/map.component';
 
@@ -11,15 +11,10 @@ export class AddressRouteFormComponent {
 
   @Input() startAddressControl = new FormControl("");
   @Input() endAddressControl = new FormControl("");
-  @Input() mapComponent: MapComponent;
-  @Input() callbackFunc = (): void => {};
+  @Output() submitEmitter: EventEmitter<void> = new EventEmitter<void>();
 
-  showRoute(): void {
-    this.mapComponent.clearMap();
-    let startAddress: string = this.startAddressControl.value || "";
-    let endAddress: string = this.endAddressControl.value || "";
-    this.mapComponent.showRouteFromAddresses(startAddress, endAddress);
-    this.callbackFunc();
+  submit() {
+    this.submitEmitter.emit();
   }
 
 }

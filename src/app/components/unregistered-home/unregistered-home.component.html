@@ -10,8 +10,7 @@
     <app-address-route-form
         [startAddressControl]="startAddressControl"
         [endAddressControl]="endAddressControl"
-        [mapComponent]="mapComponent"
-        [callbackFunc]="goToMaps">
+        (submitEmitter)="showRoute()">
     </app-address-route-form>
 </div>
 
@@ -29,7 +28,7 @@
         <app-address-route-form
             [startAddressControl]="startAddressControl"
             [endAddressControl]="endAddressControl"
-            [mapComponent]="mapComponent">
+            (submitEmitter)="showRoute()">
 
         </app-address-route-form>
     </div>
