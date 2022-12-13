@@ -9,11 +9,23 @@ import { Subscriber } from 'rxjs';
 })
 export class TomTomGeolocationService {
 
+  private apiKey: string = 'urES86sMdjoeMbhSLu9EK3ksu0Jjpb91';
+
   constructor(private http: HttpClient) { }
 
-  geolocate(address: string, ttApiKey: string): Observable<TomTomGeolocationResponse> {
-    const request: string = `https://api.tomtom.com/search/2/geocode/${address}.json?key=${ttApiKey}`;
+  getGeocode(address: string): Observable<TomTomGeolocationResponse> {
+    const request: string = `https://api.tomtom.com/search/2/geocode/${address}.json?key=${this.apiKey}`;
     return this.http.get<TomTomGeolocationResponse>(request);
+  }
+
+  reverseGeocode(latitude: number, longitude: number): Observable<TomTomGeolocationResponse> {
+    const request: string = `https://api.tomtom.com/search/2/reverseGeocode/${latitude},${longitude}.json?key=${this.apiKey}&radius=100`;
+    return this.http.get<TomTomGeolocationResponse>(request);
+  }
+
+  getRoute(startLatitude: number, startLongitude: number, endLatitude: number, endLongitude: number): Observable<any> {
+    const request: string = `https://api.tomtom.com/routing/1/calculateRoute/${startLatitude},${startLongitude}:${endLatitude},${endLongitude}/json?key=${this.apiKey}&travelMode=car`;
+    return this.http.get<any>(request);  // 'response.routes[0].summary.lengthInMeters' for distance
   }
 
   // copied and pasted code from tomtom api
@@ -33,6 +45,5 @@ export class TomTomGeolocationService {
       }
     });
   }
-
 
 }
