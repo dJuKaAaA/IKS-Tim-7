@@ -1,9 +1,14 @@
 U roditelju .html ubacite <app-map></app-map>
 
 U roditelju .ts definisite atribut @ViewChild(MapComponent) mapComponent: MapComponent;
+Za prikaz markera i ruta cim se stranica ucita, koristiti onAfterContentInit ili onAfterViewInit u roditeljlskoj komponenti koja koristi 
+mape. Ne moze se koristiti ngOnInit zato sto mapComponent atribut u tom periodu nece biti inicijalizovan.
 
 Public metode MapComponent:
     
+    loadMap()
+        - ucitava i prikazuje mapu na ekran
+
     showRouteFromAddresses(startAddress: string, endAddress: string)
         - prima adrese kao stringove, pravi upit ka server tomtoma i vraca objekat koji sadrzi geografsku sirinu i duzinu
         - koristeci dobijenu geografsku sirinu i duzinu, postavljaju se markeri na mapi i postavlja ruta izmedju ta

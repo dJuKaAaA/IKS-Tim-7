@@ -1,0 +1,28 @@
+* {
+  font-family: "Roboto";
+}
+
+.container {
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+h4 {
+  font-weight: bolder;
+  padding-top: 8px;
+  font-size: 20px;
+}
+
+.rating {
+  display: flex;
+  padding: 10px;
+}
+
+.rating-element {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  box-shadow: rgba(0, 0, 0, 0.05) 0px 1px 2px 0px;
+}
+
+p {
+  padding: 5px;
+}

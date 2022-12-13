@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterContentInit, AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Ride } from 'src/app/model/ride.model';
 import { Route } from 'src/app/model/route.model';
 import { MapComponent } from '../map/map.component';
@@ -8,7 +8,7 @@ import { MapComponent } from '../map/map.component';
   templateUrl: './driver-home.component.html',
   styleUrls: ['./driver-home.component.css']
 })
-export class DriverHomeComponent implements OnInit {
+export class DriverHomeComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MapComponent) mapComponent: MapComponent;
 
@@ -80,6 +80,10 @@ export class DriverHomeComponent implements OnInit {
       this.scheduledRides.push(ride);
     }
 
+  }
+
+  ngAfterViewInit(): void {
+    this.mapComponent.loadMap();
   }
 
   startRide(ride: Ride): void {

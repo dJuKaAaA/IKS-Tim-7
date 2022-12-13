@@ -1,0 +1,48 @@
+<div class="top">
+  <div class="reviews-container">
+    <div class="reviews">
+      <h2>Vehicle Reviews</h2>
+      <hr />
+      <div class="review-container">
+        <app-reviews [reviews]="vehicleReviews"></app-reviews>
+      </div>
+    </div>
+
+    <div class="reviews">
+      <h2>Vehicle Reviews</h2>
+      <hr />
+      <div class="review-container">
+        <app-reviews [reviews]="vehicleReviews"></app-reviews>
+      </div>
+    </div>
+  </div>
+  <div class="driver-info-container">
+    <h2>Driver</h2>
+    <hr />
+    <app-simple-user-info
+      [name]="driver.name"
+      [surname]="driver.surname"
+      [email]="driver.email"
+    ></app-simple-user-info>
+  </div>
+</div>
+
+<div class="bottom">
+  <div class="map"><app-map></app-map></div>
+  <div class="ride-info">
+    <app-ride-details
+      [departure]="departure"
+      [destination]="destination"
+      [departureDate]="departureDate"
+      [departureTime]="departureTime"
+      [duration]="duration"
+      [distance]="distance.toString() + 'M'"
+    ></app-ride-details>
+    <div class="btn">
+      <app-custom-btn1
+        [content]="'Order drive'"
+        [customColor]="'btn-blue'"
+      ></app-custom-btn1>
+    </div>
+  </div>
+</div>

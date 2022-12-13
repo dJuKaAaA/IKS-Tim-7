@@ -1,0 +1,13 @@
+<div class="container">
+  <div class="rating-element" *ngFor="let review of reviews">
+    <div class="rating">
+      <div>
+        <h4>RATING:</h4>
+      </div>
+      <app-star [rating]="review.rating"></app-star>
+    </div>
+    <div>
+      <p>{{ review.comment }}</p>
+    </div>
+  </div>
+</div>
