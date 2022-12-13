@@ -42,4 +42,12 @@ export class UnregisteredHomeComponent {
     window.scrollTo(0,document.body.scrollHeight);
   }
 
+  showRoute() {
+    let startAddress = this.startAddressControl.value || "";
+    let endAddress = this.endAddressControl.value || "";
+    this.mapComponent.clearMap();
+    this.mapComponent.showRouteFromAddresses(startAddress, endAddress);
+    this.goToMaps();
+  }
+
 }
