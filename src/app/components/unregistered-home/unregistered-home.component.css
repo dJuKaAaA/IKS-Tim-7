@@ -2,6 +2,28 @@
     width: 100vw;
 }
 
+#login-register-buttons-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    text-align: right;
+    display: inline-block;
+    margin: 3vmin 8vmin;
+}
+
+#login-register-buttons-container p {
+    display: inline-block;
+    font-size: 3.5vmin;
+    color: white;
+    margin: 0 2vmin;
+}
+
+#login-register-buttons-container p:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
 #sign-up-now-div {
     position: absolute;
     top: 40%;
@@ -12,22 +34,24 @@
 .login-popup {
     width: 20vw;
     position: absolute;
-    right: 5%;
+    right: 8%;
     top: 67px;
+    display: block;
 }
 
 #sign-up-now-div>h1 {
-    font-size: xx-large;
+    font-size: 4vmin;
     font-family: 'Montserrat', sans-serif;
 }
 
 h2 {
+    font-size: 2vmin;
     font-family: 'Montserrat', sans-serif;
 }
 
 #sign-up-now-div>button {
-    width: 25vmin;
-    height: 5vmin;
+    width: 30vmin;
+    height: 7vmin;
     font-size: 2.5vmin;
 }
 

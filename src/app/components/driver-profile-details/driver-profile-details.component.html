@@ -3,6 +3,7 @@
   rel="stylesheet"
 />
 <div *ngIf="profileInfo" class="wrapper">
+  <!-- driver profile picture, driver name, driver surname -->
   <div class="left">
     <img
       src="https://1.bp.blogspot.com/-vhmWFWO2r8U/YLjr2A57toI/AAAAAAAACO4/0GBonlEZPmAiQW4uvkCTm5LvlJVd_-l_wCNcBGAsYHQ/s16000/team-1-2.jpg"
@@ -14,58 +15,20 @@
   <div class="right">
     <div class="info">
       <h3>Profile review</h3>
-      <div class="info_data">
-        <div class="data">
-          <h4>First Name</h4>
-          <b
-            ><p>{{ driver.name }}</p></b
-          >
-        </div>
-        <div class="data">
-          <h4>Last Name</h4>
-          <b
-            ><p>{{ driver.surname }}</p></b
-          >
-        </div>
-      </div>
-      <div class="info_data">
-        <div class="data">
-          <h4>Email</h4>
-          <b
-            ><p>{{ driver.surname }}</p></b
-          >
-        </div>
-        <div class="data">
-          <h4>Phone</h4>
-          <b
-            ><p>{{ driver.telephoneNumber }}</p></b
-          >
-        </div>
-      </div>
-      <div class="info_data">
-        <div class="data">
-          <h4>Address</h4>
-          <b
-            ><p>{{ driver.address }}</p></b
-          >
-        </div>
-        <div class="data">
-          <h4>Role</h4>
-          <b><p>Driver</p></b>
-        </div>
-      </div>
+      <app-user-info [user]="driver" [role]="'Driver'"></app-user-info>
 
-      <div>
-        <div (click)="displayDocuments()" class="btn btn-documents">
-          Documents
-        </div>
-        <div
-          style="margin-left: 20px"
+      <div style="padding-top: 10px">
+        <app-custom-btn1
+          style="padding-right: 20px"
+          [content]="'Documents'"
+          [customColor]="'btn-blue'"
+          (click)="displayDocuments()"
+        ></app-custom-btn1>
+        <app-custom-btn1
+          [content]="'Vehicle'"
+          [customColor]="'btn-blue'"
           (click)="displayVehicle()"
-          class="btn btn-documents"
-        >
-          Vehicle
-        </div>
+        ></app-custom-btn1>
       </div>
     </div>
 
@@ -79,64 +42,22 @@
         <app-star [rating]="vehicleRating"></app-star>
       </div>
     </div>
-    <div class="btn edit-profile-btn">Edit profile</div>
-  </div>
-</div>
-<div *ngIf="imgSlider" class="slider">
-  <ng-image-slider
-    [imageSize]="{ width: 742, height: 442, space: 10 }"
-    [images]="imgCollection"
-    #nav
-    >asdasd</ng-image-slider
-  >
-  <div class="btn edit-profile-btn close-btn" (click)="hideSlideBar()">
-    CLOSE
+    <app-custom-btn1
+      style="margin-left: 70%"
+      (click)="redirectToDriverEditProfile()"
+      [content]="'Edit Profile'"
+      [customColor]="'btn-red'"
+    ></app-custom-btn1>
   </div>
 </div>
 
-<div *ngIf="vehicleDetails" class="vehicle-info">
-  <mat-icon (click)="closeVehicle()">close</mat-icon>
-  <div class="info">
-    <h3>Vehicle review</h3>
-    <div class="info_data">
-      <div class="data">
-        <h4>Vehicle Type</h4>
-        <b
-          ><p>{{ vehicle.vehicleType }}</p></b
-        >
-      </div>
-      <div class="data">
-        <h4>Mode</h4>
-        <b
-          ><p>{{ vehicle.model }}</p></b
-        >
-      </div>
-    </div>
-    <div class="info_data">
-      <div class="data">
-        <h4>License Number</h4>
-        <b
-          ><p>{{ vehicle.licenseNumber }}</p></b
-        >
-      </div>
-      <div class="data">
-        <h4>Passenger Seats</h4>
-        <b
-          ><p>{{ vehicle.passengerSeats }}</p></b
-        >
-      </div>
-    </div>
-    <div class="info_data">
-      <div class="data">
-        <h4>Baby Transport</h4>
-        <b *ngIf="vehicle.babyTransport"><p>Allowed</p></b>
-        <b *ngIf="!vehicle.babyTransport"><p>Forbidden</p></b>
-      </div>
-      <div class="data">
-        <h4>Pet Transport</h4>
-        <b *ngIf="vehicle.petTransport"><p>Allowed</p></b>
-        <b *ngIf="!vehicle.petTransport"><p>Forbidden</p></b>
-      </div>
-    </div>
-  </div>
-</div>
+<app-image-slider
+  (closeImageSliderEvent)="hideSlideBar()"
+  [imgCollection]="imgCollection"
+  *ngIf="imgSlider"
+></app-image-slider>
+<app-vehicle-info
+  (closeVehicleEvent)="closeVehicle()"
+  [vehicle]="vehicle"
+  *ngIf="vehicleDetails"
+></app-vehicle-info>

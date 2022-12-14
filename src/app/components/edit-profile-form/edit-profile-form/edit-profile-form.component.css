@@ -1,0 +1,147 @@
+#centerContainer {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.gridArea {
+  display: grid;
+  grid-template-columns: auto auto;
+  row-gap: 10px;
+  column-gap: 50px;
+}
+
+.buttonSection {
+  display: inline;
+}
+
+.marginBottomLarge {
+  margin-bottom: 70px;
+}
+.marginBottomMedium {
+  margin-bottom: 50px;
+}
+button {
+  width: 200px;
+  padding: 13px 20px 13px 20px;
+  border: none;
+  border-radius: 3px;
+  color: white;
+  font-family: "Rubik", sans-serif;
+  font-size: 13px;
+  text-align: center;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.buttonSection a {
+  width: 200px;
+  padding: 10px 40px 10px 40px;
+  background-color: #3f51b5;
+  border: none;
+  border-radius: 3px;
+  color: white;
+  font-family: "Rubik", sans-serif;
+  font-size: 12px;
+  text-decoration: none;
+}
+
+p b {
+  color: #3f51b5;
+}
+
+#profilePicture {
+  width: 100px;
+}
+
+a {
+  text-decoration: none;
+}
+
+.textFieldBox p {
+  margin: 5px 0px 5px 0px;
+}
+
+input {
+  resize: none;
+  padding: 5px;
+  width: 230px;
+}
+
+#notification {
+  position: fixed;
+  transition: all 1s;
+  left: 50%;
+  transform: translate(-50%, 0);
+  width: 200px;
+  height: auto;
+  border: #3f51b5 solid 1px;
+  z-index: 99;
+  text-align: center;
+  background-color: white;
+}
+
+#notification p {
+  line-height: 10px;
+  margin: 0px;
+  padding: 10px;
+}
+
+#ok {
+  color: #3f51b5;
+  cursor: pointer;
+}
+
+#submit {
+  cursor: pointer;
+}
+
+#forgotPassword {
+  margin-top: 10%;
+}
+
+@media screen and (max-width: 1200px) {
+  .gridArea {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .marginBottomLarge {
+    margin-bottom: 0px;
+  }
+
+  .marginBottomMedium {
+    margin-bottom: 0px;
+  }
+
+  .buttonSection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .buttonSection button {
+    margin: 10px 0px 10px 0px;
+  }
+
+  #centerContainer {
+    align-items: center;
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .textFieldBox {
+    width: 100%;
+  }
+  .gridArea {
+    width: 100%;
+  }
+  textarea {
+    width: 100%;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+  }
+}

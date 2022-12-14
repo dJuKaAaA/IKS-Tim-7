@@ -1,0 +1,13 @@
+<div class="slider">
+  <ng-image-slider
+    [imageSize]="{ width: 740, height: 440, space: 10 }"
+    [images]="imgCollection"
+    #nav
+  ></ng-image-slider>
+  <app-custom-btn1
+    style="margin-left: 10px"
+    [content]="'Back'"
+    [customColor]="'btn-red'"
+    (click)="hideSlideBar()"
+  ></app-custom-btn1>
+</div>

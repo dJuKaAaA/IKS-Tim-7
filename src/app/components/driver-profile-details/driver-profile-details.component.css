@@ -6,11 +6,6 @@
   font-family: "Josefin Sans", sans-serif;
 }
 
-body {
-  background-color: #f3f3f3;
-  font-family: sans-serif;
-}
-
 .wrapper {
   display: flex;
   margin: auto;
@@ -54,13 +49,11 @@ body {
   border-bottom-right-radius: 5px;
 }
 
-.info,
-.projects {
+.info {
   margin-bottom: 25px;
 }
 
-.info h3,
-.projects h3 {
+.info h3 {
   margin-bottom: 15px;
   padding-bottom: 5px;
   border-bottom: 1px solid #e0e0e0;
@@ -74,87 +67,25 @@ body {
   margin-top: 5%;
 }
 
-.info_data,
-.projects_data {
+.info_data {
   display: flex;
   justify-content: space-between;
 }
 
-.info_data .data,
-.projects_data .data {
+.info_data .data {
   width: 45%;
 }
 
-.info_data .data h4,
-.projects_data .data h4 {
+.info_data .data h4 {
   color: #353c4e;
   font-size: 17px;
   margin-bottom: 5px;
 }
 
-.info_data .data p,
-.projects_data .data p {
+.info_data .data p {
   font-size: 15px;
   margin-bottom: 10px;
   color: #4a4f54;
-}
-
-.social_media ul {
-  display: flex;
-  margin-top: 50px;
-}
-
-.social_media ul li {
-  width: 45px;
-  height: 45px;
-  background: linear-gradient(to right, #083885, #086cb3);
-  margin-right: 10px;
-  border-radius: 5px;
-  text-align: center;
-  line-height: 45px;
-}
-
-.social_media ul li a {
-  color: #fff;
-  display: block;
-  font-size: 18px;
-}
-
-.btn {
-  border: none;
-  color: white;
-  padding: 12px 30px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  cursor: pointer;
-  background-color: #083885;
-  border-radius: 10px;
-}
-.btn-documents:hover {
-  background-color: #3246b8;
-}
-
-.btn-documents:active {
-  background-color: #3f51b5;
-  box-shadow: 0 5px #666;
-  transform: translateY(4px);
-}
-
-.edit-profile-btn {
-  margin-left: 80%;
-  background-color: red;
-}
-
-.edit-profile-btn:hover {
-  background-color: #f52b2b;
-}
-
-.edit-profile-btn:active {
-  background-color: #b53f3f;
-  box-shadow: 0 5px #666;
-  transform: translateY(4px);
 }
 
 .star-align {
@@ -170,23 +101,4 @@ body {
 
 .star-padding {
   padding-left: 8px;
-}
-
-.slider {
-  padding-top: 5%;
-}
-
-.close-btn {
-  margin-top: 1%;
-  margin-left: 10px;
-}
-
-.vehicle-info {
-  width: 50%;
-  margin: auto;
-  margin-top: 5%;
-}
-
-mat-icon:hover {
-  cursor: pointer;
 }

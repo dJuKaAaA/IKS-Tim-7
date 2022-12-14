@@ -9,7 +9,7 @@ import { MapComponent } from '../map/map.component';
   templateUrl: './driver-current-ride.component.html',
   styleUrls: ['./driver-current-ride.component.css']
 })
-export class DriverCurrentRideComponent implements OnInit {
+export class DriverCurrentRideComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MapComponent) mapComponent: MapComponent;
 
@@ -19,21 +19,31 @@ export class DriverCurrentRideComponent implements OnInit {
     this.routes.push(
       new Route(
         new Location(45.25608864310402, 19.84577854086666, "Katolicka Porta"),
-        new Location(45.25430718571828, 19.82089966970297, "Knin restoran")
+        new Location(45.25430718571828, 19.82089966970297, "Knin restoran"),
+        NaN
       ),
       new Route(
         new Location(45.25430718571828, 19.82089966970297, "Knin restoran"),
-        new Location(45.24477398222599, 19.84711471203027, "NTP")
+        new Location(45.24477398222599, 19.84711471203027, "NTP"),
+        NaN
       ),
       new Route(
         new Location(45.24477398222599, 19.84711471203027, "NTP"),
-        new Location(45.24638066815601, 19.851675340866446, "FTN")
+        new Location(45.24638066815601, 19.851675340866446, "FTN"),
+        NaN
       )
     )
+    this.mapComponent.loadMap();
+  }
+
+  ngAfterViewInit(): void {
+    this.mapComponent.loadMap();
   }
 
   showRoutes() {
-    this.mapComponent.showRoutes(this.routes);
+    for (let route of this.routes) {
+      this.mapComponent.showRoute(route);
+    }
     this.mapComponent.focusOnPoint(this.routes[0].departure);
   }
 
