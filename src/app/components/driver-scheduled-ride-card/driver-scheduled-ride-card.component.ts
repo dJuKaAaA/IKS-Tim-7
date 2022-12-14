@@ -4,6 +4,7 @@ import { Ride } from 'src/app/model/ride.model';
 import { Route } from 'src/app/model/route.model';
 import { MapComponent } from '../map/map.component';
 import { ElementRef } from '@angular/core';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-driver-scheduled-ride-card',
@@ -14,6 +15,7 @@ export class DriverScheduledRideCardComponent {
 
   @Input() ride: Ride = {} as Ride;
   @Input() mapComponent: MapComponent;
+  rejectionReasonText: string = "";
 
   @ViewChild('rejectionReasonContainer') rejectionReasonContainer: ElementRef; 
 
@@ -30,6 +32,7 @@ export class DriverScheduledRideCardComponent {
         'display',
         "block"
       )
+      console.log(this.rejectionReasonText);
     }
   }
 
@@ -40,6 +43,7 @@ export class DriverScheduledRideCardComponent {
         'display',
         "none"
       )
+      this.rejectionReasonText = "";
     }
   } 
 

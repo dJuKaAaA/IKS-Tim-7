@@ -15,7 +15,7 @@
     <mat-card-content #rejectionReasonContainer id="rejection-reason-container">
         <form>
             <label for="rejection-reason">Reason</label>
-            <textarea class="rejection-reason"></textarea>
+            <textarea class="rejection-reason" [(ngModel)]="rejectionReasonText" name="rejection-reason-text"></textarea>
             <div style="text-align: center;">
                 <button mat-button color="primary" type="submit">Send</button>
                 <button mat-button color="primary" (click)="hideRejectionReason()">Cancel</button>
