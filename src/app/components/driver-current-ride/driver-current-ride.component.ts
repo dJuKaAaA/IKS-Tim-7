@@ -14,6 +14,7 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit {
   @ViewChild(MapComponent) mapComponent: MapComponent;
 
   routes: Array<Route> = [];
+  routeIndex: number = 0;
 
   ngOnInit(): void {
     this.routes.push(
@@ -38,13 +39,15 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.mapComponent.loadMap();
+    this.showNextRoute();
   }
 
-  showRoutes() {
-    for (let route of this.routes) {
-      this.mapComponent.showRoute(route);
-    }
-    this.mapComponent.focusOnPoint(this.routes[0].departure);
+  showNextRoute() {
+    this.mapComponent.clearMap();
+    this.mapComponent.showRoute(this.routes[this.routeIndex]);
+    this.mapComponent.focusOnPoint(this.routes[this.routeIndex].departure);
+    console.log(this.routeIndex);
+    this.routeIndex = (this.routeIndex + 1) % this.routes.length;
   }
 
 }
