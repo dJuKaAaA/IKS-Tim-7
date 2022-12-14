@@ -1,20 +1,17 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { OnInit } from '@angular/core';
 import * as ttMap from '@tomtom-international/web-sdk-maps';
 import * as ttService from '@tomtom-international/web-sdk-services';
 import { TomTomGeolocationService } from 'src/app/services/tom-tom-geolocation.service';
 import { TomTomGeolocationResponse } from 'src/app/model/tom-tom-geolocation-response.model';
 import { Route as GGCJRoute } from 'src/app/model/route.model';
 import { Location as GGCJLocation } from 'src/app/model/location.model';
-import { outputAst } from '@angular/compiler';
-import * as tt from '@tomtom-international/web-sdk-maps';
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
 })
-export class MapComponent implements OnInit {
+export class MapComponent {
 
   ggcjRoutes: Array<GGCJRoute> = [];
 
@@ -35,10 +32,6 @@ export class MapComponent implements OnInit {
   private ttApiKey: string = 'urES86sMdjoeMbhSLu9EK3ksu0Jjpb91';
 
   constructor(private ttGeolocationService: TomTomGeolocationService) {}
-
-  ngOnInit(): void {
-    this.loadMap();
-  }
 
   public showRouteFromAddresses(startAddress: string, endAddress: string): void {
     const isLocationValid = function(location: GGCJLocation): boolean {
@@ -161,7 +154,7 @@ export class MapComponent implements OnInit {
     );
   }
 
-  private loadMap(): void {
+  public loadMap(): void {
     this.map = ttMap.map({
       key: this.ttApiKey,
       container: 'map',

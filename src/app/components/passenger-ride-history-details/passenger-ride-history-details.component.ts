@@ -15,7 +15,7 @@ import { MapComponent } from '../map/map.component';
   templateUrl: './passenger-ride-history-details.component.html',
   styleUrls: ['./passenger-ride-history-details.component.css'],
 })
-export class PassengerRideHistoryDetailsComponent implements OnInit {
+export class PassengerRideHistoryDetailsComponent implements OnInit, AfterViewInit {
   @ViewChild(MapComponent) mapComponent: MapComponent;
 
   public ride: Ride = {} as Ride;
@@ -38,6 +38,8 @@ export class PassengerRideHistoryDetailsComponent implements OnInit {
     private tomTomService: TomTomGeolocationService
   ) {}
 
+
+
   displayRoute(): void {
     this.ride.locations.forEach((route) => {
       this.mapComponent.showRouteFromAddresses(
@@ -58,7 +60,13 @@ export class PassengerRideHistoryDetailsComponent implements OnInit {
         );
     });
   }
+
+  ngAfterViewInit(): void {
+    this.mapComponent.loadMap();
+  }
+
   async ngOnInit() {
+    this.mapComponent.loadMap();
     await this.rideService
       .getRide(1)
       .toPromise()

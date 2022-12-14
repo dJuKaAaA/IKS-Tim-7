@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Location } from 'src/app/model/location.model';
@@ -10,7 +10,7 @@ import { MapComponent } from '../map/map.component';
   templateUrl: './unregistered-home.component.html',
   styleUrls: ['./unregistered-home.component.css']
 })
-export class UnregisteredHomeComponent {
+export class UnregisteredHomeComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MapComponent) mapComponent: MapComponent;
 
@@ -28,6 +28,14 @@ export class UnregisteredHomeComponent {
 
   constructor(private router: Router) {
 
+  }
+  
+  ngOnInit(): void {
+    this.mapComponent.loadMap();
+  }
+
+  ngAfterViewInit(): void {
+    this.mapComponent.loadMap();
   }
 
   goToRegister(): void {
