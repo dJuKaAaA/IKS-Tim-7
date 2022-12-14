@@ -11,8 +11,7 @@ import { Passenger } from 'src/app/model/passenger.model';
 export class ProfileFormComponent{
 
   passenger = {} as Passenger;
-  notificationOffset:String = "-70px";
-  notificationText:String = "Data saved";
+  message:String = ""
   succesfull : Boolean = true;
 
   constructor(private passengerService : PassengerService) {}
@@ -21,23 +20,11 @@ export class ProfileFormComponent{
     // Process checkout data here
     this.passengerService.updatePassenger(f).subscribe({
       next: () => {
-        this.notificationText = "Data saved";
-        this.notificationOffset = "30px";
-        setTimeout(()=>{
-        this.notificationOffset = "-70px"
-    }, 3000);
+        this.message = "Data succesfully updated";
       },
       error: () => {
-        this.notificationText = "Error occured";
-        this.notificationOffset = "30px";
-        setTimeout(()=>{
-        this.notificationOffset = "-70px"
-        }, 3000);
+        this.message = "An error occured";
       }
     });
-  }
-
-  closeNotification(): void{
-    this.notificationOffset = "-70px";
   }
 }

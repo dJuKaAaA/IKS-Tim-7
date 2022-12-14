@@ -1,0 +1,28 @@
+#usersList{
+    overflow: scroll;
+    width: 500px;
+    border: 2px solid gray;
+    border-radius: 10px;
+    height: 70vh;
+    position: relative;
+    top: 50%;
+    transform: translate(-50%, 0);
+}
+
+.user{
+    width: 70%;
+    height: 200px;
+}
+.imgSection{
+    height: 90%;
+    float: left;
+}
+
+.textSection{
+    float: right;
+}
+
+.date{
+    float: right;
+}
+

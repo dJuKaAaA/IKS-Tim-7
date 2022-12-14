@@ -1,13 +1,32 @@
+#side-img-container {
+    height: 100vh;
+    width: 60vh;
+    position: absolute;
+}
+
+#side-img-message {
+    top: 10vmin;
+    text-align: center;
+    font-size: 3vmin;
+    line-height: 3vmin;
+    color: white;
+    font-weight: bold;
+    width: 55vh;
+    margin: auto;
+    position: absolute;
+}
+
 #main-image {
     height: 100%;
-    width: 32%;
-    position: fixed;
+    width: 100%;
+    position: absolute;
 }
 
 h1 {
-    font-size: 36px;
+    font-size: 4vmin;
     color: rgb(88, 88, 88);
-    margin-bottom: 50px;
+    margin-bottom: 5vmin;
+    font-family: 'Montserrat', sans-serif;
 }
 
 #taxi-icon {
@@ -20,18 +39,19 @@ form {
     position: absolute;
     display: block;
     margin: auto;
-    top: 12%;
+    top: 15%;
     left: 40%;
+    right: 8%;
 }
 
 form>table>tr>td {
-    padding: 20px 60px;
+    padding: 2vmin 0;
 }
 
 button {
-    padding: 30px 50px;
-    font-size: large;
-    margin: 15px 0;
+    padding: 4vmin 7vmin;
+    font-size: 2.5vmin;
+    margin: 1vmin 0;
 }
 
 form>table>tr>td a {
@@ -41,5 +61,5 @@ form>table>tr>td a {
 }
 
 .form-text-field {
-    width: 350px !important;
+    width: 40vmin !important;
 }

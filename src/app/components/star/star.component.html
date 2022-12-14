@@ -1,0 +1,8 @@
+<div class="star-container">
+  <div class="star" *ngFor="let _ of [].constructor(rating)">
+    <img src="./../../../../assets/gold-star.png" alt="" />
+  </div>
+  <div class="star" *ngFor="let _ of [].constructor(5 - rating)">
+    <img src="./../../../../assets/empty-star.png" alt="" />
+  </div>
+</div>

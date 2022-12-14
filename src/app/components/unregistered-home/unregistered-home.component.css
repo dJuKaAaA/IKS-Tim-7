@@ -1,0 +1,100 @@
+#bg-img {
+    width: 100vw;
+}
+
+#sign-up-now-div {
+    position: absolute;
+    top: 40%;
+    left: 7%;
+    color: white;
+}
+
+.login-popup {
+    width: 20vw;
+    position: absolute;
+    right: 5%;
+    top: 67px;
+}
+
+#sign-up-now-div>h1 {
+    font-size: xx-large;
+    font-family: 'Montserrat', sans-serif;
+}
+
+h2 {
+    font-family: 'Montserrat', sans-serif;
+}
+
+#sign-up-now-div>button {
+    width: 25vmin;
+    height: 5vmin;
+    font-size: 2.5vmin;
+}
+
+#search-location-form-upper {
+    position: absolute;
+    top: 40%;
+    right: 5%;
+    width: 60vmin;
+}
+
+#redirect-to-map {
+    position: absolute;
+    top: 90%;
+    left: 0;
+    right: 0;
+    font-size: 5vmin;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+}
+
+#redirect-to-map:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#routes-vehicles-map {
+    width: 60%;
+    height: 90%;
+    z-index: 100;
+    margin-left: 2vmin;
+    margin-bottom: 2vmin;
+    display: inline-block;
+
+}
+
+#route-information {
+    width: 50vmin;
+    display: inline-block;
+    vertical-align: top;
+    margin-top: 2vmin;
+    margin-left: 10vmin;
+}
+
+#search-location-form-lower {
+    margin-bottom: 4vmin;
+}
+
+h1 {
+    text-align: center;
+    font-size: 40px;
+    margin-top: 20px;
+    font-weight: bold;
+    font-family: 'Montserrat', sans-serif;
+}
+
+#unavailable-schedule-button {
+    margin-top: 1vmin;
+    width: 100%;
+    font-size: large;
+    height: 5vmin;
+}
+
+#unavailable-schedule-label {
+    width: 100%;
+    text-align: center;
+    margin-top: 0.5vmin;
+    font-size: 1.5vmin;
+    font-style: italic;
+}

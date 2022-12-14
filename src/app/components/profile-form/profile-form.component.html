@@ -2,7 +2,7 @@
     <div id="centerContainer">
         <div class="gridArea">
             <h1 class="marginBottomLarge">Edit profile</h1>
-            <input type="image" name="profilePicture" ngModel img id = "profilePicture" src="assets/images/Group13.png" alt="ej" class="marginBottomLarge">
+            <input type="image" name="profilePicture" ngModel img id = "profilePicture" src="../../../assets/images/Group13.png" alt="ej" class="marginBottomLarge">
             <div class="textFieldBox">
                 <p>First name</p>
                 <input ngModel name="name" type="text" id = "name">
@@ -23,8 +23,8 @@
                 <p>Adress</p>
                 <input ngModel name="address" id="Address">
             </div>
-            <p class="marginBottomMedium"></p>
         </div>
+        <p id = "successNotification"><i>{{message}}</i></p>
         <div class="buttonSection marginBottomLarge">
             <button type="submit" name="saveChanges" id = "submit">SAVE CHANGES</button>
             <a href="">CHANGE PASSWORD</a>
@@ -32,8 +32,3 @@
         <p id = "forgotPassword">Forgot your password? <a href = "#"><b>Reset now</b></a></p>
     </div>  
 </form>
-
-<div id="notification" [style.top] = "notificationOffset">
-    <p>{{notificationText}}</p>
-    <p (click)="closeNotification()" id="ok"><b>OK</b></p>
-</div>
