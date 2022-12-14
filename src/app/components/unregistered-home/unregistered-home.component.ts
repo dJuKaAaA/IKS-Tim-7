@@ -4,11 +4,30 @@ import { Router } from '@angular/router';
 import { Location } from 'src/app/model/location.model';
 import { Route } from 'src/app/model/route.model';
 import { MapComponent } from '../map/map.component';
+import {
+  trigger,
+  state,
+  style,
+  transition,
+  animate
+} from '@angular/animations';
 
 @Component({
   selector: 'app-unregistered-home',
   templateUrl: './unregistered-home.component.html',
-  styleUrls: ['./unregistered-home.component.css']
+  styleUrls: ['./unregistered-home.component.css'],
+  animations: [
+    trigger('login-popup',[
+      state('hidden', style({
+        'opacity': '0'
+      })),
+      state('shown', style({
+        'opacity': '100'
+      })),
+      transition('hidden => shown',animate(500)),
+      transition('shown => hidden',animate(500))
+    ])
+  ]
 })
 export class UnregisteredHomeComponent implements OnInit, AfterViewInit {
 
@@ -56,6 +75,16 @@ export class UnregisteredHomeComponent implements OnInit, AfterViewInit {
     this.mapComponent.clearMap();
     this.mapComponent.showRouteFromAddresses(startAddress, endAddress);
     this.goToMaps();
+  }
+
+  loginPopupState: string = "hidden";
+
+  showLoginPopup() {
+    let loginPopup = document.getElementById("login-popup");
+    if (loginPopup != null) {
+      loginPopup.style.display = loginPopup.style.display == "none" ? "block" : "none";
+    }
+    this.loginPopupState = this.loginPopupState == "hidden" ? "shown" : "hidden";
   }
 
 }
