@@ -10,6 +10,7 @@ import { DriverHomeComponent } from './components/driver-home/driver-home.compon
 import { DriverProfileDetailsComponent } from './components/driver-profile-details/driver-profile-details.component';
 import { DriverEditProfileComponent } from './components/driver-edit-profile/driver-edit-profile/driver-edit-profile.component';
 import { PassengerProfileDetailsComponent } from './components/passenger-profile-details/passenger-profile-details.component';
+import { IsAuthenticatedGuard } from './guard/is-authenticated.guard';
 
 const routes: Routes = [
   { path: 'editProfile', component: EditProfileComponent },
@@ -20,7 +21,7 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'unregistered-home', component: UnregisteredHomeComponent },
   { path: 'passenger-profile', component: PassengerProfileDetailsComponent },
-  { path: 'driver-home', component: DriverHomeComponent },
+  { path: 'driver-home', component: DriverHomeComponent, canActivate: [IsAuthenticatedGuard] },
   { path: 'driver-profile', component: DriverProfileDetailsComponent },
   { path: 'driver-edit-profile', component: DriverEditProfileComponent },
 ];

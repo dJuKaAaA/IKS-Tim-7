@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from './services/auth.service';
 import { VehicleService } from './services/vehicle.service';
 
 @Component({
@@ -8,4 +9,6 @@ import { VehicleService } from './services/vehicle.service';
 })
 export class AppComponent{
   title = 'IKS-Tim-7';
+
+  constructor(public authService: AuthService) {}
 }

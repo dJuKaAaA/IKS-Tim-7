@@ -1,7 +1,7 @@
 U roditelju .html ubacite <app-map></app-map>
 
 U roditelju .ts definisite atribut @ViewChild(MapComponent) mapComponent: MapComponent;
-Za prikaz markera i ruta cim se stranica ucita, koristiti onAfterContentInit ili onAfterViewInit u roditeljlskoj komponenti koja koristi 
+Za prikaz markera i ruta cim se stranica ucita, koristiti onAfterViewInit u roditeljlskoj komponenti koja koristi 
 mape. Ne moze se koristiti ngOnInit zato sto mapComponent atribut u tom periodu nece biti inicijalizovan.
 
 Public metode MapComponent:
@@ -37,3 +37,12 @@ Atributi koji se mogu proslijediti:
     startingZoom: number
 Ovo cini pocetni fokus mape
 
+
+!!!
+Primijetio sam bag dje se mape ne prikazuju posle router.navigate metode.
+Da biste ovo popravili, morate u ngOnInit metodu roditelja koji koristi mape pozovete this.mapComponent.loadMap()
+Tu ce rec da je mapComponent undefined.
+Opet pozovite tu metodu ali u ngAfterViewInit i radice.
+Zbog nekog razloga nece radit ako se ne pozove ta metoda u ngOnInit metodi iako je tad mapComponent undefined.
+Predebilan bag al za sad je to jedino prihvatljivo rjesenje :(
+!!!
