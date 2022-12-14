@@ -55,8 +55,12 @@ export class RegisterComponent {
     
   }
 
-  termsAndConditionsOnChecked(event: any) {
+  termsAndConditionsOnChecked(event: any): void {
     this.termsAndConditionsAgreement = event.checked;
+  }
+
+  goToHome(): void {
+    this.router.navigate(["unregistered-home"]);
   }
 
 
