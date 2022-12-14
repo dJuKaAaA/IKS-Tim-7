@@ -17,13 +17,11 @@
     </div>
   </div>
   <div class="driver-info-container">
-    <h2>Driver</h2>
+    <h2>Passengers</h2>
     <hr />
-    <app-simple-user-info
-      [name]="driver.name"
-      [surname]="driver.surname"
-      [email]="driver.email"
-    ></app-simple-user-info>
+    <div class="review-container">
+      <app-simple-users-info [passengers]="passengers"></app-simple-users-info>
+    </div>
   </div>
 </div>
 
@@ -36,15 +34,9 @@
       [departureDate]="departureDate"
       [departureTime]="departureTime"
       [duration]="duration"
-      [distance]="distance.toString() + 'm'"
+      [distance]="distance.toString() + 'M'"
     ></app-ride-details>
     <div class="btns">
-      <div class="btn">
-        <app-custom-btn1
-          [content]="'Order drive'"
-          [customColor]="'btn-blue'"
-        ></app-custom-btn1>
-      </div>
       <div class="btn">
         <app-custom-btn1
           (click)="displayRoute()"

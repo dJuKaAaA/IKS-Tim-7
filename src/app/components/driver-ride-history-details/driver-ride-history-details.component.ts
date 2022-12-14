@@ -1,21 +1,29 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import {
+  AfterContentInit,
+  AfterViewInit,
+  Component,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { DateTime } from 'src/app/DateTIme';
 import { Driver } from 'src/app/model/driver.model';
+import { Passenger } from 'src/app/model/passenger.model';
 import { Review } from 'src/app/model/review.model';
 import { Ride } from 'src/app/model/ride.model';
 import { Vehicle } from 'src/app/model/vehicle.model';
 import { DriverService } from 'src/app/services/driver.service';
+import { PassengerService } from 'src/app/services/passenger.service';
 import { ReviewService } from 'src/app/services/review.service';
 import { RideService } from 'src/app/services/ride.service';
 import { TomTomGeolocationService } from 'src/app/services/tom-tom-geolocation.service';
 import { MapComponent } from '../map/map.component';
 
 @Component({
-  selector: 'app-passenger-ride-history-details',
-  templateUrl: './passenger-ride-history-details.component.html',
-  styleUrls: ['./passenger-ride-history-details.component.css'],
+  selector: 'app-driver-ride-history-details',
+  templateUrl: './driver-ride-history-details.component.html',
+  styleUrls: ['./driver-ride-history-details.component.css'],
 })
-export class PassengerRideHistoryDetailsComponent implements OnInit, AfterViewInit {
+export class DriverRideHistoryDetailsComponent implements OnInit {
   @ViewChild(MapComponent) mapComponent: MapComponent;
 
   public ride: Ride = {} as Ride;
@@ -23,6 +31,7 @@ export class PassengerRideHistoryDetailsComponent implements OnInit, AfterViewIn
   public vehicle: Vehicle = {} as Vehicle;
   public driverReviews: Review[];
   public vehicleReviews: Review[];
+  public passengers: Passenger[] = [];
 
   public departure: string;
   public destination: string;
@@ -35,42 +44,17 @@ export class PassengerRideHistoryDetailsComponent implements OnInit, AfterViewIn
     private rideService: RideService,
     private driverService: DriverService,
     private reviewService: ReviewService,
+    private passengerService: PassengerService,
     private tomTomService: TomTomGeolocationService
   ) {}
 
-
-
-  displayRoute(): void {
-    this.ride.locations.forEach((route) => {
-      this.mapComponent.showRouteFromAddresses(
-        route.departure.address,
-        route.destination.address
-      );
-      this.tomTomService
-        .getRoute(
-          route.departure.latitude,
-          route.departure.longitude,
-          route.destination.latitude,
-          route.destination.longitude
-        )
-        .subscribe(
-          (response) =>
-            (this.distance =
-              this.distance + response.routes[0].summary.lengthInMeters)
-        );
-    });
-  }
-
-  ngAfterViewInit(): void {
-    this.mapComponent.loadMap();
-  }
-
   async ngOnInit() {
-    this.mapComponent.loadMap();
     await this.rideService
       .getRide(1)
       .toPromise()
-      .then((data) => (this.ride = data ?? ({} as Ride)));
+      .then((data) => {
+        this.ride = data ?? ({} as Ride);
+      });
     console.log(this.ride);
 
     await this.driverService
@@ -78,6 +62,11 @@ export class PassengerRideHistoryDetailsComponent implements OnInit, AfterViewIn
       .toPromise()
       .then((data) => (this.vehicle = data ?? ({} as Vehicle)));
 
+    this.ride.passengers.forEach((simplePassenger) => {
+      this.passengerService
+        .getPassenger(simplePassenger.id)
+        .subscribe((passenger) => this.passengers.push(passenger));
+    });
     this.driverService
       .getDriver(this.ride.driver.id)
       .subscribe((data) => (this.driver = data));
@@ -103,5 +92,27 @@ export class PassengerRideHistoryDetailsComponent implements OnInit, AfterViewIn
     let [_, hours, minutes, seconds]: number[] =
       dateTimeConverter.getDiffDateTime(endDate, startDate);
     this.duration = `${hours}h ${minutes}m ${seconds}s`;
+  }
+
+  displayRoute(): void {
+    this.ride.locations.forEach((route) => {
+      this.mapComponent.showRouteFromAddresses(
+        route.departure.address,
+        route.destination.address
+      );
+
+      this.tomTomService
+        .getRoute(
+          route.departure.latitude,
+          route.departure.longitude,
+          route.destination.latitude,
+          route.destination.longitude
+        )
+        .subscribe(
+          (response) =>
+            (this.distance =
+              this.distance + response.routes[0].summary.lengthInMeters)
+        );
+    });
   }
 }
