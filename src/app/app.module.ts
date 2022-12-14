@@ -44,6 +44,8 @@ import { PassengerProfileDetailsComponent } from './components/passenger-profile
 import { ReviewsComponent } from './components/reviews/reviews.component';
 import { PassengerRideHistoryDetailsComponent } from './components/passenger-ride-history-details/passenger-ride-history-details.component';
 import { SimpleUserInfoComponent } from './components/simple-user-info/simple-user-info.component';
+import { DriverRideHistoryDetailsComponent } from './components/driver-ride-history-details/driver-ride-history-details.component';
+import { SimpleUsersInfoComponent } from './components/simple-users-info/simple-users-info.component';
 
 @NgModule({
   declarations: [
@@ -75,6 +77,8 @@ import { SimpleUserInfoComponent } from './components/simple-user-info/simple-us
     ReviewsComponent,
     PassengerRideHistoryDetailsComponent,
     SimpleUserInfoComponent,
+    DriverRideHistoryDetailsComponent,
+    SimpleUsersInfoComponent,
   ],
   imports: [
     BrowserModule,

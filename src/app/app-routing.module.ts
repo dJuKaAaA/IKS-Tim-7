@@ -10,6 +10,8 @@ import { DriverHomeComponent } from './components/driver-home/driver-home.compon
 import { DriverProfileDetailsComponent } from './components/driver-profile-details/driver-profile-details.component';
 import { DriverEditProfileComponent } from './components/driver-edit-profile/driver-edit-profile/driver-edit-profile.component';
 import { PassengerProfileDetailsComponent } from './components/passenger-profile-details/passenger-profile-details.component';
+import { DriverRideHistoryDetailsComponent } from './components/driver-ride-history-details/driver-ride-history-details.component';
+import { PassengerRideHistoryDetailsComponent } from './components/passenger-ride-history-details/passenger-ride-history-details.component';
 
 const routes: Routes = [
   { path: 'editProfile', component: EditProfileComponent },
@@ -23,6 +25,14 @@ const routes: Routes = [
   { path: 'driver-home', component: DriverHomeComponent },
   { path: 'driver-profile', component: DriverProfileDetailsComponent },
   { path: 'driver-edit-profile', component: DriverEditProfileComponent },
+  {
+    path: 'driver-ride-history-details',
+    component: DriverRideHistoryDetailsComponent,
+  },
+  {
+    path: 'passenger-ride-history-details',
+    component: PassengerRideHistoryDetailsComponent,
+  },
 ];
 
 @NgModule({
