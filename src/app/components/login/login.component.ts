@@ -24,8 +24,8 @@ export class LoginComponent {
     if (this.form.valid) {
       let email: string = this.form.value.email;
       let password: string = this.form.value.password;
-      this.authService.login(email, password).subscribe((response) => {
-        console.log(response);
+      this.authService.login(email, password).subscribe((response: any) => {
+        localStorage.setItem('user', response.token);
         this.router.navigate(['driver-home']);
       });
 

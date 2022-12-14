@@ -11,11 +11,12 @@ import { DriverProfileDetailsComponent } from './components/driver-profile-detai
 import { DriverEditProfileComponent } from './components/driver-edit-profile/driver-edit-profile/driver-edit-profile.component';
 import { PassengerProfileDetailsComponent } from './components/passenger-profile-details/passenger-profile-details.component';
 import { IsAuthenticatedGuard } from './guard/is-authenticated.guard';
+import { AlreadyAuthenticatedGuard } from './guard/already-authenticated.guard';
 
 const routes: Routes = [
   { path: 'editProfile', component: EditProfileComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'unregistered-home', component: UnregisteredHomeComponent },
+  { path: 'unregistered-home', component: UnregisteredHomeComponent, canActivate: [AlreadyAuthenticatedGuard] },
   { path: 'userRideHistory', component: RideHistoryInformationComponent },
   { path: 'editProfile', component: EditProfileComponent },
   { path: 'register', component: RegisterComponent },
