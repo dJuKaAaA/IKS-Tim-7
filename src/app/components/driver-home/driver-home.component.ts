@@ -83,8 +83,8 @@ export class DriverHomeComponent implements OnInit, AfterViewInit {
         "status": "PENDING"
       }
       this.scheduledRides.push(ride);
-      this.mapComponent.loadMap();
     }
+    this.mapComponent.loadMap();
   }
 
   ngAfterViewInit(): void {
