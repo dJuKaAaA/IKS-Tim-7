@@ -34,6 +34,7 @@ import { DriverProfileDetailsComponent } from './components/driver-profile-detai
 import { NgImageSliderModule } from 'ng-image-slider';
 import { DriverHomeComponent } from './components/driver-home/driver-home.component';
 import { MatCardModule } from '@angular/material/card';
+import { DriverCurrentRideComponent } from './components/driver-current-ride/driver-current-ride.component';
 import { DriverEditProfileComponent } from './components/driver-edit-profile/driver-edit-profile/driver-edit-profile.component';
 import { EditProfileFormComponent } from './components/edit-profile-form/edit-profile-form/edit-profile-form.component';
 import { UserInfoComponent } from './components/user-info/user-info.component';
@@ -67,6 +68,7 @@ import { SimpleUsersInfoComponent } from './components/simple-users-info/simple-
     LoginComponent,
     DriverProfileDetailsComponent,
     DriverHomeComponent,
+    DriverCurrentRideComponent,
     DriverEditProfileComponent,
     EditProfileFormComponent,
     UserInfoComponent,

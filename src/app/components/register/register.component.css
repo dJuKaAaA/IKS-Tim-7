@@ -35,6 +35,10 @@ h1 {
     opacity: 0.75;
 }
 
+#taxi-icon:hover {
+    cursor: pointer;
+}
+
 form {
     position: absolute;
     display: block;

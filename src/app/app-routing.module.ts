@@ -5,6 +5,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { RideHistoryInformationComponent } from './components/ride-history-information/ride-history-information/ride-history-information.component';
 import { UnregisteredHomeComponent } from './components/unregistered-home/unregistered-home.component';
 import { DriverHomeComponent } from './components/driver-home/driver-home.component';
+import { DriverCurrentRideComponent } from './components/driver-current-ride/driver-current-ride.component';
 import { DriverProfileDetailsComponent } from './components/driver-profile-details/driver-profile-details.component';
 import { DriverEditProfileComponent } from './components/driver-edit-profile/driver-edit-profile/driver-edit-profile.component';
 import { PassengerProfileDetailsComponent } from './components/passenger-profile-details/passenger-profile-details.component';
@@ -21,11 +22,12 @@ const routes: Routes = [
   { path: 'userRideHistory', component: RideHistoryInformationComponent },
   { path: 'editProfile', component: EditProfileComponent},
   { path: "register", component: RegisterComponent},
-  { path: 'driver-home', component: DriverHomeComponent},
+  { path: 'driver-home', component: DriverHomeComponent, canActivate: [IsAuthenticatedGuard]},
+  { path: "unregistered-home", component: UnregisteredHomeComponent},
+  { path: 'driver-current-ride', component: DriverCurrentRideComponent},
   { path: 'editProfile', component: EditProfileComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'passenger-profile', component: PassengerProfileDetailsComponent },
-  { path: 'driver-home', component: DriverHomeComponent, canActivate: [IsAuthenticatedGuard] },
   { path: 'driver-profile', component: DriverProfileDetailsComponent },
   { path: 'driver-edit-profile', component: DriverEditProfileComponent },
   { path: 'driver-ride-history-details', component: DriverRideHistoryDetailsComponent },
