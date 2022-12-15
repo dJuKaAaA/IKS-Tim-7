@@ -15,18 +15,12 @@ import { IsAuthenticatedGuard } from './guard/is-authenticated.guard';
 import { AlreadyAuthenticatedGuard } from './guard/already-authenticated.guard';
 
 const routes: Routes = [
-  { path: "", component: UnregisteredHomeComponent, canActivate: [AlreadyAuthenticatedGuard]},
+  { path: '', component: UnregisteredHomeComponent, canActivate: [AlreadyAuthenticatedGuard]},
   { path: 'editProfile', component: EditProfileComponent },
   { path: 'register', component: RegisterComponent },
-  { path: 'unregistered-home', component: UnregisteredHomeComponent,  },
   { path: 'userRideHistory', component: RideHistoryInformationComponent },
-  { path: 'editProfile', component: EditProfileComponent},
-  { path: "register", component: RegisterComponent},
   { path: 'driver-home', component: DriverHomeComponent, canActivate: [IsAuthenticatedGuard]},
-  { path: "unregistered-home", component: UnregisteredHomeComponent},
   { path: 'driver-current-ride', component: DriverCurrentRideComponent},
-  { path: 'editProfile', component: EditProfileComponent },
-  { path: 'register', component: RegisterComponent },
   { path: 'passenger-profile', component: PassengerProfileDetailsComponent },
   { path: 'driver-profile', component: DriverProfileDetailsComponent },
   { path: 'driver-edit-profile', component: DriverEditProfileComponent },
