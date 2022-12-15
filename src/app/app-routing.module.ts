@@ -15,13 +15,13 @@ import { IsAuthenticatedGuard } from './guard/is-authenticated.guard';
 import { AlreadyAuthenticatedGuard } from './guard/already-authenticated.guard';
 
 const routes: Routes = [
+  { path: "", component: UnregisteredHomeComponent},
   { path: 'editProfile', component: EditProfileComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'unregistered-home', component: UnregisteredHomeComponent, canActivate: [AlreadyAuthenticatedGuard] },
   { path: 'userRideHistory', component: RideHistoryInformationComponent },
   { path: 'editProfile', component: EditProfileComponent},
   { path: "register", component: RegisterComponent},
-  { path: "unregistered-home", component: UnregisteredHomeComponent},
   { path: 'driver-home', component: DriverHomeComponent},
   { path: 'driver-current-ride', component: DriverCurrentRideComponent},
   { path: 'editProfile', component: EditProfileComponent },
@@ -32,7 +32,7 @@ const routes: Routes = [
   { path: 'driver-profile', component: DriverProfileDetailsComponent },
   { path: 'driver-edit-profile', component: DriverEditProfileComponent },
   { path: 'driver-ride-history-details', component: DriverRideHistoryDetailsComponent },
-  { path: 'passenger-ride-history-details', component: PassengerRideHistoryDetailsComponent },
+  { path: 'passenger-ride-history-details', component: PassengerRideHistoryDetailsComponent }
 ];
 
 @NgModule({

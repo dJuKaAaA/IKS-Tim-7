@@ -1,0 +1,25 @@
+<mat-card id="scheduled-ride">
+    <mat-card-content>
+        <mat-card-title>Passengers</mat-card-title>
+            <mat-card-subtitle *ngFor="let passenger of ride.passengers" class="passengers">
+                {{passenger.email}}
+            </mat-card-subtitle>
+        <mat-card-title>Time</mat-card-title>
+        <mat-card-subtitle class="start-time">{{ride.startTime}}</mat-card-subtitle>
+    </mat-card-content>
+    <mat-card-actions>
+        <button mat-raised-button color="primary" (click)="startRide()">Start</button>
+        <button mat-raised-button color="warn" (click)="showRejectionReason()">Reject</button>
+        <button mat-raised-button (click)="showRideRoutes()">Show routes</button>
+    </mat-card-actions>
+    <mat-card-content #rejectionReasonContainer id="rejection-reason-container">
+        <form>
+            <label for="rejection-reason">Reason</label>
+            <textarea class="rejection-reason" [(ngModel)]="rejectionReasonText" name="rejection-reason-text"></textarea>
+            <div style="text-align: center;">
+                <button mat-button color="primary" type="submit">Send</button>
+                <button mat-button color="primary" (click)="hideRejectionReason()">Cancel</button>
+            </div>
+        </form>
+    </mat-card-content>
+</mat-card>

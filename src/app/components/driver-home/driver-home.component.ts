@@ -1,4 +1,5 @@
 import { AfterContentInit, AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { Location } from 'src/app/model/location.model';
 import { Ride } from 'src/app/model/ride.model';
 import { Route } from 'src/app/model/route.model';
@@ -16,6 +17,8 @@ export class DriverHomeComponent implements OnInit, AfterViewInit {
   cardCount: number = 10;
   routes: Array<Route> = [];
   scheduledRides: Array<Ride> = [];
+
+  constructor(private router: Router) {}
 
   ngOnInit(): void {
     // load ride data from RideService
@@ -85,25 +88,6 @@ export class DriverHomeComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     this.mapComponent.loadMap();
-  }
-
-  startRide(ride: Ride): void {
-
-  }
-
-  rejectRide(ride: Ride): void {
-
-  }
-
-  showRideRoutes(ride: Ride) {
-    this.routes = [];
-    this.mapComponent.clearMap();
-    for (let route of ride.locations) {
-      let r: Route = new Route(route.departure, route.destination, route.distanceInMeters); 
-      this.routes.push(r);
-      this.mapComponent.showRoute(r);
-    }
-    this.mapComponent.focusOnPoint(this.routes[0].departure);
   }
 
 }
