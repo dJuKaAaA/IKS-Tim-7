@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Document } from '../model/document.model';
+import { DriverListDTO } from '../model/driver-list-dto';
 import { Driver } from '../model/driver.model';
 import { Reviews } from '../model/reviews.model';
 import { Vehicle } from '../model/vehicle.model';
@@ -15,6 +16,10 @@ const API_URL: string = 'http://localhost:8081/';
 })
 export class DriverService {
   constructor(private http: HttpClient, private reviewService: ReviewService) {}
+
+  public getDrivers(): Observable<DriverListDTO> {
+    return this.http.get<DriverListDTO>(API_URL + 'api/driver');
+  }
 
   public getDriver(driverId: number): Observable<Driver> {
     return this.http.get<Driver>(API_URL + 'api/driver/' + driverId);

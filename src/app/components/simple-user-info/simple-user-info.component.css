@@ -1,0 +1,14 @@
+.driver-info-img-display {
+  display: flex;
+  margin: 25px;
+}
+
+img {
+  width: 150px;
+  border-style: solid;
+  border-color: var(--primary-blue);
+}
+
+.driver-info {
+  margin-left: 10px;
+}

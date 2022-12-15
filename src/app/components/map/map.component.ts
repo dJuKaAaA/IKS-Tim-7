@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { OnInit } from '@angular/core';
 import * as ttMap from '@tomtom-international/web-sdk-maps';
 import * as ttService from '@tomtom-international/web-sdk-services';
 import { TomTomGeolocationService } from 'src/app/services/tom-tom-geolocation.service';
@@ -12,46 +11,27 @@ import { Location as GGCJLocation } from 'src/app/model/location.model';
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
 })
-export class MapComponent implements OnInit {
+export class MapComponent {
 
-  @Input() ggcjLocations: Array<GGCJLocation> = [];
-  @Input() ggcjRoutes: Array<GGCJRoute> = [];
+  ggcjRoutes: Array<GGCJRoute> = [];
 
   @Input() startingLongitude: number = 19.16;
   @Input() startingLatitude: number = 42.5;
   @Input() startingZoom: number = 12.0;
 
-  @Output() rideLocationsEvent: EventEmitter<Array<GGCJLocation>> = new EventEmitter<Array<GGCJLocation>>;
-  @Output() rideRoutesEvent: EventEmitter<Array<GGCJRoute>> = new EventEmitter<Array<GGCJRoute>>;
+  @Output() routeEmitter: EventEmitter<GGCJRoute> = new EventEmitter<GGCJRoute>();
 
-  notifyRideLocationsUpdate() { this.rideLocationsEvent.emit(this.ggcjLocations); }
-
-  notifyRideRoutesUpdate() { this.rideRoutesEvent.emit(this.ggcjRoutes); }
+  notifyRoute(route: GGCJRoute) {
+    this.routeEmitter.emit(route);
+  }
 
   private flyToZoom: number = 15.0;
 
   private map: any;
-  private markers: Array<ttMap.Marker> = [];
-  private routes: Array<ttService.Route> = [];
 
   private ttApiKey: string = 'urES86sMdjoeMbhSLu9EK3ksu0Jjpb91';
 
   constructor(private ttGeolocationService: TomTomGeolocationService) {}
-
-  ngOnInit(): void {
-    this.loadMap();
-    this.show(this.ggcjLocations, this.ggcjRoutes);
-  }
-
-  private appendRideRoute(route: GGCJRoute) {
-    this.ggcjRoutes.push(route);
-    this.notifyRideRoutesUpdate();
-  }
-
-  private appendRideLocation(location: GGCJLocation) {
-    this.ggcjLocations.push(location);
-    this.notifyRideLocationsUpdate();
-  }
 
   public showRouteFromAddresses(startAddress: string, endAddress: string): void {
     const isLocationValid = function(location: GGCJLocation): boolean {
@@ -67,7 +47,7 @@ export class MapComponent implements OnInit {
     let endLocation: GGCJLocation = new GGCJLocation(NaN, NaN, "");
 
     // getting the start address
-    this.ttGeolocationService.geolocate(startAddress, this.ttApiKey).subscribe(responseObj => {
+    this.ttGeolocationService.getGeocode(startAddress).subscribe(responseObj => {
       const ttGeolocationResponse: TomTomGeolocationResponse = responseObj;
       if (ttGeolocationResponse.results.length != 0) {
         // for now, only the first element found will be shown
@@ -80,7 +60,7 @@ export class MapComponent implements OnInit {
 
       // after getting the start address we get the end address 
       // by nesting the end address request into start address request
-      this.ttGeolocationService.geolocate(endAddress, this.ttApiKey).subscribe(responseObj => {
+      this.ttGeolocationService.getGeocode(endAddress).subscribe(responseObj => {
         const ttGeolocationResponse: TomTomGeolocationResponse = responseObj;
         if (ttGeolocationResponse.results.length != 0) {
           // for now, only the first element found will be shown
@@ -98,12 +78,11 @@ export class MapComponent implements OnInit {
         }
 
         // after validations, we show the route on the map
-        const route: GGCJRoute = new GGCJRoute(startLocation, endLocation);
+        const route: GGCJRoute = new GGCJRoute(startLocation, endLocation, 0);
         if (this.checkRouteExists(route)) {
           alert("This route is already shown on the map");
         } else {
-          this.appendRideRoute(route);
-          this.notifyRideRoutesUpdate();
+          this.ggcjRoutes.push(route);
           this.showRoute(route);
 
           // focus on the start point
@@ -121,37 +100,15 @@ export class MapComponent implements OnInit {
   }
 
   public clearMap() {
-    this.markers = [];
-    this.routes = [];
-    this.ggcjLocations = [];
     this.ggcjRoutes = [];
     this.map.remove();
     this.loadMap();
   }
 
-  public show(locations: Array<GGCJLocation>, routes: Array<GGCJRoute>) {
-    this.showMarkers(locations);
-    this.showRoutes(routes);
-  }
-
-  public showMarkers(locations: Array<GGCJLocation>) {
-    for (let location of locations) {
-      this.showMarker(location);
-    }
-  }
-
-  private showMarker(location: GGCJLocation) {
+  public showMarker(location: GGCJLocation) {
     const marker: ttMap.Marker = new ttMap.Marker({draggable: false})
       .setLngLat([location.longitude, location.latitude])
       .addTo(this.map);
-    this.markers.push(marker);
-  }
-
-  public showRoutes(routes: Array<GGCJRoute>): void {
-    for (let route of routes) {
-      // creating markers for route display
-      this.showRoute(route);
-    }
   }
 
   private checkRouteExists(route: GGCJRoute) {
@@ -165,21 +122,22 @@ export class MapComponent implements OnInit {
     return retVal;
   }
 
-  private showRoute(route: GGCJRoute): void {
+  public showRoute(route: GGCJRoute): void {
     this.showMarker(route.departure);
     this.showMarker(route.destination);
 
     // showing route on map
-    const routeOptions: ttService.CalculateRouteOptions = {
+    const routeOptions: ttService.CalculateRouteOptions = {  // TODO: change to CalculateReachableRouteOptions
       key: this.ttApiKey,
       locations: [
         [route.departure.longitude, route.departure.latitude],
         [route.destination.longitude, route.destination.latitude]
-      ]
+      ],
     }
     ttService.services.calculateRoute(routeOptions).then(
       (routeData: any) => {
         route.distanceInMeters = routeData.routes[0].summary.lengthInMeters;
+        this.notifyRoute(route);
         let routeLayer = this.map.addLayer({
           'id': 'route ' + route.toString(),
           'type': 'line',
@@ -192,12 +150,11 @@ export class MapComponent implements OnInit {
             'line-width': 5
           }
         });
-        this.routes.push(routeLayer);
       }
     );
   }
 
-  private loadMap(): void {
+  public loadMap(): void {
     this.map = ttMap.map({
       key: this.ttApiKey,
       container: 'map',

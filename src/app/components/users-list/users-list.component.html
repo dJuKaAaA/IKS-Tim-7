@@ -1,14 +1,14 @@
 <div id = "usersList">
-    <div class="user">
+    <div class="user" *ngFor = "let user of users">
         <div class="imgSection">
-            <img src="../../../assets/images/Group13.png" alt="">
-        </div>
-        <div class="textSection">
-            <p>Milos Stanojlovic</p>
-            <p>Neka poruka koju sam ja napisao</p>
+            <!-- <img src="/src/assets/images/profilePicture.jpg" alt="wtf"> -->
         </div>
         <div class="date">
             <p>Tue</p>
+        </div>
+        <div class="textSection">
+            <p><b>{{user.name}} {{user.surname}}</b></p>
+            <p>{{user.email}}</p>
         </div>
     </div>
 </div>

@@ -1,0 +1,25 @@
+<div id="driver-map-container">
+    <app-map></app-map>
+</div>
+
+<div id="ride-information">
+    <div id="route-details">
+        <app-ride-details
+            [destination]="(this.routes.length > 0) ? (this.routes[0].departure.address) : ''"
+            [departure]="(this.routes.length > 0) ? (this.routes[this.routes.length - 1].destination.address) : ''"
+            [departureDate]="'N/A'"
+            [departureTime]="'N/A'"
+            [duration]="'N/A'"
+            [distance]="(this.routes.length > 0) ? (this.routes[0].distanceInMeters + 'm') : ''">
+        </app-ride-details>
+    </div>
+    <table id="button-layout">
+        <tr>
+            <td><button mat-raised-button color="accent" (click)="showNextRoute()">Show next route</button></td>
+            <td><button mat-raised-button color="warn">Panic</button></td>
+        </tr>
+        <tr>
+            <td colspan="2"><button mat-raised-button color="primary" >Finish ride</button></td>
+        </tr>
+    </table>
+</div>

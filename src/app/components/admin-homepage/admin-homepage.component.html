@@ -1,1 +1,12 @@
-<app-users-list></app-users-list>
+<app-navbar></app-navbar>
+<div class = "container">
+    <div id="wrapper">
+        <div id="leftSection">
+            <app-users-list [users] = "drivers"></app-users-list>
+        </div>
+        <div id="rightSection">
+            <app-driver-profile-details></app-driver-profile-details>
+        </div>  
+    </div>
+    <app-driver-current-ride></app-driver-current-ride>
+</div>

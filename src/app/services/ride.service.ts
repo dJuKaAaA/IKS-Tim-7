@@ -15,4 +15,8 @@ export class RideService {
   public getRides(userId: number): Observable<Rides> {
     return this.http.get<Rides>(API_URL + `api/user/${userId}/ride`);
   }
+
+  public getRide(rideId: number): Observable<Ride> {
+    return this.http.get<Ride>(API_URL + `api/ride/${rideId}`);
+  }
 }

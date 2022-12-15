@@ -22,7 +22,6 @@ import { NavbarMainSectionComponent } from './components/navbar-main-section/nav
 import { NavbarLoginRegistrationSectionComponent } from './components/navbar-login-registration-section/navbar-login-registration-section/navbar-login-registration-section.component';
 import { ProfileImageEditComponent } from './components/profile-image-edit/profile-image-edit/profile-image-edit.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { UserDetailsComponent } from './components/user-details/user-details/user-details.component';
 import { AdminHomepageComponent } from './components/admin-homepage/admin-homepage.component';
 import { RideHistoryCardComponent } from './components/ride-history-card/ride-history-card/ride-history-card.component';
 import { RideHistoryInformationComponent } from './components/ride-history-information/ride-history-information/ride-history-information.component';
@@ -36,8 +35,21 @@ import { DriverProfileDetailsComponent } from './components/driver-profile-detai
 import { NgImageSliderModule } from 'ng-image-slider';
 import { DriverHomeComponent } from './components/driver-home/driver-home.component';
 import { MatCardModule } from '@angular/material/card';
-import { DriversListComponent } from './components/drivers-list/drivers-list.component';
 import { UsersListComponent } from './components/users-list/users-list.component'
+import { DriverCurrentRideComponent } from './components/driver-current-ride/driver-current-ride.component';
+import { DriverEditProfileComponent } from './components/driver-edit-profile/driver-edit-profile/driver-edit-profile.component';
+import { EditProfileFormComponent } from './components/edit-profile-form/edit-profile-form/edit-profile-form.component';
+import { UserInfoComponent } from './components/user-info/user-info.component';
+import { ImageSliderComponent } from './components/image-slider/image-slider.component';
+import { VehicleInfoComponent } from './components/vehicle-info/vehicle-info.component';
+import { CustomBtn1Component } from './components/custom-btn1/custom-btn1.component';
+import { PassengerProfileDetailsComponent } from './components/passenger-profile-details/passenger-profile-details.component';
+import { ReviewsComponent } from './components/reviews/reviews.component';
+import { PassengerRideHistoryDetailsComponent } from './components/passenger-ride-history-details/passenger-ride-history-details.component';
+import { SimpleUserInfoComponent } from './components/simple-user-info/simple-user-info.component';
+import { DriverRideHistoryDetailsComponent } from './components/driver-ride-history-details/driver-ride-history-details.component';
+import { SimpleUsersInfoComponent } from './components/simple-users-info/simple-users-info.component';
+import { DriverProfilePageComponent } from './components/driver-profile-page/driver-profile-page.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +58,6 @@ import { UsersListComponent } from './components/users-list/users-list.component
     NavbarMainSectionComponent,
     NavbarLoginRegistrationSectionComponent,
     ProfileImageEditComponent,
-    UserDetailsComponent,
     RegisterComponent,
     EditProfileComponent,
     ProfileFormComponent,
@@ -61,8 +72,21 @@ import { UsersListComponent } from './components/users-list/users-list.component
     LoginComponent,
     DriverProfileDetailsComponent,
     DriverHomeComponent,
-    DriversListComponent,
     UsersListComponent,
+    DriverCurrentRideComponent,
+    DriverEditProfileComponent,
+    EditProfileFormComponent,
+    UserInfoComponent,
+    ImageSliderComponent,
+    VehicleInfoComponent,
+    CustomBtn1Component,
+    PassengerProfileDetailsComponent,
+    ReviewsComponent,
+    PassengerRideHistoryDetailsComponent,
+    SimpleUserInfoComponent,
+    DriverRideHistoryDetailsComponent,
+    SimpleUsersInfoComponent,
+    DriverProfilePageComponent,
   ],
   imports: [
     BrowserModule,

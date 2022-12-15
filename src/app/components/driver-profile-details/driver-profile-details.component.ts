@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Document } from 'src/app/model/document.model';
 import { Driver } from 'src/app/model/driver.model';
 import { Vehicle } from 'src/app/model/vehicle.model';
@@ -17,12 +18,13 @@ export interface SliderImage {
   styleUrls: ['./driver-profile-details.component.css'],
 })
 export class DriverProfileDetailsComponent implements OnInit {
-  driver: Driver = {} as Driver;
+  public driver: Driver = {} as Driver;
   vehicle: Vehicle = {} as Vehicle;
   documents: Document[] = [];
 
   driverRating: number = 0;
   vehicleRating: number = 0;
+
   imgSlider: boolean = false;
   profileInfo: boolean = true;
   vehicleDetails: boolean = false;
@@ -60,7 +62,7 @@ export class DriverProfileDetailsComponent implements OnInit {
     },
   ];
 
-  constructor(private driverService: DriverService) {}
+  constructor(private driverService: DriverService, private router: Router) {}
   ngOnInit(): void {
     this.driverService.getDriver(1).subscribe((data) => (this.driver = data));
     this.driverService
@@ -102,5 +104,12 @@ export class DriverProfileDetailsComponent implements OnInit {
   closeVehicle(): void {
     this.profileInfo = true;
     this.vehicleDetails = false;
+  }
+
+  // prosledjivanje iz komponente
+  redirectToDriverEditProfile() {
+    this.router.navigateByUrl('/driver-edit-profile', {
+      state: { driver: this.driver, documents: this.documents },
+    });
   }
 }

@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { Driver } from '../model/driver.model';
+import { Passenger } from '../model/passenger.model';
 
 @Injectable({
   providedIn: 'root',
