@@ -15,14 +15,13 @@
 }
 
 #imgSection{
-    background-image: url("../../../assets/images/Group18.png");
+    background-image: url("/src/assets/images/Group18.png");
     height: 100%;
     background-size: cover;
 }
 
 #rightSection{
     width: 60%;
-    display: inline-block;
     font-family: 'Rubik', sans-serif;
     float: right;
     display: flex;

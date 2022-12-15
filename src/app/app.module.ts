@@ -22,6 +22,7 @@ import { NavbarMainSectionComponent } from './components/navbar-main-section/nav
 import { NavbarLoginRegistrationSectionComponent } from './components/navbar-login-registration-section/navbar-login-registration-section/navbar-login-registration-section.component';
 import { ProfileImageEditComponent } from './components/profile-image-edit/profile-image-edit/profile-image-edit.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { AdminHomepageComponent } from './components/admin-homepage/admin-homepage.component';
 import { RideHistoryCardComponent } from './components/ride-history-card/ride-history-card/ride-history-card.component';
 import { RideHistoryInformationComponent } from './components/ride-history-information/ride-history-information/ride-history-information.component';
 import { MatSelectModule } from '@angular/material/select';
@@ -34,6 +35,7 @@ import { DriverProfileDetailsComponent } from './components/driver-profile-detai
 import { NgImageSliderModule } from 'ng-image-slider';
 import { DriverHomeComponent } from './components/driver-home/driver-home.component';
 import { MatCardModule } from '@angular/material/card';
+import { UsersListComponent } from './components/users-list/users-list.component'
 import { DriverCurrentRideComponent } from './components/driver-current-ride/driver-current-ride.component';
 import { DriverEditProfileComponent } from './components/driver-edit-profile/driver-edit-profile/driver-edit-profile.component';
 import { EditProfileFormComponent } from './components/edit-profile-form/edit-profile-form/edit-profile-form.component';
@@ -47,6 +49,7 @@ import { PassengerRideHistoryDetailsComponent } from './components/passenger-rid
 import { SimpleUserInfoComponent } from './components/simple-user-info/simple-user-info.component';
 import { DriverRideHistoryDetailsComponent } from './components/driver-ride-history-details/driver-ride-history-details.component';
 import { SimpleUsersInfoComponent } from './components/simple-users-info/simple-users-info.component';
+import { DriverProfilePageComponent } from './components/driver-profile-page/driver-profile-page.component';
 import { DriverScheduledRideCardComponent } from './components/driver-scheduled-ride-card/driver-scheduled-ride-card.component';
 
 @NgModule({
@@ -59,6 +62,7 @@ import { DriverScheduledRideCardComponent } from './components/driver-scheduled-
     RegisterComponent,
     EditProfileComponent,
     ProfileFormComponent,
+    AdminHomepageComponent,
     RideHistoryCardComponent,
     RideHistoryInformationComponent,
     StarComponent,
@@ -69,6 +73,7 @@ import { DriverScheduledRideCardComponent } from './components/driver-scheduled-
     LoginComponent,
     DriverProfileDetailsComponent,
     DriverHomeComponent,
+    UsersListComponent,
     DriverCurrentRideComponent,
     DriverEditProfileComponent,
     EditProfileFormComponent,
@@ -82,6 +87,7 @@ import { DriverScheduledRideCardComponent } from './components/driver-scheduled-
     SimpleUserInfoComponent,
     DriverRideHistoryDetailsComponent,
     SimpleUsersInfoComponent,
+    DriverProfilePageComponent,
     DriverScheduledRideCardComponent,
   ],
   imports: [

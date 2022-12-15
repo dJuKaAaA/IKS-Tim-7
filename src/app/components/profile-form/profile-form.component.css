@@ -8,6 +8,10 @@
   width: 100%;
 }
 
+.marginTopMedium{
+  margin-top: 40px;
+}
+
 .gridArea {
   display: grid;
   grid-template-columns: auto auto;
@@ -70,23 +74,8 @@ input {
   width: 230px;
 }
 
-#notification {
-  position: fixed;
-  transition: all 1s;
-  left: 50%;
-  transform: translate(-50%, 0);
-  width: 200px;
-  height: auto;
-  border: #3f51b5 solid 1px;
-  z-index: 99;
-  text-align: center;
-  background-color: white;
-}
-
-#notification p {
-  line-height: 10px;
-  margin: 0px;
-  padding: 10px;
+#successNotification{
+    color: #3F51B5;
 }
 
 #ok {
