@@ -1,10 +1,8 @@
-import { Component, Input, ViewChild, Renderer2 } from '@angular/core';
+import { Component, Input, ViewChild, Renderer2, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { Ride } from 'src/app/model/ride.model';
 import { Route } from 'src/app/model/route.model';
 import { MapComponent } from '../map/map.component';
-import { ElementRef } from '@angular/core';
-import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-driver-scheduled-ride-card',
@@ -30,9 +28,8 @@ export class DriverScheduledRideCardComponent {
       this.renderer.setStyle(
         this.rejectionReasonContainer.nativeElement,
         'display',
-        "block"
+        'block'
       )
-      console.log(this.rejectionReasonText);
     }
   }
 
@@ -41,7 +38,7 @@ export class DriverScheduledRideCardComponent {
       this.renderer.setStyle(
         this.rejectionReasonContainer.nativeElement,
         'display',
-        "none"
+        'none'
       )
       this.rejectionReasonText = "";
     }

@@ -38,8 +38,6 @@ export class PassengerRideHistoryDetailsComponent implements OnInit, AfterViewIn
     private tomTomService: TomTomGeolocationService
   ) {}
 
-
-
   displayRoute(): void {
     this.ride.locations.forEach((route) => {
       this.mapComponent.showRouteFromAddresses(
@@ -63,6 +61,7 @@ export class PassengerRideHistoryDetailsComponent implements OnInit, AfterViewIn
 
   ngAfterViewInit(): void {
     this.mapComponent.loadMap();
+    console.log(this.ride);
   }
 
   async ngOnInit() {

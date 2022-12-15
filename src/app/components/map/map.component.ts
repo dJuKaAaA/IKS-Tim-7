@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import * as ttMap from '@tomtom-international/web-sdk-maps';
 import * as ttService from '@tomtom-international/web-sdk-services';
 import { TomTomGeolocationService } from 'src/app/services/tom-tom-geolocation.service';

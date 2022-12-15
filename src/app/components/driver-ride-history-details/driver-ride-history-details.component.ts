@@ -23,7 +23,7 @@ import { MapComponent } from '../map/map.component';
   templateUrl: './driver-ride-history-details.component.html',
   styleUrls: ['./driver-ride-history-details.component.css'],
 })
-export class DriverRideHistoryDetailsComponent implements OnInit {
+export class DriverRideHistoryDetailsComponent implements OnInit, AfterViewInit {
   @ViewChild(MapComponent) mapComponent: MapComponent;
 
   public ride: Ride = {} as Ride;
@@ -47,6 +47,10 @@ export class DriverRideHistoryDetailsComponent implements OnInit {
     private passengerService: PassengerService,
     private tomTomService: TomTomGeolocationService
   ) {}
+
+  ngAfterViewInit(): void {
+    this.mapComponent.loadMap();
+  }
 
   async ngOnInit() {
     await this.rideService
@@ -92,6 +96,7 @@ export class DriverRideHistoryDetailsComponent implements OnInit {
     let [_, hours, minutes, seconds]: number[] =
       dateTimeConverter.getDiffDateTime(endDate, startDate);
     this.duration = `${hours}h ${minutes}m ${seconds}s`;
+    this.mapComponent.loadMap();
   }
 
   displayRoute(): void {

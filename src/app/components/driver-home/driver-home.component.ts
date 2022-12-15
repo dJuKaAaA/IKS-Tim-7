@@ -1,4 +1,4 @@
-import { AfterContentInit, AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Location } from 'src/app/model/location.model';
 import { Ride } from 'src/app/model/ride.model';
@@ -17,6 +17,7 @@ export class DriverHomeComponent implements OnInit, AfterViewInit {
   cardCount: number = 10;
   routes: Array<Route> = [];
   scheduledRides: Array<Ride> = [];
+  location: Location;
 
   constructor(private router: Router) {}
 
@@ -82,12 +83,13 @@ export class DriverHomeComponent implements OnInit, AfterViewInit {
         "status": "PENDING"
       }
       this.scheduledRides.push(ride);
+      this.mapComponent.loadMap();
     }
-    this.mapComponent.loadMap();
   }
 
   ngAfterViewInit(): void {
     this.mapComponent.loadMap();
+    console.log("Nesto");
   }
 
 }
