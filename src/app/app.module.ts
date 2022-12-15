@@ -50,6 +50,7 @@ import { SimpleUserInfoComponent } from './components/simple-user-info/simple-us
 import { DriverRideHistoryDetailsComponent } from './components/driver-ride-history-details/driver-ride-history-details.component';
 import { SimpleUsersInfoComponent } from './components/simple-users-info/simple-users-info.component';
 import { DriverProfilePageComponent } from './components/driver-profile-page/driver-profile-page.component';
+import { DriverScheduledRideCardComponent } from './components/driver-scheduled-ride-card/driver-scheduled-ride-card.component';
 
 @NgModule({
   declarations: [
@@ -87,6 +88,7 @@ import { DriverProfilePageComponent } from './components/driver-profile-page/dri
     DriverRideHistoryDetailsComponent,
     SimpleUsersInfoComponent,
     DriverProfilePageComponent,
+    DriverScheduledRideCardComponent,
   ],
   imports: [
     BrowserModule,
