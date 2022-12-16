@@ -5,8 +5,8 @@ import { SimpleUser } from './simple-user.model';
 export interface Ride {
   id: number;
   locations: Route[];
-  startTime: String;
-  endTime: string;
+  startTime: Date;
+  endTime: Date;
   totalCost: number;
   driver: SimpleUser
   passengers: SimpleUser[];

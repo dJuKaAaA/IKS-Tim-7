@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, Renderer2, ElementRef } from '@angular/core';
+import { Component, Input, ViewChild, Renderer2, ElementRef, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { Ride } from 'src/app/model/ride.model';
 import { Route } from 'src/app/model/route.model';
@@ -13,6 +13,9 @@ export class DriverScheduledRideCardComponent {
 
   @Input() ride: Ride = {} as Ride;
   @Input() mapComponent: MapComponent;
+  
+  @Output() rejectionEmitter: EventEmitter<Ride> = new EventEmitter<Ride>();
+
   rejectionReasonText: string = "";
 
   @ViewChild('rejectionReasonContainer') rejectionReasonContainer: ElementRef; 
@@ -51,6 +54,12 @@ export class DriverScheduledRideCardComponent {
       this.mapComponent.showRoute(r);
     }
     this.mapComponent.focusOnPoint(this.ride.locations[0].departure);  // focus departure of first route
+  }
+
+  notifyAboutRejection() {
+    // TODD: Send information to database about rejection
+    // sending information to parent about rejection
+    this.rejectionEmitter.emit(this.ride);
   }
 
 }
