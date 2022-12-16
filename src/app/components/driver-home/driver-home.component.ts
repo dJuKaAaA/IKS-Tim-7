@@ -77,7 +77,6 @@ export class DriverHomeComponent implements OnInit, AfterViewInit {
               "longitude": 19.85144
             },
             "distanceInMeters": NaN,
-            "arriveTimeInMinutes": NaN
           }
         ],
         "status": "PENDING"
@@ -94,6 +93,7 @@ export class DriverHomeComponent implements OnInit, AfterViewInit {
 
   removeRideFromDisplay(ride: Ride) {
     this.scheduledRides = this.scheduledRides.filter((scheduled) => scheduled.id != ride.id);
+    this.mapComponent.clearMap();
   }
 
 }
