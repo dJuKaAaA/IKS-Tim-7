@@ -5,7 +5,7 @@ table {
 }
 
 td {
-    padding: 1vmin 0;
+    padding: 1vh 0;
 }
 
 .field {
@@ -20,6 +20,6 @@ td {
 }
 
 td {
-    max-width: 50vmin;
+    max-width: 30vw;
 }
 
