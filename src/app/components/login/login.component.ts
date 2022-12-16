@@ -31,4 +31,8 @@ export class LoginComponent {
 
     }
   }
+
+  forgotPasswordRedirect() {
+    this.router.navigate(['forgot-password']);
+  }
 }

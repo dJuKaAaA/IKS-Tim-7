@@ -14,3 +14,12 @@ button {
     padding: 2.25vh 0;
     font-size: 1.25vw;
 }
+
+#forgot-password-p {
+    margin: 1.25vh;
+}
+
+#forgot-password-p:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
