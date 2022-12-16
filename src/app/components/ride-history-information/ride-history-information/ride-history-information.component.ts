@@ -3,7 +3,7 @@ import { Route } from './../../../model/route.model';
 import { Rides } from 'src/app/model/rides.model';
 import { RideService } from 'src/app/services/ride.service';
 import { Ride } from 'src/app/model/ride.model';
-import { DateTime } from 'src/app/DateTIme';
+import { DateTime } from 'src/app/date-time';
 import { ReviewService } from 'src/app/services/review.service';
 import { RideReview } from 'src/app/model/ride-review.model';
 import { Review } from 'src/app/model/review.model';
@@ -69,8 +69,8 @@ export class RideHistoryInformationComponent implements OnInit {
       });
     });
     let dateTime: DateTime = new DateTime();
-    let endDate: Date = dateTime.toDate(ride.endTime);
-    let startDate: Date = dateTime.toDate(ride.startTime);
+    let endDate: Date = dateTime.toDate(ride.endTime.toISOString());
+    let startDate: Date = dateTime.toDate(ride.startTime.toISOString());
     let [_, hours, minutes, seconds]: number[] = dateTime.getDiffDateTime(
       endDate,
       startDate

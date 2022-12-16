@@ -1,4 +1,4 @@
-import { AfterContentInit, AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Location } from 'src/app/model/location.model';
 import { Ride } from 'src/app/model/ride.model';
@@ -14,9 +14,10 @@ export class DriverHomeComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MapComponent) mapComponent: MapComponent;
 
-  cardCount: number = 10;
+  cardCount: number = 5;
   routes: Array<Route> = [];
   scheduledRides: Array<Ride> = [];
+  location: Location;
 
   constructor(private router: Router) {}
 
@@ -26,9 +27,9 @@ export class DriverHomeComponent implements OnInit, AfterViewInit {
     // making dummy data just for show
     for (let i = 0; i < this.cardCount; ++i) {
       let ride: Ride = {
-        "id": 123,
-        "startTime": "2017-07-21T17:32:28Z",
-        "endTime": "2017-07-21T17:45:14Z",
+        "id": i + 1,
+        "startTime": new Date(2022, 11, 21, 20, 30),
+        "endTime": new Date(2022, 11, 21, 21, 0),
         "totalCost": 1235,
         "driver": {
           "id": 123,
@@ -83,11 +84,16 @@ export class DriverHomeComponent implements OnInit, AfterViewInit {
       }
       this.scheduledRides.push(ride);
     }
+
     this.mapComponent.loadMap();
   }
 
   ngAfterViewInit(): void {
     this.mapComponent.loadMap();
+  }
+
+  removeRideFromDisplay(ride: Ride) {
+    this.scheduledRides = this.scheduledRides.filter((scheduled) => scheduled.id != ride.id);
   }
 
 }

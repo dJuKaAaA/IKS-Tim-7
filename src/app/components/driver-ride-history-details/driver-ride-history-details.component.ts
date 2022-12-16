@@ -5,7 +5,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { DateTime } from 'src/app/DateTIme';
+import { DateTime } from 'src/app/date-time';
 import { Driver } from 'src/app/model/driver.model';
 import { Passenger } from 'src/app/model/passenger.model';
 import { Review } from 'src/app/model/review.model';
