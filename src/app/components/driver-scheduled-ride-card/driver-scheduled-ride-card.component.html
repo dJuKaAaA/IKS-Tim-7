@@ -5,9 +5,11 @@
                 {{passenger.email}}
             </mat-card-subtitle>
         <mat-card-title>Time</mat-card-title>
-        <mat-card-subtitle class="start-info">{{ride.startTime.toLocaleString()}}</mat-card-subtitle>
+        <mat-card-subtitle class="ride-info">{{ride.startTime.toLocaleString()}}</mat-card-subtitle>
         <mat-card-title>Departure</mat-card-title>
-        <mat-card-subtitle class="start-info">{{ride.locations[0].departure.address}}</mat-card-subtitle>
+        <mat-card-subtitle class="ride-info">{{ride.locations[0].departure.address}}</mat-card-subtitle>
+        <mat-card-title>Estimated ride time</mat-card-title>
+        <mat-card-subtitle class="ride-info">{{ride.estimatedTimeInMinutes}} minutes</mat-card-subtitle>
     </mat-card-content>
     <mat-card-actions>
         <button mat-raised-button color="primary" (click)="startRide()">Start</button>

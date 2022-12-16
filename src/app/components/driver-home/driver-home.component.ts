@@ -1,6 +1,5 @@
-import { AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
-import { Location } from 'src/app/model/location.model';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Ride } from 'src/app/model/ride.model';
 import { Route } from 'src/app/model/route.model';
 import { MapComponent } from '../map/map.component';
@@ -78,7 +77,6 @@ export class DriverHomeComponent implements OnInit, AfterViewInit {
               "longitude": 19.85144
             },
             "distanceInMeters": NaN,
-            "arriveTimeInMinutes": NaN
           }
         ],
         "status": "PENDING"
@@ -95,6 +93,7 @@ export class DriverHomeComponent implements OnInit, AfterViewInit {
 
   removeRideFromDisplay(ride: Ride) {
     this.scheduledRides = this.scheduledRides.filter((scheduled) => scheduled.id != ride.id);
+    this.mapComponent.clearMap();
   }
 
 }

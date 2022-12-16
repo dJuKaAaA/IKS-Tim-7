@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Location } from 'src/app/model/location.model';
 import { Route } from 'src/app/model/route.model';
 import { MapComponent } from '../map/map.component';
@@ -13,9 +14,15 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit {
   @ViewChild(MapComponent) mapComponent: MapComponent;
 
   routes: Array<Route> = [];
-  routeIndex: number = 0;
+  routeIndex: number = -1;
+
+  constructor(private activatedRoute: ActivatedRoute) {}
 
   ngOnInit(): void {
+    // TODO: Using the id call the endpoint on backend and get the ride information and display it
+    let id=this.activatedRoute.snapshot.paramMap.get("id");
+    console.log('Id: ' + id);
+
     this.routes.push(
       new Route(
         new Location(45.25608864310402, 19.84577854086666, "Katolicka Porta"),
@@ -46,11 +53,10 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit {
 
   showNextRoute() {
     if (this.routeIndex < this.routes.length) {
+      this.routeIndex++;
       this.mapComponent.clearMap();
       this.mapComponent.showRoute(this.routes[this.routeIndex]);
       this.mapComponent.focusOnPoint(this.routes[this.routeIndex].departure);
-      console.log(this.routeIndex);
-      this.routeIndex++;
     }
   }
 

@@ -137,7 +137,7 @@ export class MapComponent {
     ttService.services.calculateRoute(routeOptions).then(
       (routeData: any) => {
         route.distanceInMeters = routeData.routes[0].summary.lengthInMeters;
-        route.arriveTimeInMinutes = Math.round(routeData.routes[0].summary.travelTimeInSeconds / 60);
+        route.estimatedTimeInMinutes = Math.round(routeData.routes[0].summary.travelTimeInSeconds / 60);
         this.notifyRoute(route);
         let routeLayer = this.map.addLayer({
           'id': 'route ' + route.toString(),

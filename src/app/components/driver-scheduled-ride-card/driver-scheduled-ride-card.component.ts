@@ -45,7 +45,7 @@ export class DriverScheduledRideCardComponent implements AfterViewInit {
   }
 
   startRide(): void {
-    this.router.navigate(['driver-current-ride'])
+    this.router.navigate([`driver-current-ride/${this.ride.id}`])
   }
 
   showRejectionReason(): void {
@@ -72,7 +72,7 @@ export class DriverScheduledRideCardComponent implements AfterViewInit {
   showRideRoutes() {
     this.mapComponent.clearMap();
     for (let route of this.ride.locations) {
-      let r: Route = new Route(route.departure, route.destination, route.distanceInMeters, route.arriveTimeInMinutes);
+      let r: Route = new Route(route.departure, route.destination, route.distanceInMeters, route.estimatedTimeInMinutes);
       this.mapComponent.showRoute(r);
     }
     this.mapComponent.focusOnPoint(this.ride.locations[0].departure);  // focus departure of first route

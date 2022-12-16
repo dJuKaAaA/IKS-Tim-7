@@ -43,8 +43,8 @@
         [departure]="this.route.destination.address"
         [departureDate]="'N/A'"
         [departureTime]="'N/A'"
-        [duration]="'N/A'"
-        [distance]="this.route.distanceInMeters + 'm' ">
+        [duration]="(!this.route.estimatedTimeInMinutes) ? ('N/A') : (this.route.estimatedTimeInMinutes + ' min')"
+        [distance]="(!this.route.distanceInMeters) ? ('N/A') : (this.route.distanceInMeters + 'm')">
     </app-ride-details>
     </div>
     <button
