@@ -1,5 +1,4 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { map } from 'rxjs';
 import { Location } from 'src/app/model/location.model';
 import { Route } from 'src/app/model/route.model';
 import { MapComponent } from '../map/map.component';
@@ -21,16 +20,19 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit {
       new Route(
         new Location(45.25608864310402, 19.84577854086666, "Katolicka Porta"),
         new Location(45.25430718571828, 19.82089966970297, "Knin restoran"),
+        NaN,
         NaN
       ),
       new Route(
         new Location(45.25430718571828, 19.82089966970297, "Knin restoran"),
         new Location(45.24477398222599, 19.84711471203027, "NTP"),
+        NaN,
         NaN
       ),
       new Route(
         new Location(45.24477398222599, 19.84711471203027, "NTP"),
         new Location(45.24638066815601, 19.851675340866446, "FTN"),
+        NaN,
         NaN
       )
     )

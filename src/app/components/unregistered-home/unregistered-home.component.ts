@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Location } from 'src/app/model/location.model';
@@ -33,13 +33,14 @@ export class UnregisteredHomeComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MapComponent) mapComponent: MapComponent;
 
-  bgImagePath: string = "../../../assets/unregistered-home-bg-img.png"
+  bgImagePath: string = "src/assets/unregistered-home-bg-img.png"
 
   locations: Array<Location> = [];
   route: Route = new Route(
     new Location(NaN, NaN, ""),
     new Location(NaN, NaN, ""),
-    0
+    NaN,
+    NaN
   );
 
   startAddressControl: FormControl = new FormControl("");

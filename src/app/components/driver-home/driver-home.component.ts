@@ -13,9 +13,10 @@ export class DriverHomeComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MapComponent) mapComponent: MapComponent;
 
-  cardCount: number = 10;
+  cardCount: number = 5;
   routes: Array<Route> = [];
   scheduledRides: Array<Ride> = [];
+  location: Location;
 
   constructor(private router: Router) {}
 
@@ -25,9 +26,9 @@ export class DriverHomeComponent implements OnInit, AfterViewInit {
     // making dummy data just for show
     for (let i = 0; i < this.cardCount; ++i) {
       let ride: Ride = {
-        "id": 123,
-        "startTime": "2017-07-21T17:32:28Z",
-        "endTime": "2017-07-21T17:45:14Z",
+        "id": i + 1,
+        "startTime": new Date(2022, 11, 21, 20, 30),
+        "endTime": new Date(2022, 11, 21, 21, 0),
         "totalCost": 1235,
         "driver": {
           "id": 123,
@@ -68,25 +69,31 @@ export class DriverHomeComponent implements OnInit, AfterViewInit {
             "departure": {
               "address": "Katolicka Porta 4, Novi Sad, 21101, Srbija",
               "latitude": 45.25596,
-              "longitude": 19.84578
+              "longitude": 19.84578,
             },
             "destination": {
               "address": "Dunavski Park, Novi Sad, 21101, Srbija",
               "latitude": 45.25534,
               "longitude": 19.85144
             },
-            "distanceInMeters": NaN
+            "distanceInMeters": NaN,
+            "arriveTimeInMinutes": NaN
           }
         ],
         "status": "PENDING"
       }
       this.scheduledRides.push(ride);
     }
+
     this.mapComponent.loadMap();
   }
 
   ngAfterViewInit(): void {
     this.mapComponent.loadMap();
+  }
+
+  removeRideFromDisplay(ride: Ride) {
+    this.scheduledRides = this.scheduledRides.filter((scheduled) => scheduled.id != ride.id);
   }
 
 }

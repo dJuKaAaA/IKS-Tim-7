@@ -5,7 +5,7 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { DateTime } from 'src/app/DateTIme';
+import { DateTime } from 'src/app/date-time';
 import { Driver } from 'src/app/model/driver.model';
 import { Passenger } from 'src/app/model/passenger.model';
 import { Review } from 'src/app/model/review.model';
@@ -23,7 +23,9 @@ import { MapComponent } from '../map/map.component';
   templateUrl: './driver-ride-history-details.component.html',
   styleUrls: ['./driver-ride-history-details.component.css'],
 })
-export class DriverRideHistoryDetailsComponent implements OnInit {
+export class DriverRideHistoryDetailsComponent
+  implements AfterViewInit, OnInit
+{
   @ViewChild(MapComponent) mapComponent: MapComponent;
 
   public ride: Ride = {} as Ride;
@@ -47,15 +49,15 @@ export class DriverRideHistoryDetailsComponent implements OnInit {
     private passengerService: PassengerService,
     private tomTomService: TomTomGeolocationService
   ) {}
+  ngOnInit(): void {}
 
-  async ngOnInit() {
+  async ngAfterViewInit() {
     await this.rideService
       .getRide(1)
       .toPromise()
       .then((data) => {
         this.ride = data ?? ({} as Ride);
       });
-    console.log(this.ride);
 
     await this.driverService
       .getVehicle(this.ride.driver.id)
@@ -83,18 +85,16 @@ export class DriverRideHistoryDetailsComponent implements OnInit {
     this.destination =
       this.ride.locations[this.ride.locations.length - 1].destination.address;
 
-    this.departureDate = this.ride.startTime.split(' ')[0];
-    this.departureTime = this.ride.startTime.split(' ')[1];
+    // this.departureDate = this.ride.startTime.split(' ')[0];
+    // this.departureTime = this.ride.startTime.split(' ')[1];
 
-    let dateTimeConverter: DateTime = new DateTime();
-    let startDate: Date = dateTimeConverter.toDate(this.ride.startTime);
-    let endDate: Date = dateTimeConverter.toDate(this.ride.endTime);
-    let [_, hours, minutes, seconds]: number[] =
-      dateTimeConverter.getDiffDateTime(endDate, startDate);
-    this.duration = `${hours}h ${minutes}m ${seconds}s`;
-  }
+    // let dateTimeConverter: DateTime = new DateTime();
+    // let startDate: Date = dateTimeConverter.toDate(this.ride.startTime);
+    // let endDate: Date = dateTimeConverter.toDate(this.ride.endTime);
+    // let [_, hours, minutes, seconds]: number[] =
+    //   dateTimeConverter.getDiffDateTime(endDate, startDate);
+    // this.duration = `${hours}h ${minutes}m ${seconds}s`;
 
-  displayRoute(): void {
     this.ride.locations.forEach((route) => {
       this.mapComponent.showRouteFromAddresses(
         route.departure.address,
@@ -114,5 +114,6 @@ export class DriverRideHistoryDetailsComponent implements OnInit {
               this.distance + response.routes[0].summary.lengthInMeters)
         );
     });
+    this.mapComponent.loadMap();
   }
 }

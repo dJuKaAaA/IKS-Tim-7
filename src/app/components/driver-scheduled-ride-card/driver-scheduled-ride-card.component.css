@@ -1,34 +1,27 @@
 #scheduled-ride {
-    margin: 2vmin;
+    margin: 3vh 1.25vw;
     border-radius: 5vmin;
     padding: 2vmin;
-    box-shadow: 2px 2px 10px rgb(95, 95, 95);
+    box-shadow: 0px 0px 10px rgb(103, 103, 103);
 }
 
 #rejection-reason-container {
     display: none;
 }
 
-.start-time {
+.start-info {
     display: inline-block;
     margin: 1vmin;
 }
 
-#driver-map-container {
-    width: 60%;
-    height: 88%;
-    display: inline-block;
-    margin: 2vmin;
-}
-
 #scheduled-ride button {
-    margin: 2vmin;
-    width: 15vmin;
+    margin: 1vw;
+    width: 8vw;
 }
 
 .passengers {
     display: inline-block;
-    margin: 1vmin;
+    margin: 0.5vw;
 }
 
 .passengers:hover {
@@ -38,6 +31,6 @@
 
 .rejection-reason {
     width: 100%;
-    height: 15vmin;
+    height: 15vh;
     resize: none;
 }

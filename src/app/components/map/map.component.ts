@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import * as ttMap from '@tomtom-international/web-sdk-maps';
 import * as ttService from '@tomtom-international/web-sdk-services';
 import { TomTomGeolocationService } from 'src/app/services/tom-tom-geolocation.service';
@@ -78,7 +78,7 @@ export class MapComponent {
         }
 
         // after validations, we show the route on the map
-        const route: GGCJRoute = new GGCJRoute(startLocation, endLocation, 0);
+        const route: GGCJRoute = new GGCJRoute(startLocation, endLocation, NaN, NaN);
         if (this.checkRouteExists(route)) {
           alert("This route is already shown on the map");
         } else {
@@ -137,6 +137,7 @@ export class MapComponent {
     ttService.services.calculateRoute(routeOptions).then(
       (routeData: any) => {
         route.distanceInMeters = routeData.routes[0].summary.lengthInMeters;
+        route.arriveTimeInMinutes = Math.round(routeData.routes[0].summary.travelTimeInSeconds / 60);
         this.notifyRoute(route);
         let routeLayer = this.map.addLayer({
           'id': 'route ' + route.toString(),

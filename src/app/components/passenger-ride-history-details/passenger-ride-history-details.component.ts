@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { DateTime } from 'src/app/DateTIme';
+import { DateTime } from 'src/app/date-time';
 import { Driver } from 'src/app/model/driver.model';
 import { Review } from 'src/app/model/review.model';
 import { Ride } from 'src/app/model/ride.model';
@@ -15,7 +15,9 @@ import { MapComponent } from '../map/map.component';
   templateUrl: './passenger-ride-history-details.component.html',
   styleUrls: ['./passenger-ride-history-details.component.css'],
 })
-export class PassengerRideHistoryDetailsComponent implements OnInit, AfterViewInit {
+export class PassengerRideHistoryDetailsComponent
+  implements OnInit, AfterViewInit
+{
   @ViewChild(MapComponent) mapComponent: MapComponent;
 
   public ride: Ride = {} as Ride;
@@ -38,35 +40,9 @@ export class PassengerRideHistoryDetailsComponent implements OnInit, AfterViewIn
     private tomTomService: TomTomGeolocationService
   ) {}
 
+  ngOnInit(): void {}
 
-
-  displayRoute(): void {
-    this.ride.locations.forEach((route) => {
-      this.mapComponent.showRouteFromAddresses(
-        route.departure.address,
-        route.destination.address
-      );
-      this.tomTomService
-        .getRoute(
-          route.departure.latitude,
-          route.departure.longitude,
-          route.destination.latitude,
-          route.destination.longitude
-        )
-        .subscribe(
-          (response) =>
-            (this.distance =
-              this.distance + response.routes[0].summary.lengthInMeters)
-        );
-    });
-  }
-
-  ngAfterViewInit(): void {
-    this.mapComponent.loadMap();
-  }
-
-  async ngOnInit() {
-    this.mapComponent.loadMap();
+  async ngAfterViewInit() {
     await this.rideService
       .getRide(1)
       .toPromise()
@@ -94,14 +70,35 @@ export class PassengerRideHistoryDetailsComponent implements OnInit, AfterViewIn
     this.destination =
       this.ride.locations[this.ride.locations.length - 1].destination.address;
 
-    this.departureDate = this.ride.startTime.split(' ')[0];
-    this.departureTime = this.ride.startTime.split(' ')[1];
+    // this.departureDate = this.ride.startTime.split(' ')[0];
+    // this.departureTime = this.ride.startTime.split(' ')[1];
 
-    let dateTimeConverter: DateTime = new DateTime();
-    let startDate: Date = dateTimeConverter.toDate(this.ride.startTime);
-    let endDate: Date = dateTimeConverter.toDate(this.ride.endTime);
-    let [_, hours, minutes, seconds]: number[] =
-      dateTimeConverter.getDiffDateTime(endDate, startDate);
-    this.duration = `${hours}h ${minutes}m ${seconds}s`;
+    // let dateTimeConverter: DateTime = new DateTime();
+    // let startDate: Date = dateTimeConverter.toDate(this.ride.startTime);
+    // let endDate: Date = dateTimeConverter.toDate(this.ride.endTime);
+    // let [_, hours, minutes, seconds]: number[] =
+    //   dateTimeConverter.getDiffDateTime(endDate, startDate);
+    // this.duration = `${hours}h ${minutes}m ${seconds}s`;
+
+    this.ride.locations.forEach((route) => {
+      this.mapComponent.showRouteFromAddresses(
+        route.departure.address,
+        route.destination.address
+      );
+      this.tomTomService
+        .getRoute(
+          route.departure.latitude,
+          route.departure.longitude,
+          route.destination.latitude,
+          route.destination.longitude
+        )
+        .subscribe(
+          (response) =>
+            (this.distance =
+              this.distance + response.routes[0].summary.lengthInMeters)
+        );
+    });
+
+    this.mapComponent.loadMap();
   }
 }

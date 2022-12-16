@@ -1,0 +1,20 @@
+<app-navbar></app-navbar>
+<div class = "container">
+    <div id="wrapper">
+        <div id="leftSection">
+            <app-users-list [users] = "drivers" (newItemEvent)="updateCurrentDriver($event)"></app-users-list>
+        </div>
+        <div id="rightSection">
+            <app-driver-profile-details></app-driver-profile-details>
+        </div>  
+    </div>
+    <div id="rideInformation">
+        <h1>RIDE INFORMATION</h1>
+    </div>
+    <div id="mapWrapper">
+        <app-map></app-map>
+    </div>
+    <div id="infoWrapper">
+        <app-ride-details [destination]="destination" [departure]="departure" [departureDate]="departureDate" [departureTime]="departureTime" [duration] = "duration" [distance] = "distance"></app-ride-details>
+    </div>
+</div>
