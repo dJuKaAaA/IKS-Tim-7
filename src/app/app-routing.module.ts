@@ -7,7 +7,6 @@ import { RideHistoryInformationComponent } from './components/ride-history-infor
 import { UnregisteredHomeComponent } from './components/unregistered-home/unregistered-home.component';
 import { DriverHomeComponent } from './components/driver-home/driver-home.component';
 import { DriverCurrentRideComponent } from './components/driver-current-ride/driver-current-ride.component';
-import { DriverProfileDetailsComponent } from './components/driver-profile-details/driver-profile-details.component';
 import { DriverEditProfileComponent } from './components/driver-edit-profile/driver-edit-profile/driver-edit-profile.component';
 import { PassengerProfileDetailsComponent } from './components/passenger-profile-details/passenger-profile-details.component';
 import { DriverRideHistoryDetailsComponent } from './components/driver-ride-history-details/driver-ride-history-details.component';
@@ -17,17 +16,12 @@ import { AlreadyAuthenticatedGuard } from './guard/already-authenticated.guard';
 import { DriverProfilePageComponent } from './components/driver-profile-page/driver-profile-page.component';
 
 const routes: Routes = [
-  { path: "", component: UnregisteredHomeComponent},
-  { path: 'editProfile', component: EditProfileComponent },
-  { path: 'register', component: RegisterComponent },
-  { path: 'unregistered-home', component: UnregisteredHomeComponent, canActivate: [AlreadyAuthenticatedGuard] },
+  { path: "", component: UnregisteredHomeComponent, canActivate: [AlreadyAuthenticatedGuard]},
   { path: 'userRideHistory', component: RideHistoryInformationComponent },
   { path: 'admin', component: AdminHomepageComponent},
-  { path: "register", component: RegisterComponent},
-  { path: 'driver-home', component: DriverHomeComponent},
+  { path: "register", component: RegisterComponent, canActivate: [AlreadyAuthenticatedGuard]},
   { path: 'driver-current-ride', component: DriverCurrentRideComponent},
   { path: 'editProfile', component: EditProfileComponent },
-  { path: 'register', component: RegisterComponent },
   { path: 'passenger-profile', component: PassengerProfileDetailsComponent },
   { path: 'driver-home', component: DriverHomeComponent, canActivate: [IsAuthenticatedGuard] },
   { path: 'driver-profile', component: DriverProfilePageComponent },

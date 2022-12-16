@@ -12,8 +12,8 @@ import { PassengerService } from 'src/app/services/passenger.service';
 })
 export class RegisterComponent {
 
-  mainImagePath: string = "../../../assets/register-side-img.png"
-  taxiIconPath: string = "../../../assets/taxi.png";
+  mainImagePath: string = "src/assets/register-side-img.png"
+  taxiIconPath: string = "src/assets/taxi.png";
 
   repeatedPassword: string = "";
   termsAndConditionsAgreement: boolean = false;
@@ -60,7 +60,7 @@ export class RegisterComponent {
   }
 
   goToHome(): void {
-    this.router.navigate(["unregistered-home"]);
+    this.router.navigate([""]);
   }
 
 
