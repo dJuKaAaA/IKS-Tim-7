@@ -70,14 +70,15 @@ export class DriverHomeComponent implements OnInit, AfterViewInit {
             "departure": {
               "address": "Katolicka Porta 4, Novi Sad, 21101, Srbija",
               "latitude": 45.25596,
-              "longitude": 19.84578
+              "longitude": 19.84578,
             },
             "destination": {
               "address": "Dunavski Park, Novi Sad, 21101, Srbija",
               "latitude": 45.25534,
               "longitude": 19.85144
             },
-            "distanceInMeters": NaN
+            "distanceInMeters": NaN,
+            "arriveTimeInMinutes": NaN
           }
         ],
         "status": "PENDING"

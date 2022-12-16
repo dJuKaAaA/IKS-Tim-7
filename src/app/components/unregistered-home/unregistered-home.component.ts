@@ -39,7 +39,8 @@ export class UnregisteredHomeComponent implements OnInit, AfterViewInit {
   route: Route = new Route(
     new Location(NaN, NaN, ""),
     new Location(NaN, NaN, ""),
-    0
+    NaN,
+    NaN
   );
 
   startAddressControl: FormControl = new FormControl("");
