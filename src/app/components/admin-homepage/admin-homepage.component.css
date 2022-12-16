@@ -43,3 +43,7 @@
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-size: 38px;
 }
+
+#activeRideMessage{
+    color: #3f51b5;
+}
