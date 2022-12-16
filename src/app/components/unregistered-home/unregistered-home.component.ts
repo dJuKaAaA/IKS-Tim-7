@@ -33,7 +33,7 @@ export class UnregisteredHomeComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MapComponent) mapComponent: MapComponent;
 
-  bgImagePath: string = "../../../assets/unregistered-home-bg-img.png"
+  bgImagePath: string = "src/assets/unregistered-home-bg-img.png"
 
   locations: Array<Location> = [];
   route: Route = new Route(
