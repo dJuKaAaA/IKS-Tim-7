@@ -100,7 +100,7 @@ export class AdminHomepageComponent implements OnInit, AfterViewInit{
     this.departure = "N/A";
     this.departureTime = "N/A";
     this.departureDate = "N/A";
-    this.duration = "N/A"
+    this.duration = "N/A"; 
   }
 
   setRideParameters(ride : Ride){
