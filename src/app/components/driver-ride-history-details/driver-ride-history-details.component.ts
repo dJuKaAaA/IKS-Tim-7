@@ -23,13 +23,9 @@ import { MapComponent } from '../map/map.component';
   templateUrl: './driver-ride-history-details.component.html',
   styleUrls: ['./driver-ride-history-details.component.css'],
 })
-<<<<<<< HEAD
-export class DriverRideHistoryDetailsComponent implements OnInit, AfterViewInit {
-=======
 export class DriverRideHistoryDetailsComponent
   implements AfterViewInit, OnInit
 {
->>>>>>> 62f593e6952cea1edc84df96448ed96b1a5b0d6d
   @ViewChild(MapComponent) mapComponent: MapComponent;
 
   public ride: Ride = {} as Ride;
@@ -55,15 +51,7 @@ export class DriverRideHistoryDetailsComponent
   ) {}
   ngOnInit(): void {}
 
-<<<<<<< HEAD
-  ngAfterViewInit(): void {
-    this.mapComponent.loadMap();
-  }
-
-  async ngOnInit() {
-=======
   async ngAfterViewInit() {
->>>>>>> 62f593e6952cea1edc84df96448ed96b1a5b0d6d
     await this.rideService
       .getRide(1)
       .toPromise()
@@ -100,23 +88,12 @@ export class DriverRideHistoryDetailsComponent
     // this.departureDate = this.ride.startTime.split(' ')[0];
     // this.departureTime = this.ride.startTime.split(' ')[1];
 
-<<<<<<< HEAD
-    let dateTimeConverter: DateTime = new DateTime();
-    let startDate: Date = dateTimeConverter.toDate(this.ride.startTime);
-    let endDate: Date = dateTimeConverter.toDate(this.ride.endTime);
-    let [_, hours, minutes, seconds]: number[] =
-      dateTimeConverter.getDiffDateTime(endDate, startDate);
-    this.duration = `${hours}h ${minutes}m ${seconds}s`;
-    this.mapComponent.loadMap();
-  }
-=======
     // let dateTimeConverter: DateTime = new DateTime();
     // let startDate: Date = dateTimeConverter.toDate(this.ride.startTime);
     // let endDate: Date = dateTimeConverter.toDate(this.ride.endTime);
     // let [_, hours, minutes, seconds]: number[] =
     //   dateTimeConverter.getDiffDateTime(endDate, startDate);
     // this.duration = `${hours}h ${minutes}m ${seconds}s`;
->>>>>>> 62f593e6952cea1edc84df96448ed96b1a5b0d6d
 
     this.ride.locations.forEach((route) => {
       this.mapComponent.showRouteFromAddresses(

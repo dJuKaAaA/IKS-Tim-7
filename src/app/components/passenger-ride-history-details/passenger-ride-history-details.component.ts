@@ -40,40 +40,9 @@ export class PassengerRideHistoryDetailsComponent
     private tomTomService: TomTomGeolocationService
   ) {}
 
-<<<<<<< HEAD
-  displayRoute(): void {
-    this.ride.locations.forEach((route) => {
-      this.mapComponent.showRouteFromAddresses(
-        route.departure.address,
-        route.destination.address
-      );
-      this.tomTomService
-        .getRoute(
-          route.departure.latitude,
-          route.departure.longitude,
-          route.destination.latitude,
-          route.destination.longitude
-        )
-        .subscribe(
-          (response) =>
-            (this.distance =
-              this.distance + response.routes[0].summary.lengthInMeters)
-        );
-    });
-  }
-
-  ngAfterViewInit(): void {
-    this.mapComponent.loadMap();
-    console.log(this.ride);
-  }
-
-  async ngOnInit() {
-    this.mapComponent.loadMap();
-=======
   ngOnInit(): void {}
 
   async ngAfterViewInit() {
->>>>>>> 62f593e6952cea1edc84df96448ed96b1a5b0d6d
     await this.rideService
       .getRide(1)
       .toPromise()
