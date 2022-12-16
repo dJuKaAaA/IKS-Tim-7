@@ -45,7 +45,7 @@ export class DriverScheduledRideCardComponent implements AfterViewInit {
   }
 
   startRide(): void {
-    this.router.navigate(['driver-current-ride'])
+    this.router.navigate([`driver-current-ride/${this.ride.id}`])
   }
 
   showRejectionReason(): void {

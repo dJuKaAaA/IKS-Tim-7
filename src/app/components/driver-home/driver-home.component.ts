@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Ride } from 'src/app/model/ride.model';
 import { Route } from 'src/app/model/route.model';
 import { MapComponent } from '../map/map.component';
