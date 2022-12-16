@@ -30,6 +30,8 @@ export class AdminHomepageComponent implements OnInit, AfterViewInit{
   @Output() driverRating : number;
   @Output() vehicleRating : number;
   @Output() documents: Document[];
+
+  activeRideMessage : string = "";
   activeRide : Ride;
 
 
@@ -59,6 +61,8 @@ export class AdminHomepageComponent implements OnInit, AfterViewInit{
         //Dobavljanje aktivne voznje po id-ju vozaca
         this.rideService.getDriversActiveRide(this.selectedDriver.id).subscribe({
           next: ride => {
+            //Postavljanje poruke za gresku na prazan string
+            this.activeRideMessage = ""
             //Postavljanje atributa koji se prosledjuju komponenti za prikaz podataka voznje
             console.log(ride.locations[0].departure);
             this.setRideParameters(ride);
@@ -74,6 +78,8 @@ export class AdminHomepageComponent implements OnInit, AfterViewInit{
             })
           },
           error: () =>{
+            this.setDummyParameters()
+            this.activeRideMessage = "This driver has no active rides"
           }
         });  
       },
@@ -84,8 +90,17 @@ export class AdminHomepageComponent implements OnInit, AfterViewInit{
   }
 
   updateMap(vehicle : Vehicle){
+    this.mapComponent.clearMap();
     this.mapComponent.focusOnPoint(vehicle.currentLocation);
     this.mapComponent.showMarker(vehicle.currentLocation);
+  }
+
+  setDummyParameters(){
+    this.destination = "N/A";
+    this.departure = "N/A";
+    this.departureTime = "N/A";
+    this.departureDate = "N/A";
+    this.duration = "N/A"
   }
 
   setRideParameters(ride : Ride){

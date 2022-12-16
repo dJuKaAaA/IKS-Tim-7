@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Document } from 'src/app/model/document.model';
 import { Driver } from 'src/app/model/driver.model';
@@ -18,12 +18,12 @@ export interface SliderImage {
   styleUrls: ['./driver-profile-details.component.css'],
 })
 export class DriverProfileDetailsComponent implements OnInit {
-  public driver: Driver = {} as Driver;
-  vehicle: Vehicle = {} as Vehicle;
-  documents: Document[] = [];
+  @Input() public driver: Driver = {} as Driver;
+  @Input() public vehicle: Vehicle = {} as Vehicle;
+  @Input() public documents: Document[] = [];
 
-  driverRating: number = 0;
-  vehicleRating: number = 0;
+  @Input() public driverRating: number = 0;
+  @Input() public vehicleRating: number = 0;
 
   imgSlider: boolean = false;
   profileInfo: boolean = true;
