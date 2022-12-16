@@ -51,6 +51,7 @@ import { DriverRideHistoryDetailsComponent } from './components/driver-ride-hist
 import { SimpleUsersInfoComponent } from './components/simple-users-info/simple-users-info.component';
 import { DriverProfilePageComponent } from './components/driver-profile-page/driver-profile-page.component';
 import { DriverScheduledRideCardComponent } from './components/driver-scheduled-ride-card/driver-scheduled-ride-card.component';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 
 @NgModule({
   declarations: [
@@ -89,6 +90,7 @@ import { DriverScheduledRideCardComponent } from './components/driver-scheduled-
     SimpleUsersInfoComponent,
     DriverProfilePageComponent,
     DriverScheduledRideCardComponent,
+    ForgotPasswordComponent,
   ],
   imports: [
     BrowserModule,

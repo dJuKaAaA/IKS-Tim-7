@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { DateTime } from 'src/app/DateTIme';
+import { DateTime } from 'src/app/date-time';
 import { Driver } from 'src/app/model/driver.model';
 import { Review } from 'src/app/model/review.model';
 import { Ride } from 'src/app/model/ride.model';

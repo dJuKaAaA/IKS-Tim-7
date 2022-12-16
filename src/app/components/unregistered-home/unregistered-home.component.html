@@ -5,8 +5,8 @@
     <p (click)="goToRegister()">Register</p>
 </div>
 
-<div id="sign-up-now-div">
-    <h1>Get in the driver's seat and get paid</h1>
+<div id="register-now-div">
+    <h1>Get in the passenger seat and enjoy</h1>
     <h2>Ride with the best and be the best.</h2>
     <button mat-raised-button color="primary" (click)="goToRegister()">Register now</button>
 </div>
@@ -23,7 +23,7 @@
     SEE ALL AVAILABLE VEHICLES AND ROUTES
 </p>
 
-<h1>DRIVER MAP</h1>
+<h1 id="map-header">See the drivers and routes</h1>
 
 <div id="routes-vehicles-map">
     <app-map (routeEmitter)="updateRoute($event)"></app-map>
@@ -43,8 +43,8 @@
         [departure]="this.route.destination.address"
         [departureDate]="'N/A'"
         [departureTime]="'N/A'"
-        [duration]="'N/A'"
-        [distance]="this.route.distanceInMeters + 'm' ">
+        [duration]="(!this.route.estimatedTimeInMinutes) ? ('N/A') : (this.route.estimatedTimeInMinutes + ' min')"
+        [distance]="(!this.route.distanceInMeters) ? ('N/A') : (this.route.distanceInMeters + 'm')">
     </app-ride-details>
     </div>
     <button

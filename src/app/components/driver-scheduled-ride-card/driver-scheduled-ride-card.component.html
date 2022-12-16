@@ -1,11 +1,15 @@
-<mat-card id="scheduled-ride">
+<mat-card id="scheduled-ride" #scheduledRide>
     <mat-card-content>
         <mat-card-title>Passengers</mat-card-title>
             <mat-card-subtitle *ngFor="let passenger of ride.passengers" class="passengers">
                 {{passenger.email}}
             </mat-card-subtitle>
         <mat-card-title>Time</mat-card-title>
-        <mat-card-subtitle class="start-time">{{ride.startTime}}</mat-card-subtitle>
+        <mat-card-subtitle class="ride-info">{{ride.startTime.toLocaleString()}}</mat-card-subtitle>
+        <mat-card-title>Departure</mat-card-title>
+        <mat-card-subtitle class="ride-info">{{ride.locations[0].departure.address}}</mat-card-subtitle>
+        <mat-card-title>Estimated ride time</mat-card-title>
+        <mat-card-subtitle class="ride-info">{{ride.estimatedTimeInMinutes}} minutes</mat-card-subtitle>
     </mat-card-content>
     <mat-card-actions>
         <button mat-raised-button color="primary" (click)="startRide()">Start</button>
@@ -13,7 +17,7 @@
         <button mat-raised-button (click)="showRideRoutes()">Show routes</button>
     </mat-card-actions>
     <mat-card-content #rejectionReasonContainer id="rejection-reason-container">
-        <form>
+        <form (submit)="notifyAboutRejection()">
             <label for="rejection-reason">Reason</label>
             <textarea class="rejection-reason" [(ngModel)]="rejectionReasonText" name="rejection-reason-text"></textarea>
             <div style="text-align: center;">
