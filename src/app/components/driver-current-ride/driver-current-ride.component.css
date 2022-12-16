@@ -1,6 +1,6 @@
 #driver-map-container {
-    width: 64vw;
-    height: 96vh;
+    width: 65vw;
+    height: 88vh;
     display: inline-block;
     margin: 2vh 1vw;
 }
@@ -8,10 +8,10 @@
 #ride-information {
     overflow-y: scroll;
     width: 30vw;
-    height: 90vh;
+    height: 84vh;
     display: inline-block;
     vertical-align: top;
-    margin: 5vh 1vw;
+    margin: 4vh 1vw;
 }
 
 #button-layout {
