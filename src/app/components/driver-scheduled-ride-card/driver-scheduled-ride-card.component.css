@@ -1,8 +1,8 @@
 #scheduled-ride {
-    margin: 2vmin;
+    margin: 3vh 1.25vw;
     border-radius: 5vmin;
     padding: 2vmin;
-    box-shadow: 2px 2px 10px rgb(95, 95, 95);
+    box-shadow: 0px 0px 10px rgb(103, 103, 103);
 }
 
 #rejection-reason-container {

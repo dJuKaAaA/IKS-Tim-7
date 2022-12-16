@@ -27,7 +27,7 @@ export class DriverHomeComponent implements OnInit, AfterViewInit {
     // making dummy data just for show
     for (let i = 0; i < this.cardCount; ++i) {
       let ride: Ride = {
-        "id": i,
+        "id": i + 1,
         "startTime": new Date(2022, 11, 21, 20, 30),
         "endTime": new Date(2022, 11, 21, 21, 0),
         "totalCost": 1235,
