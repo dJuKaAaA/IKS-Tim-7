@@ -76,16 +76,21 @@ export class DriverProfileDetailsComponent implements OnInit {
     this.driverService.getVehicle(1).subscribe((data) => (this.vehicle = data));
     this.driverService.getDocuments(1).subscribe((data) => {
       this.documents = data;
-      this.documents.forEach((element) => {
-        this.imgCollection.push({
-          image: element.documentImage,
-          thumbImage: element.documentImage,
-          title: element.name,
-          alt: element.name,
-        });
+      this.fillUpDocuments();
+    });
+  }
+
+  fillUpDocuments(){
+    this.documents.forEach((element) => {
+      this.imgCollection.push({
+        image: element.documentImage,
+        thumbImage: element.documentImage,
+        title: element.name,
+        alt: element.name,
       });
     });
   }
+
   displayDocuments(): void {
     this.imgSlider = true;
     this.profileInfo = false;

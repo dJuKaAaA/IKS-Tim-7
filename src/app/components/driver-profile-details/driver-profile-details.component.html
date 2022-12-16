@@ -16,20 +16,6 @@
     <div class="info">
       <h3>Profile review</h3>
       <app-user-info [user]="driver" [role]="'Driver'"></app-user-info>
-
-      <div style="padding-top: 10px">
-        <app-custom-btn1
-          style="padding-right: 20px"
-          [content]="'Documents'"
-          [customColor]="'btn-blue'"
-          (click)="displayDocuments()"
-        ></app-custom-btn1>
-        <app-custom-btn1
-          [content]="'Vehicle'"
-          [customColor]="'btn-blue'"
-          (click)="displayVehicle()"
-        ></app-custom-btn1>
-      </div>
     </div>
 
     <div>
@@ -42,12 +28,19 @@
         <app-star [rating]="vehicleRating"></app-star>
       </div>
     </div>
-    <app-custom-btn1
-      style="margin-left: 70%"
-      (click)="redirectToDriverEditProfile()"
-      [content]="'Edit Profile'"
-      [customColor]="'btn-red'"
-    ></app-custom-btn1>
+    <div class="alignBottom">
+      <div class="grid">
+        <button (click)="displayDocuments()">
+          <b>Documents</b>
+        </button>
+        <button (click)="displayVehicle()">
+          <b>Vehicle</b>
+        </button>
+        <button (click)="redirectToDriverEditProfile()">
+          <b>Edit Profile</b>
+        </button>
+      </div>
+    </div>
   </div>
 </div>
 

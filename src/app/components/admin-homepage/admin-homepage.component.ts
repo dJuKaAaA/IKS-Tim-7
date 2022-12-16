@@ -1,0 +1,100 @@
+import { ThisReceiver } from '@angular/compiler';
+import { AfterViewInit, Component, OnInit, Output, ViewChild } from '@angular/core';
+import { Driver } from 'src/app/model/driver.model';
+import { Ride } from 'src/app/model/ride.model';
+import { Vehicle } from 'src/app/model/vehicle.model';
+import { Document } from 'src/app/model/document.model';
+import { DriverService } from 'src/app/services/driver.service';
+import { RideService } from 'src/app/services/ride.service';
+import { MapComponent } from '../map/map.component';
+
+@Component({
+  selector: 'app-admin-homepage',
+  templateUrl: './admin-homepage.component.html',
+  styleUrls: ['./admin-homepage.component.css']
+})
+export class AdminHomepageComponent implements OnInit, AfterViewInit{
+  @Output() drivers : Driver[];
+  @ViewChild(MapComponent) mapComponent: MapComponent;
+  //atributi voznje
+  @Output() destination : string;
+  @Output() departure : string;
+  @Output() departureDate : string;
+  @Output() departureTime : string;
+  @Output() duration : string;
+  @Output() distance : string;
+
+  //atributi vozaca
+  @Output() selectedDriver : Driver;
+  @Output() vehicle : Vehicle;
+  @Output() driverRating : number;
+  @Output() vehicleRating : number;
+  @Output() documents: Document[];
+  activeRide : Ride;
+
+
+  
+  constructor(private driverService : DriverService, private rideService : RideService){
+    this.driverService = driverService;
+    this.rideService = rideService;
+  }
+  ngAfterViewInit(): void {
+    this.mapComponent.loadMap();
+  }
+  ngOnInit(): void {
+    this.driverService.getDrivers().subscribe(data => {this.drivers = data.results});
+    this.mapComponent.loadMap();
+  }
+
+  updateCurrentDriver(id : number): void {
+    //Dobavljanje vozaca po id-ju
+    this.driverService.getDriver(id).subscribe
+    ({
+      next: driver => {
+        this.selectedDriver = driver;
+        //Dobavljanje ocena za vozaca i vozilo i vozaceva dokumenta
+        this.driverService.getAvgDriverRating(this.selectedDriver.id).then(rating => {this.driverRating = rating});
+        this.driverService.getAvgVehicleRating(this.selectedDriver.id).then(rating => {this.vehicleRating = rating});
+        this.driverService.getDocuments(this.selectedDriver.id).subscribe(document => {this.documents = document});
+        //Dobavljanje aktivne voznje po id-ju vozaca
+        this.rideService.getDriversActiveRide(this.selectedDriver.id).subscribe({
+          next: ride => {
+            //Postavljanje atributa koji se prosledjuju komponenti za prikaz podataka voznje
+            console.log(ride.locations[0].departure);
+            this.setRideParameters(ride);
+            //Dobavljanje vozila po id-ju vozaca
+            this.driverService.getVehicle(this.selectedDriver.id).subscribe({
+              next : vehicle => {
+                  this.vehicle = vehicle;
+                  this.updateMap(vehicle);
+              },
+              error : () => {
+
+              }
+            })
+          },
+          error: () =>{
+          }
+        });  
+      },
+      error: () => {
+      }
+    });
+
+  }
+
+  updateMap(vehicle : Vehicle){
+    this.mapComponent.focusOnPoint(vehicle.currentLocation);
+    this.mapComponent.showMarker(vehicle.currentLocation);
+  }
+
+  setRideParameters(ride : Ride){
+    this.activeRide = ride;
+    this.destination = ride.locations[0].destination.address;
+    this.departure = ride.locations[0].departure.address;
+    this.departureTime = ride.startTime + "";
+    this.departureDate = ride.startTime + "";
+    this.duration = ride.estimatedTimeInMinutes+"min";
+  }
+
+}

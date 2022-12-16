@@ -15,7 +15,9 @@ import { MapComponent } from '../map/map.component';
   templateUrl: './passenger-ride-history-details.component.html',
   styleUrls: ['./passenger-ride-history-details.component.css'],
 })
-export class PassengerRideHistoryDetailsComponent implements OnInit, AfterViewInit {
+export class PassengerRideHistoryDetailsComponent
+  implements OnInit, AfterViewInit
+{
   @ViewChild(MapComponent) mapComponent: MapComponent;
 
   public ride: Ride = {} as Ride;
@@ -38,6 +40,7 @@ export class PassengerRideHistoryDetailsComponent implements OnInit, AfterViewIn
     private tomTomService: TomTomGeolocationService
   ) {}
 
+<<<<<<< HEAD
   displayRoute(): void {
     this.ride.locations.forEach((route) => {
       this.mapComponent.showRouteFromAddresses(
@@ -66,6 +69,11 @@ export class PassengerRideHistoryDetailsComponent implements OnInit, AfterViewIn
 
   async ngOnInit() {
     this.mapComponent.loadMap();
+=======
+  ngOnInit(): void {}
+
+  async ngAfterViewInit() {
+>>>>>>> 62f593e6952cea1edc84df96448ed96b1a5b0d6d
     await this.rideService
       .getRide(1)
       .toPromise()
@@ -93,14 +101,35 @@ export class PassengerRideHistoryDetailsComponent implements OnInit, AfterViewIn
     this.destination =
       this.ride.locations[this.ride.locations.length - 1].destination.address;
 
-    this.departureDate = this.ride.startTime.split(' ')[0];
-    this.departureTime = this.ride.startTime.split(' ')[1];
+    // this.departureDate = this.ride.startTime.split(' ')[0];
+    // this.departureTime = this.ride.startTime.split(' ')[1];
 
-    let dateTimeConverter: DateTime = new DateTime();
-    let startDate: Date = dateTimeConverter.toDate(this.ride.startTime);
-    let endDate: Date = dateTimeConverter.toDate(this.ride.endTime);
-    let [_, hours, minutes, seconds]: number[] =
-      dateTimeConverter.getDiffDateTime(endDate, startDate);
-    this.duration = `${hours}h ${minutes}m ${seconds}s`;
+    // let dateTimeConverter: DateTime = new DateTime();
+    // let startDate: Date = dateTimeConverter.toDate(this.ride.startTime);
+    // let endDate: Date = dateTimeConverter.toDate(this.ride.endTime);
+    // let [_, hours, minutes, seconds]: number[] =
+    //   dateTimeConverter.getDiffDateTime(endDate, startDate);
+    // this.duration = `${hours}h ${minutes}m ${seconds}s`;
+
+    this.ride.locations.forEach((route) => {
+      this.mapComponent.showRouteFromAddresses(
+        route.departure.address,
+        route.destination.address
+      );
+      this.tomTomService
+        .getRoute(
+          route.departure.latitude,
+          route.departure.longitude,
+          route.destination.latitude,
+          route.destination.longitude
+        )
+        .subscribe(
+          (response) =>
+            (this.distance =
+              this.distance + response.routes[0].summary.lengthInMeters)
+        );
+    });
+
+    this.mapComponent.loadMap();
   }
 }

@@ -19,4 +19,8 @@ export class RideService {
   public getRide(rideId: number): Observable<Ride> {
     return this.http.get<Ride>(API_URL + `api/ride/${rideId}`);
   }
+
+  public getDriversActiveRide(driverId: number) : Observable<Ride>{
+    return this.http.get<Ride>(API_URL + `api/ride/driver/${driverId}/active`)
+  } 
 }
