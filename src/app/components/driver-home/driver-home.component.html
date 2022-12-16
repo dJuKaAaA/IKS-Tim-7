@@ -5,7 +5,9 @@
 <div id="scheduled-rides">
     <app-driver-scheduled-ride-card *ngFor="let ride of scheduledRides"
         [ride]="ride"
-        [mapComponent]="mapComponent">
+        [mapComponent]="mapComponent"
+        (rejectionEmitter)="removeRideFromDisplay($event)">
 
     </app-driver-scheduled-ride-card>
+    <h1 class="no-rides-header" *ngIf="scheduledRides.length == 0">You have no scheduled rides</h1>
 </div>

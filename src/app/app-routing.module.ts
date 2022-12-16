@@ -21,7 +21,7 @@ const routes: Routes = [
   { path: 'userRideHistory', component: RideHistoryInformationComponent },
   { path: 'admin', component: AdminHomepageComponent},
   { path: "register", component: RegisterComponent, canActivate: [AlreadyAuthenticatedGuard]},
-  { path: 'driver-current-ride', component: DriverCurrentRideComponent},
+  { path: 'driver-current-ride/:id', component: DriverCurrentRideComponent},
   { path: 'editProfile', component: EditProfileComponent },
   { path: 'passenger-profile', component: PassengerProfileDetailsComponent },
   { path: 'driver-home', component: DriverHomeComponent, canActivate: [IsAuthenticatedGuard] },

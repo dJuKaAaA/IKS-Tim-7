@@ -15,3 +15,10 @@
     margin: 2vh 1vw;
     border: 2px dashed rgb(190, 190, 190);
 }
+
+.no-rides-header {
+    text-align: center;
+    width: 100%;
+    color: rgb(110, 110, 110);
+    margin-top: 5vh;
+}
