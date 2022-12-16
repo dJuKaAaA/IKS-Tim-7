@@ -9,14 +9,14 @@ td {
 }
 
 .field {
-    font-size: 2vmin;
+    font-size: 1vw;
     font-style: italic;
 }
 
 .value {
     /* font size and line height must be equal */
-    font-size: 3.25vmin;
-    line-height: 3.25vmin;
+    font-size: 1.5vw;
+    line-height: 1.5vw;
 }
 
 td {
