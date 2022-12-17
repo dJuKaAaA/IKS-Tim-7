@@ -25,6 +25,8 @@ export class DriverCreationFormComponent implements OnInit{
     console.log(this.selectedVehicle);
     console.log(this.user);
     this.driverService.saveDriver(this.user).subscribe(driver => {
+      if(this.selectedVehicle.id == undefined)
+        return;
       this.vehicleService.setDriver(this.selectedVehicle.id, driver.id).subscribe(vehicle => {
         this.updateMessage = "Driver created successfully";
       });

@@ -1,0 +1,37 @@
+<form action="POST" #f = "ngForm" (ngSubmit)="onSubmit()" novalidate>
+    <div id="centerContainer">
+        <h1 class="marginTopMedium">Create a vehicle</h1>
+        <div class="textFieldBox">
+            <p>Model</p>
+            <input [(ngModel)]  = "model" name = "model" type="text" id = "model">
+        </div>
+        <div class="textFieldBox">
+            <p>Passenger seats</p>
+            <input [(ngModel)]  = "passengerSeats" name = "passengerSeats" type = "text" id="passengerSeats">
+        </div>
+        <div class="textFieldBox">
+            <p>License plate</p>
+            <input [(ngModel)]  = "licensePlate" name = "licensePlate" id="licensePlate">
+        </div>   
+        <div class="textFieldBox">
+            <p>Vehicle type</p>
+            <select [(ngModel)] = "vehicleType" name = "vehicleType" id="VehicleType">
+                <option *ngFor="let v of vehicleTypes" [ngValue]="v.name">{{v.name}}</option>
+            </select>
+        </div>   
+        <div class="checkboxContainer">
+            <div class="inline-block widthAuto">
+                <input [(ngModel)] = "petTransport" type="checkbox" name="pet" class = "checkbox">
+                <label for="pet">Pets</label>
+            </div>
+            <div class="inline-block widthAuto">
+                <input [(ngModel)] = "babyTransport" type="checkbox" name="baby" class = "checkbox">
+                <label for="baby">Babys</label> 
+            </div>
+        </div>
+        <p id = "successNotification"><i>{{message}}</i></p>
+        <div class="buttonSection marginBottomLarge">
+            <button type="submit" name="create" id = "submit">CREATE</button>
+        </div>
+    </div>  
+  </form>

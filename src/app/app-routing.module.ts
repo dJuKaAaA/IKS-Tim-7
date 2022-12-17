@@ -16,6 +16,7 @@ import { AlreadyAuthenticatedGuard } from './guard/already-authenticated.guard';
 import { DriverProfilePageComponent } from './components/driver-profile-page/driver-profile-page.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { DriverCreationComponent } from './components/driver-creation/driver-creation.component';
+import { VehicleCreationPageComponent } from './components/vehicle-creation-page/vehicle-creation-page.component';
 
 const routes: Routes = [
   { path: "", component: UnregisteredHomeComponent, canActivate: [AlreadyAuthenticatedGuard]},
@@ -32,6 +33,7 @@ const routes: Routes = [
   { path: 'passenger-ride-history-details', component: PassengerRideHistoryDetailsComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'create-driver', component: DriverCreationComponent},
+  { path: 'create-vehicle', component: VehicleCreationPageComponent}
 ];
 
 @NgModule({
