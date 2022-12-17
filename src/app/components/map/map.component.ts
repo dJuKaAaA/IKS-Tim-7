@@ -6,6 +6,8 @@ import { TomTomGeolocationResponse } from 'src/app/model/tom-tom-geolocation-res
 import { Route as GGCJRoute } from 'src/app/model/route.model';
 import { Location as GGCJLocation } from 'src/app/model/location.model';
 import { Router } from '@angular/router';
+import * as tt from '@tomtom-international/web-sdk-maps';
+import { environment } from 'src/environment/environment';
 
 @Component({
   selector: 'app-map',
@@ -14,8 +16,7 @@ import { Router } from '@angular/router';
 })
 export class MapComponent {
 
-  ggcjRoutes: Array<GGCJRoute> = [];
-  routeLayers: Array<tt.Layer> = [];
+  routeLayers: Array<tt.Layer> = [];  // isn't necessary since map has getLayer and getSource methods
   markers: Array<tt.Marker> = []
 
   @Input() startingLongitude: number = 19.16;
@@ -31,8 +32,6 @@ export class MapComponent {
   private flyToZoom: number = 15.0;
 
   private map: any;
-
-  private ttApiKey: string = 'urES86sMdjoeMbhSLu9EK3ksu0Jjpb91';
 
   constructor(private ttGeolocationService: TomTomGeolocationService) {}
 
@@ -85,7 +84,6 @@ export class MapComponent {
         if (this.checkRouteExists(route)) {
           alert("This route is already shown on the map");
         } else {
-          this.ggcjRoutes.push(route);
           this.showRoute(route);
 
           // focus on the start point
@@ -103,8 +101,8 @@ export class MapComponent {
   }
 
   public clearMap() {
-    this.ggcjRoutes = [];
-    this.map.remove();
+    this.markers = [];
+    this.routeLayers = [];
     this.loadMap();
   }
 
@@ -147,8 +145,8 @@ export class MapComponent {
 
   private checkRouteExists(route: GGCJRoute) {
     let retVal: boolean = false;
-    this.ggcjRoutes.forEach(element => {
-      if (element.toString() == route.toString()){
+    this.routeLayers.forEach(element => {
+      if (element.id == route.toString()){
         retVal = true;
         return;
       }
@@ -160,9 +158,14 @@ export class MapComponent {
     this.showMarker(route.departure);
     this.showMarker(route.destination);
 
+    if (this.checkRouteExists(route)) {
+      alert("This route is already displayed");
+      return;
+    }
+
     // showing route on map
     const routeOptions: ttService.CalculateRouteOptions = {  // TODO: change to CalculateReachableRouteOptions
-      key: this.ttApiKey,
+      key: environment.ttApiKey,
       locations: [
         [route.departure.longitude, route.departure.latitude],
         [route.destination.longitude, route.destination.latitude]
@@ -195,6 +198,7 @@ export class MapComponent {
     this.routeLayers = this.routeLayers.filter((routeLayer) => {
       if (route.toString() == routeLayer.id) {
         this.map.removeLayer(routeLayer.id);
+        this.map.removeSource(route.toString());
         this.removeMarker(route.departure);
         this.removeMarker(route.destination);
         return false;
@@ -205,7 +209,7 @@ export class MapComponent {
 
   public loadMap(): void {
     this.map = ttMap.map({
-      key: this.ttApiKey,
+      key: environment.ttApiKey,
       container: 'map',
       center: [this.startingLongitude, this.startingLatitude],
       zoom: this.startingZoom

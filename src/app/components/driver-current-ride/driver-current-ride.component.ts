@@ -52,11 +52,12 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit {
   }
 
   showNextRoute() {
-    if (this.routeIndex < this.routes.length) {
+    if (this.routeIndex < this.routes.length - 1) {
+      this.mapComponent.removeRoute(this.routes[this.routeIndex]);
       this.routeIndex++;
-      this.mapComponent.clearMap();
       this.mapComponent.showRoute(this.routes[this.routeIndex]);
       this.mapComponent.focusOnPoint(this.routes[this.routeIndex].departure);
+      console.log(this.routeIndex);
     }
   }
 

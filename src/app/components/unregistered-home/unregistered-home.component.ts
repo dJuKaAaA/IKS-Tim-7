@@ -73,7 +73,7 @@ export class UnregisteredHomeComponent implements OnInit, AfterViewInit {
   showRoute() {
     let startAddress = this.startAddressControl.value || "";
     let endAddress = this.endAddressControl.value || "";
-    this.mapComponent.clearMap();
+    this.mapComponent.removeRoute(this.route);
     this.mapComponent.showRouteFromAddresses(startAddress, endAddress);
     this.goToMaps();
   }
