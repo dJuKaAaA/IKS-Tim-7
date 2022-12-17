@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { access } from 'fs';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { environment } from 'src/environment/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -18,11 +19,11 @@ export class AuthService {
   }
 
   login(email: string, password: string): Observable<Token> {  // dummy body for now
-    return this.http.post<Token>("http://localhost:8081/test/dummy/data/login", {email, password});
+    return this.http.post<Token>(environment.localhostApi + "test/dummy/data/login", {email, password});
   }
 
   logout(): Observable<string> {
-    return this.http.get<string>("http://localhost:8081/test/dummy/data/logout");
+    return this.http.get<string>(environment.localhostApi + "test/dummy/data/logout");
   }
 
   getRole(): any {

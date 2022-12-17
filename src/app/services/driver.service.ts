@@ -4,12 +4,9 @@ import { Observable } from 'rxjs';
 import { Document } from '../model/document.model';
 import { DriverListDTO } from '../model/driver-list-dto';
 import { Driver } from '../model/driver.model';
-import { Reviews } from '../model/reviews.model';
 import { Vehicle } from '../model/vehicle.model';
 import { ReviewService } from './review.service';
-import { VehicleService } from './vehicle.service';
-
-const API_URL: string = 'http://localhost:8081/';
+import { environment } from 'src/environment/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -18,20 +15,20 @@ export class DriverService {
   constructor(private http: HttpClient, private reviewService: ReviewService) {}
 
   public getDrivers(): Observable<DriverListDTO> {
-    return this.http.get<DriverListDTO>(API_URL + 'api/driver');
+    return this.http.get<DriverListDTO>(environment.localhostApi + 'driver');
   }
 
   public getDriver(driverId: number): Observable<Driver> {
-    return this.http.get<Driver>(API_URL + 'api/driver/' + driverId);
+    return this.http.get<Driver>(environment.localhostApi + 'driver/' + driverId);
   }
 
   public getVehicle(driverId: number): Observable<Vehicle> {
-    return this.http.get<Vehicle>(API_URL + `api/driver/${driverId}/vehicle`);
+    return this.http.get<Vehicle>(environment.localhostApi + `driver/${driverId}/vehicle`);
   }
 
   public getDocuments(driverId: number): Observable<Document[]> {
     return this.http.get<Document[]>(
-      API_URL + `api/driver/${driverId}/documents`
+      environment.localhostApi + `driver/${driverId}/documents`
     );
   }
 
@@ -74,6 +71,6 @@ export class DriverService {
   }
 
   public saveDriver(driver : Driver){
-    return this.http.post<Driver>(API_URL+"api/driver",driver);
+    return this.http.post<Driver>(environment.localhostApi + "driver",driver);
   }
 }

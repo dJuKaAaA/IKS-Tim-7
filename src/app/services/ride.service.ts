@@ -3,8 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Ride } from '../model/ride.model';
 import { Rides } from '../model/rides.model';
-
-const API_URL: string = 'http://localhost:8081/';
+import { environment } from 'src/environment/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -13,14 +12,14 @@ export class RideService {
   constructor(private http: HttpClient) {}
 
   public getRides(userId: number): Observable<Rides> {
-    return this.http.get<Rides>(API_URL + `api/user/${userId}/ride`);
+    return this.http.get<Rides>(environment.localhostApi + `user/${userId}/ride`);
   }
 
   public getRide(rideId: number): Observable<Ride> {
-    return this.http.get<Ride>(API_URL + `api/ride/${rideId}`);
+    return this.http.get<Ride>(environment.localhostApi + `ride/${rideId}`);
   }
 
   public getDriversActiveRide(driverId: number) : Observable<Ride>{
-    return this.http.get<Ride>(API_URL + `api/ride/driver/${driverId}/active`)
+    return this.http.get<Ride>(environment.localhostApi + `ride/driver/${driverId}/active`)
   } 
 }
