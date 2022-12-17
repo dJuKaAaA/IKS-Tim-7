@@ -1,0 +1,163 @@
+#centerContainer {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    height: 100vh;
+    width: 100%;
+    /* margin: auto; */
+  }
+  
+  .marginTopMedium{
+    margin-top: 40px;
+  }
+  
+  .gridArea {
+    display: grid;
+    grid-template-columns: 47% 47%;
+    row-gap: 10px;
+    column-gap: 6%;
+  }
+  
+  .marginBottomLarge {
+    margin-bottom: 70px;
+  }
+  .marginBottomMedium {
+    margin-bottom: 50px;
+  }
+  button {
+    margin-right: 20px;
+    width: 200px;
+    padding: 10px 20px 10px 20px;
+    background-color: #3f51b5;
+    border: none;
+    border-radius: 3px;
+    color: white;
+    font-family: "Rubik", sans-serif;
+    font-size: 12px;
+  }
+  
+  .buttonSection a {
+    width: 200px;
+    padding: 10px 40px 10px 40px;
+    background-color: #3f51b5;
+    border: none;
+    border-radius: 3px;
+    color: white;
+    font-family: "Rubik", sans-serif;
+    font-size: 12px;
+    text-decoration: none;
+  }
+  
+  p b {
+    color: #3f51b5;
+  }
+  
+  #profilePicture {
+    width: 100px;
+  }
+  
+  a {
+    text-decoration: none;
+  }
+
+  .textFieldBox{
+    width: 100%;
+  }
+  
+  .textFieldBox p {
+    margin: 5px 0px 5px 0px;
+  }
+  
+  input {
+    resize: none;
+    padding: 5px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  #successNotification{
+      color: #3F51B5;
+  }
+  
+  #ok {
+    color: #3f51b5;
+    cursor: pointer;
+  }
+
+  .colorBlue{
+    color: #3F51B5;
+  }
+  
+  #submit {
+    cursor: pointer;
+  }
+
+  #Vehicle{
+    width: 100%;
+    resize: none;
+    padding: 5px;
+  }
+
+
+  .textFieldBox a{
+    width: auto;
+    display: inline-block;
+    cursor: pointer;
+  }
+
+  .vehicleLinks{
+    color: #3F51B5;
+    padding-right: 20px;
+  }
+
+  .inline {
+    display: inline;
+  }
+
+  
+  @media screen and (max-width: 1200px) {
+    .gridArea {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .marginBottomLarge {
+      margin-bottom: 0px;
+    }
+  
+    .marginBottomMedium {
+      margin-bottom: 0px;
+    }
+  
+    .buttonSection {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+  
+    .buttonSection button {
+      margin: 10px 0px 10px 0px;
+    }
+  
+    #centerContainer {
+      align-items: center;
+      text-align: center;
+    }
+  }
+  
+  @media screen and (max-width: 600px) {
+    .textFieldBox {
+      width: 100%;
+    }
+    .gridArea {
+      width: 100%;
+    }
+    textarea {
+      width: 100%;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+    }
+  }
+  
