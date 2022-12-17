@@ -72,4 +72,8 @@ export class DriverService {
     }
     return sum;
   }
+
+  public saveDriver(driver : Driver){
+    return this.http.post<Driver>(API_URL+"api/driver",driver);
+  }
 }

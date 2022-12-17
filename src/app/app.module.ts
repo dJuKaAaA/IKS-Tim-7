@@ -52,6 +52,8 @@ import { SimpleUsersInfoComponent } from './components/simple-users-info/simple-
 import { DriverProfilePageComponent } from './components/driver-profile-page/driver-profile-page.component';
 import { DriverScheduledRideCardComponent } from './components/driver-scheduled-ride-card/driver-scheduled-ride-card.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { DriverCreationComponent } from './components/driver-creation/driver-creation.component';
+import { DriverCreationFormComponent } from './components/driver-creation-form/driver-creation-form.component';
 
 @NgModule({
   declarations: [
@@ -91,6 +93,8 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
     DriverProfilePageComponent,
     DriverScheduledRideCardComponent,
     ForgotPasswordComponent,
+    DriverCreationComponent,
+    DriverCreationFormComponent,
   ],
   imports: [
     BrowserModule,
