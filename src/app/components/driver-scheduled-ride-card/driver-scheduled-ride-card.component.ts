@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { Ride } from 'src/app/model/ride.model';
 import { Route } from 'src/app/model/route.model';
 import { MapComponent } from '../map/map.component';
+import { Mutex } from 'async-mutex';
+import { ɵɵtsModuleIndicatorApiExtractorWorkaround } from '@angular/material';
 
 @Component({
   selector: 'app-driver-scheduled-ride-card',
@@ -69,10 +71,11 @@ export class DriverScheduledRideCardComponent implements AfterViewInit {
     }
   } 
 
-  showRideRoutes() {
-    this.mapComponent.clearMap();
+  async showRideRoutes() {
+    const mutex: Mutex = new Mutex();
     for (let route of this.ride.locations) {
       let r: Route = new Route(route.departure, route.destination, route.distanceInMeters, route.estimatedTimeInMinutes);
+      this.mapComponent.removeRoute(r);
       this.mapComponent.showRoute(r);
     }
     this.mapComponent.focusOnPoint(this.ride.locations[0].departure);  // focus departure of first route
