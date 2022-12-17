@@ -5,6 +5,7 @@ import { TomTomGeolocationService } from 'src/app/services/tom-tom-geolocation.s
 import { TomTomGeolocationResponse } from 'src/app/model/tom-tom-geolocation-response.model';
 import { Route as GGCJRoute } from 'src/app/model/route.model';
 import { Location as GGCJLocation } from 'src/app/model/location.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-map',
@@ -14,6 +15,8 @@ import { Location as GGCJLocation } from 'src/app/model/location.model';
 export class MapComponent {
 
   ggcjRoutes: Array<GGCJRoute> = [];
+  routeLayers: Array<tt.Layer> = [];
+  markers: Array<tt.Marker> = []
 
   @Input() startingLongitude: number = 19.16;
   @Input() startingLatitude: number = 42.5;
@@ -105,10 +108,41 @@ export class MapComponent {
     this.loadMap();
   }
 
-  public showMarker(location: GGCJLocation) {
-    const marker: ttMap.Marker = new ttMap.Marker({draggable: false})
-      .setLngLat([location.longitude, location.latitude])
-      .addTo(this.map);
+  public showMarker(location: GGCJLocation, markerIconSrc: string = "") {
+    if (markerIconSrc) {
+      const markerElement = document.createElement('img');
+      markerElement.style.width = "50px";
+      markerElement.style.height = "50px";
+      markerElement.src = markerIconSrc;
+      const marker: ttMap.Marker = new ttMap.Marker({draggable: false, element: markerElement, offset: [0, 27]})
+        .setLngLat([location.longitude, location.latitude])
+        .addTo(this.map);
+      this.markers.push(marker);
+    } else {
+      const marker: ttMap.Marker = new ttMap.Marker({draggable: false})
+        .setLngLat([location.longitude, location.latitude])
+        .addTo(this.map);
+      this.markers.push(marker);
+    }
+  }
+
+  public removeMarker(location: GGCJLocation) {
+    this.markers.filter((marker) => {
+      if (marker.getLngLat().lat == location.latitude && marker.getLngLat().lng == location.longitude) {
+        marker.remove();
+        return false;
+      }
+      return true;
+    });
+  }
+
+  public updateMarkerLocation(markerLocation: GGCJLocation, newLocation: GGCJLocation) {
+    for (let marker of this.markers) {
+      if (marker.getLngLat().lat == markerLocation.latitude && marker.getLngLat().lng == markerLocation.longitude) {
+        marker.setLngLat({ lat: newLocation.latitude, lng: newLocation.longitude });
+        break;
+      }
+    }
   }
 
   private checkRouteExists(route: GGCJRoute) {
@@ -139,8 +173,8 @@ export class MapComponent {
         route.distanceInMeters = routeData.routes[0].summary.lengthInMeters;
         route.estimatedTimeInMinutes = Math.round(routeData.routes[0].summary.travelTimeInSeconds / 60);
         this.notifyRoute(route);
-        let routeLayer = this.map.addLayer({
-          'id': 'route ' + route.toString(),
+        let routeLayer: tt.Layer = {
+          'id': route.toString(),
           'type': 'line',
           'source': {
             'type': 'geojson',
@@ -150,9 +184,23 @@ export class MapComponent {
             'line-color': 'red',
             'line-width': 5
           }
-        });
+        };
+        this.map.addLayer(routeLayer);
+        this.routeLayers.push(routeLayer);
       }
     );
+  }
+
+  public removeRoute(route: GGCJRoute): void {
+    this.routeLayers = this.routeLayers.filter((routeLayer) => {
+      if (route.toString() == routeLayer.id) {
+        this.map.removeLayer(routeLayer.id);
+        this.removeMarker(route.departure);
+        this.removeMarker(route.destination);
+        return false;
+      }
+      return true;
+    });
   }
 
   public loadMap(): void {
