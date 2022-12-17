@@ -26,6 +26,12 @@ Public metode MapComponent:
     public showRoute(route: Route)
         - prikazuje rutu na mapi
 
+    public updateMarkerLocation(markerLocation: GGCJLocation, newLocation: GGCJLocation)
+
+    public removeRoute(route: GGCJRoute)
+
+    public removeMarker(location: GGCJLocation)
+
 MapComponent ima EventEmitter atribut routeEmitter koji se koristi kada zelimo da roditelju proslijedimo rutu koju 
 imamo u djetetu (MapComponent)
 Najvise ima smisla koristiti koristiti posle showRouteFromAddresses metode kako bismo dobili punu adresu i udaljenost
