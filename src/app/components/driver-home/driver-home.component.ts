@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, TitleStrategy } from '@angular/router';
 import { Ride } from 'src/app/model/ride.model';
 import { Route } from 'src/app/model/route.model';
 import { MapComponent } from '../map/map.component';
@@ -14,7 +14,6 @@ export class DriverHomeComponent implements OnInit, AfterViewInit {
   @ViewChild(MapComponent) mapComponent: MapComponent;
 
   cardCount: number = 5;
-  routes: Array<Route> = [];
   scheduledRides: Array<Ride> = [];
   location: Location;
 
@@ -92,8 +91,11 @@ export class DriverHomeComponent implements OnInit, AfterViewInit {
   }
 
   removeRideFromDisplay(ride: Ride) {
+    for (let location of ride.locations) {
+      let route: Route = new Route(location.departure, location.destination, NaN, NaN);
+      this.mapComponent.removeRoute(route);
+    }
     this.scheduledRides = this.scheduledRides.filter((scheduled) => scheduled.id != ride.id);
-    this.mapComponent.clearMap();
   }
 
 }

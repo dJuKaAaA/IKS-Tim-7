@@ -14,20 +14,24 @@ import {
 import { DriverCurrentLocation } from './driver-current-location.model';
 import { environment } from 'src/environment/environment';
 
+const ANIMATION_TIME = 500;
+const LOGIN_HIDDEN_STATE = "hidden";
+const LOGIN_SHOWN_STATE = "shown";
+
 @Component({
   selector: 'app-unregistered-home',
   templateUrl: './unregistered-home.component.html',
   styleUrls: ['./unregistered-home.component.css'],
   animations: [
     trigger('login-popup',[
-      state('hidden', style({
+      state(LOGIN_HIDDEN_STATE, style({
         'opacity': '0'
       })),
-      state('shown', style({
+      state(LOGIN_SHOWN_STATE, style({
         'opacity': '100'
       })),
-      transition('hidden => shown',animate(500)),
-      transition('shown => hidden',animate(500))
+      transition(`${LOGIN_HIDDEN_STATE} => ${LOGIN_SHOWN_STATE}`,animate(ANIMATION_TIME)),
+      transition(`${LOGIN_SHOWN_STATE} => ${LOGIN_HIDDEN_STATE}`,animate(ANIMATION_TIME))
     ])
   ]
 })
@@ -115,14 +119,14 @@ export class UnregisteredHomeComponent implements OnInit, AfterViewInit {
     this.goToMaps();
   }
 
-  loginPopupState: string = "hidden";
+  loginPopupState: string = LOGIN_HIDDEN_STATE;
 
   showLoginPopup() {
     let loginPopup = document.getElementById("login-popup");
     if (loginPopup != null) {
       loginPopup.style.display = loginPopup.style.display == "none" ? "block" : "none";
     }
-    this.loginPopupState = this.loginPopupState == "hidden" ? "shown" : "hidden";
+    this.loginPopupState = this.loginPopupState == LOGIN_HIDDEN_STATE ? LOGIN_SHOWN_STATE : LOGIN_HIDDEN_STATE;
   }
 
 }

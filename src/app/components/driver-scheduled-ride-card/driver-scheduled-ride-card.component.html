@@ -1,13 +1,30 @@
-<mat-card id="scheduled-ride" #scheduledRide>
+<mat-card id="scheduled-ride" #scheduledRide [@rejection-anim]="rejectionState">
     <mat-card-content>
-        <mat-card-title>Passengers</mat-card-title>
-            <mat-card-subtitle *ngFor="let passenger of ride.passengers" class="passengers">
+        <div class="passengers-container" #passengerContainer>
+            <mat-card-title>Passengers</mat-card-title>
+            <mat-card-subtitle 
+                *ngFor="let passenger of ride.passengers" 
+                class="passengers"
+                (click)="showPassengerInfo(passenger.id)">
                 {{passenger.email}}
             </mat-card-subtitle>
+        </div>
+
+        <mat-card-content class="passenger-content" #passengerProfileInfo [@passenger-info-popup]="passengerPopupState">
+            <mat-card-header style="text-align: left;">
+                <div mat-card-avatar class="passenger-profile-image"><img src="{{displayedPassenger.profilePicture}}" class="profile-info-image"/></div>
+                <mat-card-title class="passenger-info-email">{{displayedPassenger.email}}</mat-card-title>
+                <mat-card-subtitle class="passenger-info-full-name">{{displayedPassenger.name}} {{displayedPassenger.surname}}</mat-card-subtitle>
+            </mat-card-header>
+            <button mat-button (click)="hidePassengerInfo()">Close</button>
+        </mat-card-content>
+
         <mat-card-title>Time</mat-card-title>
         <mat-card-subtitle class="ride-info">{{ride.startTime.toLocaleString()}}</mat-card-subtitle>
+        
         <mat-card-title>Departure</mat-card-title>
         <mat-card-subtitle class="ride-info">{{ride.locations[0].departure.address}}</mat-card-subtitle>
+        
         <mat-card-title>Estimated ride time</mat-card-title>
         <mat-card-subtitle class="ride-info">{{ride.estimatedTimeInMinutes}} minutes</mat-card-subtitle>
     </mat-card-content>
@@ -17,11 +34,11 @@
         <button mat-raised-button (click)="showRideRoutes()">Show routes</button>
     </mat-card-actions>
     <mat-card-content #rejectionReasonContainer id="rejection-reason-container">
-        <form (submit)="notifyAboutRejection()">
+        <form>
             <label for="rejection-reason">Reason</label>
             <textarea class="rejection-reason" [(ngModel)]="rejectionReasonText" name="rejection-reason-text"></textarea>
             <div style="text-align: center;">
-                <button mat-button color="primary" type="submit">Send</button>
+                <button mat-button color="primary" type="submit" (click)="notifyAboutRejection()">Send</button>
                 <button mat-button color="primary" (click)="hideRejectionReason()">Cancel</button>
             </div>
         </form>
