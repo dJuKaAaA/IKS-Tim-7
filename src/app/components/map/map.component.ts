@@ -19,9 +19,9 @@ export class MapComponent {
   routeLayers: Array<tt.Layer> = [];  // isn't necessary since map has getLayer and getSource methods
   markers: Array<tt.Marker> = []
 
-  @Input() startingLongitude: number = 19.16;
-  @Input() startingLatitude: number = 42.5;
-  @Input() startingZoom: number = 12.0;
+  @Input() startingLatitude: number = environment.startLatitude;
+  @Input() startingLongitude: number = environment.startLongitude;
+  @Input() startingZoom: number = environment.startZoom;
 
   @Output() routeEmitter: EventEmitter<GGCJRoute> = new EventEmitter<GGCJRoute>();
 
