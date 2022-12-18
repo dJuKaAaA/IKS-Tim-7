@@ -77,7 +77,7 @@ export class MapComponent {
           alert("Location(s) not found")  // Temporary alert, TODO: Make it prettier
           return;
         }
-
+        
         // after validations, we show the route on the map
         const route: GGCJRoute = new GGCJRoute(startLocation, endLocation, NaN, NaN);
         if (this.checkRouteExists(route)) {
@@ -189,6 +189,8 @@ export class MapComponent {
     if (this.checkRouteExists(route)) {
       this.map.removeLayer(route.toString());
       this.map.removeSource(route.toString());
+      this.removeMarker(route.departure);
+      this.removeMarker(route.destination);
     }
   }
 
