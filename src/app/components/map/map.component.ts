@@ -16,7 +16,6 @@ import { environment } from 'src/environment/environment';
 })
 export class MapComponent {
 
-  routeLayers: Array<tt.Layer> = [];  // isn't necessary since map has getLayer and getSource methods
   markers: Array<tt.Marker> = []
 
   @Input() startingLatitude: number = environment.startLatitude;
@@ -102,7 +101,6 @@ export class MapComponent {
 
   public clearMap() {
     this.markers = [];
-    this.routeLayers = [];
     this.loadMap();
   }
 
@@ -143,15 +141,8 @@ export class MapComponent {
     }
   }
 
-  private checkRouteExists(route: GGCJRoute) {
-    let retVal: boolean = false;
-    this.routeLayers.forEach(element => {
-      if (element.id == route.toString()){
-        retVal = true;
-        return;
-      }
-    });
-    return retVal;
+  private checkRouteExists(route: GGCJRoute): boolean {
+    return this.map.getLayer(route.toString())
   }
 
   public showRoute(route: GGCJRoute): void {
@@ -160,6 +151,7 @@ export class MapComponent {
 
     if (this.checkRouteExists(route)) {
       alert("This route is already displayed");
+      this.focusOnPoint(route.departure);
       return;
     }
 
@@ -189,22 +181,15 @@ export class MapComponent {
           }
         };
         this.map.addLayer(routeLayer);
-        this.routeLayers.push(routeLayer);
       }
     );
   }
 
   public removeRoute(route: GGCJRoute): void {
-    this.routeLayers = this.routeLayers.filter((routeLayer) => {
-      if (route.toString() == routeLayer.id) {
-        this.map.removeLayer(routeLayer.id);
-        this.map.removeSource(route.toString());
-        this.removeMarker(route.departure);
-        this.removeMarker(route.destination);
-        return false;
-      }
-      return true;
-    });
+    if (this.checkRouteExists(route)) {
+      this.map.removeLayer(route.toString());
+      this.map.removeSource(route.toString());
+    }
   }
 
   public loadMap(): void {
