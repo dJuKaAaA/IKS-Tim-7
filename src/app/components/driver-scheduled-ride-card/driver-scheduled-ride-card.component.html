@@ -1,4 +1,4 @@
-<mat-card id="scheduled-ride" #scheduledRide>
+<mat-card id="scheduled-ride" #scheduledRide [@rejection-anim]="rejectionState">
     <mat-card-content>
         <div class="passengers-container" #passengerContainer>
             <mat-card-title>Passengers</mat-card-title>

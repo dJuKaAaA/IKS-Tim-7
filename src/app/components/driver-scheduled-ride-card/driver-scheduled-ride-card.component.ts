@@ -8,6 +8,11 @@ import { Passenger } from 'src/app/model/passenger.model';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 
 const ANIMATION_TIME: number = 250;
+const PASSENGER_INFO_HIDDEN_STATE: string = "hidden";
+const PASSENGER_INFO_SHOWN_STATE: string = "shown";
+const NOT_REJECTED_STATE: string = 'not-rejected';
+const REJECTED_STATE: string = 'rejected';
+
 
 @Component({
   selector: 'app-driver-scheduled-ride-card',
@@ -15,14 +20,23 @@ const ANIMATION_TIME: number = 250;
   styleUrls: ['./driver-scheduled-ride-card.component.css'],
   animations: [
     trigger('passenger-info-popup',[
-      state('hidden', style({
+      state(PASSENGER_INFO_HIDDEN_STATE, style({
         'transform': 'scale(0)'
       })),
-      state('shown', style({
+      state(PASSENGER_INFO_SHOWN_STATE, style({
         'transform': 'scale(1.0)'
       })),
-      transition('hidden => shown', animate(ANIMATION_TIME)),
-      transition('shown => hidden', animate(ANIMATION_TIME))
+      transition(`${PASSENGER_INFO_HIDDEN_STATE} => ${PASSENGER_INFO_SHOWN_STATE}`, animate(ANIMATION_TIME)),
+      transition(`${PASSENGER_INFO_SHOWN_STATE} => ${PASSENGER_INFO_HIDDEN_STATE}`, animate(ANIMATION_TIME))
+    ]),
+    trigger('rejection-anim',[
+      state(NOT_REJECTED_STATE, style({
+        'transform': 'scale(1.0)'
+      })),
+      state(REJECTED_STATE, style({
+        'transform': 'scale(0)'
+      })),
+      transition(`${NOT_REJECTED_STATE} => ${REJECTED_STATE}`, animate(ANIMATION_TIME))
     ])
   ]
 })
@@ -108,13 +122,19 @@ export class DriverScheduledRideCardComponent implements AfterViewInit {
     this.mapComponent.focusOnPoint(this.ride.locations[0].departure);  // focus departure of first route
   }
 
+  rejectionState: string = NOT_REJECTED_STATE;
+
   notifyAboutRejection() {
     // TODD: Send information to database about rejection
     // sending information to parent about rejection
-    this.rejectionEmitter.emit(this.ride);
+    this.rejectionState = REJECTED_STATE;
+    setTimeout(() => {
+      this.rejectionEmitter.emit(this.ride);
+    },
+    ANIMATION_TIME);
   }
 
-  passengerPopupState: string = "hidden";
+  passengerPopupState: string = PASSENGER_INFO_HIDDEN_STATE;
 
   showPassengerInfo(passengerId: number) {
     this.renderer.setStyle(
@@ -127,7 +147,7 @@ export class DriverScheduledRideCardComponent implements AfterViewInit {
       'display',
       'block'
     )
-    this.passengerPopupState = this.passengerPopupState == "hidden" ? "shown" : "hidden";
+    this.passengerPopupState = PASSENGER_INFO_SHOWN_STATE;
     // TODO: Load passenger data
   }
 
@@ -144,7 +164,7 @@ export class DriverScheduledRideCardComponent implements AfterViewInit {
         'none'
       )
     }, ANIMATION_TIME);
-    this.passengerPopupState = this.passengerPopupState == "hidden" ? "shown" : "hidden";
+    this.passengerPopupState = PASSENGER_INFO_HIDDEN_STATE;
     // TODO: Clear passenger info
   }
 
