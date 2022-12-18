@@ -26,7 +26,10 @@
 <h1 id="map-header">See the drivers and routes</h1>
 
 <div id="routes-vehicles-map">
-    <app-map (routeEmitter)="updateRoute($event)"></app-map>
+    <app-map 
+        (routeEmitter)="updateRoute($event)">
+    
+    </app-map>
 </div>
 <div id="route-information">
     <div id="search-location-form-lower">
