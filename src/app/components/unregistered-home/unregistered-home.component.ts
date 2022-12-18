@@ -11,6 +11,8 @@ import {
   transition,
   animate
 } from '@angular/animations';
+import { DriverCurrentLocation } from './driver-current-location.model';
+import { environment } from 'src/environment/environment';
 
 @Component({
   selector: 'app-unregistered-home',
@@ -33,9 +35,9 @@ export class UnregisteredHomeComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MapComponent) mapComponent: MapComponent;
 
-  bgImagePath: string = "src/assets/unregistered-home-bg-img.png"
-
-  locations: Array<Location> = [];
+  bgImagePath: string = environment.unregisteredUserHomePageBgImage;
+  
+  driverLocations: Array<DriverCurrentLocation> = [];
   route: Route = new Route(
     new Location(NaN, NaN, ""),
     new Location(NaN, NaN, ""),
@@ -51,11 +53,46 @@ export class UnregisteredHomeComponent implements OnInit, AfterViewInit {
   }
   
   ngOnInit(): void {
+    this.driverLocations.push({
+      driverId: 1,
+      location: new Location(45.2541486, 19.8187217, ""),
+      isActive: true
+    });
+    this.driverLocations.push({
+      driverId: 1,
+      location: new Location(45.2473693, 19.8187955, ""),
+      isActive: false
+    });
+    this.driverLocations.push({
+      driverId: 1,
+      location: new Location(45.2558923, 19.8436113, ""),
+      isActive: false
+    });
+    this.driverLocations.push({
+      driverId: 1,
+      location: new Location(45.2472827, 19.8433833, ""),
+      isActive: true
+    });
+    this.driverLocations.push({
+      driverId: 1,
+      location: new Location(45.2450728, 19.8408995, ""),
+      isActive: false
+    });
+    this.driverLocations.push({
+      driverId: 1,
+      location: new Location(45.2445776, 19.8449582, ""),
+      isActive: false
+    })
+
     this.mapComponent.loadMap();
   }
 
   ngAfterViewInit(): void {
     this.mapComponent.loadMap();
+    for (let location of this.driverLocations) {
+      let carIconSrc = location.isActive ? environment.activeDriverMarker : environment.inactiveDriverMarker;
+      this.mapComponent.showMarker(location.location, carIconSrc);
+    }
   }
 
   goToRegister(): void {
