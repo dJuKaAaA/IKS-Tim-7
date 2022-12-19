@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Passenger } from 'src/app/model/passenger.model';
 import { PassengerService } from 'src/app/services/passenger.service';
+import { environment } from 'src/environment/environment';
 import { DialogComponent } from '../dialog/dialog.component';
 
 @Component({
@@ -14,8 +15,8 @@ import { DialogComponent } from '../dialog/dialog.component';
 })
 export class RegisterComponent {
 
-  mainImagePath: string = "src/assets/register-side-img.png"
-  taxiIconPath: string = "src/assets/taxi.png";
+  mainImagePath: string = environment.registerSideImg;
+  taxiIconPath: string = environment.taxiIcon;
 
   repeatedPassword: string = "";
   termsAndConditionsAgreement: boolean = false;

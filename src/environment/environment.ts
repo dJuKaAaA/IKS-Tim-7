@@ -7,5 +7,7 @@ export const environment = {
     startLatitude: 45.253446,
     startLongitude: 19.8304217,
     startZoom: 13,
-    unregisteredUserHomePageBgImage: "src/assets/unregistered-home-bg-img.png"
+    unregisteredUserHomePageBgImage: "src/assets/unregistered-home-bg-img.png",
+    registerSideImg: "src/assets/register-side-img.png",
+    taxiIcon: "src/assets/taxi.png",
 }; 
