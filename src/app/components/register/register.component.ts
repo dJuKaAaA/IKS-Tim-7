@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Passenger } from 'src/app/model/passenger.model';
 import { PassengerService } from 'src/app/services/passenger.service';
+import { DialogComponent } from '../dialog/dialog.component';
 
 @Component({
   selector: 'app-register',
@@ -28,7 +30,7 @@ export class RegisterComponent {
     password: ""
   };
 
-  constructor(private passengerService: PassengerService, private router: Router) {
+  constructor(private passengerService: PassengerService, private router: Router, private matDialog: MatDialog) {
 
   }
 
@@ -38,7 +40,12 @@ export class RegisterComponent {
 
   createAccount() {
     this.passengerService.create(this.passenger).subscribe();
-    alert("Passenger successfully created!");
+    this.matDialog.open(DialogComponent, {
+      data: {
+        header: "Success!",
+        body: "Account successfully created"
+      }
+    });
 
     // reseting the form
     this.passenger = {

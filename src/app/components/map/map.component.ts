@@ -167,7 +167,12 @@ export class MapComponent {
     this.showMarker(route.destination);
 
     if (this.checkRouteExists(route)) {
-      alert("This route is already displayed");
+      this.matDialog.open(DialogComponent, {
+        data: {
+          header: "Already displayed!",
+          body: "This route is already being displayed on the map"
+        }
+      });
       this.focusOnPoint(route.departure);
       return;
     }
