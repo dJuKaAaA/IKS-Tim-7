@@ -8,6 +8,8 @@ import { Location as GGCJLocation } from 'src/app/model/location.model';
 import { Router } from '@angular/router';
 import * as tt from '@tomtom-international/web-sdk-maps';
 import { environment } from 'src/environment/environment';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogComponent } from '../dialog/dialog.component';
 
 @Component({
   selector: 'app-map',
@@ -32,7 +34,7 @@ export class MapComponent {
 
   private map: any;
 
-  constructor(private ttGeolocationService: TomTomGeolocationService) {}
+  constructor(private ttGeolocationService: TomTomGeolocationService, private matDialog: MatDialog) {}
 
   public showRouteFromAddresses(startAddress: string, endAddress: string): void {
     const isLocationValid = function(location: GGCJLocation): boolean {
@@ -40,7 +42,12 @@ export class MapComponent {
     }
 
     if (startAddress == "" || endAddress == "") {
-      alert("Address field cannot be empty");
+      this.matDialog.open(DialogComponent, {
+        data: {
+          header: "Empty address!",
+          body: "Address can't be empty"
+        }
+      });
       return;
     }
 
@@ -74,14 +81,24 @@ export class MapComponent {
 
         // after sending the requests, we check to see if the requests found the locations
         if (isLocationValid(startLocation) || isLocationValid(endLocation)) {
-          alert("Location(s) not found")  // Temporary alert, TODO: Make it prettier
+          this.matDialog.open(DialogComponent, {
+            data: {
+              header: "Route not found!",
+              body: "Could not find route based on the addresses"
+            }
+          });
           return;
         }
         
         // after validations, we show the route on the map
         const route: GGCJRoute = new GGCJRoute(startLocation, endLocation, NaN, NaN);
         if (this.checkRouteExists(route)) {
-          alert("This route is already shown on the map");
+          this.matDialog.open(DialogComponent, {
+            data: {
+              header: "Already displayed!",
+              body: "This route is already being displayed on the map"
+            }
+          });
         } else {
           this.showRoute(route);
 

@@ -56,6 +56,8 @@ import { DriverCreationComponent } from './components/driver-creation/driver-cre
 import { DriverCreationFormComponent } from './components/driver-creation-form/driver-creation-form.component';
 import { VehicleCreationPageComponent } from './components/vehicle-creation-page/vehicle-creation-page.component';
 import { VehicleCreationFormComponent } from './components/vehicle-creation-form/vehicle-creation-form.component';
+import { DialogComponent } from './components/dialog/dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -99,6 +101,7 @@ import { VehicleCreationFormComponent } from './components/vehicle-creation-form
     DriverCreationFormComponent,
     VehicleCreationPageComponent,
     VehicleCreationFormComponent,
+    DialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -123,6 +126,7 @@ import { VehicleCreationFormComponent } from './components/vehicle-creation-form
     ReactiveFormsModule,
     NgImageSliderModule,
     MatCardModule,
+    MatDialogModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
