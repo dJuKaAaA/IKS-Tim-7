@@ -58,6 +58,8 @@ import { VehicleCreationPageComponent } from './components/vehicle-creation-page
 import { VehicleCreationFormComponent } from './components/vehicle-creation-form/vehicle-creation-form.component';
 import { DialogComponent } from './components/dialog/dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { DriverNavbarComponent } from './components/driver-navbar/driver-navbar.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({
   declarations: [
@@ -102,6 +104,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     VehicleCreationPageComponent,
     VehicleCreationFormComponent,
     DialogComponent,
+    DriverNavbarComponent,
   ],
   imports: [
     BrowserModule,
@@ -127,6 +130,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     NgImageSliderModule,
     MatCardModule,
     MatDialogModule,
+    MatSlideToggleModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
