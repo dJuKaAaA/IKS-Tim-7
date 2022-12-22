@@ -24,7 +24,7 @@ export class DriverNavbarComponent {
   changeActiveState() {
     this.activeState = !this.activeState;
     this.activeText = this.activeState ? ACTIVE : INACTIVE;
-    let color: string = this.activeState ? "rgb(0, 128, 0)" : "rgb(128, 0, 0)";
+    let color: string = this.activeState ? "rgb(24, 213, 24)" : "rgb(234, 22, 22)";
     this.renderer.setStyle(
       this.activeTextContainer.nativeElement,
       'color',

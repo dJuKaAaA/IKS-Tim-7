@@ -60,6 +60,7 @@ import { DialogComponent } from './components/dialog/dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { DriverNavbarComponent } from './components/driver-navbar/driver-navbar.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { PassengerNavbarComponent } from './components/passenger-navbar/passenger-navbar.component';
 
 @NgModule({
   declarations: [
@@ -105,6 +106,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     VehicleCreationFormComponent,
     DialogComponent,
     DriverNavbarComponent,
+    PassengerNavbarComponent,
   ],
   imports: [
     BrowserModule,
