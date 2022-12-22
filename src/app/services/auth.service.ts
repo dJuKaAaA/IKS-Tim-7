@@ -31,17 +31,14 @@ export class AuthService {
       const accessToken = localStorage.getItem('user');
       // const helper = new JwtHelperService();
       // const role = helper.decodeToken(accessToken).role[0].authority;
-      const role = accessToken;
+      const role = 'ROLE_DRIVER';
       return role;
     }
     return null;
   }
 
   isLoggedIn(): boolean {
-    if (localStorage.getItem('user') != null) {
-      return true;
-    }
-    return false;
+    return (localStorage.getItem('user')) != null;
   }
 
   setUser(): void {

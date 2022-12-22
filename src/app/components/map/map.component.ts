@@ -5,8 +5,6 @@ import { TomTomGeolocationService } from 'src/app/services/tom-tom-geolocation.s
 import { TomTomGeolocationResponse } from 'src/app/model/tom-tom-geolocation-response.model';
 import { Route as GGCJRoute } from 'src/app/model/route.model';
 import { Location as GGCJLocation } from 'src/app/model/location.model';
-import { Router } from '@angular/router';
-import * as tt from '@tomtom-international/web-sdk-maps';
 import { environment } from 'src/environment/environment';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../dialog/dialog.component';
@@ -18,7 +16,7 @@ import { DialogComponent } from '../dialog/dialog.component';
 })
 export class MapComponent {
 
-  markers: Array<tt.Marker> = []
+  markers: Array<ttMap.Marker> = []
 
   @Input() startingLatitude: number = environment.startLatitude;
   @Input() startingLongitude: number = environment.startLongitude;
@@ -140,7 +138,7 @@ export class MapComponent {
   }
 
   public removeMarker(location: GGCJLocation) {
-    this.markers.filter((marker) => {
+    this.markers = this.markers.filter((marker) => {
       if (marker.getLngLat().lat == location.latitude && marker.getLngLat().lng == location.longitude) {
         marker.remove();
         return false;
@@ -163,9 +161,6 @@ export class MapComponent {
   }
 
   public showRoute(route: GGCJRoute): void {
-    this.showMarker(route.departure);
-    this.showMarker(route.destination);
-
     if (this.checkRouteExists(route)) {
       this.matDialog.open(DialogComponent, {
         data: {
@@ -176,6 +171,9 @@ export class MapComponent {
       this.focusOnPoint(route.departure);
       return;
     }
+
+    this.showMarker(route.departure);
+    this.showMarker(route.destination);
 
     // showing route on map
     const routeOptions: ttService.CalculateRouteOptions = {  // TODO: change to CalculateReachableRouteOptions
@@ -189,8 +187,8 @@ export class MapComponent {
       (routeData: any) => {
         route.distanceInMeters = routeData.routes[0].summary.lengthInMeters;
         route.estimatedTimeInMinutes = Math.round(routeData.routes[0].summary.travelTimeInSeconds / 60);
-        this.notifyRoute(route);
-        let routeLayer: tt.Layer = {
+        this.notifyRoute(route);  // TODO: Check if important, then remove
+        const routeLayer: ttMap.Layer = {
           'id': route.toString(),
           'type': 'line',
           'source': {

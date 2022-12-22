@@ -58,6 +58,10 @@ import { VehicleCreationPageComponent } from './components/vehicle-creation-page
 import { VehicleCreationFormComponent } from './components/vehicle-creation-form/vehicle-creation-form.component';
 import { DialogComponent } from './components/dialog/dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { DriverNavbarComponent } from './components/driver-navbar/driver-navbar.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { PassengerNavbarComponent } from './components/passenger-navbar/passenger-navbar.component';
+import { AdminNavbarComponent } from './components/admin-navbar/admin-navbar.component';
 
 @NgModule({
   declarations: [
@@ -102,6 +106,9 @@ import { MatDialogModule } from '@angular/material/dialog';
     VehicleCreationPageComponent,
     VehicleCreationFormComponent,
     DialogComponent,
+    DriverNavbarComponent,
+    PassengerNavbarComponent,
+    AdminNavbarComponent,
   ],
   imports: [
     BrowserModule,
@@ -127,6 +134,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     NgImageSliderModule,
     MatCardModule,
     MatDialogModule,
+    MatSlideToggleModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
