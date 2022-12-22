@@ -13,6 +13,7 @@ import {
 } from '@angular/animations';
 import { DriverCurrentLocation } from './driver-current-location.model';
 import { environment } from 'src/environment/environment';
+import { TomTomGeolocationService } from 'src/app/services/tom-tom-geolocation.service';
 
 const ANIMATION_TIME = 500;
 const LOGIN_HIDDEN_STATE = "hidden";
@@ -49,10 +50,12 @@ export class UnregisteredHomeComponent implements OnInit, AfterViewInit {
     NaN
   );
 
+  settingDepartureOnClick: boolean = true;  // if false then the next click will set destination marker on map
+
   startAddressControl: FormControl = new FormControl("");
   endAddressControl: FormControl = new FormControl("");
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private geoLocationService: TomTomGeolocationService) {
 
   }
   
@@ -127,6 +130,40 @@ export class UnregisteredHomeComponent implements OnInit, AfterViewInit {
       loginPopup.style.display = loginPopup.style.display == "none" ? "block" : "none";
     }
     this.loginPopupState = this.loginPopupState == LOGIN_HIDDEN_STATE ? LOGIN_SHOWN_STATE : LOGIN_HIDDEN_STATE;
+  }
+
+  updateRouteInfoOnClick(markerLocation: Location) {
+    if (this.settingDepartureOnClick) {
+      this.mapComponent.removeRoute(this.route);
+      this.route = new Route(
+        new Location(NaN, NaN, ""),
+        new Location(NaN, NaN, ""),
+        NaN,
+        NaN
+      );
+      this.mapComponent.removeMarker(this.route.departure);
+      this.route.departure = markerLocation;
+      this.geoLocationService.reverseGeocode(markerLocation.latitude, markerLocation.longitude).subscribe((response) => {
+        if (response.addresses.length > 0) {
+          const address = response.addresses[0].address;
+          let fullAddress: string = address.freeformAddress + ", " + address.country;
+          this.route.departure.address = fullAddress;
+        }
+      });
+    } else {
+      this.mapComponent.removeMarker(this.route.destination);
+      this.route.destination = markerLocation;
+      this.geoLocationService.reverseGeocode(markerLocation.latitude, markerLocation.longitude).subscribe((response) => {
+        if (response.addresses.length > 0) {
+          const address = response.addresses[0].address
+          let fullAddress: string = address.freeformAddress + ", " + address.country;
+          this.route.destination.address = fullAddress;
+        }
+      });
+      this.mapComponent.showRoute(this.route);
+    }
+    this.settingDepartureOnClick = !this.settingDepartureOnClick;
+
   }
 
 }

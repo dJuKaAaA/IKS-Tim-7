@@ -24,6 +24,7 @@ export class MapComponent {
   @Input() clickCreatesMarker: boolean = false;
 
   @Output() routeEmitter: EventEmitter<GGCJRoute> = new EventEmitter<GGCJRoute>();
+  @Output() onClickMarkerEmitter: EventEmitter<GGCJLocation> = new EventEmitter<GGCJLocation>();
 
   notifyRoute(route: GGCJRoute) {
     this.routeEmitter.emit(route);
@@ -225,7 +226,9 @@ export class MapComponent {
 
     this.map.on("click", (element: any) => {
       if (this.clickCreatesMarker) {
-        this.showMarker(new GGCJLocation(element.lngLat.lat, element.lngLat.lng, ""));
+        const markerLocation = new GGCJLocation(element.lngLat.lat, element.lngLat.lng, ""); 
+        this.showMarker(markerLocation);
+        this.onClickMarkerEmitter.emit(markerLocation);
       }
     })
 
