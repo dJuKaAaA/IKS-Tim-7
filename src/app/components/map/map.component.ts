@@ -21,6 +21,7 @@ export class MapComponent {
   @Input() startingLatitude: number = environment.startLatitude;
   @Input() startingLongitude: number = environment.startLongitude;
   @Input() startingZoom: number = environment.startZoom;
+  @Input() clickCreatesMarker: boolean = false;
 
   @Output() routeEmitter: EventEmitter<GGCJRoute> = new EventEmitter<GGCJRoute>();
 
@@ -221,6 +222,12 @@ export class MapComponent {
       center: [this.startingLongitude, this.startingLatitude],
       zoom: this.startingZoom
     });
+
+    this.map.on("click", (element: any) => {
+      if (this.clickCreatesMarker) {
+        this.showMarker(new GGCJLocation(element.lngLat.lat, element.lngLat.lng, ""));
+      }
+    })
 
     this.map.addControl(new ttMap.FullscreenControl());
     this.map.addControl(new ttMap.NavigationControl());
