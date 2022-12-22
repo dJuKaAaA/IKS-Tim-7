@@ -27,7 +27,9 @@
 
 <div id="routes-vehicles-map">
     <app-map 
-        (routeEmitter)="updateRoute($event)">
+        (routeEmitter)="updateRoute($event)"
+        [clickCreatesMarker]="true"
+        (onClickMarkerEmitter)="updateRouteInfoOnClick($event)">
     
     </app-map>
 </div>
