@@ -1,0 +1,25 @@
+<form #searchLocationForm="ngForm" (submit)="submit()">
+    <mat-form-field class="search-location-input">
+        <mat-label>Enter pickup location</mat-label>
+        <input 
+            matInput 
+            name="pickup-location"
+            type="text"
+            [formControl]="startAddressControl"
+            [value]="startAddressControl.value || ''"
+            /> 
+        <mat-icon matSuffix>room</mat-icon>
+    </mat-form-field>
+    <mat-form-field class="search-location-input">
+        <mat-label>Enter destination</mat-label>
+        <input 
+            matInput 
+            name="destination"
+            type="text"
+            [formControl]="endAddressControl"
+            [value]="endAddressControl.value || ''"
+            />
+        <mat-icon matSuffix>room</mat-icon>
+    </mat-form-field>
+    <button type="submit" mat-raised-button color="primary">Show route</button>
+</form>

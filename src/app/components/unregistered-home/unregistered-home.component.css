@@ -1,0 +1,124 @@
+#bg-img {
+    width: 100vw;
+}
+
+#login-register-buttons-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    text-align: right;
+    display: inline-block;
+    margin: 4vh 3vw;
+}
+
+#login-register-buttons-container p {
+    display: inline-block;
+    font-size: 2vw;
+    color: white;
+    margin: 0 1.5vw;
+}
+
+#login-register-buttons-container p:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#register-now-div {
+    position: absolute;
+    top: 20vw;
+    left: 7vw;
+    color: white;
+}
+
+.login-popup {
+    width: 20vw;
+    position: absolute;
+    right: 10vw;
+    top: 8vh;
+    display: block;
+}
+
+#register-now-div>h1 {
+    font-size: 2.25vw;
+    font-family: 'Montserrat', sans-serif;
+}
+
+h2 {
+    font-size: 1.25vw;
+    font-family: 'Montserrat', sans-serif;
+}
+
+#register-now-div>button {
+    width: 15vw;
+    height: 7vh;
+    font-size: 1.5vw;
+}
+
+#search-location-form-upper {
+    position: absolute;
+    top: 20vw;
+    right: 5vw;
+    width: 30vw;
+}
+
+#redirect-to-map {
+    position: absolute;
+    top: 45vw;
+    left: 0;
+    right: 0;
+    font-size: 2.5vw;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+}
+
+#redirect-to-map:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#routes-vehicles-map {
+    width: 60vw;
+    height: 90vh;
+    margin-left: 1vw;
+    margin-bottom: 2vh;
+    display: inline-block;
+
+}
+
+#route-information {
+    width: 31vw;
+    height: 86vh;
+    display: inline-block;
+    vertical-align: top;
+    margin: 2vh 4vw;
+    overflow: scroll;
+}
+
+#search-location-form-lower {
+    margin-bottom: 4vmin;
+}
+
+#map-header {
+    text-align: center;
+    font-size: 2vw;
+    margin-top: 10vh;
+    font-weight: bold;
+    font-family: 'Montserrat', sans-serif;
+}
+
+#unavailable-schedule-button {
+    width: 100%;
+    font-size: 1.5vw;
+    height: 10vh;
+    margin-top: 5vh;
+}
+
+#unavailable-schedule-label {
+    width: 100%;
+    text-align: center;
+    margin-top: 1vh;
+    font-size: 1vw;
+    font-style: italic;
+}

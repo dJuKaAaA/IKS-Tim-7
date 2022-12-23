@@ -1,0 +1,67 @@
+<img [src]="bgImagePath" id="bg-img" />
+
+<div id="login-register-buttons-container">
+    <p (click)="showLoginPopup()">Login</p>
+    <p (click)="goToRegister()">Register</p>
+</div>
+
+<div id="register-now-div">
+    <h1>Get in the passenger seat and enjoy</h1>
+    <h2>Ride with the best and be the best.</h2>
+    <button mat-raised-button color="primary" (click)="goToRegister()">Register now</button>
+</div>
+
+<div id="search-location-form-upper">
+    <app-address-route-form
+        [startAddressControl]="startAddressControl"
+        [endAddressControl]="endAddressControl"
+        (submitEmitter)="showRoute()">
+    </app-address-route-form>
+</div>
+
+<p (click)="goToMaps()" id="redirect-to-map">
+    SEE ALL AVAILABLE VEHICLES AND ROUTES
+</p>
+
+<h1 id="map-header">See the drivers and routes</h1>
+
+<div id="routes-vehicles-map">
+    <app-map 
+        (routeEmitter)="updateRoute($event)"
+        [clickCreatesMarker]="true"
+        (onClickMarkerEmitter)="updateRouteInfoOnClick($event)">
+    
+    </app-map>
+</div>
+<div id="route-information">
+    <div id="search-location-form-lower">
+        <app-address-route-form
+            [startAddressControl]="startAddressControl"
+            [endAddressControl]="endAddressControl"
+            (submitEmitter)="showRoute()">
+
+        </app-address-route-form>
+    </div>
+    <div id="route-details">
+        <app-ride-details
+        [destination]="this.route.departure.address"
+        [departure]="this.route.destination.address"
+        [departureDate]="'N/A'"
+        [departureTime]="'N/A'"
+        [duration]="(!this.route.estimatedTimeInMinutes) ? ('N/A') : (this.route.estimatedTimeInMinutes + ' min')"
+        [distance]="(!this.route.distanceInMeters) ? ('N/A') : (this.route.distanceInMeters + 'm')">
+    </app-ride-details>
+    </div>
+    <button
+        id="unavailable-schedule-button" 
+        mat-raised-button color="primary"
+        [disabled]="true">
+        Schedule
+    </button>
+    <p
+        id="unavailable-schedule-label">
+        You need to be logged in to use this feature
+    </p>
+</div>
+
+<app-login class="login-popup" [@login-popup]="loginPopupState"></app-login>

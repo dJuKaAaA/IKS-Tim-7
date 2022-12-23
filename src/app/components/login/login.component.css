@@ -1,0 +1,25 @@
+form {
+    width: 100%;
+    background-color: white;
+    padding: 3vh 1.5vw;
+    border-radius: 2vw;
+}
+
+.user-info-input {
+    width: 100%;
+}
+
+button {
+    width: 100%;
+    padding: 2.25vh 0;
+    font-size: 1.25vw;
+}
+
+#forgot-password-p {
+    margin: 1.25vh;
+}
+
+#forgot-password-p:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}

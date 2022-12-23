@@ -1,0 +1,23 @@
+<div class="wrapper">
+  <!-- driver profile picture, driver name, driver srname -->
+  <div class="left">
+    <img
+      src="https://1.bp.blogspot.com/-vhmWFWO2r8U/YLjr2A57toI/AAAAAAAACO4/0GBonlEZPmAiQW4uvkCTm5LvlJVd_-l_wCNcBGAsYHQ/s16000/team-1-2.jpg"
+      alt="user"
+    />
+    <h4>{{ passenger.name }} {{ passenger.surname }}</h4>
+    <p>Passenger</p>
+  </div>
+  <div class="right">
+    <div class="info">
+      <h3>Profile review</h3>
+      <app-user-info [user]="passenger" [role]="'Passenger'"></app-user-info>
+    </div>
+
+    <app-custom-btn1
+      (click)="redirectToPassengerEditProfile()"
+      [content]="'Edit Profile'"
+      [customColor]="'btn-red'"
+    ></app-custom-btn1>
+  </div>
+</div>

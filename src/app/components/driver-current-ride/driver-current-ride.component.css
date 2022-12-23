@@ -1,0 +1,34 @@
+#driver-map-container {
+    width: 65vw;
+    height: 88vh;
+    display: inline-block;
+    margin: 2vh 1vw;
+}
+
+#ride-information {
+    overflow-y: scroll;
+    width: 30vw;
+    height: 84vh;
+    display: inline-block;
+    vertical-align: top;
+    margin: 4vh 1vw;
+}
+
+#button-layout {
+    width: 100%;
+}
+
+#button-layout tr td {
+    padding: 1vh 1vw;
+}
+
+button {
+    width: 100%;
+    padding: 4vh 2vw;
+    font-size: 1.25vw;
+}
+
+#route-completion-info {
+    font-size: 1vw;
+    margin-top: 8vh;
+}

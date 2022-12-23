@@ -1,4 +1,8 @@
-<img [src]="mainImagePath" id="main-image" />
+<div id="side-img-container">
+    <img [src]="mainImagePath" id="main-image" />
+    <span id="side-img-message">A few clicks away from creating your Go Go CarJet account</span>
+
+</div>
 <form #registerForm="ngForm" (ngSubmit)="createAccount()">
     <h1>Register</h1>
     <table>
@@ -9,7 +13,6 @@
                     <input
                         matInput
                         type="text"
-                        id="name"
                         name="name"
                         required
                         [(ngModel)]="passenger.name"
@@ -98,24 +101,26 @@
                 </mat-form-field>
             </td>
             <td rowspan="2">
-                <img [src]="taxiIconPath" id="taxi-icon" />
+                <img [src]="taxiIconPath" id="taxi-icon" (click)="goToHome()"/>
             </td>
 
         </tr>
         <tr>
             <td>
-                <div>
-                    <mat-checkbox 
-                        checked="{{termsAndConditionsAgreement}}"
-                        id="term-and-privacy-policy"
-                        (change)="termsAndConditionsOnChecked($event)">I agree to all the Terms and Conditions</mat-checkbox>
-                </div>
+                <mat-checkbox 
+                    checked="{{termsAndConditionsAgreement}}"
+                    id="term-and-privacy-policy"
+                    (change)="termsAndConditionsOnChecked($event)"
+                    color="primary">
+                    I agree to all the Terms and Conditions
+                </mat-checkbox>
                 <button 
                     type="submit"
                     mat-raised-button color="primary"
-                    [disabled]="!termsAndConditionsAgreement || repeatedPassword != passenger.password">Create account</button>
+                    [disabled]="!termsAndConditionsAgreement || repeatedPassword != passenger.password">
+                    Create account
+                </button>
             </td>
         </tr>
     </table>
-
 </form>

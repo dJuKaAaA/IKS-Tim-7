@@ -1,0 +1,25 @@
+table {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+}
+
+td {
+    padding: 1vh 0;
+}
+
+.field {
+    font-size: 1vw;
+    font-style: italic;
+}
+
+.value {
+    /* font size and line height must be equal */
+    font-size: 1.5vw;
+    line-height: 1.5vw;
+}
+
+td {
+    max-width: 30vw;
+}
+

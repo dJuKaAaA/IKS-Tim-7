@@ -1,0 +1,56 @@
+<link
+  href="https://fonts.googleapis.com/icon?family=Material+Icons"
+  rel="stylesheet"
+/>
+<div *ngIf="profileInfo" class="wrapper">
+  <!-- driver profile picture, driver name, driver surname -->
+  <div class="left">
+    <img
+      src="https://1.bp.blogspot.com/-vhmWFWO2r8U/YLjr2A57toI/AAAAAAAACO4/0GBonlEZPmAiQW4uvkCTm5LvlJVd_-l_wCNcBGAsYHQ/s16000/team-1-2.jpg"
+      alt="user"
+    />
+    <h4>{{ driver.name }} {{ driver.surname }}</h4>
+    <p>Driver</p>
+  </div>
+  <div class="right">
+    <div class="info">
+      <h3>Profile review</h3>
+      <app-user-info [user]="driver" [role]="'Driver'"></app-user-info>
+    </div>
+
+    <div>
+      <div class="star-align">
+        <p>Driver rating:</p>
+        <app-star class="star-padding" [rating]="driverRating"></app-star>
+      </div>
+      <div class="star-align">
+        <p>Vehicle rating:</p>
+        <app-star [rating]="vehicleRating"></app-star>
+      </div>
+    </div>
+    <div class="alignBottom">
+      <div class="grid">
+        <button (click)="displayDocuments()">
+          <b>Documents</b>
+        </button>
+        <button (click)="displayVehicle()">
+          <b>Vehicle</b>
+        </button>
+        <button (click)="redirectToDriverEditProfile()">
+          <b>Edit Profile</b>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-image-slider
+  (closeImageSliderEvent)="hideSlideBar()"
+  [imgCollection]="imgCollection"
+  *ngIf="imgSlider"
+></app-image-slider>
+<app-vehicle-info
+  (closeVehicleEvent)="closeVehicle()"
+  [vehicle]="vehicle"
+  *ngIf="vehicleDetails"
+></app-vehicle-info>
