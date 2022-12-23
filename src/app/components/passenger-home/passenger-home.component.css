@@ -14,10 +14,10 @@
 
 #route-information {
     width: 30vw;
-    height: 84vh;
+    height: 82vh;
     display: inline-block;
     vertical-align: top;
-    margin: 4vh 1vw;
+    margin: 5vh 1vw;
     overflow: scroll;
 }
 
