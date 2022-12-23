@@ -13,8 +13,11 @@
 }
 
 #route-information {
-    width: 30vw;
-    height: 82vh;
+    padding: 2vh 1vw;
+    border-radius: 15px;
+    border: 2px dashed rgb(190, 190, 190);
+    width: 28vw;
+    height: 78vh;
     display: inline-block;
     vertical-align: top;
     margin: 5vh 1vw;
@@ -35,6 +38,9 @@
 .datetime-form {
     display: block;
     margin: 5vh 0;
+    padding: 3vh 1vw;
+    border-radius: 15px;
+    border: 2px dashed rgb(190, 190, 190);
 }
 
 .datetime-form h1 {
