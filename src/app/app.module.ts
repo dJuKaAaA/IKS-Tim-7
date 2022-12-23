@@ -62,6 +62,10 @@ import { DriverNavbarComponent } from './components/driver-navbar/driver-navbar.
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { PassengerNavbarComponent } from './components/passenger-navbar/passenger-navbar.component';
 import { AdminNavbarComponent } from './components/admin-navbar/admin-navbar.component';
+import { PassengerHomeComponent } from './components/passenger-home/passenger-home.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -109,6 +113,7 @@ import { AdminNavbarComponent } from './components/admin-navbar/admin-navbar.com
     DriverNavbarComponent,
     PassengerNavbarComponent,
     AdminNavbarComponent,
+    PassengerHomeComponent,
   ],
   imports: [
     BrowserModule,
@@ -135,6 +140,9 @@ import { AdminNavbarComponent } from './components/admin-navbar/admin-navbar.com
     MatCardModule,
     MatDialogModule,
     MatSlideToggleModule,
+    MatDatepickerModule,
+    NgxMaterialTimepickerModule,
+    MatNativeDateModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
