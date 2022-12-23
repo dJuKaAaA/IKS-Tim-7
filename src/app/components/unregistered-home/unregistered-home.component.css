@@ -88,8 +88,11 @@ h2 {
 }
 
 #route-information {
-    width: 31vw;
-    height: 86vh;
+    padding: 1vh 1vw;
+    border-radius: 15px;
+    border: 2px dashed rgb(190, 190, 190);
+    width: 28vw;
+    height: 84vh;
     display: inline-block;
     vertical-align: top;
     margin: 2vh 4vw;
