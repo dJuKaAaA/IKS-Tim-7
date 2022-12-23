@@ -88,14 +88,14 @@ h2 {
 }
 
 #route-information {
-    padding: 1vh 1vw;
+    padding: 2vh 1vw;
     border-radius: 15px;
     border: 2px dashed rgb(190, 190, 190);
     width: 28vw;
-    height: 84vh;
+    height: 78vh;
     display: inline-block;
     vertical-align: top;
-    margin: 2vh 4vw;
+    margin: 4vh 4vw;
     overflow: scroll;
 }
 
@@ -115,13 +115,13 @@ h2 {
     width: 100%;
     font-size: 1.5vw;
     height: 10vh;
-    margin-top: 5vh;
 }
 
 #unavailable-schedule-label {
     width: 100%;
     text-align: center;
-    margin-top: 1vh;
+    margin-top: 5vh;
     font-size: 1vw;
     font-style: italic;
+    color: rgb(97, 97, 97);
 }
