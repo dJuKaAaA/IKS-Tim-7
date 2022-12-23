@@ -66,6 +66,7 @@ import { PassengerHomeComponent } from './components/passenger-home/passenger-ho
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { PassengerCurrentRideComponent } from './components/passenger-current-ride/passenger-current-ride.component';
 
 @NgModule({
   declarations: [
@@ -114,6 +115,7 @@ import { MatNativeDateModule } from '@angular/material/core';
     PassengerNavbarComponent,
     AdminNavbarComponent,
     PassengerHomeComponent,
+    PassengerCurrentRideComponent,
   ],
   imports: [
     BrowserModule,
