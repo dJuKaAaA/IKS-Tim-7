@@ -52,16 +52,16 @@
         [distance]="(!this.route.distanceInMeters) ? ('N/A') : (this.route.distanceInMeters + 'm')">
     </app-ride-details>
     </div>
+    <p
+        id="unavailable-schedule-label">
+        You need to be logged in to use this feature
+    </p>
     <button
         id="unavailable-schedule-button" 
         mat-raised-button color="primary"
         [disabled]="true">
         Schedule
     </button>
-    <p
-        id="unavailable-schedule-label">
-        You need to be logged in to use this feature
-    </p>
 </div>
 
 <app-login class="login-popup" [@login-popup]="loginPopupState"></app-login>
