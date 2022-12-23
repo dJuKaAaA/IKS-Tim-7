@@ -1,0 +1,49 @@
+#register-now-div>button {
+    width: 15vw;
+    height: 7vh;
+    font-size: 1.5vw;
+}
+
+#routes-vehicles-map {
+    width: 65vw;
+    height: 88vh;
+    display: inline-block;
+    margin: 2vh 1vw;
+
+}
+
+#route-information {
+    width: 30vw;
+    height: 84vh;
+    display: inline-block;
+    vertical-align: top;
+    margin: 4vh 1vw;
+    overflow: scroll;
+}
+
+#search-location-form {
+    margin-bottom: 4vmin;
+}
+
+#schedule-button {
+    width: 100%;
+    font-size: 1.25vw;
+    height: 7vh;
+    margin-top: 5vh;
+}
+
+.datetime-form {
+    display: block;
+    margin: 5vh 0;
+}
+
+.datetime-form h1 {
+    font-size: 1.5vw;
+    width: 100%;
+    text-align: center;
+    font-style: italic;
+}
+
+.datetime-form-item {
+    width: 95%;
+}
