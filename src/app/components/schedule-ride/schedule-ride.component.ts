@@ -27,7 +27,7 @@ export class ScheduleRideComponent {
   );
   routes: Array<Route> = [];
 
-  private startLocation: Location = new Location(NaN, NaN, "");
+  startLocation: Location = new Location(NaN, NaN, "");
 
   settingInitialDepartureOnClick: boolean = true;  // if false then the next click will set destination marker on map
   disableStartAddressField = false;  // TODO: Rename
@@ -234,7 +234,7 @@ export class ScheduleRideComponent {
     this.totalDistance = 0;
     this.totalDuration = 0;
     this.mapComponent.removeMarker(this.startLocation);
-
+    this.startLocation = new Location(NaN, NaN, "");
   }
 
   clearLastRoute() {
@@ -256,6 +256,7 @@ export class ScheduleRideComponent {
           NaN
         );
         this.mapComponent.removeMarker(this.startLocation);
+        this.startLocation = new Location(NaN, NaN, "");
       } else {
         const newLastAddedRoute = this.routes[this.routes.length - 1];
         this.startAddressControl.setValue(newLastAddedRoute.destination.address);
