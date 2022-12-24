@@ -36,12 +36,12 @@
 
     <div id="route-details">
         <app-ride-details
-        [destination]="this.route.departure.address"
-        [departure]="this.route.destination.address"
-        [departureDate]="this.rideDateControl.value.toDateString() || 'N/A'"
-        [departureTime]="this.rideTimeControl.value || 'N/A'"
-        [duration]="(!this.route.estimatedTimeInMinutes) ? ('N/A') : (this.route.estimatedTimeInMinutes + ' min')"
-        [distance]="(!this.route.distanceInMeters) ? ('N/A') : (this.route.distanceInMeters + 'm')">
+            [destination]="this.route.departure.address"
+            [departure]="this.route.destination.address"
+            [departureDate]="this.rideDateControl.value.toDateString() || 'N/A'"
+            [departureTime]="this.rideTimeControl.value || 'N/A'"
+            [duration]="(!this.route.estimatedTimeInMinutes) ? ('N/A') : (this.route.estimatedTimeInMinutes + ' min')"
+            [distance]="(!this.route.distanceInMeters) ? ('N/A') : (this.route.distanceInMeters + 'm')">
     </app-ride-details>
     </div>
     <button
