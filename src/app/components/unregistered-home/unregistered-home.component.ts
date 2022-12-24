@@ -80,6 +80,7 @@ export class UnregisteredHomeComponent {
   }
 
   showRouteRequestFromUpperForm() {
+    this.goToMaps();
     this.scheduleRideComponent.showRouteFromAddresses();
   }
 
