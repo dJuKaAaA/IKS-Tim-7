@@ -149,6 +149,13 @@ export class MapComponent {
     });
   }
 
+  public removeAllMarkers() {
+    for (let marker of this.markers) {
+      marker.remove();
+    }
+    this.markers = [];
+  }
+
   public updateMarkerLocation(markerLocation: GGCJLocation, newLocation: GGCJLocation) {
     for (let marker of this.markers) {
       if (marker.getLngLat().lat == markerLocation.latitude && marker.getLngLat().lng == markerLocation.longitude) {

@@ -1,0 +1,79 @@
+#routes-vehicles-map {
+    width: 60vw;
+    height: 90vh;
+    margin-left: 1vw;
+    margin-bottom: 2vh;
+    display: inline-block;
+
+}
+
+#route-information {
+    padding: 2vh 1vw;
+    border-radius: 15px;
+    border: 2px dashed rgb(190, 190, 190);
+    width: 28vw;
+    height: 78vh;
+    display: inline-block;
+    vertical-align: top;
+    margin: 4vh 4vw;
+    overflow: scroll;
+}
+
+#search-location-form-lower {
+    margin-bottom: 4vmin;
+}
+
+#map-header {
+    text-align: center;
+    font-size: 2vw;
+    margin-top: 10vh;
+    font-weight: bold;
+    font-family: 'Montserrat', sans-serif;
+}
+
+#schedule-button {
+    width: 100%;
+    font-size: 1.25vw;
+    height: 7vh;
+    margin-top: 5vh;
+}
+
+#unavailable-schedule-label {
+    width: 100%;
+    text-align: center;
+    margin-top: 1vh;
+    font-size: 1vw;
+    font-style: italic;
+    color: rgb(97, 97, 97);
+}
+
+.clear-map-buttons {
+    display: flex;
+    justify-content: center;
+    margin: 3vh 0;
+}
+
+.clear-map-buttons button {
+    margin: 1vh 1vw;
+    font-size: 0.8vw;
+    padding: 2vh 1.5vw;
+}
+
+.datetime-form {
+    display: block;
+    margin: 5vh 0;
+    padding: 3vh 1vw;
+    border-radius: 15px;
+    border: 2px dashed rgb(190, 190, 190);
+}
+
+.datetime-form h1 {
+    font-size: 1.5vw;
+    width: 100%;
+    text-align: center;
+    font-style: italic;
+}
+
+.datetime-form-item {
+    width: 95%;
+}

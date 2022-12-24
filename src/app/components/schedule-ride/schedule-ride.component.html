@@ -1,0 +1,66 @@
+
+<div id="routes-vehicles-map">
+    <app-map 
+        (routeEmitter)="updateRoute($event)"
+        [clickCreatesMarker]="true"
+        (onClickMarkerEmitter)="addMarkerOnClick($event)">
+    
+    </app-map>
+</div>
+<div id="route-information">
+    <div id="search-location-form-lower">
+        <app-address-route-form
+            [startAddressControl]="startAddressControl"
+            [endAddressControl]="endAddressControl"
+            [disableStartAddressField]="disableStartAddressField"
+            (submitEmitter)="showRouteFromAddresses()">
+
+        </app-address-route-form>
+    </div>
+
+    <div class="clear-map-buttons">
+        <button mat-raised-button color="primary" (click)="clearLastRoute()">Clear last route</button>
+        <button mat-raised-button color="primary" (click)="clearAllRoutes()">Clear all routes</button>
+    </div>
+
+    <form class="datetime-form" *ngIf="loggedIn">
+        <h1>Pick date and time</h1>
+        <mat-form-field class="datetime-form-item">
+            <mat-label>Choose a date</mat-label>
+            <input matInput [matDatepicker]="datePicker" readonly [formControl]="rideDateControl">
+            <mat-datepicker-toggle matIconSuffix [for]="datePicker"></mat-datepicker-toggle>
+            <mat-datepicker #datePicker></mat-datepicker>
+            <mat-hint>MM/DD/YYYY</mat-hint>
+        </mat-form-field>
+          
+        <mat-form-field class="datetime-form-item">
+            <mat-label>Time</mat-label>
+            <input [ngxTimepicker]="timePicker" matInput [formControl]="rideTimeControl" [format]="24"/>
+            <ngx-material-timepicker #timePicker></ngx-material-timepicker>
+            <mat-hint>HH:mm</mat-hint>
+        </mat-form-field>
+    </form>
+
+    <div id="route-details">
+        <app-ride-details
+        [destination]="(routes.length > 0) ? routes[0].departure.address : 'N/A'"
+        [departure]="(routes.length > 0) ? routes[routes.length - 1].destination.address : 'N/A'"
+        [departureDate]="'N/A'"
+        [departureTime]="'N/A'"
+        [duration]="((route.estimatedTimeInMinutes || 0) + totalDuration).toString() + ' min'"
+        [distance]="((route.distanceInMeters || 0) + totalDistance).toString() + 'm'">
+    </app-ride-details>
+    </div>
+    <button
+        id="schedule-button" 
+        mat-raised-button color="primary"
+        (click)="scheduleRide()"
+        [disabled]="!loggedIn">
+        Schedule
+    </button>
+    <p
+        id="unavailable-schedule-label"
+        *ngIf="!loggedIn">
+        You need to be logged in to use this feature
+    </p>
+</div>

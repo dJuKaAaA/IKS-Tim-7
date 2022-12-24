@@ -33,7 +33,7 @@ export class PassengerHomeComponent implements OnInit, AfterViewInit {
   startAddressControl: FormControl = new FormControl("");
   endAddressControl: FormControl = new FormControl("");
 
-  constructor(private router: Router, private geoLocationService: TomTomGeolocationService) {
+  constructor(private geoLocationService: TomTomGeolocationService) {
 
   }
   
@@ -90,11 +90,7 @@ export class PassengerHomeComponent implements OnInit, AfterViewInit {
     rideDate.setMinutes(minutes);
     console.log(rideDate);
   }
-
-  goToRegister(): void {
-    this.router.navigate(["register"]);
-  }
-
+  
   updateRoute(route: Route) {
     this.route = route;
   }
