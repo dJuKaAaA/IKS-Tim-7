@@ -14,6 +14,9 @@ import {
 import { DriverCurrentLocation } from './driver-current-location.model';
 import { environment } from 'src/environment/environment';
 import { TomTomGeolocationService } from 'src/app/services/tom-tom-geolocation.service';
+import { TomTomGeolocationResponse } from 'src/app/model/tom-tom-geolocation-response.model';
+import { DialogComponent } from '../dialog/dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 const ANIMATION_TIME = 500;
 const LOGIN_HIDDEN_STATE = "hidden";
@@ -53,11 +56,13 @@ export class UnregisteredHomeComponent implements OnInit, AfterViewInit {
 
   settingInitialDepartureOnClick: boolean = true;  // if false then the next click will set destination marker on map
   disableStartAddressField = false;  // TODO: Rename
+  totalDistance: number = 0;
+  totalDuration: number = 0;
 
   startAddressControl: FormControl = new FormControl("");
   endAddressControl: FormControl = new FormControl("");
 
-  constructor(private router: Router, private geoLocationService: TomTomGeolocationService) {
+  constructor(private router: Router, private geoLocationService: TomTomGeolocationService, private matDialog: MatDialog) {
 
   }
   
@@ -104,6 +109,16 @@ export class UnregisteredHomeComponent implements OnInit, AfterViewInit {
     }
   }
 
+  loginPopupState: string = LOGIN_HIDDEN_STATE;
+
+  showLoginPopup() {
+    let loginPopup = document.getElementById("login-popup");
+    if (loginPopup != null) {
+      loginPopup.style.display = loginPopup.style.display == "none" ? "block" : "none";
+    }
+    this.loginPopupState = this.loginPopupState == LOGIN_HIDDEN_STATE ? LOGIN_SHOWN_STATE : LOGIN_HIDDEN_STATE;
+  }
+
   goToRegister(): void {
     this.router.navigate(["register"]);
   }
@@ -116,22 +131,73 @@ export class UnregisteredHomeComponent implements OnInit, AfterViewInit {
     window.scrollTo(0,document.body.scrollHeight);
   }
 
-  showRoute() {
+  async showRouteFromAddresses() {
     let startAddress = this.startAddressControl.value || "";
     let endAddress = this.endAddressControl.value || "";
-    this.mapComponent.removeRoute(this.route);
-    this.mapComponent.showRouteFromAddresses(startAddress, endAddress);
-    this.goToMaps();
-  }
-
-  loginPopupState: string = LOGIN_HIDDEN_STATE;
-
-  showLoginPopup() {
-    let loginPopup = document.getElementById("login-popup");
-    if (loginPopup != null) {
-      loginPopup.style.display = loginPopup.style.display == "none" ? "block" : "none";
+    if (startAddress == "" || endAddress == "") {
+      this.matDialog.open(DialogComponent, {
+        data: {
+          header: "Empty address!",
+          body: "Address can't be empty"
+        }
+      });
+      return;
     }
-    this.loginPopupState = this.loginPopupState == LOGIN_HIDDEN_STATE ? LOGIN_SHOWN_STATE : LOGIN_HIDDEN_STATE;
+    
+    const isLocationValid = function(location: Location): boolean {
+      return (Number.isNaN(location.longitude) || Number.isNaN(location.latitude));
+    }
+
+    let startLocation: Location = new Location(NaN, NaN, "");
+    let endLocation: Location = new Location(NaN, NaN, "");
+    await this.geoLocationService
+      .getGeocode(startAddress)
+      .toPromise()
+      .then((response: any) => {
+        const address: string = response.results[0].address.freeformAddress + ", " + response.results[0].address.country;
+        startLocation = new Location(
+          response.results[0].position.lat,
+          response.results[0].position.lon,
+          address);
+      });
+    await this.geoLocationService
+      .getGeocode(endAddress)
+      .toPromise()
+      .then((response: any) => {
+        const address: string = response.results[0].address.freeformAddress + ", " + response.results[0].address.country;
+        endLocation = new Location(
+          response.results[0].position.lat,
+          response.results[0].position.lon,
+          address);
+      });
+
+    if (isLocationValid(startLocation) || isLocationValid(endLocation)) {
+      this.matDialog.open(DialogComponent, {
+        data: {
+          header: "Route not found!",
+          body: "Could not find route based on the addresses"
+        }
+      });
+      return;
+    }
+    
+    // after validations, we show the route on the map
+    this.mapComponent.removeMarker(this.route.departure);
+    if (!this.disableStartAddressField) {
+      this.route.departure = startLocation;
+    }
+    this.route.destination = endLocation;
+    this.mapComponent.showRoute(this.route);
+    this.mapComponent.focusOnPoint(this.route.departure);
+    this.totalDistance += this.route.distanceInMeters || 0;
+    this.totalDuration += this.route.estimatedTimeInMinutes || 0;
+    this.goToMaps();
+    this.routes.push(this.cloneRoute(this.route));
+    this.route.departure = this.route.destination;
+    this.startAddressControl.setValue(this.route.departure.address);
+    this.endAddressControl.setValue("");
+    this.disableStartAddressField = true;
+    this.settingInitialDepartureOnClick = false;
   }
 
   updateRouteInfoOnClick(markerLocation: Location) {
@@ -180,12 +246,14 @@ export class UnregisteredHomeComponent implements OnInit, AfterViewInit {
       this.route.departure = onClickLocation;
       this.mapComponent.showMarker(this.route.departure);
       this.settingInitialDepartureOnClick = false;
-      console.log("Initial marker placement...") 
       this.setFreeFormAddressOfLocation(onClickLocation);
     } else {
+      this.mapComponent.removeMarker(this.route.departure);  // removing duplicate marker because showRoute places markers automatically
       this.route.destination = onClickLocation;
       this.mapComponent.showMarker(this.route.destination);
       this.mapComponent.showRoute(this.route);
+      this.totalDistance += this.route.distanceInMeters || 0;
+      this.totalDuration += this.route.estimatedTimeInMinutes || 0;
       this.routes.push(this.cloneRoute(this.route));
       this.route.departure = this.route.destination;
       this.startAddressControl.setValue(this.route.departure.address);
@@ -200,22 +268,6 @@ export class UnregisteredHomeComponent implements OnInit, AfterViewInit {
       route.distanceInMeters,
       route.estimatedTimeInMinutes
     );
-  }
-
-  totalDurationDisplay(): string {
-    let duration: number = 0;
-    for (let route of this.routes) {
-      duration += route.estimatedTimeInMinutes || 0;
-    }
-    return `${duration} min`;
-  }
-
-  totalDistanceDisplay(): string {
-    let distance: number = 0;
-    for (let route of this.routes) {
-      distance += route.distanceInMeters;
-    }
-    return `${distance}m`;
   }
 
 }

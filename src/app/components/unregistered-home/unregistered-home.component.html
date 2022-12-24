@@ -16,7 +16,7 @@
         [startAddressControl]="startAddressControl"
         [endAddressControl]="endAddressControl"
         [disableStartAddressField]="disableStartAddressField"
-        (submitEmitter)="showRoute()">
+        (submitEmitter)="showRouteFromAddresses()">
     </app-address-route-form>
 </div>
 
@@ -40,18 +40,18 @@
             [startAddressControl]="startAddressControl"
             [endAddressControl]="endAddressControl"
             [disableStartAddressField]="disableStartAddressField"
-            (submitEmitter)="showRoute()">
+            (submitEmitter)="showRouteFromAddresses()">
 
         </app-address-route-form>
     </div>
     <div id="route-details">
         <app-ride-details
-        [destination]="(this.routes.length > 0) ? this.routes[0].departure.address : 'N/A'"
-        [departure]="(this.routes.length > 0) ? this.routes[this.routes.length - 1].destination.address : 'N/A'"
+        [destination]="(routes.length > 0) ? routes[0].departure.address : 'N/A'"
+        [departure]="(routes.length > 0) ? routes[routes.length - 1].destination.address : 'N/A'"
         [departureDate]="'N/A'"
         [departureTime]="'N/A'"
-        [duration]="totalDurationDisplay()"
-        [distance]="totalDistanceDisplay()">
+        [duration]="((route.estimatedTimeInMinutes || 0) + totalDuration).toString() + ' min'"
+        [distance]="((route.distanceInMeters || 0) + totalDistance).toString() + 'm'">
     </app-ride-details>
     </div>
     <p
