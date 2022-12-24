@@ -7,7 +7,7 @@ export class Route {
     }
 
     toString(): string {
-        return "(" + this.departure.toString() + ", " + this.destination.toString() + ")"
+        return "(" + this.departure.toString() + ", " + this.destination.toString() + ")";
     }
 }
 

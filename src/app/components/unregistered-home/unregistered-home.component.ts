@@ -49,8 +49,10 @@ export class UnregisteredHomeComponent implements OnInit, AfterViewInit {
     NaN,
     NaN
   );
+  routes: Array<Route> = [];
 
-  settingDepartureOnClick: boolean = true;  // if false then the next click will set destination marker on map
+  settingInitialDepartureOnClick: boolean = true;  // if false then the next click will set destination marker on map
+  disableStartAddressField = false;  // TODO: Rename
 
   startAddressControl: FormControl = new FormControl("");
   endAddressControl: FormControl = new FormControl("");
@@ -133,7 +135,7 @@ export class UnregisteredHomeComponent implements OnInit, AfterViewInit {
   }
 
   updateRouteInfoOnClick(markerLocation: Location) {
-    if (this.settingDepartureOnClick) {
+    if (this.settingInitialDepartureOnClick) {
       this.mapComponent.removeRoute(this.route);
       this.route = new Route(
         new Location(NaN, NaN, ""),
@@ -143,27 +145,77 @@ export class UnregisteredHomeComponent implements OnInit, AfterViewInit {
       );
       this.mapComponent.removeMarker(this.route.departure);
       this.route.departure = markerLocation;
-      this.geoLocationService.reverseGeocode(markerLocation.latitude, markerLocation.longitude).subscribe((response) => {
-        if (response.addresses.length > 0) {
-          const address = response.addresses[0].address;
-          let fullAddress: string = address.freeformAddress + ", " + address.country;
-          this.route.departure.address = fullAddress;
-        }
-      });
     } else {
       this.mapComponent.removeMarker(this.route.destination);
-      this.route.destination = markerLocation;
-      this.geoLocationService.reverseGeocode(markerLocation.latitude, markerLocation.longitude).subscribe((response) => {
+      this.mapComponent.showRoute(this.route);
+    }
+    this.settingInitialDepartureOnClick = !this.settingInitialDepartureOnClick;
+    this.setFreeFormAddressOfLocation(markerLocation);
+  }
+
+  setFreeFormAddressOfLocation(location: Location) {
+    this.geoLocationService.reverseGeocode(location.latitude, location.longitude);
+    this.geoLocationService.reverseGeocode(location.latitude, location.longitude).subscribe((response) => {
+      if (response.addresses.length > 0) {
+        const address = response.addresses[0].address
+        let fullAddress: string = address.freeformAddress + ", " + address.country;
+        location.address = fullAddress;
+      }
+    });
+  }
+
+  async addMarkerOnClick(onClickLocation: Location) {
+    await this.geoLocationService.
+      reverseGeocode(onClickLocation.latitude, onClickLocation.longitude)
+      .toPromise()
+      .then((response) => {
         if (response.addresses.length > 0) {
           const address = response.addresses[0].address
           let fullAddress: string = address.freeformAddress + ", " + address.country;
-          this.route.destination.address = fullAddress;
+          onClickLocation.address = fullAddress;
         }
       });
-      this.mapComponent.showRoute(this.route);
-    }
-    this.settingDepartureOnClick = !this.settingDepartureOnClick;
 
+    if (this.settingInitialDepartureOnClick) {
+      this.route.departure = onClickLocation;
+      this.mapComponent.showMarker(this.route.departure);
+      this.settingInitialDepartureOnClick = false;
+      console.log("Initial marker placement...") 
+      this.setFreeFormAddressOfLocation(onClickLocation);
+    } else {
+      this.route.destination = onClickLocation;
+      this.mapComponent.showMarker(this.route.destination);
+      this.mapComponent.showRoute(this.route);
+      this.routes.push(this.cloneRoute(this.route));
+      this.route.departure = this.route.destination;
+      this.startAddressControl.setValue(this.route.departure.address);
+      this.disableStartAddressField = true;
+    }
+  }
+
+  private cloneRoute(route: Route): Route {  // TODO: Place this method somewhere more appropriate
+    return new Route(
+      new Location(route.departure.latitude, route.departure.longitude, route.departure.address),
+      new Location(route.destination.latitude, route.destination.longitude, route.destination.address),
+      route.distanceInMeters,
+      route.estimatedTimeInMinutes
+    );
+  }
+
+  totalDurationDisplay(): string {
+    let duration: number = 0;
+    for (let route of this.routes) {
+      duration += route.estimatedTimeInMinutes || 0;
+    }
+    return `${duration} min`;
+  }
+
+  totalDistanceDisplay(): string {
+    let distance: number = 0;
+    for (let route of this.routes) {
+      distance += route.distanceInMeters;
+    }
+    return `${distance}m`;
   }
 
 }

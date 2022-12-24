@@ -15,6 +15,7 @@
     <app-address-route-form
         [startAddressControl]="startAddressControl"
         [endAddressControl]="endAddressControl"
+        [disableStartAddressField]="disableStartAddressField"
         (submitEmitter)="showRoute()">
     </app-address-route-form>
 </div>
@@ -29,7 +30,7 @@
     <app-map 
         (routeEmitter)="updateRoute($event)"
         [clickCreatesMarker]="true"
-        (onClickMarkerEmitter)="updateRouteInfoOnClick($event)">
+        (onClickMarkerEmitter)="addMarkerOnClick($event)">
     
     </app-map>
 </div>
@@ -38,18 +39,19 @@
         <app-address-route-form
             [startAddressControl]="startAddressControl"
             [endAddressControl]="endAddressControl"
+            [disableStartAddressField]="disableStartAddressField"
             (submitEmitter)="showRoute()">
 
         </app-address-route-form>
     </div>
     <div id="route-details">
         <app-ride-details
-        [destination]="this.route.departure.address"
-        [departure]="this.route.destination.address"
+        [destination]="(this.routes.length > 0) ? this.routes[0].departure.address : 'N/A'"
+        [departure]="(this.routes.length > 0) ? this.routes[this.routes.length - 1].destination.address : 'N/A'"
         [departureDate]="'N/A'"
         [departureTime]="'N/A'"
-        [duration]="(!this.route.estimatedTimeInMinutes) ? ('N/A') : (this.route.estimatedTimeInMinutes + ' min')"
-        [distance]="(!this.route.distanceInMeters) ? ('N/A') : (this.route.distanceInMeters + 'm')">
+        [duration]="totalDurationDisplay()"
+        [distance]="totalDistanceDisplay()">
     </app-ride-details>
     </div>
     <p
