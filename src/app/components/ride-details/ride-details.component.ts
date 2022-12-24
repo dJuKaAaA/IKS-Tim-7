@@ -13,6 +13,7 @@ export class RideDetailsComponent implements OnInit{
   @Input() departureTime: string = "N/A";
   @Input() duration: string = "N/A";
   @Input() distance: string = "N/A";
+  @Input() price: string = "N/A";
 
   ngOnInit(): void {
 
