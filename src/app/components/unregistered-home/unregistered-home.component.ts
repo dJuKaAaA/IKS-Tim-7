@@ -17,6 +17,8 @@ import { TomTomGeolocationService } from 'src/app/services/tom-tom-geolocation.s
 import { TomTomGeolocationResponse } from 'src/app/model/tom-tom-geolocation-response.model';
 import { DialogComponent } from '../dialog/dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { throwToolbarMixedModesError } from '@angular/material/toolbar';
+import { last } from 'rxjs';
 
 const ANIMATION_TIME = 500;
 const LOGIN_HIDDEN_STATE = "hidden";
@@ -125,6 +127,9 @@ export class UnregisteredHomeComponent implements OnInit, AfterViewInit {
 
   updateRoute(route: Route) {
     this.route = route;
+    this.routes.push(this.cloneRoute(route));  
+    // mapComponent.showRoute changes values of passed route for some reason so this emitter fetches that changed data
+
   }
 
   goToMaps(): void {
@@ -182,7 +187,7 @@ export class UnregisteredHomeComponent implements OnInit, AfterViewInit {
     }
     
     // after validations, we show the route on the map
-    this.mapComponent.removeMarker(this.route.departure);
+    // this.mapComponent.removeMarker(this.route.departure);
     if (!this.disableStartAddressField) {
       this.route.departure = startLocation;
     }
@@ -192,42 +197,12 @@ export class UnregisteredHomeComponent implements OnInit, AfterViewInit {
     this.totalDistance += this.route.distanceInMeters || 0;
     this.totalDuration += this.route.estimatedTimeInMinutes || 0;
     this.goToMaps();
-    this.routes.push(this.cloneRoute(this.route));
+    // this.routes.push(this.cloneRoute(this.route));
     this.route.departure = this.route.destination;
     this.startAddressControl.setValue(this.route.departure.address);
     this.endAddressControl.setValue("");
     this.disableStartAddressField = true;
     this.settingInitialDepartureOnClick = false;
-  }
-
-  updateRouteInfoOnClick(markerLocation: Location) {
-    if (this.settingInitialDepartureOnClick) {
-      this.mapComponent.removeRoute(this.route);
-      this.route = new Route(
-        new Location(NaN, NaN, ""),
-        new Location(NaN, NaN, ""),
-        NaN,
-        NaN
-      );
-      this.mapComponent.removeMarker(this.route.departure);
-      this.route.departure = markerLocation;
-    } else {
-      this.mapComponent.removeMarker(this.route.destination);
-      this.mapComponent.showRoute(this.route);
-    }
-    this.settingInitialDepartureOnClick = !this.settingInitialDepartureOnClick;
-    this.setFreeFormAddressOfLocation(markerLocation);
-  }
-
-  setFreeFormAddressOfLocation(location: Location) {
-    this.geoLocationService.reverseGeocode(location.latitude, location.longitude);
-    this.geoLocationService.reverseGeocode(location.latitude, location.longitude).subscribe((response) => {
-      if (response.addresses.length > 0) {
-        const address = response.addresses[0].address
-        let fullAddress: string = address.freeformAddress + ", " + address.country;
-        location.address = fullAddress;
-      }
-    });
   }
 
   async addMarkerOnClick(onClickLocation: Location) {
@@ -246,15 +221,14 @@ export class UnregisteredHomeComponent implements OnInit, AfterViewInit {
       this.route.departure = onClickLocation;
       this.mapComponent.showMarker(this.route.departure);
       this.settingInitialDepartureOnClick = false;
-      this.setFreeFormAddressOfLocation(onClickLocation);
     } else {
-      this.mapComponent.removeMarker(this.route.departure);  // removing duplicate marker because showRoute places markers automatically
+      // this.mapComponent.removeMarker(this.route.departure);  // removing duplicate marker because showRoute places markers automatically
       this.route.destination = onClickLocation;
       this.mapComponent.showMarker(this.route.destination);
       this.mapComponent.showRoute(this.route);
       this.totalDistance += this.route.distanceInMeters || 0;
       this.totalDuration += this.route.estimatedTimeInMinutes || 0;
-      this.routes.push(this.cloneRoute(this.route));
+      // this.routes.push(this.cloneRoute(this.route));
       this.route.departure = this.route.destination;
       this.startAddressControl.setValue(this.route.departure.address);
       this.disableStartAddressField = true;
@@ -268,6 +242,56 @@ export class UnregisteredHomeComponent implements OnInit, AfterViewInit {
       route.distanceInMeters,
       route.estimatedTimeInMinutes
     );
+  }
+
+  clearAllRoutes() {
+    for (let route of this.routes) {
+      this.mapComponent.removeRoute(route);
+    }
+    this.routes = [];
+    this.route = new Route(
+      new Location(NaN, NaN, ""),
+      new Location(NaN, NaN, ""),
+      NaN,
+      NaN
+    );
+    this.startAddressControl.setValue("");
+    this.settingInitialDepartureOnClick = true;
+    this.disableStartAddressField = false;
+    this.totalDistance = 0;
+    this.totalDuration = 0;
+    this.mapComponent.removeAllMarkers();
+
+  }
+
+  clearLastRoute() {
+    if (this.routes.length > 0) {
+      const oldLastAddedRoute: Route = this.routes[this.routes.length - 1];
+      this.mapComponent.removeRoute(this.routes[this.routes.length - 1]);
+      this.routes.pop();
+      if (this.routes.length == 0) {
+        this.startAddressControl.setValue("");
+        this.settingInitialDepartureOnClick = true;
+        this.disableStartAddressField = false;
+        this.totalDistance = 0;
+        this.totalDuration = 0;
+        this.route = new Route(
+          new Location(NaN, NaN, ""),
+          new Location(NaN, NaN, ""),
+          NaN,
+          NaN
+        );
+        this.mapComponent.removeAllMarkers();
+      } else {
+        const newLastAddedRoute = this.routes[this.routes.length - 1];
+        this.startAddressControl.setValue(newLastAddedRoute.destination.address);
+        this.route.departure = newLastAddedRoute.destination;
+        this.route.estimatedTimeInMinutes = newLastAddedRoute.estimatedTimeInMinutes;
+        this.route.distanceInMeters = newLastAddedRoute.distanceInMeters;
+        this.totalDuration -= this.route.estimatedTimeInMinutes;
+        this.totalDistance -= this.route.distanceInMeters;
+      }
+    }
   }
 
 }

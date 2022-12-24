@@ -125,3 +125,15 @@ h2 {
     font-style: italic;
     color: rgb(97, 97, 97);
 }
+
+.clear-map-buttons {
+    display: flex;
+    justify-content: center;
+    margin: 3vh 0;
+}
+
+.clear-map-buttons button {
+    margin: 1vh 1vw;
+    font-size: 0.8vw;
+    padding: 2vh 1.5vw;
+}
