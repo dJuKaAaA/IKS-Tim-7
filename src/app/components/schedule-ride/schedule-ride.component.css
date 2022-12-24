@@ -1,22 +1,21 @@
 #routes-vehicles-map {
-    width: 60vw;
-    height: 90vh;
-    margin-left: 1vw;
-    margin-bottom: 2vh;
+    width: 65vw;
+    height: 88vh;
     display: inline-block;
+    margin: 2vh 1vw;
 
 }
 
 #route-information {
-    padding: 2vh 1vw;
-    border-radius: 15px;
-    border: 2px dashed rgb(190, 190, 190);
     width: 28vw;
     height: 78vh;
     display: inline-block;
     vertical-align: top;
-    margin: 4vh 4vw;
-    overflow: scroll;
+    overflow-y: scroll;
+    border-radius: 2vmin;
+    margin: 5vh 1vw;
+    border: 2px dashed rgb(190, 190, 190);
+    padding: 2vh 1vw;
 }
 
 #search-location-form-lower {

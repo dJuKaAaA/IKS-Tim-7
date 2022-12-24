@@ -27,6 +27,8 @@ export class ScheduleRideComponent {
   );
   routes: Array<Route> = [];
 
+  private startLocation: Location = new Location(NaN, NaN, "");
+
   settingInitialDepartureOnClick: boolean = true;  // if false then the next click will set destination marker on map
   disableStartAddressField = false;  // TODO: Rename
   totalDistance: number = 0;
@@ -107,10 +109,6 @@ export class ScheduleRideComponent {
 
   }
 
-  goToMaps(): void {
-    window.scrollTo(0,document.body.scrollHeight);
-  }
-
   async showRouteFromAddresses() {
     let startAddress = this.startAddressControl.value || "";
     let endAddress = this.endAddressControl.value || "";
@@ -162,17 +160,15 @@ export class ScheduleRideComponent {
     }
     
     // after validations, we show the route on the map
-    // this.mapComponent.removeMarker(this.route.departure);
     if (!this.disableStartAddressField) {
       this.route.departure = startLocation;
+      this.startLocation = startLocation;
     }
     this.route.destination = endLocation;
     this.mapComponent.showRoute(this.route);
     this.mapComponent.focusOnPoint(this.route.departure);
     this.totalDistance += this.route.distanceInMeters || 0;
     this.totalDuration += this.route.estimatedTimeInMinutes || 0;
-    this.goToMaps();
-    // this.routes.push(this.cloneRoute(this.route));
     this.route.departure = this.route.destination;
     this.startAddressControl.setValue(this.route.departure.address);
     this.endAddressControl.setValue("");
@@ -187,7 +183,7 @@ export class ScheduleRideComponent {
       .toPromise()
       .then((response) => {
         if (response.addresses.length > 0) {
-          const address = response.addresses[0].address
+          const address = response.addresses[0].address;
           let fullAddress: string = address.freeformAddress + ", " + address.country;
           onClickLocation.address = fullAddress;
         }
@@ -197,14 +193,13 @@ export class ScheduleRideComponent {
       this.route.departure = onClickLocation;
       this.mapComponent.showMarker(this.route.departure);
       this.settingInitialDepartureOnClick = false;
+      this.startLocation = onClickLocation;
     } else {
-      // this.mapComponent.removeMarker(this.route.departure);  // removing duplicate marker because showRoute places markers automatically
       this.route.destination = onClickLocation;
       this.mapComponent.showMarker(this.route.destination);
       this.mapComponent.showRoute(this.route);
       this.totalDistance += this.route.distanceInMeters || 0;
       this.totalDuration += this.route.estimatedTimeInMinutes || 0;
-      // this.routes.push(this.cloneRoute(this.route));
       this.route.departure = this.route.destination;
       this.startAddressControl.setValue(this.route.departure.address);
       this.disableStartAddressField = true;
@@ -238,7 +233,7 @@ export class ScheduleRideComponent {
     this.notifyDisabledStartAddress();
     this.totalDistance = 0;
     this.totalDuration = 0;
-    this.mapComponent.removeAllMarkers();
+    this.mapComponent.removeMarker(this.startLocation);
 
   }
 
@@ -260,7 +255,7 @@ export class ScheduleRideComponent {
           NaN,
           NaN
         );
-        this.mapComponent.removeAllMarkers();
+        this.mapComponent.removeMarker(this.startLocation);
       } else {
         const newLastAddedRoute = this.routes[this.routes.length - 1];
         this.startAddressControl.setValue(newLastAddedRoute.destination.address);
@@ -269,7 +264,6 @@ export class ScheduleRideComponent {
         this.route.distanceInMeters = newLastAddedRoute.distanceInMeters;
         this.totalDuration -= this.route.estimatedTimeInMinutes;
         this.totalDistance -= this.route.distanceInMeters;
-        this.mapComponent.focusOnPoint(this.route.departure);
       }
     }
   }

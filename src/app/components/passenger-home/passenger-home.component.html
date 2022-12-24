@@ -1,4 +1,4 @@
-<div id="routes-vehicles-map">
+<!-- <div id="routes-vehicles-map">
     <app-map 
         (routeEmitter)="updateRoute($event)"
         [clickCreatesMarker]="true"
@@ -50,7 +50,11 @@
         (click)="scheduleRide()">
         Schedule
     </button>
+</div> -->
+
+<div class="schedule-ride-container">
+    <app-schedule-ride
+        style="width: 100%; height: 100%;"
+        [loggedIn]="true">
+    </app-schedule-ride>
 </div>
-<!-- 
-<input time="false" date="true" mdc-datetime-picker="" type="text" id="date" placeholder="Date"
-    ng-model="date" min-date="minDate" max-date="maxDate" class=" md-input"> -->
