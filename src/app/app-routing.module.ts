@@ -19,6 +19,7 @@ import { DriverCreationComponent } from './components/driver-creation/driver-cre
 import { VehicleCreationPageComponent } from './components/vehicle-creation-page/vehicle-creation-page.component';
 import { PassengerHomeComponent } from './components/passenger-home/passenger-home.component';
 import { PassengerCurrentRideComponent } from './components/passenger-current-ride/passenger-current-ride.component';
+import { ChatComponent } from './components/chat/chat.component';
 
 const routes: Routes = [
   { path: "", component: UnregisteredHomeComponent, canActivate: [AlreadyAuthenticatedGuard]},
@@ -38,6 +39,7 @@ const routes: Routes = [
   { path: 'create-vehicle', component: VehicleCreationPageComponent},
   { path: 'passenger-home', component: PassengerHomeComponent },
   { path: 'passenger-current-ride', component: PassengerCurrentRideComponent },
+  { path: 'admin-chat', component: ChatComponent },
 ];
 
 @NgModule({
