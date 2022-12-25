@@ -1,0 +1,37 @@
+<div class="bubbles-container">
+    <div *ngFor="let i of dummyArray">
+        <div class="sender-container" >
+            <div class="sender-message">
+                <p class="sender-bubble">
+                    Test poruka Test poruka Test poruka Test poruka 
+                    Test poruka Test poruka Test poruka Test poruka 
+                    Test poruka Test poruka Test poruka Test poruka
+                </p>
+                <p style="text-align: right; margin: 0 1vw; font-size: 0.75vw;">
+                    21/12/2022 12:00
+                </p>
+            </div>
+        </div>
+        <div class="receiver-container">
+            <div class="receiver-message">
+                <p class="receiver-bubble">
+                    Test poruka Test poruka Test poruka Test poruka 
+                    Test poruka Test poruka Test poruka Test poruka 
+                    Test poruka Test poruka Test poruka Test poruka
+                </p>
+                <p style="text-align: left; margin: 0 1vw; font-size: 0.75vw;">
+                    21/12/2022 21:00
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<form class="message-send-form">
+    <mat-form-field class="message-input">
+        <input 
+            placeholder="Type message..."
+            matInput
+            name="message-field" />
+    </mat-form-field>
+    <button type="submit" mat-raised-button>Send</button>
+</form>

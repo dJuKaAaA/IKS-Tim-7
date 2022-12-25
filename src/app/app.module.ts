@@ -68,6 +68,8 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { PassengerCurrentRideComponent } from './components/passenger-current-ride/passenger-current-ride.component';
 import { ScheduleRideComponent } from './components/schedule-ride/schedule-ride.component';
+import { ChatComponent } from './components/chat/chat.component';
+import { MessageBubblesComponent } from './components/message-bubbles/message-bubbles.component';
 
 @NgModule({
   declarations: [
@@ -118,6 +120,8 @@ import { ScheduleRideComponent } from './components/schedule-ride/schedule-ride.
     PassengerHomeComponent,
     PassengerCurrentRideComponent,
     ScheduleRideComponent,
+    ChatComponent,
+    MessageBubblesComponent,
   ],
   imports: [
     BrowserModule,

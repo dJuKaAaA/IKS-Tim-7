@@ -1,0 +1,67 @@
+.bubbles-container {
+    width: 100%;
+    height: 90%;
+    border-radius: 15px;
+    overflow: scroll;
+}
+
+.sender-container {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.receiver-container {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.sender-message {
+    margin: 3vh 2vw;
+    max-width: 50%;
+    min-height: 5%;
+}
+
+.receiver-message {
+    margin: 3vh 2vw;
+    max-width: 50%;
+    min-height: 5%;
+}
+
+.sender-bubble {
+    max-width: 100%;
+    background-image: linear-gradient(rgb(78, 82, 187), rgb(0, 59, 148));
+    color: white;
+    padding: 3vh 2vw;
+    font-size: 1.1vw;
+    border-radius: 25px;
+    border-top-right-radius: 0px;
+    line-height: 1.5vw;
+}
+
+.receiver-bubble {
+    max-width: 100%;
+    background-image: linear-gradient(rgb(40, 41, 93), rgb(2, 20, 47));
+    color: white;
+    padding: 3vh 2vw;
+    font-size: 1.1vw;
+    border-radius: 25px;
+    border-top-left-radius: 0px;
+    line-height: 1.5vw;
+}
+
+.message-send-form {
+    display: flex;
+}
+
+.message-send-form button {
+    display: flex;
+    flex-direction: column;
+    font-size: 1vw;
+    padding: 3vh 3vw;
+    border-radius: 25px;
+    margin: 0 1vw;
+}
+
+.message-input {
+    width: 100%;
+}
