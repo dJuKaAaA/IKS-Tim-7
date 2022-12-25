@@ -3,6 +3,7 @@
     height: 90%;
     border-radius: 15px;
     overflow: scroll;
+    overflow-anchor: auto;
 }
 
 .sender-container {

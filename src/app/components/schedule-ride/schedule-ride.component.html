@@ -43,8 +43,8 @@
 
     <div id="route-details">
         <app-ride-details
-        [destination]="startLocation.address || 'N/A'"
-        [departure]="(routes.length > 0) ? routes[routes.length - 1].destination.address : 'N/A'"
+        [departure]="startLocation.address || 'N/A'"
+        [destination]="(routes.length > 0) ? routes[routes.length - 1].destination.address : 'N/A'"
         [departureDate]="'N/A'"
         [departureTime]="'N/A'"
         [duration]="((route.estimatedTimeInMinutes || 0) + totalDuration).toString() + ' min'"
