@@ -18,7 +18,7 @@ export class MessageBubblesComponent implements OnInit {
   ngOnInit() {
     for (let i = 1; i <= this.dummyMessageCount; ++i) {
       if (Math.random() > 0.5) {
-        this.messages.push({
+        this.appendMessage({
           id: i,
           timeOfSending: new Date(),
           senderId: 1,
@@ -28,7 +28,7 @@ export class MessageBubblesComponent implements OnInit {
           rideId: 1
         })
       } else {
-        this.messages.push({
+        this.appendMessage({
           id: i,
           timeOfSending: new Date(),
           senderId: 2,
@@ -47,7 +47,7 @@ export class MessageBubblesComponent implements OnInit {
     }
     const messageId: number = Math.floor(Math.random() * 10000);
     console.log(messageId);
-    this.messages.push({
+    const message = {
       id: messageId,
       timeOfSending: new Date(),
       senderId: 1,
@@ -55,14 +55,20 @@ export class MessageBubblesComponent implements OnInit {
       message: this.typingMessageContent,
       type: "RIDE",
       rideId: 1
-    })
+    };
+    this.appendMessage(message);
     this.typingMessageContent = "";
+    
+  }
+
+  appendMessage(message: Message) {
+    this.messages.push(message);
     setTimeout(() => {
       const bubblesContainer = document.getElementsByClassName("bubbles-container")[0];
       bubblesContainer.scrollTop = bubblesContainer.scrollHeight;
     }, 300);
-    
-  }
+
+  } 
 
   
 }
