@@ -24,12 +24,8 @@
 </div>
 <form class="message-send-form" (submit)="sendMessage()">
     <mat-form-field class="message-input">
-        <input 
-            placeholder="Type message..."
-            matInput
-            name="message-field" 
-            [(ngModel)]="typingMessageContent"
-            autocomplete="off"/>
+        <input placeholder="Type message..." matInput name="message-field" [(ngModel)]="typingMessageContent"
+            autocomplete="off" />
+        <button type="submit" mat-button matSuffix>Send</button>
     </mat-form-field>
-    <button type="submit" mat-raised-button>Send</button>
 </form>

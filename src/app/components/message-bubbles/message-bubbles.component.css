@@ -60,9 +60,9 @@
     font-size: 1vw;
     padding: 3vh 3vw;
     border-radius: 25px;
-    margin: 0 1vw;
 }
 
 .message-input {
     width: 100%;
+    padding: 0 2vw;
 }
