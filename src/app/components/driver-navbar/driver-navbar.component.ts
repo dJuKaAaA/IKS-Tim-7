@@ -33,10 +33,8 @@ export class DriverNavbarComponent {
   }
 
   logout() {
-    this.authService.logout().subscribe((response) => {
-      localStorage.removeItem('user');
-      this.router.navigate(['']);
-    })
+    localStorage.removeItem('user');
+    this.router.navigate(['']);
   }
 
   navigateToHome() {
