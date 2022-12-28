@@ -41,6 +41,7 @@ export class DriverRideHistoryDetailsComponent
   public departureTime: string;
   public duration: string;
   public distance: number = 0;
+  public price: number = 0;
 
   constructor(
     private rideService: RideService,
