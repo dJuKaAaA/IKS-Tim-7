@@ -5,10 +5,7 @@
 <div *ngIf="profileInfo" class="wrapper">
   <!-- driver profile picture, driver name, driver surname -->
   <div class="left">
-    <img
-      src="https://1.bp.blogspot.com/-vhmWFWO2r8U/YLjr2A57toI/AAAAAAAACO4/0GBonlEZPmAiQW4uvkCTm5LvlJVd_-l_wCNcBGAsYHQ/s16000/team-1-2.jpg"
-      alt="user"
-    />
+    <img src="{{ driver.profilePicture }}" alt="user" />
     <h4>{{ driver.name }} {{ driver.surname }}</h4>
     <p>Driver</p>
   </div>

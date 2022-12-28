@@ -13,18 +13,11 @@ export class EditProfileFormComponent {
   @Input() public displayDriverUI: boolean = false;
   @Output() public displayDocumentsEvent = new EventEmitter();
   @Output() public changePasswordEvent = new EventEmitter();
+  @Output() public updateProfileEventEmitter = new EventEmitter();
   notificationOffset: String = '-70px';
   successfully: Boolean = true;
 
   constructor() {}
-
-  onSubmit(f: NgForm): void {
-    // Process checkout data here
-    this.notificationOffset = '30px';
-    setTimeout(() => {
-      this.notificationOffset = '-70px';
-    }, 3000);
-  }
 
   closeNotification(): void {
     this.notificationOffset = '-70px';
@@ -36,5 +29,9 @@ export class EditProfileFormComponent {
 
   changePassword() {
     this.changePasswordEvent.emit();
+  }
+
+  updateProfile() {
+    this.updateProfileEventEmitter.emit();
   }
 }

@@ -36,30 +36,6 @@ export class DriverProfileDetailsComponent implements OnInit {
       alt: 'Image 1',
       title: 'Image 1',
     },
-    {
-      image: 'https://loremflickr.com/600/400/brazil,rio',
-      thumbImage: 'https://loremflickr.com/1200/800/brazil,rio',
-      title: 'Image 2',
-      alt: 'Image 2',
-    },
-    {
-      image: 'https://loremflickr.com/600/400/paris,girl/all',
-      thumbImage: 'https://loremflickr.com/1200/800/brazil,rio',
-      title: 'Image 3',
-      alt: 'Image 3',
-    },
-    {
-      image: 'https://loremflickr.com/600/400/brazil,rio',
-      thumbImage: 'https://loremflickr.com/1200/800/brazil,rio',
-      title: 'Image 4',
-      alt: 'Image 4',
-    },
-    {
-      image: 'https://loremflickr.com/600/400/paris,girl/all',
-      thumbImage: 'https://loremflickr.com/1200/800/paris,girl/all',
-      title: 'Image 5',
-      alt: 'Image 5',
-    },
   ];
 
   constructor(private driverService: DriverService, private router: Router) {}
@@ -80,7 +56,7 @@ export class DriverProfileDetailsComponent implements OnInit {
     });
   }
 
-  fillUpDocuments(){
+  fillUpDocuments() {
     this.documents.forEach((element) => {
       this.imgCollection.push({
         image: element.documentImage,
@@ -113,8 +89,6 @@ export class DriverProfileDetailsComponent implements OnInit {
 
   // prosledjivanje iz komponente
   redirectToDriverEditProfile() {
-    this.router.navigateByUrl('/driver-edit-profile', {
-      state: { driver: this.driver, documents: this.documents },
-    });
+    this.router.navigateByUrl('/driver-edit-profile');
   }
 }

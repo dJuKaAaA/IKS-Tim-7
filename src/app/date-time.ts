@@ -30,37 +30,35 @@ export class DateTime {
   }
 
   public getDate(date: Date): String {
-    const year: number = date.getFullYear();
-    const month: number = date.getMonth();
-    const day: number = date.getDay();
-
+    let [year, month, day] = date.toString().split(' ')[0].split('.');
     return `${year}.${month}.${day}`;
   }
 
   public getTime(date: Date): String {
-    const hours: number = date.getHours();
-    const minutes: number = date.getMinutes();
-    const seconds: number = date.getSeconds();
+    let [hours, minutes, seconds] = date.toString().split(' ')[1].split(':');
 
-    return `${hours}h:${minutes}m:${seconds}s`;
+    return `${hours}:${minutes}:${seconds}`;
   }
 
   public getDiffDateTime(
     endDate: Date,
     startDate: Date
-  ): [days: number, hours: number, minutes: number, secs: number] {
-    let diffTime = Math.abs(endDate.valueOf() - startDate.valueOf());
-    let days: number = diffTime / (24 * 60 * 60 * 1000);
-    let hours: number = (days % 1) * 24;
-    let minutes: number = (hours % 1) * 60;
-    let secs: number = (minutes % 1) * 60;
-    [days, hours, minutes, secs] = [
-      Math.floor(days),
-      Math.floor(hours),
-      Math.floor(minutes),
-      Math.floor(secs),
-    ];
+  ): [hours: number, minutes: number, secs: number] {
+    let [endHours, endMinutes, endSeconds] = endDate
+      .toString()
+      .split(' ')[1]
+      .split(':');
+    let [startHours, startMinutes, startSeconds] = startDate
+      .toString()
+      .split(' ')[1]
+      .split(':');
 
-    return [days, hours, minutes, secs];
+    let hours: number = Number(endHours) - Number(startHours);
+    console.log(hours);
+    let minutes: number = Number(endMinutes) - Number(startMinutes);
+    console.log(minutes);
+    let secs: number = Number(endSeconds) - Number(startSeconds);
+    console.log(secs);
+    return [hours, minutes, secs];
   }
 }

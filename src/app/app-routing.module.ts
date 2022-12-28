@@ -19,21 +19,40 @@ import { DriverCreationComponent } from './components/driver-creation/driver-cre
 import { VehicleCreationPageComponent } from './components/vehicle-creation-page/vehicle-creation-page.component';
 
 const routes: Routes = [
-  { path: "", component: UnregisteredHomeComponent, canActivate: [AlreadyAuthenticatedGuard]},
+  {
+    path: '',
+    component: UnregisteredHomeComponent,
+    canActivate: [AlreadyAuthenticatedGuard],
+  },
   { path: 'userRideHistory', component: RideHistoryInformationComponent },
-  { path: 'admin', component: AdminHomepageComponent},
-  { path: "register", component: RegisterComponent, canActivate: [AlreadyAuthenticatedGuard]},
-  { path: 'driver-current-ride/:id', component: DriverCurrentRideComponent},
+  { path: 'admin', component: AdminHomepageComponent },
+  {
+    path: 'register',
+    component: RegisterComponent,
+    canActivate: [AlreadyAuthenticatedGuard],
+  },
+  { path: 'driver-current-ride/:id', component: DriverCurrentRideComponent },
   { path: 'editProfile', component: EditProfileComponent },
   { path: 'passenger-profile', component: PassengerProfileDetailsComponent },
-  { path: 'driver-home', component: DriverHomeComponent, canActivate: [IsAuthenticatedGuard] },
+  {
+    path: 'driver-home',
+    component: DriverHomeComponent,
+    canActivate: [IsAuthenticatedGuard],
+  },
   { path: 'driver-profile', component: DriverProfilePageComponent },
   { path: 'driver-edit-profile', component: DriverEditProfileComponent },
-  { path: 'driver-ride-history-details', component: DriverRideHistoryDetailsComponent },
-  { path: 'passenger-ride-history-details', component: PassengerRideHistoryDetailsComponent },
+  {
+    path: 'driver-ride-history-details',
+    component: DriverRideHistoryDetailsComponent,
+  },
+  {
+    path: 'passenger-ride-history-details',
+    component: PassengerRideHistoryDetailsComponent,
+  },
   { path: 'forgot-password', component: ForgotPasswordComponent },
-  { path: 'create-driver', component: DriverCreationComponent},
-  { path: 'create-vehicle', component: VehicleCreationPageComponent}
+  { path: 'create-driver', component: DriverCreationComponent },
+  { path: 'create-vehicle', component: VehicleCreationPageComponent },
+  { path: 'ride-history', component: RideHistoryInformationComponent },
 ];
 
 @NgModule({
