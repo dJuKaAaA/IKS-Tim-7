@@ -24,9 +24,24 @@ export class LoginComponent {
     if (this.form.valid) {
       let email: string = this.form.value.email;
       let password: string = this.form.value.password;
-      this.authService.login(email, password).subscribe((response: any) => {
-        localStorage.setItem('user', response.token);
-        this.router.navigate(['driver-home']);
+      this.authService.login(email, password).subscribe({
+        next: (result) => {
+          localStorage.setItem('user', JSON.stringify(result));
+          this.authService.setUser();
+          
+          if (this.authService.getRole() == 'ROLE_PASSENGER') {
+            this.router.navigate(['passenger-home']);
+          } else if (this.authService.getRole() == 'ROLE_DRIVER') {
+            this.router.navigate(['driver-home']);
+          } else if (this.authService.getRole() == 'ROLE_ADMIN') {
+            this.router.navigate(['admin-home']);
+          }
+        },
+        error: (error) => {
+          if (error instanceof HttpErrorResponse) {
+            this.hasError = true;
+          }
+        },
       });
 
     }

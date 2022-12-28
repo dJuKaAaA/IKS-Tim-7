@@ -16,7 +16,7 @@ import { DialogComponent } from '../dialog/dialog.component';
 })
 export class MapComponent {
 
-  markers: Array<ttMap.Marker> = []
+  private markers: Array<ttMap.Marker> = []
 
   @Input() startingLatitude: number = environment.startLatitude;
   @Input() startingLongitude: number = environment.startLongitude;
@@ -149,6 +149,13 @@ export class MapComponent {
     });
   }
 
+  public removeAllMarkers() {
+    for (let marker of this.markers) {
+      marker.remove();
+    }
+    this.markers = [];
+  }
+
   public updateMarkerLocation(markerLocation: GGCJLocation, newLocation: GGCJLocation) {
     for (let marker of this.markers) {
       if (marker.getLngLat().lat == markerLocation.latitude && marker.getLngLat().lng == markerLocation.longitude) {
@@ -173,7 +180,7 @@ export class MapComponent {
       this.focusOnPoint(route.departure);
       return;
     }
-
+    
     this.showMarker(route.departure);
     this.showMarker(route.destination);
 
@@ -202,6 +209,7 @@ export class MapComponent {
             'line-width': 5
           }
         };
+
         this.map.addLayer(routeLayer);
       }
     );

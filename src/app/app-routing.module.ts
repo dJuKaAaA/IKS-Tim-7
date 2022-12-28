@@ -17,6 +17,9 @@ import { DriverProfilePageComponent } from './components/driver-profile-page/dri
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { DriverCreationComponent } from './components/driver-creation/driver-creation.component';
 import { VehicleCreationPageComponent } from './components/vehicle-creation-page/vehicle-creation-page.component';
+import { PassengerHomeComponent } from './components/passenger-home/passenger-home.component';
+import { PassengerCurrentRideComponent } from './components/passenger-current-ride/passenger-current-ride.component';
+import { ChatComponent } from './components/chat/chat.component';
 
 const routes: Routes = [
   {
@@ -50,9 +53,12 @@ const routes: Routes = [
     component: PassengerRideHistoryDetailsComponent,
   },
   { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path: 'ride-history', component: RideHistoryInformationComponent },
   { path: 'create-driver', component: DriverCreationComponent },
   { path: 'create-vehicle', component: VehicleCreationPageComponent },
-  { path: 'ride-history', component: RideHistoryInformationComponent },
+  { path: 'passenger-home', component: PassengerHomeComponent },
+  { path: 'passenger-current-ride', component: PassengerCurrentRideComponent },
+  { path: 'admin-chat', component: ChatComponent },
 ];
 
 @NgModule({

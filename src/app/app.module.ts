@@ -64,6 +64,14 @@ import { AdminNavbarComponent } from './components/admin-navbar/admin-navbar.com
 import { CardDocumentComponent } from './components/card-document/card-document.component';
 import { DocumentUploadFormComponent } from './components/document-upload-form/document-upload-form.component';
 import { StarComponent } from './components/star/star.component';
+import { PassengerHomeComponent } from './components/passenger-home/passenger-home.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { PassengerCurrentRideComponent } from './components/passenger-current-ride/passenger-current-ride.component';
+import { ScheduleRideComponent } from './components/schedule-ride/schedule-ride.component';
+import { ChatComponent } from './components/chat/chat.component';
+import { MessageBubblesComponent } from './components/message-bubbles/message-bubbles.component';
 
 @NgModule({
   declarations: [
@@ -113,6 +121,11 @@ import { StarComponent } from './components/star/star.component';
     AdminNavbarComponent,
     CardDocumentComponent,
     DocumentUploadFormComponent,
+    PassengerHomeComponent,
+    PassengerCurrentRideComponent,
+    ScheduleRideComponent,
+    ChatComponent,
+    MessageBubblesComponent,
   ],
   imports: [
     BrowserModule,
@@ -139,6 +152,9 @@ import { StarComponent } from './components/star/star.component';
     MatCardModule,
     MatDialogModule,
     MatSlideToggleModule,
+    MatDatepickerModule,
+    NgxMaterialTimepickerModule,
+    MatNativeDateModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

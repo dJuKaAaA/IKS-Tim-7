@@ -7,6 +7,7 @@
             type="text"
             [formControl]="startAddressControl"
             [value]="startAddressControl.value || ''"
+            [readonly]="disableStartAddressField"
             /> 
         <mat-icon matSuffix>room</mat-icon>
     </mat-form-field>

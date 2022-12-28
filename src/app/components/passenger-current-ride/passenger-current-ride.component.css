@@ -1,4 +1,4 @@
-#driver-map-container {
+#passenger-map-container {
     width: 65vw;
     height: 88vh;
     display: inline-block;
@@ -19,6 +19,7 @@
 
 #button-layout {
     width: 100%;
+    margin-top: 10vh;
 }
 
 #button-layout tr td {
@@ -31,7 +32,3 @@ button {
     font-size: 1.25vw;
 }
 
-#route-completion-info {
-    font-size: 1vw;
-    margin-top: 10vh;
-}

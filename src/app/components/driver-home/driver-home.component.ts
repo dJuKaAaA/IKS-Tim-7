@@ -76,6 +76,7 @@ export class DriverHomeComponent implements OnInit, AfterViewInit {
               "longitude": 19.85144
             },
             "distanceInMeters": NaN,
+            "estimatedTimeInMinutes": NaN
           }
         ],
         "status": "PENDING"

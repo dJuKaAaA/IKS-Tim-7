@@ -7,12 +7,12 @@
 
 #scheduled-rides {
     width: 30vw;
-    height: 88vh;
+    height: 82vh;
     display: inline-block;
     vertical-align: top;
     overflow-y: scroll;
     border-radius: 2vmin;
-    margin: 2vh 1vw;
+    margin: 5vh 1vw;
     border: 2px dashed rgb(190, 190, 190);
 }
 
