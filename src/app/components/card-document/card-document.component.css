@@ -1,0 +1,51 @@
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+  min-width: 40%;
+  margin: 4%;
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+.container {
+  padding: 2px 16px;
+}
+
+button {
+  display: inline-block;
+  outline: 0;
+  text-align: center;
+  cursor: pointer;
+  height: 34px;
+  padding: 0 13px;
+  color: #fff;
+  vertical-align: top;
+  border-radius: 3px;
+  border: 1px solid transparent;
+  transition: all 0.3s ease;
+  background: #cc4d29;
+  border-color: #cc4d29;
+  font-weight: 600;
+  text-transform: uppercase;
+  line-height: 16px;
+  font-size: 11px;
+}
+
+button:hover {
+  background: #e4461b;
+  border-color: #e4461b;
+}
+
+.cards-container {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin: 2%;
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+mat-icon:hover {
+  cursor: pointer;
+}

@@ -53,11 +53,9 @@ export class DriverRideHistoryDetailsComponent
 
   async ngAfterViewInit() {
     await this.rideService
-      .getRide(1)
+      .getRide(Number(sessionStorage.getItem('rideForDisplayDetails')))
       .toPromise()
-      .then((data) => {
-        this.ride = data ?? ({} as Ride);
-      });
+      .then((data) => (this.ride = data ?? ({} as Ride)));
 
     await this.driverService
       .getVehicle(this.ride.driver.id)
@@ -85,15 +83,14 @@ export class DriverRideHistoryDetailsComponent
     this.destination =
       this.ride.locations[this.ride.locations.length - 1].destination.address;
 
-    // this.departureDate = this.ride.startTime.split(' ')[0];
-    // this.departureTime = this.ride.startTime.split(' ')[1];
-
-    // let dateTimeConverter: DateTime = new DateTime();
-    // let startDate: Date = dateTimeConverter.toDate(this.ride.startTime);
-    // let endDate: Date = dateTimeConverter.toDate(this.ride.endTime);
-    // let [_, hours, minutes, seconds]: number[] =
-    //   dateTimeConverter.getDiffDateTime(endDate, startDate);
-    // this.duration = `${hours}h ${minutes}m ${seconds}s`;
+    this.departureDate = this.ride.startTime.toString().split(' ')[0];
+    this.departureTime = this.ride.startTime.toString().split(' ')[1];
+    let dateTimeConverter: DateTime = new DateTime();
+    let [hours, minutes, seconds]: number[] = dateTimeConverter.getDiffDateTime(
+      this.ride.endTime,
+      this.ride.startTime
+    );
+    this.duration = `${hours}h ${minutes}m ${seconds}s`;
 
     this.ride.locations.forEach((route) => {
       this.mapComponent.showRouteFromAddresses(
