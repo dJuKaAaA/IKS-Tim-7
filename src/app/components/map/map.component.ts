@@ -1,57 +1,40 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { OnInit } from '@angular/core';
+import { AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import * as ttMap from '@tomtom-international/web-sdk-maps';
 import * as ttService from '@tomtom-international/web-sdk-services';
 import { TomTomGeolocationService } from 'src/app/services/tom-tom-geolocation.service';
 import { TomTomGeolocationResponse } from 'src/app/model/tom-tom-geolocation-response.model';
 import { Route as GGCJRoute } from 'src/app/model/route.model';
 import { Location as GGCJLocation } from 'src/app/model/location.model';
+import { environment } from 'src/environment/environment';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogComponent } from '../dialog/dialog.component';
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
 })
-export class MapComponent implements OnInit {
+export class MapComponent {
 
-  @Input() ggcjLocations: Array<GGCJLocation> = [];
-  @Input() ggcjRoutes: Array<GGCJRoute> = [];
+  private markers: Array<ttMap.Marker> = []
 
-  @Input() startingLongitude: number = 19.16;
-  @Input() startingLatitude: number = 42.5;
-  @Input() startingZoom: number = 12.0;
+  @Input() startingLatitude: number = environment.startLatitude;
+  @Input() startingLongitude: number = environment.startLongitude;
+  @Input() startingZoom: number = environment.startZoom;
+  @Input() clickCreatesMarker: boolean = false;
 
-  @Output() rideLocationsEvent: EventEmitter<Array<GGCJLocation>> = new EventEmitter<Array<GGCJLocation>>;
-  @Output() rideRoutesEvent: EventEmitter<Array<GGCJRoute>> = new EventEmitter<Array<GGCJRoute>>;
+  @Output() routeEmitter: EventEmitter<GGCJRoute> = new EventEmitter<GGCJRoute>();
+  @Output() onClickMarkerEmitter: EventEmitter<GGCJLocation> = new EventEmitter<GGCJLocation>();
 
-  notifyRideLocationsUpdate() { this.rideLocationsEvent.emit(this.ggcjLocations); }
-
-  notifyRideRoutesUpdate() { this.rideRoutesEvent.emit(this.ggcjRoutes); }
+  notifyRoute(route: GGCJRoute) {
+    this.routeEmitter.emit(route);
+  }
 
   private flyToZoom: number = 15.0;
 
   private map: any;
-  private markers: Array<ttMap.Marker> = [];
-  private routes: Array<ttService.Route> = [];
 
-  private ttApiKey: string = 'urES86sMdjoeMbhSLu9EK3ksu0Jjpb91';
-
-  constructor(private ttGeolocationService: TomTomGeolocationService) {}
-
-  ngOnInit(): void {
-    this.loadMap();
-    this.show(this.ggcjLocations, this.ggcjRoutes);
-  }
-
-  private appendRideRoute(route: GGCJRoute) {
-    this.ggcjRoutes.push(route);
-    this.notifyRideRoutesUpdate();
-  }
-
-  private appendRideLocation(location: GGCJLocation) {
-    this.ggcjLocations.push(location);
-    this.notifyRideLocationsUpdate();
-  }
+  constructor(private ttGeolocationService: TomTomGeolocationService, private matDialog: MatDialog) {}
 
   public showRouteFromAddresses(startAddress: string, endAddress: string): void {
     const isLocationValid = function(location: GGCJLocation): boolean {
@@ -59,7 +42,12 @@ export class MapComponent implements OnInit {
     }
 
     if (startAddress == "" || endAddress == "") {
-      alert("Address field cannot be empty");
+      this.matDialog.open(DialogComponent, {
+        data: {
+          header: "Empty address!",
+          body: "Address can't be empty"
+        }
+      });
       return;
     }
 
@@ -67,7 +55,7 @@ export class MapComponent implements OnInit {
     let endLocation: GGCJLocation = new GGCJLocation(NaN, NaN, "");
 
     // getting the start address
-    this.ttGeolocationService.geolocate(startAddress, this.ttApiKey).subscribe(responseObj => {
+    this.ttGeolocationService.getGeocode(startAddress).subscribe(responseObj => {
       const ttGeolocationResponse: TomTomGeolocationResponse = responseObj;
       if (ttGeolocationResponse.results.length != 0) {
         // for now, only the first element found will be shown
@@ -80,7 +68,7 @@ export class MapComponent implements OnInit {
 
       // after getting the start address we get the end address 
       // by nesting the end address request into start address request
-      this.ttGeolocationService.geolocate(endAddress, this.ttApiKey).subscribe(responseObj => {
+      this.ttGeolocationService.getGeocode(endAddress).subscribe(responseObj => {
         const ttGeolocationResponse: TomTomGeolocationResponse = responseObj;
         if (ttGeolocationResponse.results.length != 0) {
           // for now, only the first element found will be shown
@@ -93,17 +81,25 @@ export class MapComponent implements OnInit {
 
         // after sending the requests, we check to see if the requests found the locations
         if (isLocationValid(startLocation) || isLocationValid(endLocation)) {
-          alert("Location(s) not found")  // Temporary alert, TODO: Make it prettier
+          this.matDialog.open(DialogComponent, {
+            data: {
+              header: "Route not found!",
+              body: "Could not find route based on the addresses"
+            }
+          });
           return;
         }
-
+        
         // after validations, we show the route on the map
-        const route: GGCJRoute = new GGCJRoute(startLocation, endLocation);
+        const route: GGCJRoute = new GGCJRoute(startLocation, endLocation, NaN, NaN);
         if (this.checkRouteExists(route)) {
-          alert("This route is already shown on the map");
+          this.matDialog.open(DialogComponent, {
+            data: {
+              header: "Already displayed!",
+              body: "This route is already being displayed on the map"
+            }
+          });
         } else {
-          this.appendRideRoute(route);
-          this.notifyRideRoutesUpdate();
           this.showRoute(route);
 
           // focus on the start point
@@ -122,66 +118,87 @@ export class MapComponent implements OnInit {
 
   public clearMap() {
     this.markers = [];
-    this.routes = [];
-    this.ggcjLocations = [];
-    this.ggcjRoutes = [];
-    this.map.remove();
     this.loadMap();
   }
 
-  public show(locations: Array<GGCJLocation>, routes: Array<GGCJRoute>) {
-    this.showMarkers(locations);
-    this.showRoutes(routes);
-  }
-
-  public showMarkers(locations: Array<GGCJLocation>) {
-    for (let location of locations) {
-      this.showMarker(location);
+  public showMarker(location: GGCJLocation, markerIconSrc: string = "") {
+    if (markerIconSrc) {
+      const markerElement = document.createElement('img');
+      markerElement.style.width = "50px";
+      markerElement.style.height = "50px";
+      markerElement.src = markerIconSrc;
+      const marker: ttMap.Marker = new ttMap.Marker({draggable: false, element: markerElement, offset: [0, 27]})
+        .setLngLat([location.longitude, location.latitude])
+        .addTo(this.map);
+      this.markers.push(marker);
+    } else {
+      const marker: ttMap.Marker = new ttMap.Marker({draggable: false})
+        .setLngLat([location.longitude, location.latitude])
+        .addTo(this.map);
+      this.markers.push(marker);
     }
   }
 
-  private showMarker(location: GGCJLocation) {
-    const marker: ttMap.Marker = new ttMap.Marker({draggable: false})
-      .setLngLat([location.longitude, location.latitude])
-      .addTo(this.map);
-    this.markers.push(marker);
-  }
-
-  public showRoutes(routes: Array<GGCJRoute>): void {
-    for (let route of routes) {
-      // creating markers for route display
-      this.showRoute(route);
-    }
-  }
-
-  private checkRouteExists(route: GGCJRoute) {
-    let retVal: boolean = false;
-    this.ggcjRoutes.forEach(element => {
-      if (element.toString() == route.toString()){
-        retVal = true;
-        return;
+  public removeMarker(location: GGCJLocation) {
+    this.markers = this.markers.filter((marker) => {
+      if (marker.getLngLat().lat == location.latitude && marker.getLngLat().lng == location.longitude) {
+        marker.remove();
+        return false;
       }
+      return true;
     });
-    return retVal;
   }
 
-  private showRoute(route: GGCJRoute): void {
+  public removeAllMarkers() {
+    for (let marker of this.markers) {
+      marker.remove();
+    }
+    this.markers = [];
+  }
+
+  public updateMarkerLocation(markerLocation: GGCJLocation, newLocation: GGCJLocation) {
+    for (let marker of this.markers) {
+      if (marker.getLngLat().lat == markerLocation.latitude && marker.getLngLat().lng == markerLocation.longitude) {
+        marker.setLngLat({ lat: newLocation.latitude, lng: newLocation.longitude });
+        break;
+      }
+    }
+  }
+
+  private checkRouteExists(route: GGCJRoute): boolean {
+    return this.map.getLayer(route.toString())
+  }
+
+  public showRoute(route: GGCJRoute): void {
+    if (this.checkRouteExists(route)) {
+      this.matDialog.open(DialogComponent, {
+        data: {
+          header: "Already displayed!",
+          body: "This route is already being displayed on the map"
+        }
+      });
+      this.focusOnPoint(route.departure);
+      return;
+    }
+    
     this.showMarker(route.departure);
     this.showMarker(route.destination);
 
     // showing route on map
-    const routeOptions: ttService.CalculateRouteOptions = {
-      key: this.ttApiKey,
+    const routeOptions: ttService.CalculateRouteOptions = {  // TODO: change to CalculateReachableRouteOptions
+      key: environment.ttApiKey,
       locations: [
         [route.departure.longitude, route.departure.latitude],
         [route.destination.longitude, route.destination.latitude]
-      ]
+      ],
     }
     ttService.services.calculateRoute(routeOptions).then(
       (routeData: any) => {
         route.distanceInMeters = routeData.routes[0].summary.lengthInMeters;
-        let routeLayer = this.map.addLayer({
-          'id': 'route ' + route.toString(),
+        route.estimatedTimeInMinutes = Math.round(routeData.routes[0].summary.travelTimeInSeconds / 60);
+        this.notifyRoute(route);  // TODO: Check if important, then remove
+        const routeLayer: ttMap.Layer = {
+          'id': route.toString(),
           'type': 'line',
           'source': {
             'type': 'geojson',
@@ -191,19 +208,37 @@ export class MapComponent implements OnInit {
             'line-color': 'red',
             'line-width': 5
           }
-        });
-        this.routes.push(routeLayer);
+        };
+
+        this.map.addLayer(routeLayer);
       }
     );
   }
 
-  private loadMap(): void {
+  public removeRoute(route: GGCJRoute): void {
+    if (this.checkRouteExists(route)) {
+      this.map.removeLayer(route.toString());
+      this.map.removeSource(route.toString());
+      this.removeMarker(route.departure);
+      this.removeMarker(route.destination);
+    }
+  }
+
+  public loadMap(): void {
     this.map = ttMap.map({
-      key: this.ttApiKey,
+      key: environment.ttApiKey,
       container: 'map',
       center: [this.startingLongitude, this.startingLatitude],
       zoom: this.startingZoom
     });
+
+    this.map.on("click", (element: any) => {
+      if (this.clickCreatesMarker) {
+        const markerLocation = new GGCJLocation(element.lngLat.lat, element.lngLat.lng, ""); 
+        this.showMarker(markerLocation);
+        this.onClickMarkerEmitter.emit(markerLocation);
+      }
+    })
 
     this.map.addControl(new ttMap.FullscreenControl());
     this.map.addControl(new ttMap.NavigationControl());

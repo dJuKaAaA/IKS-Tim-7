@@ -10,6 +10,7 @@
   text-transform: uppercase;
   display: inline-block;
   cursor: pointer;
+  font-weight: bolder;
 }
 .btn-blue {
   background-color: #3f51b5;

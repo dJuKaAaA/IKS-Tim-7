@@ -1,0 +1,48 @@
+
+* {
+    box-sizing: border-box;
+    overflow: hidden;
+}
+#container{
+    height: 100vh;
+    overflow: hidden;
+}
+
+#leftSection{
+    width: 40%;
+    display: inline-block;
+    height: 100vh;
+}
+
+#imgSection{
+    background-image: url("/src/assets/images/Group18.png");
+    height: 100%;
+    background-size: cover;
+}
+
+#rightSection{
+    width: 60%;
+    font-family: 'Rubik', sans-serif;
+    float: right;
+    display: flex;
+    justify-content: center;
+}
+
+#rightSection h1{
+    line-height: 55px;
+}
+
+#formContainer{
+    width: 80%;
+}
+
+@media screen and (max-width: 600px){
+    #leftSection{
+        display: none;
+    }
+    #rightSection{
+        width: 100%;
+    }
+}
+
+

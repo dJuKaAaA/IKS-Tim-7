@@ -1,10 +1,11 @@
-<form>
+<form [formGroup]="form" (submit)="login()">
+    <mat-error *ngIf="hasError">Invalid email or password</mat-error>
     <mat-form-field class="user-info-input">
         <mat-label>Email</mat-label>
         <input
             type="email"
             name="login-email"
-            [(ngModel)]="email"
+            formControlName="email"
             matInput
             />
     </mat-form-field>
@@ -13,12 +14,10 @@
         <input
             type="password"
             name="login-password"
-            [(ngModel)]="password"
+            formControlName="password"
             matInput
             />
     </mat-form-field>
     <button type="submit" mat-raised-button color="primary">Login</button>
+    <p id="forgot-password-p" (click)="forgotPasswordRedirect()">Forgot password?</p>
 </form>
-
-<p>{{email}}</p>
-<p>{{password}}</p>

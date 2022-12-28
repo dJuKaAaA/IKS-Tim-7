@@ -1,24 +1,13 @@
 <div id="driver-map-container">
-    <app-map
-        [ggcjRoutes]="routes">
-
-    </app-map>
+    <app-map></app-map>
 </div>
 
 <div id="scheduled-rides">
-    <mat-card *ngFor="let scheduledRide of scheduledRides" class="schedule-ride">
-        <mat-card-content>
-            <mat-card-title>Passengers</mat-card-title>
-                <mat-card-subtitle *ngFor="let passenger of scheduledRide.passengers" class="passengers">
-                    {{passenger.email}}
-                </mat-card-subtitle>
-            <mat-card-title>Time</mat-card-title>
-            <mat-card-subtitle class="start-time">{{scheduledRide.startTime}}</mat-card-subtitle>
-        </mat-card-content>
-        <mat-card-actions>
-            <button mat-raised-button color="primary" (click)="startRide(scheduledRide)">Start</button>
-            <button mat-raised-button color="warn" (click)="rejectRide(scheduledRide)">Reject</button>
-            <button mat-raised-button (click)="showRideRoutes(scheduledRide)">Show routes</button>
-        </mat-card-actions>
-    </mat-card>
+    <app-driver-scheduled-ride-card *ngFor="let ride of scheduledRides"
+        [ride]="ride"
+        [mapComponent]="mapComponent"
+        (rejectionEmitter)="removeRideFromDisplay($event)">
+
+    </app-driver-scheduled-ride-card>
+    <h1 class="no-rides-header" *ngIf="scheduledRides.length == 0">You have no scheduled rides</h1>
 </div>

@@ -1,21 +1,23 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router, TitleStrategy } from '@angular/router';
 import { Ride } from 'src/app/model/ride.model';
 import { Route } from 'src/app/model/route.model';
 import { MapComponent } from '../map/map.component';
-import { Location } from 'src/app/model/location.model';
 
 @Component({
   selector: 'app-driver-home',
   templateUrl: './driver-home.component.html',
   styleUrls: ['./driver-home.component.css']
 })
-export class DriverHomeComponent implements OnInit {
+export class DriverHomeComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MapComponent) mapComponent: MapComponent;
 
-  cardCount: number = 10;
-  routes: Array<Route> = [];
+  cardCount: number = 5;
   scheduledRides: Array<Ride> = [];
+  location: Location;
+
+  constructor(private router: Router) {}
 
   ngOnInit(): void {
     // load ride data from RideService
@@ -23,9 +25,9 @@ export class DriverHomeComponent implements OnInit {
     // making dummy data just for show
     for (let i = 0; i < this.cardCount; ++i) {
       let ride: Ride = {
-        "id": 123,
-        "startTime": "2017-07-21T17:32:28Z",
-        "endTime": "2017-07-21T17:45:14Z",
+        "id": i + 1,
+        "startTime": new Date(2022, 11, 21, 20, 30),
+        "endTime": new Date(2022, 11, 21, 21, 0),
         "totalCost": 1235,
         "driver": {
           "id": 123,
@@ -66,14 +68,15 @@ export class DriverHomeComponent implements OnInit {
             "departure": {
               "address": "Katolicka Porta 4, Novi Sad, 21101, Srbija",
               "latitude": 45.25596,
-              "longitude": 19.84578
+              "longitude": 19.84578,
             },
             "destination": {
               "address": "Dunavski Park, Novi Sad, 21101, Srbija",
               "latitude": 45.25534,
               "longitude": 19.85144
             },
-            "distanceInMeters": NaN
+            "distanceInMeters": NaN,
+            "estimatedTimeInMinutes": NaN
           }
         ],
         "status": "PENDING"
@@ -81,24 +84,19 @@ export class DriverHomeComponent implements OnInit {
       this.scheduledRides.push(ride);
     }
 
+    this.mapComponent.loadMap();
   }
 
-  startRide(ride: Ride): void {
-
+  ngAfterViewInit(): void {
+    this.mapComponent.loadMap();
   }
 
-  rejectRide(ride: Ride): void {
-
-  }
-
-  showRideRoutes(ride: Ride) {
-    this.routes = [];
-    this.mapComponent.clearMap();
-    for (let route of ride.locations) {
-      this.routes.push(new Route(route.departure, route.destination));
+  removeRideFromDisplay(ride: Ride) {
+    for (let location of ride.locations) {
+      let route: Route = new Route(location.departure, location.destination, NaN, NaN);
+      this.mapComponent.removeRoute(route);
     }
-    this.mapComponent.showRoutes(this.routes);
-    this.mapComponent.focusOnPoint(this.routes[0].departure);
+    this.scheduledRides = this.scheduledRides.filter((scheduled) => scheduled.id != ride.id);
   }
 
 }

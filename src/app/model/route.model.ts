@@ -1,12 +1,13 @@
 import { Location } from './location.model';
 
 export class Route {
-    public distanceInMeters = NaN;
     // TODO: Add ride later
-    constructor(public departure: Location, public destination: Location) {}
+    constructor(public departure: Location, public destination: Location, public distanceInMeters: number, public estimatedTimeInMinutes: number) {
+
+    }
 
     toString(): string {
-        return "(" + this.departure.toString() + ", " + this.destination.toString() + ")"
+        return "(" + this.departure.toString() + ", " + this.destination.toString() + ")";
     }
 }
 

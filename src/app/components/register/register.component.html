@@ -101,7 +101,7 @@
                 </mat-form-field>
             </td>
             <td rowspan="2">
-                <img [src]="taxiIconPath" id="taxi-icon" />
+                <img [src]="taxiIconPath" id="taxi-icon" (click)="goToHome()"/>
             </td>
 
         </tr>
@@ -110,7 +110,8 @@
                 <mat-checkbox 
                     checked="{{termsAndConditionsAgreement}}"
                     id="term-and-privacy-policy"
-                    (change)="termsAndConditionsOnChecked($event)">
+                    (change)="termsAndConditionsOnChecked($event)"
+                    color="primary">
                     I agree to all the Terms and Conditions
                 </mat-checkbox>
                 <button 

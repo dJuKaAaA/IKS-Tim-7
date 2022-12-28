@@ -1,0 +1,49 @@
+.container{
+    width: 100%;
+    height: 100%;
+    margin-top: 50px;
+}
+#wrapper{
+    height: 75%;
+}
+
+#leftSection{
+    float: left;
+    width: 35%;
+    height: 100%;
+}
+#rightSection{
+    float: right;
+    width: 59%;
+    height: 100%;
+    margin-right: 2%;
+}
+
+#mapWrapper{
+    border-radius: 10px;
+    width: 50%;
+    margin-left: 50px;
+    float:left;
+    height: 500px;
+    margin-right: 5%;
+}
+
+#infoWrapper{
+    width: 35%;
+    float: right;
+    margin-right: 5%;
+}
+
+#rideInformation{
+    text-align: center;
+    padding: 50px;
+}
+
+#rideInformation h1{
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size: 38px;
+}
+
+#activeRideMessage{
+    color: #3f51b5;
+}

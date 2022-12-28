@@ -1,47 +1,24 @@
 #driver-map-container {
-    width: 60%;
-    height: 88%;
+    width: 65vw;
+    height: 88vh;
     display: inline-block;
-    margin: 2vmin;
+    margin: 2vh 1vw;
 }
 
 #scheduled-rides {
-    width: 65vmin;
-    max-height: 83%;
+    width: 30vw;
+    height: 82vh;
     display: inline-block;
     vertical-align: top;
-    margin-top: 2.5vmin;
-    margin-left: 2vmin;
     overflow-y: scroll;
-    padding: 2vmin;
     border-radius: 2vmin;
-    /* box-shadow: 0px 0px 5px rgb(95, 95, 95); */
+    margin: 5vh 1vw;
     border: 2px dashed rgb(190, 190, 190);
 }
 
-.schedule-ride {
-    margin: 2vmin;
-    border-radius: 5vmin;
-    padding: 2vmin;
-    box-shadow: 2px 2px 10px rgb(95, 95, 95);
-}
-
-#scheduled-rides button {
-    margin: 2vmin;
-    width: 15vmin;
-}
-
-.passengers {
-    display: inline-block;
-    margin: 1vmin;
-}
-
-.passengers:hover {
-    cursor: pointer;
-    text-decoration: underline;
-}
-
-.start-time {
-    display: inline-block;
-    margin: 1vmin;
+.no-rides-header {
+    text-align: center;
+    width: 100%;
+    color: rgb(110, 110, 110);
+    margin-top: 5vh;
 }

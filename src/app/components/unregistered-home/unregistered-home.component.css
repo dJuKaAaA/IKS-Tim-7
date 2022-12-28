@@ -2,48 +2,72 @@
     width: 100vw;
 }
 
-#sign-up-now-div {
+#login-register-buttons-container {
     position: absolute;
-    top: 40%;
-    left: 7%;
+    top: 0;
+    left: 0;
+    right: 0;
+    text-align: right;
+    display: inline-block;
+    margin: 4vh 3vw;
+}
+
+#login-register-buttons-container p {
+    display: inline-block;
+    font-size: 2vw;
+    color: white;
+    margin: 0 1.5vw;
+}
+
+#login-register-buttons-container p:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#register-now-div {
+    position: absolute;
+    top: 20vw;
+    left: 7vw;
     color: white;
 }
 
 .login-popup {
     width: 20vw;
     position: absolute;
-    right: 5%;
-    top: 67px;
+    right: 10vw;
+    top: 8vh;
+    display: block;
 }
 
-#sign-up-now-div>h1 {
-    font-size: xx-large;
+#register-now-div>h1 {
+    font-size: 2.25vw;
     font-family: 'Montserrat', sans-serif;
 }
 
 h2 {
+    font-size: 1.25vw;
     font-family: 'Montserrat', sans-serif;
 }
 
-#sign-up-now-div>button {
-    width: 25vmin;
-    height: 5vmin;
-    font-size: 2.5vmin;
+#register-now-div>button {
+    width: 15vw;
+    height: 7vh;
+    font-size: 1.5vw;
 }
 
 #search-location-form-upper {
     position: absolute;
-    top: 40%;
-    right: 5%;
-    width: 60vmin;
+    top: 20vw;
+    right: 5vw;
+    width: 30vw;
 }
 
 #redirect-to-map {
     position: absolute;
-    top: 90%;
+    top: 45vw;
     left: 0;
     right: 0;
-    font-size: 5vmin;
+    font-size: 2.5vw;
     color: white;
     text-align: center;
     text-decoration: none;
@@ -55,46 +79,61 @@ h2 {
 }
 
 #routes-vehicles-map {
-    width: 60%;
-    height: 90%;
-    z-index: 100;
-    margin-left: 2vmin;
-    margin-bottom: 2vmin;
+    width: 60vw;
+    height: 90vh;
+    margin-left: 1vw;
+    margin-bottom: 2vh;
     display: inline-block;
 
 }
 
 #route-information {
-    width: 50vmin;
+    padding: 2vh 1vw;
+    border-radius: 15px;
+    border: 2px dashed rgb(190, 190, 190);
+    width: 28vw;
+    height: 78vh;
     display: inline-block;
     vertical-align: top;
-    margin-top: 2vmin;
-    margin-left: 10vmin;
+    margin: 4vh 4vw;
+    overflow: scroll;
 }
 
 #search-location-form-lower {
     margin-bottom: 4vmin;
 }
 
-h1 {
+#map-header {
     text-align: center;
-    font-size: 40px;
-    margin-top: 20px;
+    font-size: 2vw;
+    margin-top: 10vh;
     font-weight: bold;
     font-family: 'Montserrat', sans-serif;
 }
 
 #unavailable-schedule-button {
-    margin-top: 1vmin;
     width: 100%;
-    font-size: large;
-    height: 5vmin;
+    font-size: 1.5vw;
+    height: 10vh;
 }
 
 #unavailable-schedule-label {
     width: 100%;
     text-align: center;
-    margin-top: 0.5vmin;
-    font-size: 1.5vmin;
+    margin-top: 5vh;
+    font-size: 1vw;
     font-style: italic;
+    color: rgb(97, 97, 97);
+}
+
+.clear-map-buttons {
+    display: flex;
+    justify-content: center;
+    margin: 3vh 0;
+}
+
+.clear-map-buttons button {
+    margin: 1vh 1vw;
+    font-size: 0.8vw;
+    padding: 2vh 1.5vw;
 }

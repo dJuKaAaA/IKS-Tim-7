@@ -4,23 +4,29 @@ import { Observable } from 'rxjs';
 import { Review } from '../model/review.model';
 import { Reviews } from '../model/reviews.model';
 import { RideReview } from '../model/ride-review.model';
+import { environment } from 'src/environment/environment';
 
-const API_URL: string = 'http://localhost:8081/';
 @Injectable({
   providedIn: 'root',
 })
 export class ReviewService {
   constructor(private http: HttpClient) {}
 
-  public getReviews(rideId: number): Observable<RideReview> {
-    return this.http.get<RideReview>(API_URL + `api/review/${rideId}`);
+  public getReviews(rideId: number): Observable<RideReview[]> {
+    return this.http.get<RideReview[]>(
+      environment.localhostApi + `review/${rideId}`
+    );
   }
 
   public getDriverReviews(driverId: number): Observable<Reviews> {
-    return this.http.get<Reviews>(API_URL + `api/review/driver/${driverId}`);
+    return this.http.get<Reviews>(
+      environment.localhostApi + `review/driver/${driverId}`
+    );
   }
 
   public getVehicleReviews(vehicleId: number): Observable<Reviews> {
-    return this.http.get<Reviews>(API_URL + `api/review/vehicle/${vehicleId}`);
+    return this.http.get<Reviews>(
+      environment.localhostApi + `review/vehicle/${vehicleId}`
+    );
   }
 }

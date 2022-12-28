@@ -1,4 +1,4 @@
-<form #searchLocationForm="ngForm" (submit)="showRoute()">
+<form #searchLocationForm="ngForm" (submit)="submit()">
     <mat-form-field class="search-location-input">
         <mat-label>Enter pickup location</mat-label>
         <input 
@@ -7,6 +7,7 @@
             type="text"
             [formControl]="startAddressControl"
             [value]="startAddressControl.value || ''"
+            [readonly]="disableStartAddressField"
             /> 
         <mat-icon matSuffix>room</mat-icon>
     </mat-form-field>

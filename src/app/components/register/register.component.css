@@ -1,17 +1,17 @@
 #side-img-container {
     height: 100vh;
-    width: 60vh;
+    width: 30vw;
     position: absolute;
 }
 
 #side-img-message {
-    top: 10vmin;
+    top: 10vh;
     text-align: center;
     font-size: 3vmin;
     line-height: 3vmin;
     color: white;
     font-weight: bold;
-    width: 55vh;
+    width: 27vw;
     margin: auto;
     position: absolute;
 }
@@ -35,6 +35,10 @@ h1 {
     opacity: 0.75;
 }
 
+#taxi-icon:hover {
+    cursor: pointer;
+}
+
 form {
     position: absolute;
     display: block;
@@ -42,16 +46,19 @@ form {
     top: 15%;
     left: 40%;
     right: 8%;
+    width: 50vw;
+    height: 80vh;
+    overflow-y: scroll;
 }
 
 form>table>tr>td {
-    padding: 2vmin 0;
+    padding: 2vh 0;
 }
 
 button {
-    padding: 4vmin 7vmin;
+    padding: 4vh 4vw;
     font-size: 2.5vmin;
-    margin: 1vmin 0;
+    margin: 1vh 0;
 }
 
 form>table>tr>td a {
@@ -61,5 +68,5 @@ form>table>tr>td a {
 }
 
 .form-text-field {
-    width: 40vmin !important;
+    width: 20vw;
 }

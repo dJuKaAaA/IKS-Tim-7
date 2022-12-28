@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Driver } from 'src/app/model/driver.model';
 import { Passenger } from 'src/app/model/passenger.model';
@@ -11,20 +11,27 @@ import { Passenger } from 'src/app/model/passenger.model';
 export class EditProfileFormComponent {
   @Input() public user: Passenger | Driver;
   @Input() public displayDriverUI: boolean = false;
+  @Output() public displayDocumentsEvent = new EventEmitter();
+  @Output() public changePasswordEvent = new EventEmitter();
+  @Output() public updateProfileEventEmitter = new EventEmitter();
   notificationOffset: String = '-70px';
   successfully: Boolean = true;
 
   constructor() {}
 
-  onSubmit(f: NgForm): void {
-    // Process checkout data here
-    this.notificationOffset = '30px';
-    setTimeout(() => {
-      this.notificationOffset = '-70px';
-    }, 3000);
-  }
-
   closeNotification(): void {
     this.notificationOffset = '-70px';
+  }
+
+  displayDocuments() {
+    this.displayDocumentsEvent.emit();
+  }
+
+  changePassword() {
+    this.changePasswordEvent.emit();
+  }
+
+  updateProfile() {
+    this.updateProfileEventEmitter.emit();
   }
 }

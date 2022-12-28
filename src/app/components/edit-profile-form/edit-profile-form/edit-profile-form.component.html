@@ -1,25 +1,45 @@
-<form action="PUT" #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
+<form novalidate>
   <div id="centerContainer">
     <div class="gridArea">
       <div class="textFieldBox">
         <p>First name</p>
-        <input ngModel name="name" type="text" id="name" />
+        <input
+          [(ngModel)]="user.name"
+          name="name"
+          type="text"
+          id="name"
+          value="{{ user.name }}"
+        />
       </div>
       <div class="textFieldBox">
         <p>Last name</p>
-        <input ngModel type="text" name="surname" id="lastName" />
+        <input
+          [(ngModel)]="user.surname"
+          type="text"
+          name="surname"
+          id="lastName"
+        />
       </div>
       <div class="textFieldBox">
         <p>Phone number</p>
-        <input ngModel name="telephoneNumber" id="PhoneNumber" />
+        <input
+          [(ngModel)]="user.telephoneNumber"
+          name="telephoneNumber"
+          id="PhoneNumber"
+        />
       </div>
       <div class="textFieldBox">
         <p>Email</p>
-        <input ngModel name="email" id="Email" />
+        <input [(ngModel)]="user.email" name="email" id="Email" />
       </div>
       <div class="textFieldBox marginBottomMedium">
         <p>Address</p>
-        <input ngModel name="address" id="Address" />
+        <input
+          [(ngModel)]="user.address"
+          name="address"
+          id="Address"
+          value="{{ user.address }}"
+        />
       </div>
       <p class="marginBottomMedium"></p>
     </div>
@@ -27,14 +47,15 @@
       <div class="buttonSection marginBottomLarge">
         <button
           style="background-color: red; margin-right: 20px"
-          type="submit"
           name="saveChanges"
           id="submit"
+          (click)="updateProfile()"
         >
           SAVE CHANGES
         </button>
 
         <app-custom-btn1
+          (click)="displayDocuments()"
           style="margin-right: 20px"
           *ngIf="displayDriverUI"
           [content]="'change documents'"
@@ -42,18 +63,11 @@
         ></app-custom-btn1>
 
         <app-custom-btn1
+          (click)="changePassword()"
           [content]="'change password'"
           [customColor]="'btn-blue'"
         ></app-custom-btn1>
       </div>
     </div>
-    <p id="forgotPassword">
-      Forgot your password? <a href="#"><b>Reset now</b></a>
-    </p>
   </div>
 </form>
-
-<div id="notification" [style.top]="notificationOffset">
-  <p>Data saved</p>
-  <p (click)="closeNotification()" id="ok"><b>OK</b></p>
-</div>

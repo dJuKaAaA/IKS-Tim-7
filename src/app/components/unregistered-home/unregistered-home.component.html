@@ -1,7 +1,12 @@
 <img [src]="bgImagePath" id="bg-img" />
 
-<div id="sign-up-now-div">
-    <h1>Get in the driver's seat and get paid</h1>
+<div id="login-register-buttons-container">
+    <p (click)="showLoginPopup()">Login</p>
+    <p (click)="goToRegister()">Register</p>
+</div>
+
+<div id="register-now-div">
+    <h1>Get in the passenger seat and enjoy</h1>
     <h2>Ride with the best and be the best.</h2>
     <button mat-raised-button color="primary" (click)="goToRegister()">Register now</button>
 </div>
@@ -10,8 +15,8 @@
     <app-address-route-form
         [startAddressControl]="startAddressControl"
         [endAddressControl]="endAddressControl"
-        [mapComponent]="mapComponent"
-        [callbackFunc]="goToMaps">
+        [disableStartAddressField]="disableUpperFormStartAddressField"
+        (submitEmitter)="showRouteRequestFromUpperForm()">
     </app-address-route-form>
 </div>
 
@@ -19,43 +24,15 @@
     SEE ALL AVAILABLE VEHICLES AND ROUTES
 </p>
 
-<h1>DRIVER MAP</h1>
+<app-login class="login-popup" [@login-popup]="loginPopupState"></app-login>
 
-<div id="routes-vehicles-map">
-    <app-map 
-        (rideRoutesEvent)="updateRoutes($event)">
+<h1 id="map-header">See the drivers and routes</h1>
 
-    </app-map>
-</div>
-<div id="route-information">
-    <div id="search-location-form-lower">
-        <app-address-route-form
-        [startAddressControl]="startAddressControl"
-        [endAddressControl]="endAddressControl"
-        [mapComponent]="mapComponent">
+<app-schedule-ride
+    [loggedIn]="false"
+    [startAddressControl]="startAddressControl"
+    [endAddressControl]="endAddressControl"
+    (disabledStartAddressEmitter)="updateStartAddressAccess($event)">
 
-        </app-address-route-form>
-    </div>
-    <div id="route-details">
-        <app-ride-details
-        [destination]="(this.routes.length > 0) ? (this.routes[0].departure.address) : ''"
-        [departure]="(this.routes.length > 0) ? (this.routes[0].destination.address) : ''"
-        [departureDate]="'N/A'"
-        [departureTime]="'N/A'"
-        [duration]="'N/A'"
-        [distance]="(this.routes.length > 0) ? (this.routes[0].distanceInMeters + 'm') : ''">
-    </app-ride-details>
-    </div>
-    <button
-        id="unavailable-schedule-button" 
-        mat-raised-button color="primary"
-        [disabled]="true">
-        Schedule
-    </button>
-    <p
-        id="unavailable-schedule-label">
-        You need to be logged in to use this feature
-    </p>
-</div>
+</app-schedule-ride>
 
-<app-login class="login-popup"></app-login>

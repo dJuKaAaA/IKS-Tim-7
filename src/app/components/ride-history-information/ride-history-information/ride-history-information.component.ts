@@ -3,10 +3,13 @@ import { Route } from './../../../model/route.model';
 import { Rides } from 'src/app/model/rides.model';
 import { RideService } from 'src/app/services/ride.service';
 import { Ride } from 'src/app/model/ride.model';
-import { DateTime } from 'src/app/DateTIme';
+import { DateTime } from 'src/app/date-time';
 import { ReviewService } from 'src/app/services/review.service';
 import { RideReview } from 'src/app/model/ride-review.model';
 import { Review } from 'src/app/model/review.model';
+import { Router } from '@angular/router';
+import { Passenger } from 'src/app/model/passenger.model';
+import { Driver } from 'src/app/model/driver.model';
 
 export interface TableElement {
   route: string;
@@ -20,8 +23,10 @@ export interface TableElement {
   styleUrls: ['./ride-history-information.component.css'],
 })
 export class RideHistoryInformationComponent implements OnInit {
+  public user: Passenger | Driver = new Passenger();
   public ridesObject: Rides = {} as Rides;
-  public rideReviews: RideReview = {} as RideReview;
+  public currentDisplayedRide: Ride;
+  public rideReviews: RideReview[] = [];
   public avgVehicleReviewRating: number = 0;
   public avgDriverReviewRating: number = 0;
 
@@ -40,26 +45,34 @@ export class RideHistoryInformationComponent implements OnInit {
 
   constructor(
     private rideService: RideService,
-    private reviewService: ReviewService
+    private reviewService: ReviewService,
+    private router: Router
   ) {}
 
   ngOnInit() {
-    this.rideService.getRides(2).subscribe((data) => (this.ridesObject = data));
+    this.rideService.getRides(1).subscribe((data) => (this.ridesObject = data));
 
-    this.reviewService.getReviews(2).subscribe((data) => {
+    this.reviewService.getReviews(1).subscribe((data) => {
       this.rideReviews = data;
-      console.log(this.rideReviews);
+
+      let vehicleReviews: Review[] = [];
+      let driverReviews: Review[] = [];
+      this.rideReviews.forEach((review) => {
+        vehicleReviews.push(review.vehicleReview);
+        driverReviews.push(review.driverReview);
+      });
 
       this.avgVehicleReviewRating = Math.round(
-        this.getAvgRatingForReview(this.rideReviews.vehicleReviews)
+        this.getAvgRatingForReview(vehicleReviews)
       );
       this.avgDriverReviewRating = Math.round(
-        this.getAvgRatingForReview(this.rideReviews.driverReviews)
+        this.getAvgRatingForReview(driverReviews)
       );
     });
   }
 
   displayRoutesInTable(ride: Ride) {
+    this.currentDisplayedRide = ride;
     this.dataSource = [];
     ride.locations.forEach((route, index) => {
       this.dataSource.push({
@@ -68,17 +81,18 @@ export class RideHistoryInformationComponent implements OnInit {
         destinationLocation: route.destination.address,
       });
     });
-    let dateTime: DateTime = new DateTime();
-    let endDate: Date = dateTime.toDate(ride.endTime);
-    let startDate: Date = dateTime.toDate(ride.startTime);
-    let [_, hours, minutes, seconds]: number[] = dateTime.getDiffDateTime(
-      endDate,
-      startDate
-    );
 
-    this.destinationDate = dateTime.getDate(endDate);
-    this.destinationTime = dateTime.getTime(endDate);
+    let dateTime: DateTime = new DateTime();
+    console.log(ride.endTime);
+    this.destinationDate = dateTime.getDate(ride.endTime);
+    this.destinationTime = dateTime.getTime(ride.startTime);
+
+    let [hours, minutes, seconds]: number[] = dateTime.getDiffDateTime(
+      ride.endTime,
+      ride.startTime
+    );
     this.travelDuration = `${hours}h ${minutes}m ${seconds}s`;
+
     this.price = String(ride.totalCost);
   }
 
@@ -91,6 +105,17 @@ export class RideHistoryInformationComponent implements OnInit {
     else if (this.sortCriteria === 'descEndDate') this.descSortByEndDate();
     else if (this.sortCriteria === 'ascRoute') this.ascSortByRoutes();
     else if (this.sortCriteria === 'descRoute') this.descSortByRoutes();
+  }
+
+  public displayRideDetails() {
+    sessionStorage.setItem(
+      'rideForDisplayDetails',
+      String(this.currentDisplayedRide.id)
+    );
+    if (this.user instanceof Driver)
+      this.router.navigate(['/driver-ride-history-details']);
+    else if (this.user instanceof Passenger)
+      this.router.navigate(['passenger-ride-history-details']);
   }
 
   private getAvgRatingForReview(reviews: Review[]): number {

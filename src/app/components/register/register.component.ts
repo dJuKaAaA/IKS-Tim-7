@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Passenger } from 'src/app/model/passenger.model';
 import { PassengerService } from 'src/app/services/passenger.service';
+import { environment } from 'src/environment/environment';
+import { DialogComponent } from '../dialog/dialog.component';
 
 @Component({
   selector: 'app-register',
@@ -12,8 +15,8 @@ import { PassengerService } from 'src/app/services/passenger.service';
 })
 export class RegisterComponent {
 
-  mainImagePath: string = "../../../assets/register-side-img.png"
-  taxiIconPath: string = "../../../assets/taxi.png";
+  mainImagePath: string = environment.registerSideImg;
+  taxiIconPath: string = environment.taxiIcon;
 
   repeatedPassword: string = "";
   termsAndConditionsAgreement: boolean = false;
@@ -28,7 +31,7 @@ export class RegisterComponent {
     password: ""
   };
 
-  constructor(private passengerService: PassengerService, private router: Router) {
+  constructor(private passengerService: PassengerService, private router: Router, private matDialog: MatDialog) {
 
   }
 
@@ -38,7 +41,12 @@ export class RegisterComponent {
 
   createAccount() {
     this.passengerService.create(this.passenger).subscribe();
-    alert("Passenger successfully created!");
+    this.matDialog.open(DialogComponent, {
+      data: {
+        header: "Success!",
+        body: "Account successfully created"
+      }
+    });
 
     // reseting the form
     this.passenger = {
@@ -55,8 +63,12 @@ export class RegisterComponent {
     
   }
 
-  termsAndConditionsOnChecked(event: any) {
+  termsAndConditionsOnChecked(event: any): void {
     this.termsAndConditionsAgreement = event.checked;
+  }
+
+  goToHome(): void {
+    this.router.navigate([""]);
   }
 
 
