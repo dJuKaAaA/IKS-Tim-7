@@ -32,6 +32,7 @@ export class PassengerRideHistoryDetailsComponent
   public departureTime: string;
   public duration: string;
   public distance: number = 0;
+  public price: number = 0;
 
   constructor(
     private rideService: RideService,
@@ -41,7 +42,6 @@ export class PassengerRideHistoryDetailsComponent
   ) {}
 
   ngOnInit(): void {}
-
   async ngAfterViewInit() {
     await this.rideService
       .getRide(Number(sessionStorage.getItem('rideForDisplayDetails')))

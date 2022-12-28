@@ -32,6 +32,8 @@ export class DriverEditProfileComponent implements OnInit {
   profileImage: String = '';
 
   // TODO dodati poruku da li je prihvacen update profila
+  // TODO dodati validaciju formi
+  // TODO dodati redirekciju za change password
   constructor(
     private driverService: DriverService,
     private imageParserService: ImageParserService
