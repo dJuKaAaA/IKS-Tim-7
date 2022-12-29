@@ -1,11 +1,16 @@
+<div class="center-form">
+  <app-document-upload-form
+    *ngIf="shouldUploadFormBeDisplayed"
+    (closeUploadFormEventEmitter)="closeForm()"
+    (addDocumentEventEmitter)="addDocument($event)"
+  ></app-document-upload-form>
+</div>
+
 <div *ngIf="profileInfo" class="wrapper">
   <div class="left">
-    <img
-      src="https://1.bp.blogspot.com/-vhmWFWO2r8U/YLjr2A57toI/AAAAAAAACO4/0GBonlEZPmAiQW4uvkCTm5LvlJVd_-l_wCNcBGAsYHQ/s16000/team-1-2.jpg"
-      alt="user"
-    />
+    <img src="{{ driver.profilePicture }}" alt="user" />
     <div class="name-img-container">
-      <mat-icon>add_a_photo</mat-icon>
+      <mat-icon (click)="file.click()">add_a_photo</mat-icon>
       <div style="padding-left: 26%">
         <h4>{{ driver.name }} {{ driver.surname }}</h4>
         <p>Driver</p>
@@ -21,6 +26,7 @@
       <app-edit-profile-form
         (changePasswordEvent)="changePassword()"
         (displayDocumentsEvent)="displayDocuments()"
+        (updateProfileEventEmitter)="updateProfile()"
         [displayDriverUI]="true"
         [user]="driver"
       ></app-edit-profile-form>
@@ -28,23 +34,26 @@
   </div>
 </div>
 
-<app-image-slider
-  (closeImageSliderEvent)="hideSlideBar()"
-  [imgCollection]="imgCollection"
-  *ngIf="imgSlider"
-></app-image-slider>
-
+<app-card-document
+  *ngIf="shouldDocumentsBeDisplayed"
+  (closeDocumentsEventEmitter)="closeDocuments($event)"
+  [documents]="documents"
+>
+</app-card-document>
 <div class="buttons-delete-upload">
   <app-custom-btn1
-    (click)="uploadDocument()"
+    (click)="displayForm()"
     [content]="'Upload'"
     [customColor]="'btn-blue'"
-    *ngIf="imgSlider"
-  ></app-custom-btn1>
-  <app-custom-btn1
-    (click)="deleteDocument()"
-    [content]="'Delete'"
-    [customColor]="'btn-blue'"
-    *ngIf="imgSlider"
+    *ngIf="shouldDocumentsBeDisplayed"
   ></app-custom-btn1>
 </div>
+<input
+  type="file"
+  name="document-file"
+  accept=".jpg,.png,.jpeg"
+  id="fileID"
+  style="display: none"
+  (change)="onProfileImageSelected($event)"
+  #file
+/>

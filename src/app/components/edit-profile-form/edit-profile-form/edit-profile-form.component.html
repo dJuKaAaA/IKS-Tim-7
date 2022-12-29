@@ -1,4 +1,4 @@
-<form action="PUT" #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
+<form novalidate>
   <div id="centerContainer">
     <div class="gridArea">
       <div class="textFieldBox">
@@ -47,9 +47,9 @@
       <div class="buttonSection marginBottomLarge">
         <button
           style="background-color: red; margin-right: 20px"
-          type="submit"
           name="saveChanges"
           id="submit"
+          (click)="updateProfile()"
         >
           SAVE CHANGES
         </button>
@@ -69,8 +69,5 @@
         ></app-custom-btn1>
       </div>
     </div>
-    <p id="forgotPassword">
-      Forgot your password? <a href="#"><b>Reset now</b></a>
-    </p>
   </div>
 </form>

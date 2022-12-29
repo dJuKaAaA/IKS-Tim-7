@@ -12,15 +12,21 @@ import { environment } from 'src/environment/environment';
 export class ReviewService {
   constructor(private http: HttpClient) {}
 
-  public getReviews(rideId: number): Observable<RideReview> {
-    return this.http.get<RideReview>(environment.localhostApi + `review/${rideId}`);
+  public getReviews(rideId: number): Observable<RideReview[]> {
+    return this.http.get<RideReview[]>(
+      environment.localhostApi + `review/${rideId}`
+    );
   }
 
   public getDriverReviews(driverId: number): Observable<Reviews> {
-    return this.http.get<Reviews>(environment.localhostApi + `review/driver/${driverId}`);
+    return this.http.get<Reviews>(
+      environment.localhostApi + `review/driver/${driverId}`
+    );
   }
 
   public getVehicleReviews(vehicleId: number): Observable<Reviews> {
-    return this.http.get<Reviews>(environment.localhostApi + `review/vehicle/${vehicleId}`);
+    return this.http.get<Reviews>(
+      environment.localhostApi + `review/vehicle/${vehicleId}`
+    );
   }
 }
