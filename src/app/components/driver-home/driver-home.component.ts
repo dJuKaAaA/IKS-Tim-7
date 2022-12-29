@@ -2,7 +2,9 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, TitleStrategy } from '@angular/router';
 import { Ride } from 'src/app/model/ride.model';
 import { Route } from 'src/app/model/route.model';
+import { DriverService } from 'src/app/services/driver.service';
 import { MapComponent } from '../map/map.component';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-driver-home',
@@ -17,7 +19,7 @@ export class DriverHomeComponent implements OnInit, AfterViewInit {
   scheduledRides: Array<Ride> = [];
   location: Location;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private driverService: DriverService, private authService: AuthService) {}
 
   ngOnInit(): void {
     // load ride data from RideService

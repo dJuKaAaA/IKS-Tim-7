@@ -7,6 +7,7 @@ import { Driver } from '../model/driver.model';
 import { Vehicle } from '../model/vehicle.model';
 import { ReviewService } from './review.service';
 import { environment } from 'src/environment/environment';
+import { Ride } from '../model/ride.model';
 
 @Injectable({
   providedIn: 'root',
@@ -72,5 +73,17 @@ export class DriverService {
 
   public saveDriver(driver : Driver){
     return this.http.post<Driver>(environment.localhostApi + "driver",driver);
+  }
+
+  public changeActivity(id: number) {
+    return this.http.post<Driver>(environment.localhostApi + `driver/${id}/activity`, {});
+  }
+
+  public getRides(id: number) {
+    return this.http.get(environment.localhostApi + `driver/${id}/ride`);
+  }
+
+  public getPendingRides(id: number): Observable<Array<Ride>> {
+    return this.http.get<Array<Ride>>(environment.localhostApi + `driver/${id}/rides/pending`);
   }
 }
