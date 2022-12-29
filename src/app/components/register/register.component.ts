@@ -1,6 +1,6 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { FormControl, FormGroup, NgForm } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Passenger } from 'src/app/model/passenger.model';
@@ -21,46 +21,63 @@ export class RegisterComponent {
   repeatedPassword: string = "";
   termsAndConditionsAgreement: boolean = false;
 
-  passenger: Passenger = {
-    name: "", 
-    surname: "", 
-    profilePicture: "", 
-    telephoneNumber: "",
-    email: "",
-    address: "", 
-    password: ""
-  };
+  formGroup: FormGroup = new FormGroup({
+    name: new FormControl(""),
+    surname: new FormControl(""),
+    profilePicture: new FormControl(""),
+    telephoneNumber: new FormControl(""),
+    email: new FormControl(""),
+    address: new FormControl(""),
+    password: new FormControl(""),
+    confirmPassword: new FormControl(""),
+  });
+
+  errorMessage: string = "";
 
   constructor(private passengerService: PassengerService, private router: Router, private matDialog: MatDialog) {
 
   }
 
-  ngOnInit(): void {
-
-  }
-
   createAccount() {
-    this.passengerService.create(this.passenger).subscribe();
-    this.matDialog.open(DialogComponent, {
-      data: {
-        header: "Success!",
-        body: "Account successfully created"
-      }
-    });
+    if (this.formGroup.controls['password'].value != this.formGroup.controls['confirmPassword'].value) {
 
-    // reseting the form
-    this.passenger = {
-      name: "", 
-      surname: "", 
-      profilePicture: "", 
-      telephoneNumber: "",
-      email: "",
-      address: "", 
-      password: ""
+      this.matDialog.open(DialogComponent, {
+        data: {
+          header: "Error!",
+          body: "Password not confirmed"
+        }
+      });
+      return;
+    }
+
+    const passenger: Passenger = {
+      name: this.formGroup.controls['name'].value,
+      surname: this.formGroup.controls['surname'].value,
+      profilePicture: this.formGroup.controls['profilePicture'].value,
+      telephoneNumber: this.formGroup.controls['telephoneNumber'].value,
+      email: this.formGroup.controls['email'].value,
+      address: this.formGroup.controls['address'].value,
+      password: this.formGroup.controls['password'].value
     };
-    this.repeatedPassword = "";
-    this.termsAndConditionsAgreement = false;
-    
+    if (this.formGroup.valid) {
+      this.passengerService.create(passenger).subscribe({
+        next: (result) => {
+          console.log(result);
+          this.matDialog.open(DialogComponent, {
+            data: {
+              header: "Success! One more step...",
+              body: "Check your mail to activate your account"
+            }
+          });
+          this.router.navigate(['']);
+        },
+        error: (error) => {
+          if (error instanceof HttpErrorResponse) {
+            this.errorMessage = error.error.message;
+          }
+        },
+      });
+    }
   }
 
   termsAndConditionsOnChecked(event: any): void {
