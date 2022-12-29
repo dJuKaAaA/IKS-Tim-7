@@ -10,6 +10,8 @@ export class AddressRouteFormComponent {
 
   @Input() startAddressControl = new FormControl("");
   @Input() endAddressControl = new FormControl("");
+  @Input() disableStartAddressField = false;
+
   @Output() submitEmitter: EventEmitter<void> = new EventEmitter<void>();
 
   submit() {

@@ -18,30 +18,32 @@ export class AuthService {
     this.user$.next(this.getRole());
   }
 
-  login(email: string, password: string): Observable<Token> {  // dummy body for now
-    return this.http.post<Token>(environment.localhostApi + "test/dummy/data/login", {email, password});
-  }
-
-  logout(): Observable<string> {
-    return this.http.get<string>(environment.localhostApi + "test/dummy/data/logout");
+  login(email: string, password: string): Observable<Token> {
+    return this.http.post<Token>(environment.localhostApi + "user/login", { email, password });
   }
 
   getRole(): any {
     if (this.isLoggedIn()) {
-      const accessToken = localStorage.getItem('user');
-      // const helper = new JwtHelperService();
-      // const role = helper.decodeToken(accessToken).role[0].authority;
-      const role = accessToken;
+      const accessToken: any  = localStorage.getItem('user');
+      const helper = new JwtHelperService();
+      const role = helper.decodeToken(accessToken).roles[0];
       return role;
     }
     return null;
   }
 
-  isLoggedIn(): boolean {
-    if (localStorage.getItem('user') != null) {
-      return true;
+  getId(): number {
+    if (this.isLoggedIn()) {
+      const accessToken: any = localStorage.getItem('user');
+      const helper = new JwtHelperService();
+      const id = helper.decodeToken(accessToken).id;
+      return id;
     }
-    return false;
+    return -1;
+  }
+
+  isLoggedIn(): boolean {
+    return (localStorage.getItem('user')) != null;
   }
 
   setUser(): void {

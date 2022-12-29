@@ -13,6 +13,13 @@ import {
 } from '@angular/animations';
 import { DriverCurrentLocation } from './driver-current-location.model';
 import { environment } from 'src/environment/environment';
+import { TomTomGeolocationService } from 'src/app/services/tom-tom-geolocation.service';
+import { TomTomGeolocationResponse } from 'src/app/model/tom-tom-geolocation-response.model';
+import { DialogComponent } from '../dialog/dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { throwToolbarMixedModesError } from '@angular/material/toolbar';
+import { last } from 'rxjs';
+import { ScheduleRideComponent } from '../schedule-ride/schedule-ride.component';
 
 const ANIMATION_TIME = 500;
 const LOGIN_HIDDEN_STATE = "hidden";
@@ -35,88 +42,19 @@ const LOGIN_SHOWN_STATE = "shown";
     ])
   ]
 })
-export class UnregisteredHomeComponent implements OnInit, AfterViewInit {
+export class UnregisteredHomeComponent {
 
-  @ViewChild(MapComponent) mapComponent: MapComponent;
+  @ViewChild(ScheduleRideComponent) scheduleRideComponent: ScheduleRideComponent;
 
   bgImagePath: string = environment.unregisteredUserHomePageBgImage;
-  
-  driverLocations: Array<DriverCurrentLocation> = [];
-  route: Route = new Route(
-    new Location(NaN, NaN, ""),
-    new Location(NaN, NaN, ""),
-    NaN,
-    NaN
-  );
 
   startAddressControl: FormControl = new FormControl("");
   endAddressControl: FormControl = new FormControl("");
 
-  constructor(private router: Router) {
+  disableUpperFormStartAddressField: boolean = false;
 
-  }
-  
-  ngOnInit(): void {
-    this.driverLocations.push({
-      driverId: 1,
-      location: new Location(45.2541486, 19.8187217, ""),
-      isActive: true
-    });
-    this.driverLocations.push({
-      driverId: 1,
-      location: new Location(45.2473693, 19.8187955, ""),
-      isActive: false
-    });
-    this.driverLocations.push({
-      driverId: 1,
-      location: new Location(45.2558923, 19.8436113, ""),
-      isActive: false
-    });
-    this.driverLocations.push({
-      driverId: 1,
-      location: new Location(45.2472827, 19.8433833, ""),
-      isActive: true
-    });
-    this.driverLocations.push({
-      driverId: 1,
-      location: new Location(45.2450728, 19.8408995, ""),
-      isActive: false
-    });
-    this.driverLocations.push({
-      driverId: 1,
-      location: new Location(45.2445776, 19.8449582, ""),
-      isActive: false
-    })
+  constructor(private router: Router, private matDialog: MatDialog) {
 
-    this.mapComponent.loadMap();
-  }
-
-  ngAfterViewInit(): void {
-    this.mapComponent.loadMap();
-    for (let location of this.driverLocations) {
-      let carIconSrc = location.isActive ? environment.activeDriverMarker : environment.inactiveDriverMarker;
-      this.mapComponent.showMarker(location.location, carIconSrc);
-    }
-  }
-
-  goToRegister(): void {
-    this.router.navigate(["register"]);
-  }
-
-  updateRoute(route: Route) {
-    this.route = route;
-  }
-
-  goToMaps(): void {
-    window.scrollTo(0,document.body.scrollHeight);
-  }
-
-  showRoute() {
-    let startAddress = this.startAddressControl.value || "";
-    let endAddress = this.endAddressControl.value || "";
-    this.mapComponent.removeRoute(this.route);
-    this.mapComponent.showRouteFromAddresses(startAddress, endAddress);
-    this.goToMaps();
   }
 
   loginPopupState: string = LOGIN_HIDDEN_STATE;
@@ -127,6 +65,23 @@ export class UnregisteredHomeComponent implements OnInit, AfterViewInit {
       loginPopup.style.display = loginPopup.style.display == "none" ? "block" : "none";
     }
     this.loginPopupState = this.loginPopupState == LOGIN_HIDDEN_STATE ? LOGIN_SHOWN_STATE : LOGIN_HIDDEN_STATE;
+  }
+
+  goToRegister(): void {
+    this.router.navigate(["register"]);
+  }
+
+  goToMaps(): void {
+    window.scrollTo(0, document.body.scrollHeight);
+  }
+
+  updateStartAddressAccess(disabled: boolean) {
+    this.disableUpperFormStartAddressField = disabled;
+  }
+
+  showRouteRequestFromUpperForm() {
+    this.goToMaps();
+    this.scheduleRideComponent.showRouteFromAddresses();
   }
 
 }

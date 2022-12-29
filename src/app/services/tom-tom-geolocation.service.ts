@@ -17,7 +17,7 @@ export class TomTomGeolocationService {
     return this.http.get<TomTomGeolocationResponse>(request);
   }
 
-  reverseGeocode(latitude: number, longitude: number): Observable<TomTomGeolocationResponse> {
+  reverseGeocode(latitude: number, longitude: number): Observable<any> {
     const request: string = `${environment.ttApiUrl}/search/2/reverseGeocode/${latitude},${longitude}.json?key=${environment.ttApiKey}&radius=100`;
     return this.http.get<TomTomGeolocationResponse>(request);
   }

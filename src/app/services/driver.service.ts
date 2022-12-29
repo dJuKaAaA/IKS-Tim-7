@@ -1,13 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Document } from '../model/document.model';
+import { Document, POSTDocument } from '../model/document.model';
 import { DriverListDTO } from '../model/driver-list-dto';
-import { Driver } from '../model/driver.model';
+import { Driver, NoIdDriver } from '../model/driver.model';
 import { Vehicle } from '../model/vehicle.model';
 import { ReviewService } from './review.service';
 import { environment } from 'src/environment/environment';
 import { Ride } from '../model/ride.model';
+import { DriverProfileChangeRequest } from '../model/driver-profile-change-request.model';
 
 @Injectable({
   providedIn: 'root',
@@ -20,16 +21,50 @@ export class DriverService {
   }
 
   public getDriver(driverId: number): Observable<Driver> {
-    return this.http.get<Driver>(environment.localhostApi + 'driver/' + driverId);
+    return this.http.get<Driver>(
+      environment.localhostApi + 'driver/' + driverId
+    );
   }
 
   public getVehicle(driverId: number): Observable<Vehicle> {
-    return this.http.get<Vehicle>(environment.localhostApi + `driver/${driverId}/vehicle`);
+    return this.http.get<Vehicle>(
+      environment.localhostApi + `driver/${driverId}/vehicle`
+    );
   }
 
   public getDocuments(driverId: number): Observable<Document[]> {
     return this.http.get<Document[]>(
       environment.localhostApi + `driver/${driverId}/documents`
+    );
+  }
+
+  public createDocument(driverId: number, document: POSTDocument) {
+    return this.http.post<Document>(
+      environment.localhostApi + `driver/${driverId}/documents`,
+      document
+    );
+  }
+
+  public deleteDocument(documentId: Number) {
+    return this.http.delete(
+      environment.localhostApi + `driver/document/${documentId}`
+    );
+  }
+
+  public updateDriver(driverId: Number, driver: NoIdDriver) {
+    return this.http.put(
+      environment.localhostApi + `driver/${driverId}`,
+      driver
+    );
+  }
+
+  public saveDriverProfileChangeRequest(
+    driverId: number,
+    request: DriverProfileChangeRequest
+  ): Observable<DriverProfileChangeRequest> {
+    return this.http.post<DriverProfileChangeRequest>(
+      environment.localhostApi + `driver/request/${driverId}`,
+      request
     );
   }
 
@@ -71,8 +106,8 @@ export class DriverService {
     return sum;
   }
 
-  public saveDriver(driver : Driver){
-    return this.http.post<Driver>(environment.localhostApi + "driver",driver);
+  public saveDriver(driver: Driver) {
+    return this.http.post<Driver>(environment.localhostApi + 'driver', driver);
   }
 
   public changeActivity(id: number) {

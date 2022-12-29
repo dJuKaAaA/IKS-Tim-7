@@ -7,9 +7,11 @@ import { PassengerService } from 'src/app/services/passenger.service';
 import { Passenger } from 'src/app/model/passenger.model';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 
-const ANIMATION_TIME: number = 250;
+const SHOW_PROFILE_INFO_ANIMATION_TIME: number = 300;
 const PASSENGER_INFO_HIDDEN_STATE: string = "hidden";
 const PASSENGER_INFO_SHOWN_STATE: string = "shown";
+
+const REJECTION_ANIMATION_TIME: number = 750;
 const NOT_REJECTED_STATE: string = 'not-rejected';
 const REJECTED_STATE: string = 'rejected';
 
@@ -21,22 +23,22 @@ const REJECTED_STATE: string = 'rejected';
   animations: [
     trigger('passenger-info-popup',[
       state(PASSENGER_INFO_HIDDEN_STATE, style({
-        'transform': 'scale(0)'
+        'transform': 'scale(0) rotate(0deg)'
       })),
       state(PASSENGER_INFO_SHOWN_STATE, style({
-        'transform': 'scale(1.0)'
+        'transform': 'scale(1.0) rotate(360deg)'
       })),
-      transition(`${PASSENGER_INFO_HIDDEN_STATE} => ${PASSENGER_INFO_SHOWN_STATE}`, animate(ANIMATION_TIME)),
-      transition(`${PASSENGER_INFO_SHOWN_STATE} => ${PASSENGER_INFO_HIDDEN_STATE}`, animate(ANIMATION_TIME))
+      transition(`${PASSENGER_INFO_HIDDEN_STATE} => ${PASSENGER_INFO_SHOWN_STATE}`, animate(SHOW_PROFILE_INFO_ANIMATION_TIME)),
+      transition(`${PASSENGER_INFO_SHOWN_STATE} => ${PASSENGER_INFO_HIDDEN_STATE}`, animate(SHOW_PROFILE_INFO_ANIMATION_TIME))
     ]),
     trigger('rejection-anim',[
       state(NOT_REJECTED_STATE, style({
-        'transform': 'scale(1.0)'
+        'transform': 'scale(1.0) rotate(0deg)'
       })),
       state(REJECTED_STATE, style({
-        'transform': 'scale(0)'
+        'transform': 'scale(0) rotate(720deg)',
       })),
-      transition(`${NOT_REJECTED_STATE} => ${REJECTED_STATE}`, animate(ANIMATION_TIME))
+      transition(`${NOT_REJECTED_STATE} => ${REJECTED_STATE}`, animate(REJECTION_ANIMATION_TIME))
     ])
   ]
 })
@@ -131,7 +133,7 @@ export class DriverScheduledRideCardComponent implements AfterViewInit {
     setTimeout(() => {
       this.rejectionEmitter.emit(this.ride);
     },
-    ANIMATION_TIME);
+    REJECTION_ANIMATION_TIME);
   }
 
   passengerPopupState: string = PASSENGER_INFO_HIDDEN_STATE;
@@ -163,7 +165,7 @@ export class DriverScheduledRideCardComponent implements AfterViewInit {
         'display',
         'none'
       )
-    }, ANIMATION_TIME);
+    }, SHOW_PROFILE_INFO_ANIMATION_TIME);
     this.passengerPopupState = PASSENGER_INFO_HIDDEN_STATE;
     // TODO: Clear passenger info
   }

@@ -1,0 +1,14 @@
+<mat-toolbar color="primary" class="navbar">
+    <img src="src/assets/taxi.png" class="logo" (click)="navigateToHome()"/>
+    <span>GoGoCarJet</span>
+    
+    <div class="spacer">
+
+    </div>
+
+    <a mat-button class="navbar-item" (click)="navigateToHome()">Home</a>
+    <a mat-button class="navbar-item" (click)="navigateToRideHistory()">Ride history</a>
+    <a mat-button class="navbar-item" (click)="navigateToProfileInfo()">Profile</a>
+    <a mat-button class="navbar-item" (click)="logout()">Log out</a>
+
+</mat-toolbar>

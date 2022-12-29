@@ -1,0 +1,17 @@
+<mat-toolbar color="primary" class="navbar">
+    <img src="src/assets/taxi.png" class="logo" (click)="navigateToHome()"/>
+    <span>GoGoCarJet</span>
+    <mat-slide-toggle style="margin-left: 3vw;" [checked]="activeState" (change)="changeActiveState()">
+        <span class="online-slide-toggle" #activeTextContainer>{{activeText}}</span>
+    </mat-slide-toggle>
+    
+    <div class="spacer">
+
+    </div>
+
+    <a mat-button class="navbar-item" (click)="navigateToHome()">Home</a>
+    <a mat-button class="navbar-item" (click)="navigateToRideHistory()">Ride history</a>
+    <a mat-button class="navbar-item" (click)="navigateToProfileInfo()">Profile</a>
+    <a mat-button class="navbar-item" (click)="logout()">Log out</a>
+
+</mat-toolbar>

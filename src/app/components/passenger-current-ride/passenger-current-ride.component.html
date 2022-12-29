@@ -1,0 +1,22 @@
+<div id="passenger-map-container">
+    <app-map></app-map>
+</div>
+
+<div id="ride-information">
+    <div id="route-details">
+        <app-ride-details
+            [destination]="'N/A'"
+            [departure]="'N/A'"
+            [departureDate]="'N/A'"
+            [departureTime]="'N/A'"
+            [duration]="'N/A'"
+            [distance]="'N/A'">
+        </app-ride-details>
+    </div>
+    <table id="button-layout">
+        <tr>
+            <td><button mat-raised-button color="accent">Report</button></td>
+            <td><button mat-raised-button color="warn">Panic</button></td>
+        </tr>
+    </table>
+</div>

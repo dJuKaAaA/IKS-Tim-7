@@ -1,0 +1,31 @@
+<div class="bubbles-container">
+    <div *ngFor="let message of messages">
+        <div class="sender-container" *ngIf="senderId == message.senderId">
+            <div class="sender-message">
+                <p class="sender-bubble">
+                    {{message.message}}
+                </p>
+                <p style="text-align: right; margin: 0 1vw; font-size: 0.75vw;">
+                    {{message.timeOfSending.toDateString()}}
+                </p>
+            </div>
+        </div>
+        <div class="receiver-container" *ngIf="senderId != message.senderId">
+            <div class="receiver-message">
+                <p class="receiver-bubble">
+                    {{message.message}}
+                </p>
+                <p style="text-align: left; margin: 0 1vw; font-size: 0.75vw;">
+                    {{message.timeOfSending.toDateString()}}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<form class="message-send-form" (submit)="sendMessage()">
+    <mat-form-field class="message-input">
+        <input placeholder="Type message..." matInput name="message-field" [(ngModel)]="typingMessageContent"
+            autocomplete="off" />
+        <button type="submit" mat-button matSuffix>Send</button>
+    </mat-form-field>
+</form>

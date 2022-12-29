@@ -6,12 +6,15 @@
 }
 
 #ride-information {
+    border: 2px dashed rgb(190, 190, 190);
+    padding: 2vh 1vw;
+    border-radius: 15px;
     overflow-y: scroll;
-    width: 30vw;
-    height: 84vh;
+    width: 28vw;
+    height: 78vh;
     display: inline-block;
     vertical-align: top;
-    margin: 4vh 1vw;
+    margin: 5vh 1vw;
 }
 
 #button-layout {
@@ -30,5 +33,5 @@ button {
 
 #route-completion-info {
     font-size: 1vw;
-    margin-top: 8vh;
+    margin-top: 10vh;
 }

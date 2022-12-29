@@ -27,7 +27,6 @@ import { RideHistoryCardComponent } from './components/ride-history-card/ride-hi
 import { RideHistoryInformationComponent } from './components/ride-history-information/ride-history-information/ride-history-information.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
-import { StarComponent } from './components/star/star.component';
 import { RideDetailsComponent } from './components/ride-details/ride-details.component';
 import { AddressRouteFormComponent } from './components/address-route-form/address-route-form.component';
 import { LoginComponent } from './components/login/login.component';
@@ -35,7 +34,7 @@ import { DriverProfileDetailsComponent } from './components/driver-profile-detai
 import { NgImageSliderModule } from 'ng-image-slider';
 import { DriverHomeComponent } from './components/driver-home/driver-home.component';
 import { MatCardModule } from '@angular/material/card';
-import { UsersListComponent } from './components/users-list/users-list.component'
+import { UsersListComponent } from './components/users-list/users-list.component';
 import { DriverCurrentRideComponent } from './components/driver-current-ride/driver-current-ride.component';
 import { DriverEditProfileComponent } from './components/driver-edit-profile/driver-edit-profile/driver-edit-profile.component';
 import { EditProfileFormComponent } from './components/edit-profile-form/edit-profile-form/edit-profile-form.component';
@@ -56,10 +55,28 @@ import { DriverCreationComponent } from './components/driver-creation/driver-cre
 import { DriverCreationFormComponent } from './components/driver-creation-form/driver-creation-form.component';
 import { VehicleCreationPageComponent } from './components/vehicle-creation-page/vehicle-creation-page.component';
 import { VehicleCreationFormComponent } from './components/vehicle-creation-form/vehicle-creation-form.component';
+import { DialogComponent } from './components/dialog/dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { DriverNavbarComponent } from './components/driver-navbar/driver-navbar.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { PassengerNavbarComponent } from './components/passenger-navbar/passenger-navbar.component';
+import { AdminNavbarComponent } from './components/admin-navbar/admin-navbar.component';
+import { CardDocumentComponent } from './components/card-document/card-document.component';
+import { DocumentUploadFormComponent } from './components/document-upload-form/document-upload-form.component';
+import { StarComponent } from './components/star/star.component';
+import { PassengerHomeComponent } from './components/passenger-home/passenger-home.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { PassengerCurrentRideComponent } from './components/passenger-current-ride/passenger-current-ride.component';
+import { ScheduleRideComponent } from './components/schedule-ride/schedule-ride.component';
+import { ChatComponent } from './components/chat/chat.component';
+import { MessageBubblesComponent } from './components/message-bubbles/message-bubbles.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    StarComponent,
     NavbarComponent,
     NavbarMainSectionComponent,
     NavbarLoginRegistrationSectionComponent,
@@ -70,7 +87,6 @@ import { VehicleCreationFormComponent } from './components/vehicle-creation-form
     AdminHomepageComponent,
     RideHistoryCardComponent,
     RideHistoryInformationComponent,
-    StarComponent,
     RideDetailsComponent,
     UnregisteredHomeComponent,
     MapComponent,
@@ -99,6 +115,17 @@ import { VehicleCreationFormComponent } from './components/vehicle-creation-form
     DriverCreationFormComponent,
     VehicleCreationPageComponent,
     VehicleCreationFormComponent,
+    DialogComponent,
+    DriverNavbarComponent,
+    PassengerNavbarComponent,
+    AdminNavbarComponent,
+    CardDocumentComponent,
+    DocumentUploadFormComponent,
+    PassengerHomeComponent,
+    PassengerCurrentRideComponent,
+    ScheduleRideComponent,
+    ChatComponent,
+    MessageBubblesComponent,
   ],
   imports: [
     BrowserModule,
@@ -123,6 +150,11 @@ import { VehicleCreationFormComponent } from './components/vehicle-creation-form
     ReactiveFormsModule,
     NgImageSliderModule,
     MatCardModule,
+    MatDialogModule,
+    MatSlideToggleModule,
+    MatDatepickerModule,
+    NgxMaterialTimepickerModule,
+    MatNativeDateModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

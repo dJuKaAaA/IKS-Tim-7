@@ -88,11 +88,14 @@ h2 {
 }
 
 #route-information {
-    width: 31vw;
-    height: 86vh;
+    padding: 2vh 1vw;
+    border-radius: 15px;
+    border: 2px dashed rgb(190, 190, 190);
+    width: 28vw;
+    height: 78vh;
     display: inline-block;
     vertical-align: top;
-    margin: 2vh 4vw;
+    margin: 4vh 4vw;
     overflow: scroll;
 }
 
@@ -112,13 +115,25 @@ h2 {
     width: 100%;
     font-size: 1.5vw;
     height: 10vh;
-    margin-top: 5vh;
 }
 
 #unavailable-schedule-label {
     width: 100%;
     text-align: center;
-    margin-top: 1vh;
+    margin-top: 5vh;
     font-size: 1vw;
     font-style: italic;
+    color: rgb(97, 97, 97);
+}
+
+.clear-map-buttons {
+    display: flex;
+    justify-content: center;
+    margin: 3vh 0;
+}
+
+.clear-map-buttons button {
+    margin: 1vh 1vw;
+    font-size: 0.8vw;
+    padding: 2vh 1.5vw;
 }
