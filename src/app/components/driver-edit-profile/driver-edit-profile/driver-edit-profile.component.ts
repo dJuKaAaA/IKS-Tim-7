@@ -4,6 +4,7 @@ import { Document, POSTDocument } from 'src/app/model/document.model';
 import { DriverDocumentChangeRequest } from 'src/app/model/driver-document-change-request.model';
 import { DriverProfileChangeRequest } from 'src/app/model/driver-profile-change-request.model';
 import { Driver, NoIdDriver } from 'src/app/model/driver.model';
+import { AuthService } from 'src/app/services/auth.service';
 import { DriverService } from 'src/app/services/driver.service';
 import { ImageParserService } from 'src/app/services/image-parser.service';
 
@@ -37,11 +38,15 @@ export class DriverEditProfileComponent implements OnInit {
   // TODO dodati pravu cenu
   constructor(
     private driverService: DriverService,
-    private imageParserService: ImageParserService
+    private imageParserService: ImageParserService,
+    private authService: AuthService
   ) {}
   ngOnInit(): void {
-    this.driverService.getDriver(1).subscribe((data) => (this.driver = data));
-    this.driverService.getDocuments(1).subscribe((data) => {
+    const userId = this.authService.getId();
+    this.driverService
+      .getDriver(userId)
+      .subscribe((data) => (this.driver = data));
+    this.driverService.getDocuments(userId).subscribe((data) => {
       this.documents = data;
     });
   }
