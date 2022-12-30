@@ -1,4 +1,4 @@
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
@@ -72,6 +72,7 @@ import { PassengerCurrentRideComponent } from './components/passenger-current-ri
 import { ScheduleRideComponent } from './components/schedule-ride/schedule-ride.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { MessageBubblesComponent } from './components/message-bubbles/message-bubbles.component';
+import { Interceptor } from './auth/interceptor.interceptor';
 
 @NgModule({
   declarations: [
@@ -156,7 +157,13 @@ import { MessageBubblesComponent } from './components/message-bubbles/message-bu
     NgxMaterialTimepickerModule,
     MatNativeDateModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: Interceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

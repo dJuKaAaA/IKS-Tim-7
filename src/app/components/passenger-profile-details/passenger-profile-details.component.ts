@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Passenger } from 'src/app/model/passenger.model';
 import { PassengerService } from 'src/app/services/passenger.service';
 import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-passenger-profile-details',
@@ -13,11 +14,13 @@ export class PassengerProfileDetailsComponent implements OnInit {
 
   constructor(
     private passengerService: PassengerService,
+    private authService: AuthService,
     private router: Router
   ) {}
 
   ngOnInit(): void {
-    this.passengerService.getPassenger(4).subscribe((data) => {
+    const userId = this.authService.getId();
+    this.passengerService.getPassenger(userId).subscribe((data) => {
       this.passenger = data;
     });
   }

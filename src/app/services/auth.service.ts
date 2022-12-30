@@ -7,10 +7,9 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { environment } from 'src/environment/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-
   user$ = new BehaviorSubject(null);
   userState$ = this.user$.asObservable();
 
@@ -19,12 +18,15 @@ export class AuthService {
   }
 
   login(email: string, password: string): Observable<Token> {
-    return this.http.post<Token>(environment.localhostApi + "user/login", { email, password });
+    return this.http.post<Token>(environment.localhostApi + 'user/login', {
+      email,
+      password,
+    });
   }
 
   getRole(): any {
     if (this.isLoggedIn()) {
-      const accessToken: any  = localStorage.getItem('user');
+      const accessToken: any = localStorage.getItem('user');
       const helper = new JwtHelperService();
       const role = helper.decodeToken(accessToken).roles[0];
       return role;
@@ -42,8 +44,15 @@ export class AuthService {
     return null;
   }
 
+  getEmail(): any {
+    const accessToken: any = localStorage.getItem('user');
+    const helper = new JwtHelperService();
+    const email = helper.decodeToken(accessToken).email;
+    return email;
+  }
+
   isLoggedIn(): boolean {
-    return (localStorage.getItem('user')) != null;
+    return localStorage.getItem('user') != null;
   }
 
   setUser(): void {
