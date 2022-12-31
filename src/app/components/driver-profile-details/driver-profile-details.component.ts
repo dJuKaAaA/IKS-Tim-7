@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Document } from 'src/app/model/document.model';
 import { Driver } from 'src/app/model/driver.model';
 import { Vehicle } from 'src/app/model/vehicle.model';
+import { AuthService } from 'src/app/services/auth.service';
 import { DriverService } from 'src/app/services/driver.service';
 
 export interface SliderImage {
@@ -38,19 +39,28 @@ export class DriverProfileDetailsComponent implements OnInit {
     },
   ];
 
-  constructor(private driverService: DriverService, private router: Router) {}
+  constructor(
+    private driverService: DriverService,
+    private authService: AuthService,
+    private router: Router
+  ) {}
   ngOnInit(): void {
-    this.driverService.getDriver(1).subscribe((data) => (this.driver = data));
+    const userId = this.authService.getId();
     this.driverService
-      .getAvgDriverRating(1)
+      .getDriver(userId)
+      .subscribe((data) => (this.driver = data));
+    this.driverService
+      .getAvgDriverRating(userId)
       .then((res) => (this.driverRating = res));
 
     this.driverService
-      .getAvgVehicleRating(1)
+      .getAvgVehicleRating(userId)
       .then((res) => (this.vehicleRating = res));
 
-    this.driverService.getVehicle(1).subscribe((data) => (this.vehicle = data));
-    this.driverService.getDocuments(1).subscribe((data) => {
+    this.driverService
+      .getVehicle(userId)
+      .subscribe((data) => (this.vehicle = data));
+    this.driverService.getDocuments(userId).subscribe((data) => {
       this.documents = data;
       this.fillUpDocuments();
     });

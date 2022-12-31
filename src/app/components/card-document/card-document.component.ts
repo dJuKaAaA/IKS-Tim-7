@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Document } from 'src/app/model/document.model';
+import { AuthService } from 'src/app/services/auth.service';
 import { DriverService } from 'src/app/services/driver.service';
 
 @Component({
@@ -13,11 +14,15 @@ export class CardDocumentComponent implements OnInit {
 
   deleteDocuments = new Set<Number>();
 
-  constructor(private driverService: DriverService) {}
+  constructor(
+    private driverService: DriverService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
+    const userId = this.authService.getId();
     this.driverService
-      .getDocuments(1)
+      .getDocuments(userId)
       .subscribe((response) => (this.documents = response));
   }
   deleteDocument(document: Document): void {

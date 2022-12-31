@@ -10,6 +10,10 @@ import { Router } from '@angular/router';
 import { Passenger } from 'src/app/model/passenger.model';
 import { Driver } from 'src/app/model/driver.model';
 import { DateTimeService } from 'src/app/services/date-time.service';
+import { AuthService } from 'src/app/services/auth.service';
+import { DriverService } from 'src/app/services/driver.service';
+import { PassengerService } from 'src/app/services/passenger.service';
+import { BehaviorSubject, Observable, of, switchMap } from 'rxjs';
 
 export interface TableElement {
   route: string;
@@ -23,12 +27,15 @@ export interface TableElement {
   styleUrls: ['./ride-history-information.component.css'],
 })
 export class RideHistoryInformationComponent implements OnInit {
-  public user: Passenger | Driver = new Passenger();
   public ridesObject: Rides = {} as Rides;
+
+  public rides$: Observable<Array<Ride>>;
+  public refreshRides$ = new BehaviorSubject<boolean>(true);
+
   public currentDisplayedRide: Ride;
   public rideReviews: RideReview[] = [];
-  public avgVehicleReviewRating: number = 0;
-  public avgDriverReviewRating: number = 0;
+  public avgVehicleReviewRating: number[] = [];
+  public avgDriverReviewRating: number[] = [];
 
   public sortCriteria: String = '';
   public destinationDate: String = '';
@@ -46,29 +53,52 @@ export class RideHistoryInformationComponent implements OnInit {
   constructor(
     private rideService: RideService,
     private reviewService: ReviewService,
-    private router: Router,
-    private dateTimeService: DateTimeService
-  ) {}
+    private dateTimeService: DateTimeService,
+    private authService: AuthService,
+    private router: Router
+) {}
 
-  ngOnInit() {
-    this.rideService.getRides(1).subscribe((data) => (this.ridesObject = data));
+  async ngOnInit() {
+    this.ridesObject.totalCount = 0;
+    this.ridesObject.results = [];
+    const userId = this.authService.getId();
 
-    this.reviewService.getReviews(1).subscribe((data) => {
-      this.rideReviews = data;
-
-      let vehicleReviews: Review[] = [];
-      let driverReviews: Review[] = [];
-      this.rideReviews.forEach((review) => {
-        vehicleReviews.push(review.vehicleReview);
-        driverReviews.push(review.driverReview);
+    await this.rideService
+      .getRides(userId)
+      .toPromise()
+      .then((data) => {
+        if (data != undefined) {
+          this.ridesObject = data;
+          this.rides$ = this.refreshRides$.pipe(
+            switchMap((_) => of(this.ridesObject.results))
+          );
+        }
       });
 
-      this.avgVehicleReviewRating = Math.round(
-        this.getAvgRatingForReview(vehicleReviews)
-      );
-      this.avgDriverReviewRating = Math.round(
-        this.getAvgRatingForReview(driverReviews)
-      );
+    this.calculateReviews();
+  }
+
+  private calculateReviews() {
+    this.avgVehicleReviewRating = [];
+    this.avgDriverReviewRating = [];
+    this.ridesObject.results.forEach((ride) => {
+      this.reviewService.getReviews(ride.id).subscribe((data) => {
+        this.rideReviews = data;
+
+        let vehicleReviews: Review[] = [];
+        let driverReviews: Review[] = [];
+        this.rideReviews.forEach((review) => {
+          vehicleReviews.push(review.vehicleReview);
+          driverReviews.push(review.driverReview);
+        });
+
+        this.avgVehicleReviewRating.push(
+          Math.round(this.getAvgRatingForReview(vehicleReviews))
+        );
+        this.avgDriverReviewRating.push(
+          Math.round(this.getAvgRatingForReview(driverReviews))
+        );
+      });
     });
   }
 
@@ -112,9 +142,9 @@ export class RideHistoryInformationComponent implements OnInit {
       'rideForDisplayDetails',
       String(this.currentDisplayedRide.id)
     );
-    if (this.user instanceof Driver)
+    if (this.authService.getRole() === 'ROLE_DRIVER')
       this.router.navigate(['/driver-ride-history-details']);
-    else if (this.user instanceof Passenger)
+    else if (this.authService.getRole() === 'ROLE_PASSENGER')
       this.router.navigate(['passenger-ride-history-details']);
   }
 
@@ -133,31 +163,43 @@ export class RideHistoryInformationComponent implements OnInit {
     this.ridesObject.results.sort((a, b) =>
       a.startTime > b.startTime ? 1 : -1
     );
+    this.calculateReviews();
+    this.refreshRides$.next(true);
   }
 
   private descSortByStartDate() {
     this.ridesObject.results.sort((a, b) =>
       a.startTime > b.startTime ? -1 : 1
     );
+    this.calculateReviews();
+    this.refreshRides$.next(true);
   }
 
   private ascSortByEndDate() {
     this.ridesObject.results.sort((a, b) => (a.endTime > b.endTime ? 1 : -1));
+    this.calculateReviews();
+    this.refreshRides$.next(true);
   }
 
   private descSortByEndDate() {
     this.ridesObject.results.sort((a, b) => (a.endTime > b.endTime ? -1 : 1));
+    this.calculateReviews();
+    this.refreshRides$.next(true);
   }
 
   private ascSortByRoutes() {
     this.ridesObject.results.sort((a, b) =>
       a.locations.length > b.locations.length ? 1 : -1
     );
+    this.calculateReviews();
+    this.refreshRides$.next(true);
   }
 
   private descSortByRoutes() {
     this.ridesObject.results.sort((a, b) =>
       a.locations.length > b.locations.length ? -1 : 1
     );
+    this.calculateReviews();
+    this.refreshRides$.next(true);
   }
 }
