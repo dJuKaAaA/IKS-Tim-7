@@ -3,7 +3,7 @@
     <span id="side-img-message">A few clicks away from creating your Go Go CarJet account</span>
 
 </div>
-<form #registerForm="ngForm" (ngSubmit)="createAccount()">
+<form [formGroup]="formGroup" (ngSubmit)="createAccount()">
     <h1>Register</h1>
     <table>
         <tr>
@@ -15,7 +15,7 @@
                         type="text"
                         name="name"
                         required
-                        [(ngModel)]="passenger.name"
+                        formControlName="name"
                         />
                 </mat-form-field>
             </td>
@@ -27,7 +27,7 @@
                         type="text"
                         name="surname"
                         required
-                        [(ngModel)]="passenger.surname"
+                        formControlName="surname"
                         />
                 </mat-form-field>
             </td>
@@ -42,7 +42,7 @@
                         type="text"
                         name="telephoneNumber"
                         required
-                        [(ngModel)]="passenger.telephoneNumber"
+                        formControlName="telephoneNumber"
                         />
                 </mat-form-field>
             </td>
@@ -54,7 +54,7 @@
                         type="text"
                         name="email"
                         required
-                        [(ngModel)]="passenger.email"
+                        formControlName="email"
                         />
                 </mat-form-field>
             </td>
@@ -69,7 +69,7 @@
                         type="text"
                         name="address"
                         required
-                        [(ngModel)]="passenger.address"
+                        formControlName="address"
                         />
                 </mat-form-field>
             </td>
@@ -81,7 +81,7 @@
                         type="password"
                         name="password"
                         required
-                        [(ngModel)]="passenger.password"
+                        formControlName="password"
                         />
                 </mat-form-field>
             </td>
@@ -96,28 +96,20 @@
                         type="password"
                         name="repeatedPassword"
                         required
-                        [(ngModel)]="repeatedPassword"
+                        formControlName="confirmPassword"
                         />
                 </mat-form-field>
             </td>
             <td rowspan="2">
                 <img [src]="taxiIconPath" id="taxi-icon" (click)="goToHome()"/>
             </td>
-
         </tr>
         <tr>
             <td>
-                <mat-checkbox 
-                    checked="{{termsAndConditionsAgreement}}"
-                    id="term-and-privacy-policy"
-                    (change)="termsAndConditionsOnChecked($event)"
-                    color="primary">
-                    I agree to all the Terms and Conditions
-                </mat-checkbox>
+                <mat-error *ngIf="errorMessage != ''">{{errorMessage}}</mat-error>
                 <button 
                     type="submit"
-                    mat-raised-button color="primary"
-                    [disabled]="!termsAndConditionsAgreement || repeatedPassword != passenger.password">
+                    mat-raised-button color="primary">
                     Create account
                 </button>
             </td>
