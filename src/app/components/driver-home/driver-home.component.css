@@ -22,3 +22,15 @@
     color: rgb(110, 110, 110);
     margin-top: 5vh;
 }
+
+.current-ride-redirect {
+    display: flex;
+    justify-content: center;
+    font-size: 2vw;
+    margin: 5vh 0;
+}
+
+.current-ride-redirect:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}

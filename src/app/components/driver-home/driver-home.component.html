@@ -3,6 +3,7 @@
 </div>
 
 <div id="scheduled-rides">
+    <p class="current-ride-redirect" *ngIf="activeRideId != -1" (click)="accessCurrentRide()">Access current ride</p>
     <app-driver-scheduled-ride-card *ngFor="let ride of scheduledRides"
         [ride]="ride"
         [mapComponent]="mapComponent"

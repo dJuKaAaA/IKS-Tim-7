@@ -39,4 +39,8 @@ export class RideService {
   public acceptRide(id: number) {
     return this.http.put(environment.localhostApi + `ride/${id}/accept`, {});
   }
+
+  public startRide(id: number) {
+    return this.http.put(environment.localhostApi + `ride/${id}/start`, {});
+  }
 }

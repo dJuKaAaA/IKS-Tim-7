@@ -28,15 +28,20 @@
         <mat-card-title>Estimated ride time</mat-card-title>
         <mat-card-subtitle class="ride-info">{{ride.estimatedTimeInMinutes}} minutes</mat-card-subtitle>
     </mat-card-content>
+
+    <!-- if ride is pending, accept and reject buttons will be shown -->
     <mat-card-actions *ngIf="ride.status == 'PENDING'" class="buttons-layout">
         <button mat-raised-button color="accept" (click)="acceptRide()">Accept</button>
         <button mat-raised-button color="warn" (click)="rejectRide()">Reject</button>
     </mat-card-actions>
+
+    <!-- if ride is accepted, start ride, cancel and show route buttons will be shown -->
     <mat-card-actions *ngIf="ride.status == 'ACCEPTED'" class="buttons-layout">
-        <button mat-raised-button color="primary" (click)="startRide()">Start</button>
+        <button mat-raised-button color="primary" (click)="startRide()" [disabled]="!canStartRide">Start</button>
         <button mat-raised-button color="warn" (click)="showRejectionReason()">Cancel</button>
         <button mat-raised-button (click)="showRideRoutes()">Show routes</button>
     </mat-card-actions>
+    
     <mat-card-content #rejectionReasonContainer id="rejection-reason-container">
         <mat-error *ngIf="rejectionErrorMessage != ''">{{rejectionErrorMessage}}</mat-error>
         <form>

@@ -12,6 +12,8 @@ import { throwToolbarMixedModesError } from '@angular/material/toolbar';
 import { RideService } from 'src/app/services/ride.service';
 import { DateTimeService } from 'src/app/services/date-time.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { DriverService } from 'src/app/services/driver.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 const SHOW_PROFILE_INFO_ANIMATION_TIME: number = 300;
 const PASSENGER_INFO_HIDDEN_STATE: string = "hidden";
@@ -53,13 +55,16 @@ const ACCEPTED_STATE: string = 'accepted';
     ]),
     trigger('accept-anim', [
       state(NOT_ACCEPTED_STATE, style({
-        'transform': 'scale(1.0)'
+        'transform': 'scale(1.0)',
+        'opacity': '1.0'
       })),
       state(ACCEPT_MIDDLE_POINT, style({
-        'transform': 'scale(1.05)'
+        'transform': 'scale(1.05)',
+        'opacity': '0'
       })),
       state(ACCEPTED_STATE, style({
         'transform': 'scale(1.0)',
+        'opacity': '1.0'
       })),
       transition(`${NOT_ACCEPTED_STATE} => ${ACCEPT_MIDDLE_POINT}`, animate(ACCEPT_ANIMATION_TIME)),
       transition(`${ACCEPT_MIDDLE_POINT} => ${ACCEPTED_STATE}`, animate(ACCEPT_ANIMATION_TIME))
@@ -67,7 +72,7 @@ const ACCEPTED_STATE: string = 'accepted';
 
   ]
 })
-export class DriverScheduledRideCardComponent implements AfterViewInit {
+export class DriverScheduledRideCardComponent implements OnInit, AfterViewInit {
 
   @Input() ride: Ride = {} as Ride;
   @Input() mapComponent: MapComponent;
@@ -82,28 +87,48 @@ export class DriverScheduledRideCardComponent implements AfterViewInit {
 
   rejectionReasonText: string = "";
   rejectionErrorMessage: string = "";
+  canStartRide: boolean = true;
 
   @ViewChild('rejectionReasonContainer') rejectionReasonContainer: ElementRef;
   @ViewChild('scheduledRide', { read: ElementRef }) scheduledRide: ElementRef;
   @ViewChild('passengerContainer') passengerContainer: ElementRef;
   @ViewChild('passengerProfileInfo', { read: ElementRef }) passengerProfileInfo: ElementRef;
 
-  constructor(private router: Router, private renderer: Renderer2, private passengerService: PassengerService,
-    private rideService: RideService, private dateTimeService: DateTimeService) { }
+  constructor(
+    private router: Router,
+    private renderer: Renderer2,
+    private passengerService: PassengerService,
+    private rideService: RideService, 
+    private dateTimeService: DateTimeService,
+    private authService: AuthService) { }
+
+  ngOnInit(): void {
+    this.rideService.getDriversActiveRide(this.authService.getId()).subscribe({
+      next: (ride: Ride) => {
+        this.canStartRide = false;
+      },
+      error: (error) => {
+        if (error instanceof HttpErrorResponse) {
+          this.canStartRide = true;
+        }
+      }
+    })
+  }
 
   ngAfterViewInit(): void {
     // changes the color of cards outline based on time left until start
     let now: Date = new Date();
     let timeDiff = now.getTime() - this.dateTimeService.toDate(this.ride.startTime).getTime();
-    let minuteInMiliseconds = 1000 * 60;
-    if (timeDiff > 0 && timeDiff <= minuteInMiliseconds * 15) {
+    let oneMinuteInMiliseconds = 1000 * 60;
+    console.log(`Ride id: ${this.ride.id}, ${timeDiff}, ride start time: ${this.ride.startTime}, now: ${now.toLocaleString()}`);
+    if (timeDiff < 0 && timeDiff >= -oneMinuteInMiliseconds * 15) {
       this.renderer.setStyle(
         this.scheduledRide.nativeElement,
         'box-shadow',
         '0px 0px 15px rgb(204, 116, 0)'
       )
 
-    } else if (timeDiff < 0 && timeDiff >= -minuteInMiliseconds * 15) {
+    } else if (timeDiff > 0 && timeDiff <= oneMinuteInMiliseconds * 15) {
       this.renderer.setStyle(
         this.scheduledRide.nativeElement,
         'box-shadow',
@@ -113,7 +138,9 @@ export class DriverScheduledRideCardComponent implements AfterViewInit {
   }
 
   startRide(): void {
-    this.router.navigate([`driver-current-ride/${this.ride.id}`])
+    this.rideService.startRide(this.ride.id).subscribe(() => {
+      this.router.navigate([`driver-current-ride/${this.ride.id}`]);
+    });
   }
 
   showRejectionReason(): void {
@@ -154,7 +181,6 @@ export class DriverScheduledRideCardComponent implements AfterViewInit {
   rejectionState: string = NOT_REJECTED_STATE;
 
   rejectRide() {
-    // TODO: Send information to database about rejection
     this.rideService.rejectRide(this.ride.id).subscribe(() => {
       // sending information to parent about rejection
       this.rejectionState = REJECTED_STATE;
@@ -177,12 +203,11 @@ export class DriverScheduledRideCardComponent implements AfterViewInit {
       setTimeout(() => {
         this.ride.status = "ACCEPTED";
       }, 
-        ACCEPT_ANIMATION_TIME * 2);
+        ACCEPT_ANIMATION_TIME);
     });
   }
 
   cancelRide() {
-    // TODO: Send information to database about cancellation
     this.rejectionErrorMessage = "";
     this.rideService.cancelRide(this.ride.id, { reason: this.rejectionReasonText, time: this.dateTimeService.toString(new Date()) }).subscribe({
       next: () => {

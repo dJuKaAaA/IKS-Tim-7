@@ -7,6 +7,9 @@ import { MapComponent } from '../map/map.component';
 import { AuthService } from 'src/app/services/auth.service';
 import { NgxMaterialTimepickerHoursFace } from 'ngx-material-timepicker/src/app/material-timepicker/components/timepicker-hours-face/ngx-material-timepicker-hours-face';
 import { DriverRideHistoryDetailsComponent } from '../driver-ride-history-details/driver-ride-history-details.component';
+import { FixedSizeVirtualScrollStrategy } from '@angular/cdk/scrolling';
+import { HttpErrorResponse } from '@angular/common/http';
+import { RideService } from 'src/app/services/ride.service';
 
 @Component({
   selector: 'app-driver-home',
@@ -20,14 +23,30 @@ export class DriverHomeComponent implements OnInit, AfterViewInit {
   cardCount: number = 5;
   scheduledRides: Array<Ride> = [];
   location: Location;
+  activeRideId: number = -1;
 
-  constructor(private router: Router, private driverService: DriverService, private authService: AuthService) { }
+  constructor(
+    private router: Router, 
+    private driverService: DriverService,
+    private authService: AuthService,
+    private rideService: RideService) { }
 
   ngOnInit(): void {
     // load ride data from RideService
-    this.driverService.getPendingRides(this.authService.getId()).subscribe((result: any) => {
+    this.driverService.getScheduledRides(this.authService.getId()).subscribe((result: any) => {
       this.scheduledRides = result;
     });
+    this.rideService.getDriversActiveRide(this.authService.getId()).subscribe({
+      next: (ride: Ride) => {
+        this.activeRideId = ride.id;
+      },
+      error: (error) => {
+        if (error instanceof HttpErrorResponse) {
+          this.activeRideId = -1;
+        }
+      }
+    })
+
     this.mapComponent.loadMap();
   }
 
@@ -41,6 +60,10 @@ export class DriverHomeComponent implements OnInit, AfterViewInit {
       this.mapComponent.removeRoute(route);
     }
     this.scheduledRides = this.scheduledRides.filter((scheduled) => scheduled.id != ride.id);
+  }
+
+  accessCurrentRide() {
+    this.router.navigate([`driver-current-ride/${this.activeRideId}`]);
   }
 
 }

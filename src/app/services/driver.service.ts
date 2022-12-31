@@ -118,7 +118,8 @@ export class DriverService {
     return this.http.get(environment.localhostApi + `driver/${id}/ride`);
   }
 
-  public getPendingRides(id: number): Observable<Array<Ride>> {
+  public getScheduledRides(id: number): Observable<Array<Ride>> {
     return this.http.get<Array<Ride>>(environment.localhostApi + `driver/${id}/rides/scheduled`);
   }
+
 }
