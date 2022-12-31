@@ -21,6 +21,7 @@ export class LoginComponent {
   constructor(private router: Router, private authService: AuthService) {}
 
   login(): void {
+    this.hasError = false;
     if (this.form.valid) {
       let email: string = this.form.value.email;
       let password: string = this.form.value.password;

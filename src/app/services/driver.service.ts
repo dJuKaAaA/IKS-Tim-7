@@ -119,6 +119,6 @@ export class DriverService {
   }
 
   public getPendingRides(id: number): Observable<Array<Ride>> {
-    return this.http.get<Array<Ride>>(environment.localhostApi + `driver/${id}/rides/pending`);
+    return this.http.get<Array<Ride>>(environment.localhostApi + `driver/${id}/rides/scheduled`);
   }
 }

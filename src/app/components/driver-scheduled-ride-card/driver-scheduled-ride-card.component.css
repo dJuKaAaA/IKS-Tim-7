@@ -15,8 +15,13 @@
 }
 
 #scheduled-ride button {
-    margin: 1vw;
+    margin: 2vh 0.5vw;
     width: 8vw;
+}
+
+.buttons-layout {
+    display: flex;
+    justify-content: space-around;
 }
 
 .passengers-container {
@@ -65,4 +70,9 @@
 
 .passenger-info-full-name {
     font-size: 0.85vw;
+}
+
+.mat-accept {
+    background-color: rgb(36, 158, 36);
+    color: white;
 }

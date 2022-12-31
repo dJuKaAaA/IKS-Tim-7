@@ -1,4 +1,4 @@
 export interface Rejection {
   reason: String;
-  timeOfRejection: String;
+  time: String;
 }

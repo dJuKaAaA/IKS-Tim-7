@@ -1,4 +1,4 @@
-<mat-card id="scheduled-ride" #scheduledRide [@rejection-anim]="rejectionState">
+<mat-card id="scheduled-ride" #scheduledRide [@rejection-anim]="rejectionState" [@accept-anim]="acceptState">
     <mat-card-content>
         <div class="passengers-container" #passengerContainer>
             <mat-card-title>Passengers</mat-card-title>
@@ -12,9 +12,9 @@
 
         <mat-card-content class="passenger-content" #passengerProfileInfo [@passenger-info-popup]="passengerPopupState">
             <mat-card-header style="text-align: left;">
-                <div mat-card-avatar class="passenger-profile-image"><img src="{{displayedPassenger.profilePicture}}" class="profile-info-image"/></div>
+                <div mat-card-avatar class="passenger-profile-image"><img src="{{displayedPassenger.profilePicture}}" alt="Passenger profile picture" class="profile-info-image"/></div>
                 <mat-card-title class="passenger-info-email">{{displayedPassenger.email}}</mat-card-title>
-                <mat-card-subtitle class="passenger-info-full-name">{{displayedPassenger.name}} {{displayedPassenger.surname}}</mat-card-subtitle>
+                <mat-card-subtitle class="passenger-info-full-name">{{displayedPassenger.fullName}}</mat-card-subtitle>
             </mat-card-header>
             <button mat-button (click)="hidePassengerInfo()">Close</button>
         </mat-card-content>
@@ -28,17 +28,22 @@
         <mat-card-title>Estimated ride time</mat-card-title>
         <mat-card-subtitle class="ride-info">{{ride.estimatedTimeInMinutes}} minutes</mat-card-subtitle>
     </mat-card-content>
-    <mat-card-actions>
+    <mat-card-actions *ngIf="ride.status == 'PENDING'" class="buttons-layout">
+        <button mat-raised-button color="accept" (click)="acceptRide()">Accept</button>
+        <button mat-raised-button color="warn" (click)="rejectRide()">Reject</button>
+    </mat-card-actions>
+    <mat-card-actions *ngIf="ride.status == 'ACCEPTED'" class="buttons-layout">
         <button mat-raised-button color="primary" (click)="startRide()">Start</button>
-        <button mat-raised-button color="warn" (click)="showRejectionReason()">Reject</button>
+        <button mat-raised-button color="warn" (click)="showRejectionReason()">Cancel</button>
         <button mat-raised-button (click)="showRideRoutes()">Show routes</button>
     </mat-card-actions>
     <mat-card-content #rejectionReasonContainer id="rejection-reason-container">
+        <mat-error *ngIf="rejectionErrorMessage != ''">{{rejectionErrorMessage}}</mat-error>
         <form>
             <label for="rejection-reason">Reason</label>
             <textarea class="rejection-reason" [(ngModel)]="rejectionReasonText" name="rejection-reason-text"></textarea>
             <div style="text-align: center;">
-                <button mat-button color="primary" type="submit" (click)="notifyAboutRejection()">Send</button>
+                <button mat-button color="primary" type="submit" (click)="cancelRide()">Send</button>
                 <button mat-button color="primary" (click)="hideRejectionReason()">Cancel</button>
             </div>
         </form>
