@@ -196,7 +196,7 @@ export class MapComponent {
       (routeData: any) => {
         route.distanceInMeters = routeData.routes[0].summary.lengthInMeters;
         route.estimatedTimeInMinutes = Math.round(routeData.routes[0].summary.travelTimeInSeconds / 60);
-        this.notifyRoute(route);  // TODO: Check if important, then remove
+        this.notifyRoute(route);
         const routeLayer: ttMap.Layer = {
           'id': route.toString(),
           'type': 'line',

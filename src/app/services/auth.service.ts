@@ -34,14 +34,14 @@ export class AuthService {
     return null;
   }
 
-  getId(): any {
+  getId(): number {
     if (this.isLoggedIn()) {
       const accessToken: any = localStorage.getItem('user');
       const helper = new JwtHelperService();
       const id = helper.decodeToken(accessToken).id;
       return id;
     }
-    return null;
+    return -1;
   }
 
   getEmail(): any {

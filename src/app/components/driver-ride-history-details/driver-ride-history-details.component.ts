@@ -5,12 +5,12 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { DateTime } from 'src/app/date-time';
 import { Driver } from 'src/app/model/driver.model';
 import { Passenger } from 'src/app/model/passenger.model';
 import { Review } from 'src/app/model/review.model';
 import { Ride } from 'src/app/model/ride.model';
 import { Vehicle } from 'src/app/model/vehicle.model';
+import { DateTimeService } from 'src/app/services/date-time.service';
 import { DriverService } from 'src/app/services/driver.service';
 import { PassengerService } from 'src/app/services/passenger.service';
 import { ReviewService } from 'src/app/services/review.service';
@@ -48,7 +48,8 @@ export class DriverRideHistoryDetailsComponent
     private driverService: DriverService,
     private reviewService: ReviewService,
     private passengerService: PassengerService,
-    private tomTomService: TomTomGeolocationService
+    private tomTomService: TomTomGeolocationService,
+    private dateTimeService: DateTimeService
   ) {}
   ngOnInit(): void {}
 
@@ -86,10 +87,9 @@ export class DriverRideHistoryDetailsComponent
 
     this.departureDate = this.ride.startTime.toString().split(' ')[0];
     this.departureTime = this.ride.startTime.toString().split(' ')[1];
-    let dateTimeConverter: DateTime = new DateTime();
-    let [hours, minutes, seconds]: number[] = dateTimeConverter.getDiffDateTime(
-      this.ride.endTime,
-      this.ride.startTime
+    let [hours, minutes, seconds]: number[] = this.dateTimeService.getDiffDateTime(
+      this.dateTimeService.toDate(this.ride.endTime),
+      this.dateTimeService.toDate(this.ride.startTime)
     );
     this.duration = `${hours}h ${minutes}m ${seconds}s`;
 

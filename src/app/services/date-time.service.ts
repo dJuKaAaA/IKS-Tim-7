@@ -1,5 +1,11 @@
-export class DateTime {
-  constructor() {}
+import { Injectable } from '@angular/core';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class DateTimeService {
+
+  constructor() { }
 
   /** 
   Expected format 20.11.2022 14:15:13
@@ -9,7 +15,6 @@ export class DateTime {
 
     const [day, month, year]: String[] = dateValues.split('.');
     const [hours, minutes, seconds]: String[] = timeValues.split(':');
-    console.log(year);
 
     return new Date(+year, +month - 1, +day, +hours, +minutes, +seconds);
   }
@@ -19,14 +24,17 @@ export class DateTime {
   */
   public toString(date: Date): String {
     const year: number = date.getFullYear();
-    const month: number = date.getMonth();
-    const day: number = date.getDay();
+    const month: number = date.getMonth() + 1;
+    const day: number = date.getDate();
 
     const hours: number = date.getHours();
     const minutes: number = date.getMinutes();
     const seconds: number = date.getSeconds();
 
-    return `${year}.${month}.${day} ${hours}: ${minutes}:${seconds}`;
+    const minutesString = (minutes < 10) ? `0${minutes}` : `${minutes}`;
+    const secondsString = (seconds < 10) ? `0${seconds}` : `${seconds}`;
+
+    return `${day}.${month}.${year} ${hours}:${minutesString}:${secondsString}`;
   }
 
   public getDate(date: Date): String {

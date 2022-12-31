@@ -3,13 +3,13 @@ import { Route } from './../../../model/route.model';
 import { Rides } from 'src/app/model/rides.model';
 import { RideService } from 'src/app/services/ride.service';
 import { Ride } from 'src/app/model/ride.model';
-import { DateTime } from 'src/app/date-time';
 import { ReviewService } from 'src/app/services/review.service';
 import { RideReview } from 'src/app/model/ride-review.model';
 import { Review } from 'src/app/model/review.model';
 import { Router } from '@angular/router';
 import { Passenger } from 'src/app/model/passenger.model';
 import { Driver } from 'src/app/model/driver.model';
+import { DateTimeService } from 'src/app/services/date-time.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { DriverService } from 'src/app/services/driver.service';
 import { PassengerService } from 'src/app/services/passenger.service';
@@ -53,9 +53,10 @@ export class RideHistoryInformationComponent implements OnInit {
   constructor(
     private rideService: RideService,
     private reviewService: ReviewService,
+    private dateTimeService: DateTimeService,
     private authService: AuthService,
     private router: Router
-  ) {}
+) {}
 
   async ngOnInit() {
     this.ridesObject.totalCount = 0;
@@ -112,14 +113,13 @@ export class RideHistoryInformationComponent implements OnInit {
       });
     });
 
-    let dateTime: DateTime = new DateTime();
     console.log(ride.endTime);
-    this.destinationDate = dateTime.getDate(ride.endTime);
-    this.destinationTime = dateTime.getTime(ride.startTime);
+    this.destinationDate = this.dateTimeService.getDate(this.dateTimeService.toDate(ride.endTime));
+    this.destinationTime = this.dateTimeService.getTime(this.dateTimeService.toDate(ride.startTime));
 
-    let [hours, minutes, seconds]: number[] = dateTime.getDiffDateTime(
-      ride.endTime,
-      ride.startTime
+    let [hours, minutes, seconds]: number[] = this.dateTimeService.getDiffDateTime(
+      this.dateTimeService.toDate(ride.endTime),
+      this.dateTimeService.toDate(ride.startTime)
     );
     this.travelDuration = `${hours}h ${minutes}m ${seconds}s`;
 
