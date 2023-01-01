@@ -4,7 +4,6 @@
 <app-passenger-navbar
   *ngIf="authService.getRole() == 'ROLE_PASSENGER'"
 ></app-passenger-navbar>
-<app-admin-navbar
-  *ngIf="authService.getRole() == 'ROLE_ADMIN'"
-></app-admin-navbar>
+<app-admin-navbar>
+</app-admin-navbar>
 <router-outlet></router-outlet>
