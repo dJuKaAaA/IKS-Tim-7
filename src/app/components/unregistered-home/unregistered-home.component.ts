@@ -11,6 +11,19 @@ import {
   transition,
   animate
 } from '@angular/animations';
+import { DriverCurrentLocation } from './driver-current-location.model';
+import { environment } from 'src/environment/environment';
+import { TomTomGeolocationService } from 'src/app/services/tom-tom-geolocation.service';
+import { TomTomGeolocationResponse } from 'src/app/model/tom-tom-geolocation-response.model';
+import { DialogComponent } from '../dialog/dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { throwToolbarMixedModesError } from '@angular/material/toolbar';
+import { last } from 'rxjs';
+import { ScheduleRideComponent } from '../schedule-ride/schedule-ride.component';
+
+const ANIMATION_TIME = 500;
+const LOGIN_HIDDEN_STATE = "hidden";
+const LOGIN_SHOWN_STATE = "shown";
 
 @Component({
   selector: 'app-unregistered-home',
@@ -18,74 +31,57 @@ import {
   styleUrls: ['./unregistered-home.component.css'],
   animations: [
     trigger('login-popup',[
-      state('hidden', style({
+      state(LOGIN_HIDDEN_STATE, style({
         'opacity': '0'
       })),
-      state('shown', style({
+      state(LOGIN_SHOWN_STATE, style({
         'opacity': '100'
       })),
-      transition('hidden => shown',animate(500)),
-      transition('shown => hidden',animate(500))
+      transition(`${LOGIN_HIDDEN_STATE} => ${LOGIN_SHOWN_STATE}`,animate(ANIMATION_TIME)),
+      transition(`${LOGIN_SHOWN_STATE} => ${LOGIN_HIDDEN_STATE}`,animate(ANIMATION_TIME))
     ])
   ]
 })
-export class UnregisteredHomeComponent implements OnInit, AfterViewInit {
+export class UnregisteredHomeComponent {
 
-  @ViewChild(MapComponent) mapComponent: MapComponent;
+  @ViewChild(ScheduleRideComponent) scheduleRideComponent: ScheduleRideComponent;
 
-  bgImagePath: string = "src/assets/unregistered-home-bg-img.png"
-
-  locations: Array<Location> = [];
-  route: Route = new Route(
-    new Location(NaN, NaN, ""),
-    new Location(NaN, NaN, ""),
-    NaN,
-    NaN
-  );
+  bgImagePath: string = environment.unregisteredUserHomePageBgImage;
 
   startAddressControl: FormControl = new FormControl("");
   endAddressControl: FormControl = new FormControl("");
 
-  constructor(private router: Router) {
+  disableUpperFormStartAddressField: boolean = false;
+
+  constructor(private router: Router, private matDialog: MatDialog) {
 
   }
-  
-  ngOnInit(): void {
-    this.mapComponent.loadMap();
-  }
 
-  ngAfterViewInit(): void {
-    this.mapComponent.loadMap();
-  }
-
-  goToRegister(): void {
-    this.router.navigate(["register"]);
-  }
-
-  updateRoute(route: Route) {
-    this.route = route;
-  }
-
-  goToMaps(): void {
-    window.scrollTo(0,document.body.scrollHeight);
-  }
-
-  showRoute() {
-    let startAddress = this.startAddressControl.value || "";
-    let endAddress = this.endAddressControl.value || "";
-    this.mapComponent.clearMap();
-    this.mapComponent.showRouteFromAddresses(startAddress, endAddress);
-    this.goToMaps();
-  }
-
-  loginPopupState: string = "hidden";
+  loginPopupState: string = LOGIN_HIDDEN_STATE;
 
   showLoginPopup() {
     let loginPopup = document.getElementById("login-popup");
     if (loginPopup != null) {
       loginPopup.style.display = loginPopup.style.display == "none" ? "block" : "none";
     }
-    this.loginPopupState = this.loginPopupState == "hidden" ? "shown" : "hidden";
+    this.loginPopupState = this.loginPopupState == LOGIN_HIDDEN_STATE ? LOGIN_SHOWN_STATE : LOGIN_HIDDEN_STATE;
+  }
+
+  goToRegister(): void {
+    this.router.navigate(["register"]);
+  }
+
+  goToMaps(): void {
+    window.scrollTo(0, document.body.scrollHeight);
+  }
+
+  updateStartAddressAccess(disabled: boolean) {
+    this.disableUpperFormStartAddressField = disabled;
+  }
+
+  showRouteRequestFromUpperForm() {
+    this.goToMaps();
+    this.scheduleRideComponent.showRouteFromAddresses();
   }
 
 }

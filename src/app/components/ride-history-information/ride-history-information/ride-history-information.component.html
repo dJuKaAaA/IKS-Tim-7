@@ -63,16 +63,18 @@
         </div>
       </div>
       <hr />
-      <button class="btn">Display Details</button>
+      <button class="btn" (click)="displayRideDetails()">
+        Display Details
+      </button>
     </div>
     <div class="vl"></div>
   </div>
 
   <div class="div2">
-    <div *ngFor="let ride of ridesObject.results">
+    <div *ngFor="let ride of rides$ | async; let indexOfElement = index">
       <app-ride-history-card
-        [vehicleRating]="avgVehicleReviewRating"
-        [driverRating]="avgDriverReviewRating"
+        [vehicleRating]="avgVehicleReviewRating[indexOfElement]"
+        [driverRating]="avgDriverReviewRating[indexOfElement]"
         [ride]="ride"
         (routeEvent)="displayRoutesInTable($event)"
       ></app-ride-history-card>

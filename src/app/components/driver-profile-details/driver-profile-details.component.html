@@ -5,11 +5,8 @@
 <div *ngIf="profileInfo" class="wrapper">
   <!-- driver profile picture, driver name, driver surname -->
   <div class="left">
-    <img
-      src="https://1.bp.blogspot.com/-vhmWFWO2r8U/YLjr2A57toI/AAAAAAAACO4/0GBonlEZPmAiQW4uvkCTm5LvlJVd_-l_wCNcBGAsYHQ/s16000/team-1-2.jpg"
-      alt="user"
-    />
-    <h4>{{ driver.name }} {{ driver.surname }}</h4>
+    <img src="{{ driver.profilePicture }}" *ngIf="driver != undefined" alt="user" />
+    <h4 *ngIf="driver != undefined">{{ driver.name }} {{ driver.surname }}</h4>
     <p>Driver</p>
   </div>
   <div class="right">
@@ -18,7 +15,7 @@
       <app-user-info [user]="driver" [role]="'Driver'"></app-user-info>
     </div>
 
-    <div>
+    <div *ngIf="driver != undefined">
       <div class="star-align">
         <p>Driver rating:</p>
         <app-star class="star-padding" [rating]="driverRating"></app-star>

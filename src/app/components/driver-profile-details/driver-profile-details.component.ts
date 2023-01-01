@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Document } from 'src/app/model/document.model';
 import { Driver } from 'src/app/model/driver.model';
 import { Vehicle } from 'src/app/model/vehicle.model';
+import { AuthService } from 'src/app/services/auth.service';
 import { DriverService } from 'src/app/services/driver.service';
 
 export interface SliderImage {
@@ -36,51 +37,47 @@ export class DriverProfileDetailsComponent implements OnInit {
       alt: 'Image 1',
       title: 'Image 1',
     },
-    {
-      image: 'https://loremflickr.com/600/400/brazil,rio',
-      thumbImage: 'https://loremflickr.com/1200/800/brazil,rio',
-      title: 'Image 2',
-      alt: 'Image 2',
-    },
-    {
-      image: 'https://loremflickr.com/600/400/paris,girl/all',
-      thumbImage: 'https://loremflickr.com/1200/800/brazil,rio',
-      title: 'Image 3',
-      alt: 'Image 3',
-    },
-    {
-      image: 'https://loremflickr.com/600/400/brazil,rio',
-      thumbImage: 'https://loremflickr.com/1200/800/brazil,rio',
-      title: 'Image 4',
-      alt: 'Image 4',
-    },
-    {
-      image: 'https://loremflickr.com/600/400/paris,girl/all',
-      thumbImage: 'https://loremflickr.com/1200/800/paris,girl/all',
-      title: 'Image 5',
-      alt: 'Image 5',
-    },
   ];
 
-  constructor(private driverService: DriverService, private router: Router) {}
+  constructor(
+    private driverService: DriverService,
+    private authService: AuthService,
+    private router: Router
+  ) {}
   ngOnInit(): void {
-    this.driverService.getDriver(1).subscribe((data) => (this.driver = data));
+    const userId = this.authService.getId();
+    this.driverService.getDriver(userId).subscribe({
+      next : driver =>{
+        this.fillUpTheHTML(userId);
+      },
+      error : () => {
+
+      }
+    })
+  }
+
+  fillUpTheHTML(userId : number){
     this.driverService
-      .getAvgDriverRating(1)
+      .getDriver(userId)
+      .subscribe((data) => (this.driver = data));
+    this.driverService
+      .getAvgDriverRating(userId)
       .then((res) => (this.driverRating = res));
 
     this.driverService
-      .getAvgVehicleRating(1)
+      .getAvgVehicleRating(userId)
       .then((res) => (this.vehicleRating = res));
 
-    this.driverService.getVehicle(1).subscribe((data) => (this.vehicle = data));
-    this.driverService.getDocuments(1).subscribe((data) => {
+    this.driverService
+      .getVehicle(userId)
+      .subscribe((data) => (this.vehicle = data));
+    this.driverService.getDocuments(userId).subscribe((data) => {
       this.documents = data;
       this.fillUpDocuments();
     });
   }
 
-  fillUpDocuments(){
+  fillUpDocuments() {
     this.documents.forEach((element) => {
       this.imgCollection.push({
         image: element.documentImage,
@@ -113,8 +110,6 @@ export class DriverProfileDetailsComponent implements OnInit {
 
   // prosledjivanje iz komponente
   redirectToDriverEditProfile() {
-    this.router.navigateByUrl('/driver-edit-profile', {
-      state: { driver: this.driver, documents: this.documents },
-    });
+    this.router.navigateByUrl('/driver-edit-profile');
   }
 }

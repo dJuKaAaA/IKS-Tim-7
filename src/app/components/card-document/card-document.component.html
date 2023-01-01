@@ -1,0 +1,14 @@
+<div class="cards-container">
+  <mat-icon (click)="closeDocumentUpdate()">close</mat-icon>
+  <div class="card" *ngFor="let document of documents">
+    <img [src]="document.documentImage" alt="document" style="width: 100%" />
+    <div class="container">
+      <h4>
+        Document: <b>{{ document.name }}</b>
+      </h4>
+    </div>
+    <button (click)="deleteDocument(document)" style="width: 100%">
+      Delete
+    </button>
+  </div>
+</div>

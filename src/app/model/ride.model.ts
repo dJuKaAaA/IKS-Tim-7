@@ -4,16 +4,16 @@ import { SimpleUser } from './simple-user.model';
 
 export interface Ride {
   id: number;
-  locations: Route[];
-  startTime: Date;
-  endTime: Date;
+  startTime: string;
+  endTime: string;
   totalCost: number;
-  driver: SimpleUser
+  driver: SimpleUser;
   passengers: SimpleUser[];
   estimatedTimeInMinutes: number;
   vehicleType: string;
   babyTransport: boolean;
   petTransport: boolean;
   rejection: Rejection;
-  status: string
+  locations: Route[];
+  status: string;
 }

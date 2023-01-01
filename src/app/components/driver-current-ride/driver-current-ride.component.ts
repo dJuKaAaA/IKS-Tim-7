@@ -1,7 +1,12 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { HttpErrorResponse } from '@angular/common/http';
+import { AfterViewInit, Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { throwToolbarMixedModesError } from '@angular/material/toolbar';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from 'src/app/model/location.model';
+import { Ride } from 'src/app/model/ride.model';
 import { Route } from 'src/app/model/route.model';
+import { DateTimeService } from 'src/app/services/date-time.service';
+import { RideService } from 'src/app/services/ride.service';
 import { MapComponent } from '../map/map.component';
 
 @Component({
@@ -12,52 +17,85 @@ import { MapComponent } from '../map/map.component';
 export class DriverCurrentRideComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MapComponent) mapComponent: MapComponent;
+  @ViewChild('panicReasonForm') panicReasonForm: ElementRef;
 
   routes: Array<Route> = [];
   routeIndex: number = -1;
+  ride: Ride = {} as Ride;
+  rideDate: Date; 
 
-  constructor(private activatedRoute: ActivatedRoute) {}
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private rideService: RideService,
+    private dateTimeService: DateTimeService,
+    private renderer: Renderer2,
+    private router: Router) {}
 
   ngOnInit(): void {
     // TODO: Using the id call the endpoint on backend and get the ride information and display it
-    let id=this.activatedRoute.snapshot.paramMap.get("id");
-    console.log('Id: ' + id);
+    const idUrlParam: any = this.activatedRoute.snapshot.paramMap.get("id");
+    const id = (idUrlParam == null) ? -1 : +idUrlParam;
+    this.rideService.getRide(id).subscribe({
+      next: (ride: Ride) => {
+        this.ride = ride;
+        this.routes = ride.locations;
+        this.rideDate = this.dateTimeService.toDate(this.ride.startTime);
+      },
+      error: (error) => {
+        if (error instanceof HttpErrorResponse) {
 
-    this.routes.push(
-      new Route(
-        new Location(45.25608864310402, 19.84577854086666, "Katolicka Porta"),
-        new Location(45.25430718571828, 19.82089966970297, "Knin restoran"),
-        NaN,
-        NaN
-      ),
-      new Route(
-        new Location(45.25430718571828, 19.82089966970297, "Knin restoran"),
-        new Location(45.24477398222599, 19.84711471203027, "NTP"),
-        NaN,
-        NaN
-      ),
-      new Route(
-        new Location(45.24477398222599, 19.84711471203027, "NTP"),
-        new Location(45.24638066815601, 19.851675340866446, "FTN"),
-        NaN,
-        NaN
-      )
-    )
+        }
+      }
+    })
     this.mapComponent.loadMap();
   }
 
   ngAfterViewInit(): void {
     this.mapComponent.loadMap();
-    this.showNextRoute();
   }
 
   showNextRoute() {
-    if (this.routeIndex < this.routes.length) {
+    if (this.routeIndex < this.routes.length - 1) {
+      console.log(this.routes);
       this.routeIndex++;
-      this.mapComponent.clearMap();
+      this.mapComponent.removeRoute(this.routes[this.routeIndex]);
       this.mapComponent.showRoute(this.routes[this.routeIndex]);
       this.mapComponent.focusOnPoint(this.routes[this.routeIndex].departure);
+      console.log(this.routeIndex);
     }
+  }
+
+  sendPanic() {
+
+  }
+
+  openPanicReasonTextArea() {
+    this.renderer.setStyle(
+      this.panicReasonForm.nativeElement,
+      'display',
+      'block'
+    )
+  }
+
+  closePanicReasonTextArea() {
+    this.renderer.setStyle(
+      this.panicReasonForm.nativeElement,
+      'display',
+      'none'
+    )
+  }
+
+  finishRide() {
+    this.rideService.finishRide(this.ride.id).subscribe({
+      next: (ride) => {
+        this.router.navigate(['driver-home']);
+      },
+      error: (error) => {
+        if (error instanceof HttpErrorResponse) {
+
+        }
+      }
+    })
   }
 
 }

@@ -1,9 +1,9 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
-import { DateTime } from 'src/app/date-time';
 import { Driver } from 'src/app/model/driver.model';
 import { Review } from 'src/app/model/review.model';
 import { Ride } from 'src/app/model/ride.model';
 import { Vehicle } from 'src/app/model/vehicle.model';
+import { DateTimeService } from 'src/app/services/date-time.service';
 import { DriverService } from 'src/app/services/driver.service';
 import { ReviewService } from 'src/app/services/review.service';
 import { RideService } from 'src/app/services/ride.service';
@@ -32,22 +32,22 @@ export class PassengerRideHistoryDetailsComponent
   public departureTime: string;
   public duration: string;
   public distance: number = 0;
+  public price: number = 0;
 
   constructor(
     private rideService: RideService,
     private driverService: DriverService,
     private reviewService: ReviewService,
-    private tomTomService: TomTomGeolocationService
+    private tomTomService: TomTomGeolocationService,
+    private dateTimeService: DateTimeService
   ) {}
 
   ngOnInit(): void {}
-
   async ngAfterViewInit() {
     await this.rideService
-      .getRide(1)
+      .getRide(Number(sessionStorage.getItem('rideForDisplayDetails')))
       .toPromise()
       .then((data) => (this.ride = data ?? ({} as Ride)));
-    console.log(this.ride);
 
     await this.driverService
       .getVehicle(this.ride.driver.id)
@@ -70,15 +70,13 @@ export class PassengerRideHistoryDetailsComponent
     this.destination =
       this.ride.locations[this.ride.locations.length - 1].destination.address;
 
-    // this.departureDate = this.ride.startTime.split(' ')[0];
-    // this.departureTime = this.ride.startTime.split(' ')[1];
-
-    // let dateTimeConverter: DateTime = new DateTime();
-    // let startDate: Date = dateTimeConverter.toDate(this.ride.startTime);
-    // let endDate: Date = dateTimeConverter.toDate(this.ride.endTime);
-    // let [_, hours, minutes, seconds]: number[] =
-    //   dateTimeConverter.getDiffDateTime(endDate, startDate);
-    // this.duration = `${hours}h ${minutes}m ${seconds}s`;
+    this.departureDate = this.ride.startTime.toString().split(' ')[0];
+    this.departureTime = this.ride.startTime.toString().split(' ')[1];
+    let [hours, minutes, seconds]: number[] = this.dateTimeService.getDiffDateTime(
+      this.dateTimeService.toDate(this.ride.endTime),
+      this.dateTimeService.toDate(this.ride.startTime)
+    );
+    this.duration = `${hours}h ${minutes}m ${seconds}s`;
 
     this.ride.locations.forEach((route) => {
       this.mapComponent.showRouteFromAddresses(

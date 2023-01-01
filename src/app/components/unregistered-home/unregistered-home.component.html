@@ -15,7 +15,8 @@
     <app-address-route-form
         [startAddressControl]="startAddressControl"
         [endAddressControl]="endAddressControl"
-        (submitEmitter)="showRoute()">
+        [disableStartAddressField]="disableUpperFormStartAddressField"
+        (submitEmitter)="showRouteRequestFromUpperForm()">
     </app-address-route-form>
 </div>
 
@@ -23,40 +24,15 @@
     SEE ALL AVAILABLE VEHICLES AND ROUTES
 </p>
 
+<app-login class="login-popup" [@login-popup]="loginPopupState"></app-login>
+
 <h1 id="map-header">See the drivers and routes</h1>
 
-<div id="routes-vehicles-map">
-    <app-map (routeEmitter)="updateRoute($event)"></app-map>
-</div>
-<div id="route-information">
-    <div id="search-location-form-lower">
-        <app-address-route-form
-            [startAddressControl]="startAddressControl"
-            [endAddressControl]="endAddressControl"
-            (submitEmitter)="showRoute()">
+<app-schedule-ride
+    [loggedIn]="false"
+    [startAddressControl]="startAddressControl"
+    [endAddressControl]="endAddressControl"
+    (disabledStartAddressEmitter)="updateStartAddressAccess($event)">
 
-        </app-address-route-form>
-    </div>
-    <div id="route-details">
-        <app-ride-details
-        [destination]="this.route.departure.address"
-        [departure]="this.route.destination.address"
-        [departureDate]="'N/A'"
-        [departureTime]="'N/A'"
-        [duration]="(!this.route.estimatedTimeInMinutes) ? ('N/A') : (this.route.estimatedTimeInMinutes + ' min')"
-        [distance]="(!this.route.distanceInMeters) ? ('N/A') : (this.route.distanceInMeters + 'm')">
-    </app-ride-details>
-    </div>
-    <button
-        id="unavailable-schedule-button" 
-        mat-raised-button color="primary"
-        [disabled]="true">
-        Schedule
-    </button>
-    <p
-        id="unavailable-schedule-label">
-        You need to be logged in to use this feature
-    </p>
-</div>
+</app-schedule-ride>
 
-<app-login class="login-popup" [@login-popup]="loginPopupState"></app-login>

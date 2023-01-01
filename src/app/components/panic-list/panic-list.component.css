@@ -1,4 +1,4 @@
-#usersList{
+#panicList{
     overflow-y: scroll;
     overflow-x: hidden;
     width: 500px;
@@ -10,22 +10,22 @@
     height: 100%;
 }
 
-#usersList::-webkit-scrollbar{
+#panicList::-webkit-scrollbar{
     width: 20px;
 }
 
-#usersList::-webkit-scrollbar-track{
+#panicList::-webkit-scrollbar-track{
     display: none;
     
 }
 
-#usersList::-webkit-scrollbar-thumb {
+#panicList::-webkit-scrollbar-thumb {
     background-color: darkgray;
     border-radius: 10px;
     height: 30px;
   }
 
-.user{
+.panic{
     width: 90%;
     height: 75px;
     margin: 20px 20px;
@@ -33,13 +33,13 @@
     border-radius: 10px;
     line-height: 12px;
 }
-.user:hover{
+.panic:hover{
     background-color: #293E6C;
     cursor: pointer;
     color: white;
 }
 
-.user:hover .imgSection{
+.panic:hover .imgSection{
     box-shadow: none;
 }
 

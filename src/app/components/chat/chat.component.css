@@ -1,0 +1,15 @@
+.chat {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.user-selection {
+    height: 88vh;
+    margin: 2vh 0;
+}
+
+.message-bubbles {
+    margin: 2vh 1vw;
+    height: 88vh;
+    width: 65vw;
+}

@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Document } from 'src/app/model/document.model';
-import { Driver } from 'src/app/model/driver.model';
+import { Document, POSTDocument } from 'src/app/model/document.model';
+import { DriverDocumentChangeRequest } from 'src/app/model/driver-document-change-request.model';
+import { DriverProfileChangeRequest } from 'src/app/model/driver-profile-change-request.model';
+import { Driver, NoIdDriver } from 'src/app/model/driver.model';
+import { AuthService } from 'src/app/services/auth.service';
 import { DriverService } from 'src/app/services/driver.service';
+import { ImageParserService } from 'src/app/services/image-parser.service';
 
 export interface SliderImage {
   image: String;
@@ -17,76 +21,113 @@ export interface SliderImage {
   styleUrls: ['./driver-edit-profile.component.css'],
 })
 export class DriverEditProfileComponent implements OnInit {
-  imgSlider: boolean = false;
+  shouldDocumentsBeDisplayed: boolean = false;
+  shouldUploadFormBeDisplayed: boolean = false;
   profileInfo: boolean = true;
-  imgCollection: Array<SliderImage> = [
-    {
-      image: 'https://loremflickr.com/g/600/400/paris',
-      thumbImage: 'https://loremflickr.com/g/1200/800/paris',
-      alt: 'Image 1',
-      title: 'Image 1',
-    },
-    {
-      image: 'https://loremflickr.com/600/400/brazil,rio',
-      thumbImage: 'https://loremflickr.com/1200/800/brazil,rio',
-      title: 'Image 2',
-      alt: 'Image 2',
-    },
-    {
-      image: 'https://loremflickr.com/600/400/paris,girl/all',
-      thumbImage: 'https://loremflickr.com/1200/800/brazil,rio',
-      title: 'Image 3',
-      alt: 'Image 3',
-    },
-    {
-      image: 'https://loremflickr.com/600/400/brazil,rio',
-      thumbImage: 'https://loremflickr.com/1200/800/brazil,rio',
-      title: 'Image 4',
-      alt: 'Image 4',
-    },
-    {
-      image: 'https://loremflickr.com/600/400/paris,girl/all',
-      thumbImage: 'https://loremflickr.com/1200/800/paris,girl/all',
-      title: 'Image 5',
-      alt: 'Image 5',
-    },
-  ];
-  public driver: Driver;
-  public documents: Document[];
-  constructor(private driverService: DriverService, private router: Router) {}
-  ngOnInit(): void {
-    // Kada prosledimo iz komponente
-    this.driver = history.state.driver;
-    this.documents = history.state.documents;
 
-    this.driverService.getDriver(1).subscribe((data) => (this.driver = data));
-    this.driverService.getDocuments(1).subscribe((data) => {
+  driver: Driver;
+  documents: Document[] = [];
+
+  newDocuments: POSTDocument[] = [];
+  deleteDocumentsIds = new Set<Number>();
+  profileImage: String = '';
+
+  // TODO dodati poruku da li je prihvacen update profila
+  // TODO dodati validaciju formi
+  // TODO dodati redirekciju za change password
+  // TODO dodati pravu cenu
+  constructor(
+    private driverService: DriverService,
+    private imageParserService: ImageParserService,
+    private authService: AuthService
+  ) {}
+  ngOnInit(): void {
+    const userId = this.authService.getId();
+    this.driverService
+      .getDriver(userId)
+      .subscribe((data) => (this.driver = data));
+    this.driverService.getDocuments(userId).subscribe((data) => {
       this.documents = data;
-      this.documents.forEach((element) => {
-        this.imgCollection.push({
-          image: element.documentImage,
-          thumbImage: element.documentImage,
-          title: element.name,
-          alt: element.name,
-        });
-      });
     });
   }
 
-  displayDocuments(): void {
-    this.imgSlider = true;
-    this.profileInfo = false;
-  }
-  hideSlideBar(): void {
-    this.imgSlider = false;
-    this.profileInfo = true;
+  onProfileImageSelected(event: any): void {
+    let newProfileImage: File;
+    if (event.target.files) {
+      newProfileImage = event.target.files[0];
+      this.imageParserService
+        .convertToBase64(newProfileImage)
+        .subscribe((img) => {
+          this.profileImage = img;
+        });
+      alert('Profile image added');
+    }
   }
 
-  changePassword(): void {
-    // this.router.navigateByUrl('/driver-edit-profile', {
-    //   state: { driver: this.driver, documents: this.documents },
-    // });
+  displayDocuments(): void {
+    this.shouldDocumentsBeDisplayed = true;
+    this.profileInfo = false;
   }
-  uploadDocument(): void {}
-  deleteDocument(): void {}
+
+  closeDocuments(deleteDocumentsIds: Number[]): void {
+    this.shouldDocumentsBeDisplayed = false;
+    this.shouldUploadFormBeDisplayed = false;
+    this.profileInfo = true;
+
+    deleteDocumentsIds.forEach((id) => this.deleteDocumentsIds.add(id));
+    console.log(this.deleteDocumentsIds);
+  }
+
+  displayForm(): void {
+    this.shouldUploadFormBeDisplayed = true;
+  }
+
+  closeForm(): void {
+    this.shouldUploadFormBeDisplayed = false;
+  }
+
+  addDocument(document: POSTDocument) {
+    this.newDocuments.push(document);
+    this.shouldUploadFormBeDisplayed = false;
+    alert('Document is added!');
+  }
+
+  changePassword(): void {}
+
+  updateProfile(): void {
+    let request: DriverProfileChangeRequest = {} as DriverProfileChangeRequest;
+    request.documents = [];
+
+    this.newDocuments.forEach((document) => {
+      console.log(document);
+      let documentChangeRequest = {} as DriverDocumentChangeRequest;
+      documentChangeRequest.documentId = NaN;
+      documentChangeRequest.name = document.name;
+      documentChangeRequest.documentImage = document.documentImage;
+      request.documents.push(documentChangeRequest);
+    });
+
+    this.deleteDocumentsIds.forEach((documentId) => {
+      let documentChangeRequest = {} as DriverDocumentChangeRequest;
+      documentChangeRequest.documentId = documentId;
+      documentChangeRequest.name = '';
+      documentChangeRequest.documentImage = '';
+      request.documents.push(documentChangeRequest);
+    });
+
+    request.firstName = this.driver.name;
+    request.lastName = this.driver.surname;
+    request.profilePicture = this.profileImage;
+    request.phoneNumber = this.driver.telephoneNumber;
+    request.email = this.driver.email;
+    request.address = this.driver.address;
+    request.status = 'PADDING';
+    request.isMessageDisplayed = false;
+
+    console.log(request);
+    this.driverService.saveDriverProfileChangeRequest(1, request).subscribe();
+
+    alert('You have successfully send request for updating profile');
+    alert('Only last request will be recorded');
+  }
 }
