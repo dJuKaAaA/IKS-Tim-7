@@ -56,6 +56,8 @@ import { DriverCreationComponent } from './components/driver-creation/driver-cre
 import { DriverCreationFormComponent } from './components/driver-creation-form/driver-creation-form.component';
 import { VehicleCreationPageComponent } from './components/vehicle-creation-page/vehicle-creation-page.component';
 import { VehicleCreationFormComponent } from './components/vehicle-creation-form/vehicle-creation-form.component';
+import { PanicReviewComponent } from './components/panic-review/panic-review.component';
+import { PanicListComponent } from './components/panic-list/panic-list.component';
 
 @NgModule({
   declarations: [
@@ -99,6 +101,8 @@ import { VehicleCreationFormComponent } from './components/vehicle-creation-form
     DriverCreationFormComponent,
     VehicleCreationPageComponent,
     VehicleCreationFormComponent,
+    PanicReviewComponent,
+    PanicListComponent,
   ],
   imports: [
     BrowserModule,
