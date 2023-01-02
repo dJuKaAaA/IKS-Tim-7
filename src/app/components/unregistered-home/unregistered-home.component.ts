@@ -1,9 +1,6 @@
-import { AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Location } from 'src/app/model/location.model';
-import { Route } from 'src/app/model/route.model';
-import { MapComponent } from '../map/map.component';
 import {
   trigger,
   state,
@@ -11,14 +8,8 @@ import {
   transition,
   animate
 } from '@angular/animations';
-import { DriverCurrentLocation } from './driver-current-location.model';
 import { environment } from 'src/environment/environment';
-import { TomTomGeolocationService } from 'src/app/services/tom-tom-geolocation.service';
-import { TomTomGeolocationResponse } from 'src/app/model/tom-tom-geolocation-response.model';
-import { DialogComponent } from '../dialog/dialog.component';
 import { MatDialog } from '@angular/material/dialog';
-import { throwToolbarMixedModesError } from '@angular/material/toolbar';
-import { last } from 'rxjs';
 import { ScheduleRideComponent } from '../schedule-ride/schedule-ride.component';
 
 const ANIMATION_TIME = 500;
