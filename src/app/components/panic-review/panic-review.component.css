@@ -1,4 +1,4 @@
-#leftSection{
-    width: 30%;
-    height: 60%;
+#panicContainer{
+    position: absolute;
+    /* position: inherit; */
 }

@@ -6,5 +6,6 @@ export interface Panic {
     sentTime : string,
     reason : string,
     ride : Ride,
-    user : User
+    user : User,
+    reviewed : boolean
 }

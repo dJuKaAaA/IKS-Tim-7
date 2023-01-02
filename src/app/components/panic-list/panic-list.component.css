@@ -7,7 +7,9 @@
     height: 70vh;
     box-sizing: border-box;
     margin-left: 50px;
-    height: 100%;
+    background-color: white;
+    font-size: 14px;
+    color: black;
 }
 
 #panicList::-webkit-scrollbar{
@@ -32,11 +34,34 @@
     padding: 10px;
     border-radius: 10px;
     line-height: 12px;
+    transition: background-color 0.5s ease-out;
+    transition: height 0.5s ease-out;
 }
 .panic:hover{
     background-color: #293E6C;
     cursor: pointer;
     color: white;
+    height: 125px;
+}
+
+#markAsRead{
+    display: none;
+    position: relative;
+    top: 30px;
+    float: right;
+    padding: 5px;
+    /* margin-bottom: 5px; */
+}
+
+#markAsRead:hover{
+    background-color: white;
+    color:black;
+    font-weight: 1000;
+    border-radius: 20px;
+}
+
+.panic:hover #markAsRead{
+    display: block;
 }
 
 .panic:hover .imgSection{
@@ -58,10 +83,17 @@
 
 
 .textSection{
+    width: 77%;
     display: inline-block;
     margin-top: 20px;
     margin-bottom: 10px;
 }
+
+.textSection p{
+    word-break: break-all;
+    white-space: normal;
+}
+
 .date{
     margin-top: 20px;
     float: right;

@@ -8,6 +8,7 @@
         <div class="textSection">
             <p><b>{{panic.user.name}} {{panic.user.surname}}</b></p>
             <p>{{panic.reason}}</p>
+            <p id = "markAsRead" (click)="setPanicAsReviewed(panic.id)">Mark as read</p>
         </div>
     </div>
 </div>
