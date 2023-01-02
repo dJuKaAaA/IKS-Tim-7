@@ -12,6 +12,8 @@ import { DriverProfileChangeRequest } from '../model/driver-profile-change-reque
 import { ActivityDto } from '../model/activity-dto.model';
 import { RideService } from './ride.service';
 import { AuthService } from './auth.service';
+import { PaginatedResponse } from '../model/paginated-response.model';
+import { DriverActivityAndLocation } from '../model/driver-activity-and-locations.model';
 
 @Injectable({
   providedIn: 'root',
@@ -38,21 +40,24 @@ export class DriverService {
   }
 
   constructor(private http: HttpClient, private reviewService: ReviewService, private rideService: RideService, private authService: AuthService) {
-    this.rideService.getDriversActiveRide(this.authService.getId()).subscribe({
-      next: (ride: Ride) => {
-        this.setHasActiveRide(true);
-      },
-      error: (error) => {
-        if (error instanceof HttpErrorResponse) {
-          this.setHasActiveRide(false);
+    if (this.authService.getRole() == "ROLE_DRIVER") {
+      this.rideService.getDriversActiveRide(this.authService.getId()).subscribe({
+        next: (ride: Ride) => {
+          this.setHasActiveRide(true);
+        },
+        error: (error) => {
+          if (error instanceof HttpErrorResponse) {
+            this.setHasActiveRide(false);
+          }
         }
-      }
-    })
-    this.fetchActivity(this.authService.getId()).subscribe({
-      next: (activity: ActivityDto) => {
-        this.setIsActive(activity.isActive);
-      }
-    }) 
+      })
+      this.fetchActivity(this.authService.getId()).subscribe({
+        next: (activity: ActivityDto) => {
+          this.setIsActive(activity.isActive);
+        }
+      })
+    }
+ 
   }
 
   public getDrivers(): Observable<DriverListDTO> {
@@ -163,6 +168,10 @@ export class DriverService {
 
   public getScheduledRides(id: number): Observable<Array<Ride>> {
     return this.http.get<Array<Ride>>(environment.localhostApi + `driver/${id}/rides/scheduled`);
+  }
+
+  public fetchDriverActivityAndLocations(): Observable<PaginatedResponse<DriverActivityAndLocation>> {
+    return this.http.get<PaginatedResponse<DriverActivityAndLocation>>(environment.localhostApi + `driver/activity-and-locations`);
   }
 
 }
