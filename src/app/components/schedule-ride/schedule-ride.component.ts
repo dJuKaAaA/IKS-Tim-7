@@ -103,10 +103,9 @@ export class ScheduleRideComponent {
   }
   
   updateRoute(route: Route) {
-    this.route = route;
-    this.routes.push(this.cloneRoute(route));  
     // mapComponent.showRoute changes values of passed route for some reason so this emitter fetches that changed data
-
+    this.route = route;
+    this.routes.push(this.cloneRoute(route));
   }
 
   async showRouteFromAddresses() {
