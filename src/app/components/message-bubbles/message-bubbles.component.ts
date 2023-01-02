@@ -65,7 +65,6 @@ export class MessageBubblesComponent implements OnInit {
     let message: Message;
     if (this.rideId == -1) {
       message = {
-        id: -1,
         timeOfSending: this.dateTimeService.toString(new Date()),
         senderId: this.senderId,
         receiverId: this.receiverId,
@@ -74,7 +73,6 @@ export class MessageBubblesComponent implements OnInit {
       };
     } else {
       message = {
-        id: -1,
         timeOfSending: this.dateTimeService.toString(new Date()),
         senderId: this.senderId,
         receiverId: this.receiverId,
