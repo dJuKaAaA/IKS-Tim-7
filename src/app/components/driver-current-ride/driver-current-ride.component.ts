@@ -4,11 +4,15 @@ import { MatDialog } from '@angular/material/dialog';
 import { throwToolbarMixedModesError } from '@angular/material/toolbar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from 'src/app/model/location.model';
+import { Message } from 'src/app/model/message.model';
+import { PaginatedResponse } from 'src/app/model/paginated-response.model';
 import { Ride } from 'src/app/model/ride.model';
 import { Route } from 'src/app/model/route.model';
+import { AuthService } from 'src/app/services/auth.service';
 import { DateTimeService } from 'src/app/services/date-time.service';
 import { DriverService } from 'src/app/services/driver.service';
 import { RideService } from 'src/app/services/ride.service';
+import { UserService } from 'src/app/services/user.service';
 import { ChatDialogComponent } from '../chat-dialog/chat-dialog.component';
 import { MapComponent } from '../map/map.component';
 
@@ -26,6 +30,7 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit {
   routeIndex: number = -1;
   ride: Ride = {} as Ride;
   rideDate: Date; 
+  messages: Array<Message> = [];
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -34,10 +39,11 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit {
     private renderer: Renderer2,
     private router: Router,
     private driverService: DriverService,
-    private matDialog: MatDialog) {}
+    private matDialog: MatDialog,
+    private userService: UserService,
+    private authService: AuthService) {}
 
   ngOnInit(): void {
-    // TODO: Using the id call the endpoint on backend and get the ride information and display it
     const idUrlParam: any = this.activatedRoute.snapshot.paramMap.get("id");
     const id = (idUrlParam == null) ? -1 : +idUrlParam;
     this.rideService.getRide(id).subscribe({
@@ -53,6 +59,11 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit {
         }
       }
     })
+    this.userService.fetchMessages(2).subscribe({  // TODO: Change to this.authService.getId()
+      next: (response: PaginatedResponse<Message>) => {
+        this.messages = response.results;
+      }
+    })
     this.mapComponent.loadMap();
   }
 
@@ -62,12 +73,10 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit {
 
   showNextRoute() {
     if (this.routeIndex < this.routes.length - 1) {
-      console.log(this.routes);
       this.routeIndex++;
       this.mapComponent.removeRoute(this.routes[this.routeIndex]);
       this.mapComponent.showRoute(this.routes[this.routeIndex]);
       this.mapComponent.focusOnPoint(this.routes[this.routeIndex].departure);
-      console.log(this.routeIndex);
     }
   }
 
@@ -106,7 +115,12 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit {
   }
 
   openChat() {
-    this.matDialog.open(ChatDialogComponent);
+    this.matDialog.open(ChatDialogComponent, {
+      data: {
+        messages: this.messages,
+        receiverId: 3
+      }
+    });
   }
 
 }
