@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Document, POSTDocument } from '../model/document.model';
 import { DriverListDTO } from '../model/driver-list-dto';
 import { Driver, NoIdDriver } from '../model/driver.model';
@@ -9,12 +9,51 @@ import { ReviewService } from './review.service';
 import { environment } from 'src/environment/environment';
 import { Ride } from '../model/ride.model';
 import { DriverProfileChangeRequest } from '../model/driver-profile-change-request.model';
+import { ActivityDto } from '../model/activity-dto.model';
+import { RideService } from './ride.service';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DriverService {
-  constructor(private http: HttpClient, private reviewService: ReviewService) {}
+
+  private hasActiveRide$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  private isActive$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+
+  getHasActiveRide(): boolean {
+    return this.hasActiveRide$.getValue();
+  }
+
+  setHasActiveRide(hasActive: boolean) {
+    this.hasActiveRide$.next(hasActive);
+  }
+
+  getIsActive(): boolean {
+    return this.isActive$.getValue();
+  }
+
+  setIsActive(isActive: boolean) {
+    this.isActive$.next(isActive);
+  }
+
+  constructor(private http: HttpClient, private reviewService: ReviewService, private rideService: RideService, private authService: AuthService) {
+    this.rideService.getDriversActiveRide(this.authService.getId()).subscribe({
+      next: (ride: Ride) => {
+        this.setHasActiveRide(true);
+      },
+      error: (error) => {
+        if (error instanceof HttpErrorResponse) {
+          this.setHasActiveRide(false);
+        }
+      }
+    })
+    this.fetchActivity(this.authService.getId()).subscribe({
+      next: (activity: ActivityDto) => {
+        this.setIsActive(activity.isActive);
+      }
+    }) 
+  }
 
   public getDrivers(): Observable<DriverListDTO> {
     return this.http.get<DriverListDTO>(environment.localhostApi + 'driver');
@@ -110,8 +149,12 @@ export class DriverService {
     return this.http.post<Driver>(environment.localhostApi + 'driver', driver);
   }
 
-  public changeActivity(id: number) {
-    return this.http.post<Driver>(environment.localhostApi + `driver/${id}/activity`, {});
+  public fetchActivity(id: number): Observable<ActivityDto> {
+    return this.http.get<ActivityDto>(environment.localhostApi + `driver/${id}/activity`);
+  }
+
+  public changeActivity(id: number, activity: ActivityDto) {
+    return this.http.put(environment.localhostApi + `driver/${id}/activity`, activity);
   }
 
   public getRides(id: number) {

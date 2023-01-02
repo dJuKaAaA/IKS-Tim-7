@@ -6,6 +6,7 @@ import { Location } from 'src/app/model/location.model';
 import { Ride } from 'src/app/model/ride.model';
 import { Route } from 'src/app/model/route.model';
 import { DateTimeService } from 'src/app/services/date-time.service';
+import { DriverService } from 'src/app/services/driver.service';
 import { RideService } from 'src/app/services/ride.service';
 import { MapComponent } from '../map/map.component';
 
@@ -29,7 +30,8 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit {
     private rideService: RideService,
     private dateTimeService: DateTimeService,
     private renderer: Renderer2,
-    private router: Router) {}
+    private router: Router,
+    private driverService: DriverService) {}
 
   ngOnInit(): void {
     // TODO: Using the id call the endpoint on backend and get the ride information and display it
@@ -40,6 +42,7 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit {
         this.ride = ride;
         this.routes = ride.locations;
         this.rideDate = this.dateTimeService.toDate(this.ride.startTime);
+        this.driverService.setHasActiveRide(true);
       },
       error: (error) => {
         if (error instanceof HttpErrorResponse) {
@@ -88,6 +91,7 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit {
   finishRide() {
     this.rideService.finishRide(this.ride.id).subscribe({
       next: (ride) => {
+        this.driverService.setHasActiveRide(false);
         this.router.navigate(['driver-home']);
       },
       error: (error) => {

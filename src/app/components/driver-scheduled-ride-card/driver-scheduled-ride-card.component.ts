@@ -14,6 +14,7 @@ import { DateTimeService } from 'src/app/services/date-time.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DriverService } from 'src/app/services/driver.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { ActivityDto } from 'src/app/model/activity-dto.model';
 
 const SHOW_PROFILE_INFO_ANIMATION_TIME: number = 300;
 const PASSENGER_INFO_HIDDEN_STATE: string = "hidden";
@@ -100,19 +101,11 @@ export class DriverScheduledRideCardComponent implements OnInit, AfterViewInit {
     private passengerService: PassengerService,
     private rideService: RideService, 
     private dateTimeService: DateTimeService,
-    private authService: AuthService) { }
+    private authService: AuthService,
+    private driverService: DriverService) { }
 
   ngOnInit(): void {
-    this.rideService.getDriversActiveRide(this.authService.getId()).subscribe({
-      next: (ride: Ride) => {
-        this.canStartRide = false;
-      },
-      error: (error) => {
-        if (error instanceof HttpErrorResponse) {
-          this.canStartRide = true;
-        }
-      }
-    })
+    
   }
 
   ngAfterViewInit(): void {
@@ -120,7 +113,6 @@ export class DriverScheduledRideCardComponent implements OnInit, AfterViewInit {
     let now: Date = new Date();
     let timeDiff = now.getTime() - this.dateTimeService.toDate(this.ride.startTime).getTime();
     let oneMinuteInMiliseconds = 1000 * 60;
-    console.log(`Ride id: ${this.ride.id}, ${timeDiff}, ride start time: ${this.ride.startTime}, now: ${now.toLocaleString()}`);
     if (timeDiff < 0 && timeDiff >= -oneMinuteInMiliseconds * 15) {
       this.renderer.setStyle(
         this.scheduledRide.nativeElement,
@@ -139,7 +131,13 @@ export class DriverScheduledRideCardComponent implements OnInit, AfterViewInit {
 
   startRide(): void {
     this.rideService.startRide(this.ride.id).subscribe(() => {
-      this.router.navigate([`driver-current-ride/${this.ride.id}`]);
+      this.driverService.changeActivity(this.authService.getId(), { isActive: false }).subscribe({
+        next: () => {
+          this.driverService.setIsActive(false);
+          this.driverService.setHasActiveRide(true);
+          this.router.navigate([`driver-current-ride/${this.ride.id}`]);
+        }
+      })
     });
   }
 
