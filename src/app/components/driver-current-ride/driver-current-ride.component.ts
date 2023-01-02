@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { AfterViewInit, Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { throwToolbarMixedModesError } from '@angular/material/toolbar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from 'src/app/model/location.model';
@@ -8,6 +9,7 @@ import { Route } from 'src/app/model/route.model';
 import { DateTimeService } from 'src/app/services/date-time.service';
 import { DriverService } from 'src/app/services/driver.service';
 import { RideService } from 'src/app/services/ride.service';
+import { ChatDialogComponent } from '../chat-dialog/chat-dialog.component';
 import { MapComponent } from '../map/map.component';
 
 @Component({
@@ -31,7 +33,8 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit {
     private dateTimeService: DateTimeService,
     private renderer: Renderer2,
     private router: Router,
-    private driverService: DriverService) {}
+    private driverService: DriverService,
+    private matDialog: MatDialog) {}
 
   ngOnInit(): void {
     // TODO: Using the id call the endpoint on backend and get the ride information and display it
@@ -100,6 +103,10 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit {
         }
       }
     })
+  }
+
+  openChat() {
+    this.matDialog.open(ChatDialogComponent);
   }
 
 }
