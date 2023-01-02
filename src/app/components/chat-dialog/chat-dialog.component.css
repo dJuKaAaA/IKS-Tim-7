@@ -1,0 +1,14 @@
+.chat {
+    width: 50vw;
+    height: 80vh;
+}
+
+.close-button-container {
+    display: flex;
+    justify-content: center;
+}
+
+.close-button {
+    width: 40%;
+    height: 5vh;
+}

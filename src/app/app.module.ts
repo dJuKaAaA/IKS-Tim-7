@@ -73,6 +73,7 @@ import { ScheduleRideComponent } from './components/schedule-ride/schedule-ride.
 import { ChatComponent } from './components/chat/chat.component';
 import { MessageBubblesComponent } from './components/message-bubbles/message-bubbles.component';
 import { Interceptor } from './auth/interceptor.interceptor';
+import { ChatDialogComponent } from './components/chat-dialog/chat-dialog.component';
 
 @NgModule({
   declarations: [
@@ -127,6 +128,7 @@ import { Interceptor } from './auth/interceptor.interceptor';
     ScheduleRideComponent,
     ChatComponent,
     MessageBubblesComponent,
+    ChatDialogComponent,
   ],
   imports: [
     BrowserModule,
