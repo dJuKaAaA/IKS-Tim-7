@@ -26,6 +26,8 @@ export class DriverProfileDetailsComponent implements OnInit {
   @Input() public driverRating: number = 0;
   @Input() public vehicleRating: number = 0;
 
+  @Input() public driverId: number = 0;
+
   imgSlider: boolean = false;
   profileInfo: boolean = true;
   vehicleDetails: boolean = false;
@@ -46,6 +48,20 @@ export class DriverProfileDetailsComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     const userId = this.authService.getId();
+    this.driverService.getDriver(userId).subscribe({
+      next : driver =>{
+        this.fillUpTheHTML(userId);
+      },
+      error : () => {
+        if(this.driverId != 0){
+          // console.log(this.driverId);
+          this.fillUpTheHTML(this.driverId);
+        }
+      }
+    })
+  }
+
+  fillUpTheHTML(userId : number){
     this.driverService
       .getDriver(userId)
       .subscribe((data) => (this.driver = data));

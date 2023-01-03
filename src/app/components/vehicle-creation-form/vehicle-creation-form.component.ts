@@ -19,8 +19,8 @@ export class VehicleCreationFormComponent implements OnInit{
   public router:Router;
   public lastPage:string = "";
   public vehicleType:string;
-  public babyTransport:boolean;
-  public petTransport:boolean;
+  public babyTransport:boolean = false;
+  public petTransport:boolean = false;
   public currentLocation:Location = new Location(	45.25685617386568, 19.84799528633145, "Zmaj Jovina 26");
   public vehicleTypes : VehicleType[];
 
