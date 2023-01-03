@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Passenger } from 'src/app/model/passenger.model';
 import { PassengerService } from 'src/app/services/passenger.service';
 import { Router } from '@angular/router';
@@ -11,6 +11,7 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class PassengerProfileDetailsComponent implements OnInit {
   public passenger: Passenger;
+  @Input() passengerId:number;
 
   constructor(
     private passengerService: PassengerService,
@@ -20,8 +21,15 @@ export class PassengerProfileDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     const userId = this.authService.getId();
-    this.passengerService.getPassenger(userId).subscribe((data) => {
-      this.passenger = data;
+    console.log(this.passengerId);
+    this.passengerService.getPassenger(userId).subscribe({
+      next: data => {
+        this.passenger = data;
+      },
+      error: () => {
+        if(this.passengerId == -1) return;
+        this.passengerService.getPassenger(this.passengerId).subscribe(data=>{this.passenger = data;})
+      }
     });
   }
   redirectToPassengerEditProfile(): void {

@@ -26,6 +26,8 @@ export class DriverProfileDetailsComponent implements OnInit {
   @Input() public driverRating: number = 0;
   @Input() public vehicleRating: number = 0;
 
+  @Input() public driverId: number = 0;
+
   imgSlider: boolean = false;
   profileInfo: boolean = true;
   vehicleDetails: boolean = false;
@@ -51,7 +53,10 @@ export class DriverProfileDetailsComponent implements OnInit {
         this.fillUpTheHTML(userId);
       },
       error : () => {
-
+        if(this.driverId != 0){
+          // console.log(this.driverId);
+          this.fillUpTheHTML(this.driverId);
+        }
       }
     })
   }

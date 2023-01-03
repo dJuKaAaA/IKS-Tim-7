@@ -1,0 +1,86 @@
+.card{
+    width: 300px;
+    height: 400px;
+    text-align: center;
+    display: inline-block;
+    box-shadow: 5px 5px 5px gray;
+    border-radius: 10%;
+}
+
+.blue{
+    border: 2px solid #293E6C;
+}
+
+.green{
+    border: 2px solid #42a62c;
+}
+
+#userImageSection{
+    width: 100%;
+    height: 80px;
+    margin-top: 35px;
+    margin-bottom: 15px;
+}
+
+#userImageSection img{
+    height: 100%;
+    border-radius: 100%;
+}
+
+button{
+    margin-top: 20px;
+    width: 60%;
+    cursor: pointer;
+    background-color: #293E6C;
+    border: none;
+    border-radius: 20px;
+    padding: 5px 10px;
+    color: white;
+}
+
+.userProfile{
+    position: fixed;
+    width: 80%;
+    height: 80%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    z-index: 999;
+}
+.profileBackground{
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 998;
+    position: fixed;
+    background: rgba(35, 35, 35, 0.5);
+    /* opacity: 50%; */
+}
+
+.profileBackground img{
+    position: absolute;
+    right: 70px;
+    top: 70px;
+    opacity: 100%;
+    z-index: 999;
+    width: 50px;
+    cursor: pointer;
+}
+
+.tag{
+    width: 50px;
+    height: 20px;
+    background-color: rgb(193, 50, 50);
+    position: relative;
+    top: -15px;
+    left: 105px;
+    color: white;
+    padding: 5px 20px;
+    border-radius: 5px;
+    /* border-radius: 20px 20px 5px 5px; */
+}
+
+.marginTopMinus{
+    margin-top: -30px;
+}

@@ -17,7 +17,7 @@ export class PanicService {
   }
 
   update(panic : Panic) : Observable<string>{
-    console.log("ej");
+    // console.log("ej");
     return this.http.put<string>(JSON.stringify(panic),environment.localhostApi + "panic/" + panic.id);
   }
 

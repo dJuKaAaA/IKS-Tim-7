@@ -75,6 +75,8 @@ import { ScheduleRideComponent } from './components/schedule-ride/schedule-ride.
 import { ChatComponent } from './components/chat/chat.component';
 import { MessageBubblesComponent } from './components/message-bubbles/message-bubbles.component';
 import { Interceptor } from './auth/interceptor.interceptor';
+import { PanicReviewPageComponent } from './components/panic-review-page/panic-review-page.component';
+import { UserCardComponent } from './components/user-card/user-card.component';
 
 @NgModule({
   declarations: [
@@ -131,6 +133,8 @@ import { Interceptor } from './auth/interceptor.interceptor';
     ScheduleRideComponent,
     ChatComponent,
     MessageBubblesComponent,
+    PanicReviewPageComponent,
+    UserCardComponent,
   ],
   imports: [
     BrowserModule,
