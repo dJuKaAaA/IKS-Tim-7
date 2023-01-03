@@ -24,4 +24,9 @@ export class PanicService {
   getPanicById(id : number) : Observable<Panic>{
     return this.http.get<Panic>(environment.localhostApi + "panic/" + id);
   }
+
+  setAsReviewed(id:number): Observable<string>{
+    console.log(id);
+    return this.http.put<string>(environment.localhostApi+"panic/review/" + id, {});
+  }
 }

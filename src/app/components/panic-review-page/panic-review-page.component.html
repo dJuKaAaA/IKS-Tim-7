@@ -1,7 +1,7 @@
 <div id="cardContainer">
-    <app-user-card [user]="driver" [role]="roleDriver" [id] = "driverId" [userThatSubmited] = "user" *ngIf = "driverId"></app-user-card>
+    <app-user-card [user]="driver" [role]="roleDriver" [id] = "driverId" [userThatSubmited] = "user" *ngIf = "driverId && user"></app-user-card>
     <div *ngFor="let user of passengers; index as i">
-        <app-user-card [user]="user" [role]="rolePassenger" [id] = "passengerIds[i]" [userThatSubmited] = "user" *ngIf = "passengerIds"></app-user-card>
+        <app-user-card [user]="user" [role]="rolePassenger" [id] = "passengerIds[i]" [userThatSubmited] = "user" *ngIf = "passengerIds && user"></app-user-card>
     </div>
 </div>
 <div id="panicArea" *ngIf="panic != undefined">
