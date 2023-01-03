@@ -6,7 +6,7 @@ import { Message } from 'src/app/model/message.model';
   templateUrl: './message-bubbles.component.html',
   styleUrls: ['./message-bubbles.component.css']
 })
-export class MessageBubblesComponent implements OnInit {
+export class MessageBubblesComponent {
 
   @Input() messages: Array<Message> = [];
   dummyArray: Array<number> = []
@@ -15,34 +15,8 @@ export class MessageBubblesComponent implements OnInit {
 
   typingMessageContent: string = "";
 
-  ngOnInit() {
-    for (let i = 1; i <= this.dummyMessageCount; ++i) {
-      if (Math.random() > 0.5) {
-        this.appendMessage({
-          id: i,
-          timeOfSending: new Date(),
-          senderId: 1,
-          receiverId: 2,
-          message: "Hello there :)",
-          type: "RIDE",
-          rideId: 1
-        })
-      } else {
-        this.appendMessage({
-          id: i,
-          timeOfSending: new Date(),
-          senderId: 2,
-          receiverId: 1,
-          message: "General Kenobi >:)",
-          type: "RIDE",
-          rideId: 1
-        })
-      }
-    }
-  }
-
   sendMessage() {
-    if (this.typingMessageContent == "") { 
+    if (this.typingMessageContent == "") {
       return;
     }
     const messageId: number = Math.floor(Math.random() * 10000);
@@ -58,7 +32,7 @@ export class MessageBubblesComponent implements OnInit {
     };
     this.appendMessage(message);
     this.typingMessageContent = "";
-    
+
   }
 
   appendMessage(message: Message) {
@@ -68,7 +42,6 @@ export class MessageBubblesComponent implements OnInit {
       bubblesContainer.scrollTop = bubblesContainer.scrollHeight;
     }, 300);
 
-  } 
+  }
 
-  
 }

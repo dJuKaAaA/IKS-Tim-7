@@ -54,7 +54,6 @@ export class ScheduleRideComponent {
   }
   
   ngOnInit(): void {
-    
     this.mapComponent.loadMap();
   }
 
