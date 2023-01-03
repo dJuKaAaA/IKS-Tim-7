@@ -1,13 +1,15 @@
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { Route } from 'src/app/model/route.model';
 import { MapComponent } from '../map/map.component';
-import { DriverCurrentLocation } from './driver-current-location.model';
 import { Location } from 'src/app/model/location.model';
 import { FormControl } from '@angular/forms';
 import { TomTomGeolocationService } from 'src/app/services/tom-tom-geolocation.service';
 import { MatDialog } from '@angular/material/dialog';
 import { environment } from 'src/environment/environment';
 import { DialogComponent } from '../dialog/dialog.component';
+import { DriverService } from 'src/app/services/driver.service';
+import { DriverActivityAndLocation } from 'src/app/model/driver-activity-and-locations.model';
+import { PaginatedResponse } from 'src/app/model/paginated-response.model';
 
 @Component({
   selector: 'app-schedule-ride',
@@ -18,7 +20,7 @@ export class ScheduleRideComponent {
 
   @ViewChild(MapComponent) mapComponent: MapComponent;
   
-  driverLocations: Array<DriverCurrentLocation> = [];
+  drivers: Array<DriverActivityAndLocation> = [];
   route: Route = new Route(
     new Location(NaN, NaN, ""),
     new Location(NaN, NaN, ""),
@@ -44,51 +46,29 @@ export class ScheduleRideComponent {
   rideDateControl: FormControl = new FormControl(new Date());
   rideTimeControl: FormControl = new FormControl("");
 
-  constructor(private geoLocationService: TomTomGeolocationService, private matDialog: MatDialog) {
+  constructor(
+    private geoLocationService: TomTomGeolocationService,
+    private matDialog: MatDialog,
+    private driverService: DriverService) {
 
   }
   
   ngOnInit(): void {
-    this.driverLocations.push({
-      driverId: 1,
-      location: new Location(45.2541486, 19.8187217, ""),
-      isActive: true
-    });
-    this.driverLocations.push({
-      driverId: 1,
-      location: new Location(45.2473693, 19.8187955, ""),
-      isActive: false
-    });
-    this.driverLocations.push({
-      driverId: 1,
-      location: new Location(45.2558923, 19.8436113, ""),
-      isActive: false
-    });
-    this.driverLocations.push({
-      driverId: 1,
-      location: new Location(45.2472827, 19.8433833, ""),
-      isActive: true
-    });
-    this.driverLocations.push({
-      driverId: 1,
-      location: new Location(45.2450728, 19.8408995, ""),
-      isActive: false
-    });
-    this.driverLocations.push({
-      driverId: 1,
-      location: new Location(45.2445776, 19.8449582, ""),
-      isActive: false
-    })
-
+    
     this.mapComponent.loadMap();
   }
 
   ngAfterViewInit(): void {
     this.mapComponent.loadMap();
-    for (let location of this.driverLocations) {
-      let carIconSrc = location.isActive ? environment.activeDriverMarker : environment.inactiveDriverMarker;
-      this.mapComponent.showMarker(location.location, carIconSrc);
-    }
+    this.driverService.fetchDriverActivityAndLocations().subscribe({
+      next: (response: PaginatedResponse<DriverActivityAndLocation>) => {
+        this.drivers = response.results;
+        for (let driver of this.drivers) {
+          let carIconSrc = driver.isActive ? environment.activeDriverMarker : environment.inactiveDriverMarker;
+          this.mapComponent.showMarker(driver.location, carIconSrc);
+        }
+      }
+    })
   }
 
   scheduleRide() {
@@ -103,10 +83,9 @@ export class ScheduleRideComponent {
   }
   
   updateRoute(route: Route) {
-    this.route = route;
-    this.routes.push(this.cloneRoute(route));  
     // mapComponent.showRoute changes values of passed route for some reason so this emitter fetches that changed data
-
+    this.route = route;
+    this.routes.push(this.cloneRoute(route));
   }
 
   async showRouteFromAddresses() {

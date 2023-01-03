@@ -10,11 +10,7 @@ export class DialogComponent {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: { header: string, body: string }, 
     private matDialogRef: MatDialogRef<DialogComponent>) {}
-  
-  ngOnInit(): void {
-    throw new Error('Method not implemented.');
-  }
-
+    
   close() {
     this.matDialogRef.close();
   }

@@ -77,6 +77,7 @@ import { MessageBubblesComponent } from './components/message-bubbles/message-bu
 import { Interceptor } from './auth/interceptor.interceptor';
 import { PanicReviewPageComponent } from './components/panic-review-page/panic-review-page.component';
 import { UserCardComponent } from './components/user-card/user-card.component';
+import { ChatDialogComponent } from './components/chat-dialog/chat-dialog.component';
 
 @NgModule({
   declarations: [
@@ -135,6 +136,7 @@ import { UserCardComponent } from './components/user-card/user-card.component';
     MessageBubblesComponent,
     PanicReviewPageComponent,
     UserCardComponent,
+    ChatDialogComponent,
   ],
   imports: [
     BrowserModule,
