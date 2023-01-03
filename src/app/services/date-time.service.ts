@@ -22,7 +22,7 @@ export class DateTimeService {
   /** 
   Expected format 20.11.2022 14:15:13
   */
-  public toString(date: Date): String {
+  public toString(date: Date): string {
     const year: number = date.getFullYear();
     const month: number = date.getMonth() + 1;
     const day: number = date.getDate();
