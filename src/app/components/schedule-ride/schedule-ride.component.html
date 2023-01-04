@@ -37,6 +37,22 @@
             </mat-form-field>
         </form>
 
+        <form class="invite-passengers-form" (submit)="invitePassenger()" *ngIf="loggedIn">
+            <h1>Invite passengers</h1>
+            <mat-error *ngIf="invitedPassengerErrorMessage != ''">{{invitedPassengerErrorMessage}}</mat-error>
+            <mat-form-field class="invite-passenger-form-field">
+                <mat-label>Passenger email</mat-label>
+                <input matInput [(ngModel)]="passengerInviteInput" name="passenger-invite-input" />
+                <button type="submit" matSuffix mat-raised-button color="primary">Invite</button>
+            </mat-form-field>
+            <p style="text-align: center; font-style: italic;">Click on the user to remove them</p>
+            <div class="invited-passenger-container">
+                <p *ngFor="let passenger of invitedPassengers" class="invited-passenger-email"  (click)="removeInvitedPassenger(passenger.email)">
+                    {{passenger.email}}
+                </p>
+            </div>
+        </form>
+
         <div id="route-details">
             <app-ride-details [departure]="startLocation.address || 'N/A'"
                 [destination]="(routes.length > 0) ? routes[routes.length - 1].destination.address : 'N/A'"

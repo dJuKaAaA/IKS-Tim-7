@@ -10,12 +10,8 @@ import { environment } from 'src/environment/environment';
   providedIn: 'root',
 })
 export class AuthService {
-  user$ = new BehaviorSubject(null);
-  userState$ = this.user$.asObservable();
 
-  constructor(private http: HttpClient) {
-    this.user$.next(this.getRole());
-  }
+  constructor(private http: HttpClient) {}
 
   login(email: string, password: string): Observable<Token> {
     return this.http.post<Token>(environment.localhostApi + 'user/login', {
@@ -24,14 +20,14 @@ export class AuthService {
     });
   }
 
-  getRole(): any {
+  getRole(): string {
     if (this.isLoggedIn()) {
       const accessToken: any = localStorage.getItem('user');
       const helper = new JwtHelperService();
       const role = helper.decodeToken(accessToken).roles[0];
       return role;
     }
-    return null;
+    return "ROLE_ANONYMOUS";
   }
 
   getId(): number {
@@ -44,18 +40,17 @@ export class AuthService {
     return -1;
   }
 
-  getEmail(): any {
-    const accessToken: any = localStorage.getItem('user');
-    const helper = new JwtHelperService();
-    const email = helper.decodeToken(accessToken).email;
-    return email;
+  getEmail(): string {
+    if (this.isLoggedIn()) {
+      const accessToken: any = localStorage.getItem('user');
+      const helper = new JwtHelperService();
+      const email = helper.decodeToken(accessToken).sub;
+      return email;
+    }
+    return "";
   }
 
   isLoggedIn(): boolean {
     return localStorage.getItem('user') != null;
-  }
-
-  setUser(): void {
-    this.user$.next(this.getRole());
   }
 }

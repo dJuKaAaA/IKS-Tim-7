@@ -10,6 +10,10 @@ import { DialogComponent } from '../dialog/dialog.component';
 import { DriverService } from 'src/app/services/driver.service';
 import { DriverActivityAndLocation } from 'src/app/model/driver-activity-and-locations.model';
 import { PaginatedResponse } from 'src/app/model/paginated-response.model';
+import { SimpleUser } from 'src/app/model/simple-user.model';
+import { PassengerService } from 'src/app/services/passenger.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-schedule-ride',
@@ -36,6 +40,9 @@ export class ScheduleRideComponent {
   totalDistance: number = 0;
   totalDuration: number = 0;
 
+  passengerInviteInput: string = "";
+  invitedPassengers: Array<SimpleUser> = [];
+
   @Input() loggedIn: boolean = false;
   @Input() startAddressControl: FormControl = new FormControl("");
   @Input() endAddressControl: FormControl = new FormControl("");
@@ -45,11 +52,14 @@ export class ScheduleRideComponent {
 
   rideDateControl: FormControl = new FormControl(new Date());
   rideTimeControl: FormControl = new FormControl("");
+  invitedPassengerErrorMessage: string = "";
 
   constructor(
     private geoLocationService: TomTomGeolocationService,
     private matDialog: MatDialog,
-    private driverService: DriverService) {
+    private driverService: DriverService,
+    private passengerService: PassengerService, 
+    private authService: AuthService) {
 
   }
 
@@ -253,5 +263,60 @@ export class ScheduleRideComponent {
 
   notifyDisabledStartAddress() {
     this.disabledStartAddressEmitter.emit(this.disableStartAddressField);
+  }
+
+  invitePassenger() {
+    // TODO: Find passenger via passed email from backend
+    this.passengerInviteInput = this.passengerInviteInput.trim();
+    if (this.passengerInviteInput == this.authService.getEmail()) {
+      this.matDialog.open(DialogComponent, {
+        data: {
+          header: "Nice try",
+          body: "You can't invite yourself... You are literally invited by default"
+        }
+      });
+      return;
+    }
+    for (let passenger of this.invitedPassengers) {
+      if (passenger.email == this.passengerInviteInput) {
+        this.matDialog.open(DialogComponent, {
+          data: {
+            header: "Present",
+            body: "This user is already invited"
+          }
+        });
+      }
+      return;
+    }
+    if (this.invitedPassengers.length >= 4) {
+      this.matDialog.open(DialogComponent, {
+        data: {
+          header: "Max passenger capacity!",
+          body: "You can't invite more than 4 passengers"
+        }
+      });
+      return;
+    }
+    this.invitedPassengerErrorMessage = "";
+    this.passengerService.getByEmail({ id: NaN, email: this.passengerInviteInput }).subscribe({
+      next: (passenger: SimpleUser) => {
+        this.invitedPassengers.push(passenger);
+        this.passengerInviteInput = "";
+      },
+      error: (error) => {
+        if (error instanceof HttpErrorResponse) {
+          this.invitedPassengerErrorMessage = error.error.message;
+        }
+      } 
+    })
+  }
+
+  removeInvitedPassenger(email: string) {
+    this.invitedPassengers = this.invitedPassengers.filter((passenger: SimpleUser) => {
+      if (passenger.email == email) {
+        return false;
+      }
+      return true;
+    })
   }
 }

@@ -65,7 +65,7 @@
     border: 2px dashed rgb(190, 190, 190);
 }
 
-.datetime-form h1 {
+h1 {
     font-size: 1.5vw;
     width: 100%;
     text-align: center;
@@ -74,4 +74,37 @@
 
 .datetime-form-item {
     width: 95%;
+}
+
+.invite-passengers-form {
+    margin: 2vh 0;
+    border-radius: 15px;
+    border: 2px dashed rgb(190, 190, 190);
+    padding: 3vh 1vw;
+}
+
+.invite-passenger-form-field {
+    width: 100%;
+}
+
+.invite-passenger-form-field button {
+    font-size: 1.1vw;
+    padding: 3vh 3vw;
+}
+
+.invited-passenger-container {
+    margin: 0 2vw;
+}
+
+.invited-passenger-email {
+    background-color: rgb(210, 210, 210);
+    color: black;
+    padding: 1vh 1vw;
+    border-radius: 20px;
+    font-size: 1vw;
+}
+
+.invited-passenger-email:hover {
+    cursor: pointer;
+    background-color: rgb(170, 170, 170);
 }

@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
 import { environment } from 'src/environment/environment';
 import { PassengerNarrowedInfo } from '../model/passenger-narrowed-info.model';
+import { SimpleUser } from '../model/simple-user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -27,5 +28,9 @@ export class PassengerService {
   // email, full name and profile picture
   public getNarrowedProfileData(id: number): Observable<PassengerNarrowedInfo> {
     return this.http.get<PassengerNarrowedInfo>(environment.localhostApi + `passenger/${id}/narrowed-profile-info`);
+  }
+
+  public getByEmail(passenger: SimpleUser): Observable<SimpleUser> {
+    return this.http.post<SimpleUser>(environment.localhostApi + `passenger/by-email`, passenger);
   }
 }
