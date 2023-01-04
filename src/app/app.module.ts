@@ -17,9 +17,6 @@ import { MapComponent } from './components/map/map.component';
 import { AgmCoreModule } from '@agm/core';
 import { AgmDirectionModule } from 'agm-direction';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NavbarComponent } from './components/navbar/navbar/navbar.component';
-import { NavbarMainSectionComponent } from './components/navbar-main-section/navbar-main-section/navbar-main-section.component';
-import { NavbarLoginRegistrationSectionComponent } from './components/navbar-login-registration-section/navbar-login-registration-section/navbar-login-registration-section.component';
 import { ProfileImageEditComponent } from './components/profile-image-edit/profile-image-edit/profile-image-edit.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { AdminHomepageComponent } from './components/admin-homepage/admin-homepage.component';
@@ -79,14 +76,12 @@ import { PanicReviewPageComponent } from './components/panic-review-page/panic-r
 import { UserCardComponent } from './components/user-card/user-card.component';
 import { ChatDialogComponent } from './components/chat-dialog/chat-dialog.component';
 import { PaymentComponent } from './components/payment/payment.component';
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   declarations: [
     AppComponent,
     StarComponent,
-    NavbarComponent,
-    NavbarMainSectionComponent,
-    NavbarLoginRegistrationSectionComponent,
     ProfileImageEditComponent,
     RegisterComponent,
     EditProfileComponent,
@@ -168,6 +163,7 @@ import { PaymentComponent } from './components/payment/payment.component';
     MatDatepickerModule,
     NgxMaterialTimepickerModule,
     MatNativeDateModule,
+    MatMenuModule
   ],
   providers: [
     {

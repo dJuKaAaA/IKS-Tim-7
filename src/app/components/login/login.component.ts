@@ -28,7 +28,6 @@ export class LoginComponent {
       this.authService.login(email, password).subscribe({
         next: (result) => {
           localStorage.setItem('user', JSON.stringify(result));
-          this.authService.setUser();
           
           if (this.authService.getRole() == 'ROLE_PASSENGER') {
             this.router.navigate(['passenger-home']);
@@ -40,7 +39,6 @@ export class LoginComponent {
         },
         error: (error) => {
           if (error instanceof HttpErrorResponse) {
-            console.log(error);
             this.hasError = true;
           }
         },

@@ -31,18 +31,56 @@
 
             <mat-form-field class="datetime-form-item">
                 <mat-label>Time</mat-label>
-                <input [ngxTimepicker]="timePicker" matInput [formControl]="rideTimeControl" [format]="24" />
+                <input [ngxTimepicker]="timePicker" matInput [formControl]="rideTimeControl" readonly [format]="24" />
                 <ngx-material-timepicker #timePicker></ngx-material-timepicker>
                 <mat-hint>HH:mm</mat-hint>
             </mat-form-field>
         </form>
 
+        <form class="invite-passengers-form" (submit)="invitePassenger()" *ngIf="loggedIn">
+            <h1>Invite passengers</h1>
+            <mat-error *ngIf="invitedPassengerErrorMessage != ''">{{invitedPassengerErrorMessage}}</mat-error>
+            <mat-form-field class="invite-passenger-form-field">
+                <mat-label>Passenger email</mat-label>
+                <input matInput [(ngModel)]="passengerInviteInput" name="passenger-invite-input" />
+                <button type="submit" matSuffix mat-raised-button color="primary">Invite</button>
+            </mat-form-field>
+            <p style="text-align: center; font-style: italic;">Click on the user to remove them</p>
+            <div class="invited-passenger-container">
+                <p *ngFor="let passenger of invitedPassengers" class="invited-passenger-email"  (click)="removeInvitedPassenger(passenger.email)">
+                    {{passenger.email}}
+                </p>
+            </div>
+        </form>
+
+        <div class="transport-info-container" *ngIf="loggedIn">
+            <h1>Transport</h1>
+            <div class="transport-checkboxes">    
+                <mat-slide-toggle [checked]="petTransport" (change)="changePetTransport()">
+                    <span>Pet transport?</span>
+                </mat-slide-toggle>
+                <mat-slide-toggle [checked]="babyTransport" (change)="changeBabyTransport()">
+                    <span>Baby transport?</span>
+                </mat-slide-toggle>
+            </div>
+        </div>
+
+        <div class="vehicle-type-container">
+            <button mat-button [matMenuTriggerFor]="vehicleTypeMenu">Menu</button>
+            <mat-menu #vehicleTypeMenu="matMenu">
+                <!-- TODO: Load vehicle types from backend and show them here -->
+                <button mat-menu-item>Item 1</button>
+            </mat-menu>
+        </div>
+
         <div id="route-details">
             <app-ride-details [departure]="startLocation.address || 'N/A'"
                 [destination]="(routes.length > 0) ? routes[routes.length - 1].destination.address : 'N/A'"
-                [departureDate]="'N/A'" [departureTime]="'N/A'"
+                [departureDate]="'N/A'" 
+                [departureTime]="'N/A'"
                 [duration]="((route.estimatedTimeInMinutes || 0) + totalDuration).toString() + ' min'"
-                [distance]="((route.distanceInMeters || 0) + totalDistance).toString() + 'm'">
+                [distance]="((route.distanceInMeters || 0) + totalDistance).toString() + 'm'"
+                [price]="getEstimatedPrice() + ' din'">
             </app-ride-details>
         </div>
         <button id="schedule-button" mat-raised-button color="primary" (click)="scheduleRide()" [disabled]="!loggedIn">
