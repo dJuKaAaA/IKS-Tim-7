@@ -1,9 +1,13 @@
-import { AfterViewChecked, AfterViewInit, Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivityDto } from 'src/app/model/activity-dto.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { DriverService } from 'src/app/services/driver.service';
 import { environment } from 'src/environment/environment';
+import * as Stomp from 'stompjs';
+import * as SockJS from 'sockjs-client';
+import { Ride } from 'src/app/model/ride.model';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 const ACTIVE: string = "ACTIVE";
 const INACTIVE: string = "INACTIVE";
@@ -13,9 +17,12 @@ const INACTIVE: string = "INACTIVE";
   templateUrl: './driver-navbar.component.html',
   styleUrls: ['./driver-navbar.component.css']
 })
-export class DriverNavbarComponent implements AfterViewInit {
+export class DriverNavbarComponent implements OnInit, AfterViewInit {
 
   @ViewChild('activeTextContainer') activeTextContainer: ElementRef;
+  
+  private serverUrl = environment.localhostApi + 'socket';
+  private stompClient: any;
 
   taxiIcon: string = environment.taxiIcon;
   activeText: string = INACTIVE;
@@ -24,7 +31,37 @@ export class DriverNavbarComponent implements AfterViewInit {
     private renderer: Renderer2,
     private router: Router,
     private authService: AuthService,
-    private driverService: DriverService) {}
+    private driverService: DriverService,
+    private snackBar: MatSnackBar) {}
+
+  ngOnInit() {
+    this.initializeWebSocketConnection();
+  }
+
+  initializeWebSocketConnection() {
+    let ws = new SockJS(this.serverUrl);
+    this.stompClient = Stomp.over(ws);
+
+    this.stompClient.connect({}, () => {
+      this.openSocket()
+    });
+  }
+
+  openSocket() {
+    this.stompClient.subscribe(`/socket-scheduled-ride`, (rideData: { body: string; }) => {
+      this.handleResult(rideData);
+    });
+  }
+
+  handleResult(rideData: { body: string; }) {
+    console.log("Hello from driver navbar");
+    if (rideData.body) {
+      let ride: Ride = JSON.parse(rideData.body);
+      if (ride.driver.id == this.authService.getId()) {
+        this.snackBar.open("You have new scheduled rides", "Close");
+      }
+    }
+  }
 
   ngAfterViewInit(): void {
     this.driverService.fetchActivity(this.authService.getId()).subscribe({

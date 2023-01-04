@@ -81,12 +81,13 @@ export class DriverHomeComponent implements OnInit, AfterViewInit {
   }
 
   openSocket() {
-    this.stompClient.subscribe(`/socket-scheduled-ride`, (rideData: { body: string; }) => {
+    this.stompClient.subscribe('/socket-scheduled-ride', (rideData: { body: string; }) => {
       this.handleResult(rideData);
     });
   }
 
   handleResult(rideData: { body: string; }) {
+    console.log("Hello from driver home");
     if (rideData.body) {
       let ride: Ride = JSON.parse(rideData.body);
       if (ride.driver.id == this.authService.getId()) {
