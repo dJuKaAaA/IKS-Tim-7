@@ -16,6 +16,9 @@ import { TomTomGeolocationService } from 'src/app/services/tom-tom-geolocation.s
 import { UserService } from 'src/app/services/user.service';
 import { ChatDialogComponent } from '../chat-dialog/chat-dialog.component';
 import { MapComponent } from '../map/map.component';
+import * as Stomp from 'stompjs';
+import * as SockJS from 'sockjs-client';
+import { environment } from 'src/environment/environment';
 
 @Component({
   selector: 'app-driver-current-ride',
@@ -26,6 +29,9 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MapComponent) mapComponent: MapComponent;
   @ViewChild('panicReasonForm') panicReasonForm: ElementRef;
+  
+  private serverUrl = environment.localhostApi + 'socket';
+  private stompClient: any;
 
   routes: Array<Route> = [];
   routeIndex: number = -1;
@@ -73,7 +79,20 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit {
         this.messages = response.results;
       }
     })
-    this.mapComponent.loadMap();
+    this.initializeWebSocketConnection();
+  }
+
+  initializeWebSocketConnection() {
+    let ws = new SockJS(this.serverUrl);
+    this.stompClient = Stomp.over(ws);
+  }
+
+  sendLocationToSocket() {
+    this.stompClient.send("/socket-subscriber/driver/send/current/location", {}, JSON.stringify({
+      latitude: this.currentLocation.latitude,
+      longitude: this.currentLocation.longitude,
+      rideId: this.ride.id
+    }));
   }
 
   ngAfterViewInit(): void {
@@ -82,11 +101,15 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit {
 
   showNextRoute() {
     if (this.routeIndex < this.routes.length - 1) {
-      if (this.routeIndex == -1) {
-        this.currentLocation = this.cloneLocation(this.routes[0].departure);
+      this.routeIndex++;
+
+      // initializing car icon on map
+      if (this.routeIndex == 0) {
+        this.currentLocation = this.routes[0].departure;
         this.mapComponent.showMarker(this.currentLocation, 'src/assets/icons8-taxi-96.png');
       }
-      this.routeIndex++;
+
+      // removing previous and showing current route
       this.mapComponent.removeRoute(this.routes[this.routeIndex]);
       this.mapComponent.showRoute(this.routes[this.routeIndex]);
       this.mapComponent.focusOnPoint(this.routes[this.routeIndex].departure);
@@ -109,6 +132,10 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit {
               this.currentLocation,
               newLocation);
             this.currentLocation = newLocation;
+
+            // sending information about changed location to socket
+            this.sendLocationToSocket();
+
             ++this.routePointIndex;
             if (this.routePointIndex >= this.routePointsToTravelTo.length) {
               clearInterval(this.simulationIntervalId);
@@ -118,14 +145,6 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit {
         }
       })
     }
-  }
-
-  private cloneLocation(location: Location): Location {
-    return new Location(
-      location.latitude,
-      location.longitude,
-      location.address
-    )
   }
 
   sendPanic() {

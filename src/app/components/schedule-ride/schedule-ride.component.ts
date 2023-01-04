@@ -52,10 +52,6 @@ export class ScheduleRideComponent {
     private driverService: DriverService) {
 
   }
-  
-  ngOnInit(): void {
-    this.mapComponent.loadMap();
-  }
 
   ngAfterViewInit(): void {
     this.mapComponent.loadMap();
@@ -78,7 +74,6 @@ export class ScheduleRideComponent {
     const minutes: number = +this.rideTimeControl.value.split(":")[1];
     rideDate.setHours(hours);
     rideDate.setMinutes(minutes);
-    console.log(rideDate);
   }
   
   updateRoute(route: Route) {

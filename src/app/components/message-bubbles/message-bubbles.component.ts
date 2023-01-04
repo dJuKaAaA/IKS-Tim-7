@@ -6,7 +6,6 @@ import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 import { DateTimeService } from 'src/app/services/date-time.service';
 import { UserService } from 'src/app/services/user.service';
-import { RideDetailsComponent } from '../ride-details/ride-details.component';
 
 @Component({
   selector: 'app-message-bubbles',
@@ -21,7 +20,7 @@ export class MessageBubblesComponent implements OnInit {
   @Input() rideId: number = -1;
   @Input() messageType = "RIDE";
 
-  private serverUrl = environment.localhostApi + 'socket'
+  private serverUrl = environment.localhostApi + 'socket';
   private stompClient: any;
 
   typingMessageContent: string = "";
