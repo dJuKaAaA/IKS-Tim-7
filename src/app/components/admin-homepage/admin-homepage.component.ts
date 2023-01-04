@@ -45,7 +45,7 @@ export class AdminHomepageComponent implements OnInit, AfterViewInit{
   }
   ngOnInit(): void {
     this.driverService.getDrivers().subscribe(data => {this.drivers = data.results});
-    this.mapComponent.loadMap();
+    // this.mapComponent.loadMap();
   }
 
   updateCurrentDriver(id : number): void {

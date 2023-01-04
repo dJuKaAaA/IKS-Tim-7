@@ -3,13 +3,13 @@
     <div class="data">
       <h4>First Name</h4>
       <b
-        ><p>{{ user.name }}</p></b
+        ><p *ngIf="user != undefined">{{ user.name }}</p></b
       >
     </div>
     <div class="data">
       <h4>Last Name</h4>
       <b
-        ><p>{{ user.surname }}</p></b
+        ><p *ngIf="user != undefined">{{ user.surname }}</p></b
       >
     </div>
   </div>
@@ -17,13 +17,13 @@
     <div class="data">
       <h4>Email</h4>
       <b
-        ><p>{{ user.email }}</p></b
+        ><p *ngIf="user != undefined">{{ user.email }}</p></b
       >
     </div>
     <div class="data">
       <h4>Phone</h4>
       <b
-        ><p>{{ user.telephoneNumber }}</p></b
+        ><p *ngIf="user != undefined">{{ user.telephoneNumber }}</p></b
       >
     </div>
   </div>
@@ -31,7 +31,7 @@
     <div class="data">
       <h4>Address</h4>
       <b
-        ><p>{{ user.address }}</p></b
+        ><p *ngIf="user != undefined">{{ user.address }}</p></b
       >
     </div>
     <div class="data">

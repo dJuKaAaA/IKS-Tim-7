@@ -17,9 +17,12 @@ import { DriverProfilePageComponent } from './components/driver-profile-page/dri
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { DriverCreationComponent } from './components/driver-creation/driver-creation.component';
 import { VehicleCreationPageComponent } from './components/vehicle-creation-page/vehicle-creation-page.component';
+import { PanicReviewComponent } from './components/panic-review/panic-review.component';
 import { PassengerHomeComponent } from './components/passenger-home/passenger-home.component';
 import { PassengerCurrentRideComponent } from './components/passenger-current-ride/passenger-current-ride.component';
 import { ChatComponent } from './components/chat/chat.component';
+import { PanicReviewPageComponent } from './components/panic-review-page/panic-review-page.component';
+import { PaymentComponent } from './components/payment/payment.component';
 
 const routes: Routes = [
   {
@@ -53,12 +56,14 @@ const routes: Routes = [
     component: PassengerRideHistoryDetailsComponent,
   },
   { path: 'forgot-password', component: ForgotPasswordComponent },
+  { path: 'panic-review/:id', component: PanicReviewPageComponent },
   { path: 'ride-history', component: RideHistoryInformationComponent },
   { path: 'create-driver', component: DriverCreationComponent },
   { path: 'create-vehicle', component: VehicleCreationPageComponent },
   { path: 'passenger-home', component: PassengerHomeComponent },
   { path: 'passenger-current-ride/:id', component: PassengerCurrentRideComponent },
   { path: 'admin-chat', component: ChatComponent },
+  { path: 'payment', component: PaymentComponent},
 ];
 
 @NgModule({

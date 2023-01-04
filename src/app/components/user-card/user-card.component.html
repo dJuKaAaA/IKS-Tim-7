@@ -1,0 +1,41 @@
+<div class="card green" *ngIf="role == 'driver' && user!=undefined">
+    <div class="tag" *ngIf = "setTag == true">
+        Sender
+    </div>
+    <div id="userImageSection">
+        <img src="/src/assets/images/profilePicture.jpg">
+    </div>
+    <p>Name: {{user.name}}</p>
+    <p>Last name: {{user.surname}}</p>
+    <p>Adress: {{user.address}}</p>
+    <p>Telephone: {{user.telephoneNumber}}</p>
+    <p>Email: {{user.email}}</p>
+    <p>Role: {{role}}</p>
+    <button (click) = displayProfile()>Profile</button>
+</div>
+
+<div class="card blue" *ngIf="role == 'passenger' && user!=undefined">
+    <div class="tag" *ngIf = "setTag == true">
+        Sender
+    </div>
+    <div class="marginTopMinus" *ngIf = "setTag == true">
+
+    </div>
+    <div id="userImageSection">
+        <img src="/src/assets/images/profilePicture.jpg">
+    </div>
+    <p>Name: {{user.name}}</p>
+    <p>Last name: {{user.surname}}</p>
+    <p>Adress: {{user.address}}</p>
+    <p>Telephone: {{user.telephoneNumber}}</p>
+    <p>Email: {{user.email}}</p>
+    <p>Role: {{role}}</p>
+    <button (click) = displayProfile()>Profile</button>
+</div>
+<div class = "userProfile" *ngIf="showProfile == true">
+    <app-driver-profile-details *ngIf="role=='driver' && outputId" [driverId] = "outputId"></app-driver-profile-details>
+    <app-passenger-profile-details *ngIf="role == 'passenger' && outputId" [passengerId] = "outputId"></app-passenger-profile-details>
+</div>
+<div class="profileBackground" *ngIf="showProfile == true">
+    <img src="src/assets/close.png" alt="" (click) = displayProfile()>
+</div>

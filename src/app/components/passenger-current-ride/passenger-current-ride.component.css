@@ -1,5 +1,11 @@
+#current-ride-grid{
+    display: grid;
+    grid-template-columns: 60% 40%;
+    width: 100%;
+}
+
 #passenger-map-container {
-    width: 65vw;
+    /* width: 65vw; */
     height: 88vh;
     display: inline-block;
     margin: 2vh 1vw;
@@ -10,11 +16,19 @@
     padding: 2vh 1vw;
     border-radius: 15px;
     overflow-y: scroll;
-    width: 28vw;
+    /* width: 28vw; */
     height: 78vh;
     display: inline-block;
     vertical-align: top;
     margin: 5vh 1vw;
+}
+
+#payment-container{
+    width: 60%;
+    position: relative;
+    left: 50%;
+    transform: translate(-50%,0%);
+    padding-bottom: 50px;
 }
 
 #button-layout {

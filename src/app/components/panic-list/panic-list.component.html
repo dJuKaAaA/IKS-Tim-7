@@ -1,0 +1,14 @@
+<div id = "panicList">
+    <div class="panic" *ngFor = "let panic of panicList;" id = {{panic.id}} (click) = "selectPanic(panic.id)">
+        <div class="imgSection">
+        </div>
+        <div class="date">
+            <p>Tue</p>
+        </div>
+        <div class="textSection">
+            <p><b>{{panic.user.name}} {{panic.user.surname}}</b></p>
+            <p>{{panic.reason}}</p>
+            <p id = "markAsRead" (click)="setPanicAsReviewed(panic.id, $event)">Mark as read</p>
+        </div>
+    </div>
+</div>

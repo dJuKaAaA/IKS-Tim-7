@@ -55,6 +55,8 @@ import { DriverCreationComponent } from './components/driver-creation/driver-cre
 import { DriverCreationFormComponent } from './components/driver-creation-form/driver-creation-form.component';
 import { VehicleCreationPageComponent } from './components/vehicle-creation-page/vehicle-creation-page.component';
 import { VehicleCreationFormComponent } from './components/vehicle-creation-form/vehicle-creation-form.component';
+import { PanicReviewComponent } from './components/panic-review/panic-review.component';
+import { PanicListComponent } from './components/panic-list/panic-list.component';
 import { DialogComponent } from './components/dialog/dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { DriverNavbarComponent } from './components/driver-navbar/driver-navbar.component';
@@ -73,7 +75,10 @@ import { ScheduleRideComponent } from './components/schedule-ride/schedule-ride.
 import { ChatComponent } from './components/chat/chat.component';
 import { MessageBubblesComponent } from './components/message-bubbles/message-bubbles.component';
 import { Interceptor } from './auth/interceptor.interceptor';
+import { PanicReviewPageComponent } from './components/panic-review-page/panic-review-page.component';
+import { UserCardComponent } from './components/user-card/user-card.component';
 import { ChatDialogComponent } from './components/chat-dialog/chat-dialog.component';
+import { PaymentComponent } from './components/payment/payment.component';
 
 @NgModule({
   declarations: [
@@ -117,6 +122,8 @@ import { ChatDialogComponent } from './components/chat-dialog/chat-dialog.compon
     DriverCreationFormComponent,
     VehicleCreationPageComponent,
     VehicleCreationFormComponent,
+    PanicReviewComponent,
+    PanicListComponent,
     DialogComponent,
     DriverNavbarComponent,
     PassengerNavbarComponent,
@@ -128,7 +135,10 @@ import { ChatDialogComponent } from './components/chat-dialog/chat-dialog.compon
     ScheduleRideComponent,
     ChatComponent,
     MessageBubblesComponent,
+    PanicReviewPageComponent,
+    UserCardComponent,
     ChatDialogComponent,
+    PaymentComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,25 +1,30 @@
-<div id="passenger-map-container">
-    <app-map></app-map>
-</div>
-
-<div id="ride-information">
-    <div id="route-details">
-        <app-ride-details
-            [destination]="'N/A'"
-            [departure]="'N/A'"
-            [departureDate]="'N/A'"
-            [departureTime]="'N/A'"
-            [duration]="'N/A'"
-            [distance]="'N/A'">
-        </app-ride-details>
+<div id="current-ride-grid">
+    <div id="passenger-map-container">
+        <app-map></app-map>
     </div>
-    
-    <button mat-raised-button (click)="openChat()">Open support chat</button>
 
-    <table id="button-layout">
-        <tr>
-            <td><button mat-raised-button color="accent">Report</button></td>
-            <td><button mat-raised-button color="warn">Panic</button></td>
-        </tr>
-    </table>
+    <div id="ride-information">
+        <div id="route-details">
+            <app-ride-details
+                [destination]="'N/A'"
+                [departure]="'N/A'"
+                [departureDate]="'N/A'"
+                [departureTime]="'N/A'"
+                [duration]="'N/A'"
+                [distance]="'N/A'">
+            </app-ride-details>
+        </div>
+        
+        <button mat-raised-button (click)="openChat()">Open support chat</button>
+
+        <table id="button-layout">
+            <tr>
+                <td><button mat-raised-button color="accent">Report</button></td>
+                <td><button mat-raised-button color="warn">Panic</button></td>
+            </tr>
+        </table>
+    </div>
+</div>
+<div id="payment-container">
+    <app-payment></app-payment>
 </div>

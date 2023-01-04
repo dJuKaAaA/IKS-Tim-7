@@ -19,7 +19,8 @@ export class VehicleService {
     return this.http.put<Vehicle>(environment.localhostApi + "vehicle/" + vehicleId + "/driver/" + driverId, "");
   } 
 
-  public save(vehicle:VehicleDTO):Observable<VehicleDTO>{
-    return this.http.post<VehicleDTO>(environment.localhostApi + "vehicle", vehicle);
+  public save(vehicle:VehicleDTO):Observable<Vehicle>{
+    console.log(vehicle);
+    return this.http.post<Vehicle>(environment.localhostApi + "vehicle", vehicle);
   }
 }

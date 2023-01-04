@@ -1,0 +1,102 @@
+#panicList{
+    overflow-y: scroll;
+    overflow-x: hidden;
+    width: 500px;
+    box-shadow: 0px 0px 10px gray;
+    border-radius: 12px;
+    height: 70vh;
+    box-sizing: border-box;
+    margin-left: 50px;
+    background-color: white;
+    font-size: 14px;
+    color: black;
+}
+
+#panicList::-webkit-scrollbar{
+    width: 20px;
+}
+
+#panicList::-webkit-scrollbar-track{
+    display: none;
+    
+}
+
+#panicList::-webkit-scrollbar-thumb {
+    background-color: darkgray;
+    border-radius: 10px;
+    height: 30px;
+  }
+
+.panic{
+    width: 90%;
+    height: 75px;
+    margin: 20px 20px;
+    padding: 10px;
+    border-radius: 10px;
+    line-height: 12px;
+    transition: background-color 0.5s ease-out;
+    transition: height 0.5s ease-out;
+}
+.panic:hover{
+    background-color: #293E6C;
+    cursor: pointer;
+    color: white;
+    height: 125px;
+}
+
+#markAsRead{
+    display: none;
+    position: relative;
+    top: 30px;
+    float: right;
+    padding: 5px;
+    /* margin-bottom: 5px; */
+}
+
+#markAsRead:hover{
+    background-color: white;
+    color:black;
+    font-weight: 1000;
+    border-radius: 20px;
+}
+
+.panic:hover #markAsRead{
+    display: block;
+}
+
+.panic:hover .imgSection{
+    box-shadow: none;
+}
+
+.imgSection{
+    width: 75px;
+    height: 75px;
+    float: left;
+    margin-right: 25px;
+    background-color: none;
+    background-image: url("/src/assets/images/profilePicture.jpg");
+    background-size: cover;
+    background-position: -17px;
+    border-radius: 100%;
+    box-shadow: 15px 15px 20px gray;
+}
+
+
+.textSection{
+    width: 77%;
+    display: inline-block;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.textSection p{
+    word-break: break-all;
+    white-space: normal;
+}
+
+.date{
+    margin-top: 20px;
+    float: right;
+    text-align: right;
+}
+
