@@ -55,16 +55,32 @@ export class PassengerNavbarComponent implements OnInit {
 
   openSocket() {
     this.stompClient.subscribe('/socket-ride-evaluation', (rideData: { body: string; }) => {
-      this.handleResult(rideData);
+      this.handleResultRideEvaluation(rideData);
+    });
+    this.stompClient.subscribe('/socket-scheduled-ride', (rideData: { body: string; }) => {
+      this.handleResultRideInvitation(rideData);
     });
   }
 
-  handleResult(rideData: { body: string; }) {
+  handleResultRideEvaluation(rideData: { body: string; }) {
     if (rideData.body) {
       let ride: Ride = JSON.parse(rideData.body);
       for (let passenger of ride.passengers) {
         if (this.authService.getId() == passenger.id) {
           this.snackBar.open(`Your ride scheduled at '${ride.startTime}' has been ${ride.status}`, "Dismiss");
+          break;
+        }
+      }
+    }
+  }
+
+  handleResultRideInvitation(rideData: { body: string; }) {
+    if (rideData.body) {
+      let ride: Ride = JSON.parse(rideData.body);
+      for (let passenger of ride.passengers) {
+        if (this.authService.getId() == passenger.id) {
+          this.snackBar.open(`You have been invited to join the ride scheduled at '${ride.startTime}'`, "Dismiss");
+          break;
         }
       }
     }
