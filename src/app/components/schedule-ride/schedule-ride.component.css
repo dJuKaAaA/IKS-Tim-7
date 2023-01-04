@@ -1,16 +1,15 @@
-#routes-vehicles-map {
-    width: 65vw;
-    height: 88vh;
-    display: inline-block;
-    margin: 2vh 1vw;
+#schedule-ride-grid {
+    display: grid;
+    grid-template-columns: 65% 35%;
+    width: 100%;
+    height: 92vh;
+}
 
+#routes-vehicles-map {
+    margin: 2vh 1vw;
 }
 
 #route-information {
-    width: 28vw;
-    height: 78vh;
-    display: inline-block;
-    vertical-align: top;
     overflow-y: scroll;
     border-radius: 2vmin;
     margin: 5vh 1vw;

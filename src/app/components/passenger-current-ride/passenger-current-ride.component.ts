@@ -54,25 +54,28 @@ export class PassengerCurrentRideComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    this.mapComponent.loadMap();
-    const idUrlParam: any = this.activatedRoute.snapshot.paramMap.get("id");
-    const id = (idUrlParam == null) ? -1 : +idUrlParam;
-    this.rideService.getRide(id).subscribe({
-      next: (ride: Ride) => {
-        this.ride = ride;
-        this.rideDate = this.dateTimeService.toDate(this.ride.startTime);
-        this.currentLocation = this.ride.locations[0].departure;
-        this.mapComponent.showMarker(this.currentLocation, 'src/assets/icons8-taxi-96.png');
-        for (let route of this.ride.locations) {
-          this.mapComponent.showRoute(route);
-        }
-      },
-      error: (error) => {
-        if (error instanceof HttpErrorResponse) {
+    setTimeout(() => {
+      this.mapComponent.loadMap();
+      const idUrlParam: any = this.activatedRoute.snapshot.paramMap.get("id");
+      const id = (idUrlParam == null) ? -1 : +idUrlParam;
+      this.rideService.getRide(id).subscribe({
+        next: (ride: Ride) => {
+          this.ride = ride;
+          this.rideDate = this.dateTimeService.toDate(this.ride.startTime);
+          this.currentLocation = this.ride.locations[0].departure;
+          this.mapComponent.showMarker(this.currentLocation, 'src/assets/icons8-taxi-96.png');
+          for (let route of this.ride.locations) {
+            this.mapComponent.showRoute(route);
+          }
+        },
+        error: (error) => {
+          if (error instanceof HttpErrorResponse) {
 
+          }
         }
-      }
-    })
+      })
+    },
+      100);
   }
 
   openChat() {

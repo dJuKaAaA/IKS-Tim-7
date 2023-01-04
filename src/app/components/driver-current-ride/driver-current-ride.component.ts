@@ -96,7 +96,10 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.mapComponent.loadMap();
+    setTimeout(() => {
+      this.mapComponent.loadMap();
+    },
+      100)
   }
 
   showNextRoute() {

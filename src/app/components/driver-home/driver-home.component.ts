@@ -46,12 +46,13 @@ export class DriverHomeComponent implements OnInit, AfterViewInit {
         }
       }
     })
-
-    this.mapComponent.loadMap();
   }
 
   ngAfterViewInit(): void {
-    this.mapComponent.loadMap();
+    setTimeout(() => {
+      this.mapComponent.loadMap();
+    },
+      100)
   }
 
   removeRideFromDisplay(ride: Ride) {

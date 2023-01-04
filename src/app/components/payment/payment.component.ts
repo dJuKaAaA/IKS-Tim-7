@@ -18,7 +18,7 @@ export class PaymentComponent {
 
   pay(f:NgForm){
     f.reset();
-    this.message = "Sucsessfully payed"
+    this.message = "Successfully payed"
     console.log(this.cardNumber, this.expirationDate, this.CVC, this.name);
   }
 
