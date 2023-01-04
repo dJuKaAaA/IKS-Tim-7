@@ -26,8 +26,9 @@ export class AdminNavbarComponent{
     this.showPanic = !this.showPanic;
   }
 
-  setNumberOfUnreviewedMessages(numberOfum : number){
-    this.numberOfUnreviewedMessages = numberOfum;
+  setNumberOfUnreviewedMessages(obj : any){
+    this.numberOfUnreviewedMessages = obj.num;
+    this.showPanic = obj.show;
     if(this.firstOpen){
       this.showPanic = false;
       this.firstOpen = false;

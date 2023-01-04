@@ -19,7 +19,7 @@ export class UserCardComponent implements OnInit{
   ngOnInit(): void {
     // console.log(this.user);
     this.outputId = this.id;
-    if(this.user.id == this.id){
+    if(this.userThatSubmited.id == this.id){
       this.setTag = true;
     }
     // console.log(this.outputId);

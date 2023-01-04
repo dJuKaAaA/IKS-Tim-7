@@ -15,27 +15,27 @@ export class PanicListComponent {
 
   @Input() public panicList : Panic[];
 
-  @Output() PanicReviewedEvent = new EventEmitter<number>();
+  @Output() PanicReviewedEvent = new EventEmitter<{show:boolean, num: number}>();
 
   //Ova metoda se zove na klik i vraca index kliknutog panica, pa onda u parent komponenti obradite sta treba
   selectPanic(id:number){
-    this.setPanicAsReviewed(id, undefined);
-    this.router.navigate(["/panic-review", id]);
+    this.setPanicAsReviewed(id, undefined, false);
+    this.router.navigate(["/panic-review", id]).then(page => {window.location.reload();});
   }
 
-  setPanicAsReviewed(id:number, event: { stopPropagation: () => void; } | undefined){
-    // alert("ej");
+  setPanicAsReviewed(id:number, event: { stopPropagation: () => void; } | undefined, show : boolean = true){
     if(event != undefined)
       event.stopPropagation();
     this.panicService.getPanicById(id).subscribe({
       next: panic => {
         if(panic.reviewed == true){
+          this.PanicReviewedEvent.emit({show:show, num : 0});
           return;
         }
         console.log(JSON.stringify(panic));
         panic.reviewed = true;
         this.panicService.setAsReviewed(panic.id).subscribe(data => {});
-        this.PanicReviewedEvent.emit();
+        this.PanicReviewedEvent.emit({show:show, num:-1});
       }
     })
   }
