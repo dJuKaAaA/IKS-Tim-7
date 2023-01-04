@@ -91,7 +91,8 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit {
     this.stompClient.send("/socket-subscriber/driver/send/current/location", {}, JSON.stringify({
       latitude: this.currentLocation.latitude,
       longitude: this.currentLocation.longitude,
-      rideId: this.ride.id
+      rideId: this.ride.id,
+      rideFinished: this.routeIndex >= this.routes.length - 1 && this.routePointIndex >= this.routePointsToTravelTo.length - 1
     }));
   }
 
@@ -117,14 +118,17 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit {
       this.mapComponent.showRoute(this.routes[this.routeIndex]);
       this.mapComponent.focusOnPoint(this.routes[this.routeIndex].departure);
       
-      // Setting interval for movement simulation
+      // fetching data for movement simulation
       this.geoLocationService.getRoute(
         this.routes[this.routeIndex].departure.latitude, this.routes[this.routeIndex].departure.longitude,
         this.routes[this.routeIndex].destination.latitude, this.routes[this.routeIndex].destination.longitude 
       ).subscribe({
         next: (response) => {
+          this.routePointIndex = 0;
           this.routePointsToTravelTo = response.routes[0].legs[0].points;
           const travelLength = response.routes[0].summary.travelTimeInSeconds;
+
+          // setting interval for movement simulation
           this.simulationIntervalId = setInterval(() => {
             const newLocation = new Location(
               this.routePointsToTravelTo[this.routePointIndex].latitude,

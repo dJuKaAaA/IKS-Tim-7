@@ -17,6 +17,7 @@ import { DateTimeService } from 'src/app/services/date-time.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { throwToolbarMixedModesError } from '@angular/material/toolbar';
 import { Location } from 'src/app/model/location.model';
+import { DialogComponent } from '../dialog/dialog.component';
 
 @Component({
   selector: 'app-passenger-current-ride',
@@ -45,6 +46,20 @@ export class PassengerCurrentRideComponent implements OnInit {
     private dateTimeService: DateTimeService) {}
 
   ngOnInit(): void {
+    const idUrlParam: any = this.activatedRoute.snapshot.paramMap.get("id");
+    const id = (idUrlParam == null) ? -1 : +idUrlParam;
+    this.rideService.getRide(id).subscribe({
+      next: (ride: Ride) => {
+        this.ride = ride;
+        this.rideDate = this.dateTimeService.toDate(this.ride.startTime);
+        this.currentLocation = this.ride.locations[0].departure;
+      },
+      error: (error) => {
+        if (error instanceof HttpErrorResponse) {
+
+        }
+      }
+    })
     this.userService.fetchMessages(3).subscribe({  // TODO: Change to this.authService.getId()
       next: (response: PaginatedResponse<Message>) => {
         this.messages = response.results;
@@ -53,27 +68,32 @@ export class PassengerCurrentRideComponent implements OnInit {
     this.initializeWebSocketConnection();
   }
 
-  ngAfterViewInit(): void {
+  getTotalEstimatedTime() {
+    let totalEstimatedTime: number = 0;
+    for (let route of this.ride.locations) {
+      totalEstimatedTime += route.estimatedTimeInMinutes;
+    }
+    return totalEstimatedTime;
+  }
+
+  getTotalDistanceInMeters() {
+    let totalDistanceInMeters: number = 0;
+    for (let route of this.ride.locations) {
+      totalDistanceInMeters += route.distanceInMeters;
+    }
+    return totalDistanceInMeters;
+  }
+
+  ngAfterViewInit() {
     setTimeout(() => {
       this.mapComponent.loadMap();
-      const idUrlParam: any = this.activatedRoute.snapshot.paramMap.get("id");
-      const id = (idUrlParam == null) ? -1 : +idUrlParam;
-      this.rideService.getRide(id).subscribe({
-        next: (ride: Ride) => {
-          this.ride = ride;
-          this.rideDate = this.dateTimeService.toDate(this.ride.startTime);
-          this.currentLocation = this.ride.locations[0].departure;
-          this.mapComponent.showMarker(this.currentLocation, 'src/assets/icons8-taxi-96.png');
-          for (let route of this.ride.locations) {
-            this.mapComponent.showRoute(route);
-          }
+      this.mapComponent.showMarker(this.currentLocation, 'src/assets/icons8-taxi-96.png');
+      for (let route of this.ride.locations) {
+        setTimeout(() => {
+          this.mapComponent.showRoute(route);
         },
-        error: (error) => {
-          if (error instanceof HttpErrorResponse) {
-
-          }
-        }
-      })
+         100)
+      }
     },
       100);
   }
@@ -102,15 +122,23 @@ export class PassengerCurrentRideComponent implements OnInit {
     });
   }
 
-  handleResult(currentLocation: { body: string; }) {
-    const location = JSON.parse(currentLocation.body);
+  handleResult(notification: { body: string; }) {
+    const information = JSON.parse(notification.body);
     const newLocation: Location = new Location(
-      location.latitude,
-      location.longitude,
+      information.latitude,
+      information.longitude,
       ""
     );
     this.mapComponent.updateMarkerLocation(this.currentLocation, newLocation);
     this.currentLocation = newLocation;
+    if (information.rideFinished) {
+      this.matDialog.open(DialogComponent, {
+        data: {
+          header: "Finished!",
+          body: "The ride is finished"
+        }
+      });
+    }
   }
 
 }
