@@ -1,0 +1,38 @@
+<div class="paymentWrapper">    
+    <div id="cardSection">
+        <img src="src/assets/images/creditCard.png" alt="" (click) = select(paymentMethods[0])>
+        <img src="src/assets/images/paypal.png" alt="" (click) = select(paymentMethods[1])>
+        <img src="src/assets/images/paySafe.png" alt="" (click) = select(paymentMethods[2])>
+    </div>
+
+    <div id="paymentData">
+        <h1>{{paymentMethod}}</h1>
+        <form action="POST" #f = "ngForm" (ngSubmit)="pay(f)">
+            <div class="gridArea" *ngIf="paymentMethod == 'Credit card'">
+                <div class="group span-2">
+                    <p>Card number</p>
+                    <input type="text" [(ngModel)] = "cardNumber" name = "cardNumber">
+                </div>
+                
+                <div class="group">
+                    <p>Card expiration date</p>
+                    <input type="text" [(ngModel)] = "expirationDate" name = "expirationDate">
+                </div>
+                
+                <div class="group">
+                    <p>CVC</p>
+                    <input type="text" [(ngModel)] = "CVC" name = "CVC">
+                </div>
+                
+                <div class="group span-2">
+                    <p>Name on card</p>
+                    <input type="text" [(ngModel)] = "name" name = "name">
+                </div>
+            </div>
+            <p class = "textCenter blue smallMarginTop">{{message}}</p>
+            <button type = "submit" id = "pay" [disabled] = "!rideIsFinished">
+                <b>Pay</b>
+            </button>
+        </form>
+    </div>
+</div>

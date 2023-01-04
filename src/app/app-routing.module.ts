@@ -22,6 +22,7 @@ import { PassengerHomeComponent } from './components/passenger-home/passenger-ho
 import { PassengerCurrentRideComponent } from './components/passenger-current-ride/passenger-current-ride.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { PanicReviewPageComponent } from './components/panic-review-page/panic-review-page.component';
+import { PaymentComponent } from './components/payment/payment.component';
 
 const routes: Routes = [
   {
@@ -62,6 +63,7 @@ const routes: Routes = [
   { path: 'passenger-home', component: PassengerHomeComponent },
   { path: 'passenger-current-ride', component: PassengerCurrentRideComponent },
   { path: 'admin-chat', component: ChatComponent },
+  { path: 'payment', component: PaymentComponent},
 ];
 
 @NgModule({
