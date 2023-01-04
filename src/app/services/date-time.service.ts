@@ -34,10 +34,11 @@ export class DateTimeService {
     const dayString = (day < 10) ? `0${day}` : `${day}`;
     const monthString = (month < 10) ? `0${month}` : `${month}`;
 
+    const hoursString = (hours < 10) ? `0${hours}` : `${hours}`;
     const minutesString = (minutes < 10) ? `0${minutes}` : `${minutes}`;
     const secondsString = (seconds < 10) ? `0${seconds}` : `${seconds}`;
 
-    return `${dayString}.${monthString}.${year} ${hours}:${minutesString}:${secondsString}`;
+    return `${dayString}.${monthString}.${year} ${hoursString}:${minutesString}:${secondsString}`;
   }
 
   public getDate(date: Date): String {

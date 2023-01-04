@@ -2,7 +2,7 @@ import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChil
 import { Route } from 'src/app/model/route.model';
 import { MapComponent } from '../map/map.component';
 import { Location } from 'src/app/model/location.model';
-import { FormControl, Validators } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { TomTomGeolocationService } from 'src/app/services/tom-tom-geolocation.service';
 import { MatDialog } from '@angular/material/dialog';
 import { environment } from 'src/environment/environment';
@@ -14,16 +14,14 @@ import { SimpleUser } from 'src/app/model/simple-user.model';
 import { PassengerService } from 'src/app/services/passenger.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from 'src/app/services/auth.service';
-import { throwToolbarMixedModesError } from '@angular/material/toolbar';
 import { VehicleType } from 'src/app/model/vehicle-type';
-import { VehicleCreationFormComponent } from '../vehicle-creation-form/vehicle-creation-form.component';
 import { VehicleTypeService } from 'src/app/services/vehicle-type.service';
-import { ArrayDataSource } from '@angular/cdk/collections';
-import { Vehicle } from 'src/app/model/vehicle.model';
 import { RideRequest } from 'src/app/model/ride-request.model';
 import { RideService } from 'src/app/services/ride.service';
 import { Ride } from 'src/app/model/ride.model';
 import { DateTimeService } from 'src/app/services/date-time.service';
+import * as Stomp from 'stompjs';
+import * as SockJS from 'sockjs-client';
 
 @Component({
   selector: 'app-schedule-ride',
@@ -33,6 +31,9 @@ import { DateTimeService } from 'src/app/services/date-time.service';
 export class ScheduleRideComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MapComponent) mapComponent: MapComponent;
+
+  private serverUrl = environment.localhostApi + 'socket';
+  private stompClient: any;
   
   drivers: Array<DriverActivityAndLocation> = [];
   route: Route = new Route(
@@ -99,6 +100,7 @@ export class ScheduleRideComponent implements OnInit, AfterViewInit {
         }
       }
     })
+    this.initializeWebSocketConnection();
   }
 
   ngAfterViewInit(): void {
@@ -133,6 +135,17 @@ export class ScheduleRideComponent implements OnInit, AfterViewInit {
     this.rideDate.setHours(hours);
     this.rideDate.setMinutes(minutes);
 
+    // checking if the passenger selected any routes
+    if (this.routes.length == 0) {
+      this.matDialog.open(DialogComponent, {
+        data: {
+          header: "Invalid!",
+          body: "You must specify at least one route of the ride"
+        }
+      });
+      return;
+    }
+
     const rideRequest: RideRequest = {
       startTime: this.dateTimeService.toString(this.rideDate),
       locations: this.routes,
@@ -141,6 +154,8 @@ export class ScheduleRideComponent implements OnInit, AfterViewInit {
       babyTransport: this.babyTransport,
       petTransport: this.petTransport
     }
+
+    console.log(rideRequest);
 
     this.rideService.createRide(rideRequest).subscribe({
       next: (result: Ride) => {
@@ -152,6 +167,7 @@ export class ScheduleRideComponent implements OnInit, AfterViewInit {
             body: "Ride successfully scheduled"
           }
         });
+        this.stompClient.send("/socket-subscriber/send/scheduled/ride", {}, JSON.stringify(result));
       },
       error: (error) => {
         if (error instanceof HttpErrorResponse) {
@@ -164,9 +180,7 @@ export class ScheduleRideComponent implements OnInit, AfterViewInit {
           });
         }
       }
-    })
-
-
+    });
   }
   
   updateRoute(route: Route) {
@@ -231,16 +245,18 @@ export class ScheduleRideComponent implements OnInit, AfterViewInit {
       this.startLocation = startLocation;
     }
     this.route.destination = endLocation;
-    this.mapComponent.showRoute(this.route);
+
+    await this.mapComponent.showRoute(this.cloneRoute(this.route));
     this.mapComponent.focusOnPoint(this.route.departure);
     this.totalDistance += this.route.distanceInMeters || 0;
     this.totalDuration += this.route.estimatedTimeInMinutes || 0;
-    this.route.departure = this.route.destination;
-    this.startAddressControl.setValue(this.route.departure.address);
-    this.endAddressControl.setValue("");
     this.disableStartAddressField = true;
     this.notifyDisabledStartAddress();
     this.settingInitialDepartureOnClick = false;
+    this.route.departure = this.route.destination;
+    this.route.destination = new Location(NaN, NaN, "");
+    this.startAddressControl.setValue(this.route.departure.address);
+    this.endAddressControl.setValue("");
   }
 
   async addMarkerOnClick(onClickLocation: Location) {
@@ -263,7 +279,7 @@ export class ScheduleRideComponent implements OnInit, AfterViewInit {
     } else {
       this.route.destination = onClickLocation;
       this.mapComponent.showMarker(this.route.destination);
-      this.mapComponent.showRoute(this.route);
+      await this.mapComponent.showRoute(this.cloneRoute(this.route));
       this.totalDistance += this.route.distanceInMeters || 0;
       this.totalDuration += this.route.estimatedTimeInMinutes || 0;
       this.route.departure = this.route.destination;
@@ -391,7 +407,6 @@ export class ScheduleRideComponent implements OnInit, AfterViewInit {
   }
 
   removeInvitedPassenger(email: string) {
-    console.log(email);
     this.invitedPassengers = this.invitedPassengers.filter((passenger: SimpleUser) => {
       if (email == this.authService.getEmail()) {
         this.matDialog.open(DialogComponent, {
@@ -443,6 +458,11 @@ export class ScheduleRideComponent implements OnInit, AfterViewInit {
 
   setVehicleType(vehicleType: VehicleType) {
     this.selectedVehicleType = vehicleType;
+  }
+
+  initializeWebSocketConnection() {
+    let ws = new SockJS(this.serverUrl);
+    this.stompClient = Stomp.over(ws);
   }
 
 }

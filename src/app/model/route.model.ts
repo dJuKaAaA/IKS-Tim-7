@@ -6,6 +6,8 @@ export class Route {
 
     }
 
+    // doesn't work
+    // when I try calling this method in map-component.ts it returns [object Object]
     toString(): string {
         return "(" + this.departure.toString() + ", " + this.destination.toString() + ")";
     }
