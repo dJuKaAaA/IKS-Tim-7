@@ -31,10 +31,13 @@ export class DateTimeService {
     const minutes: number = date.getMinutes();
     const seconds: number = date.getSeconds();
 
+    const dayString = (day < 10) ? `0${day}` : `${day}`;
+    const monthString = (month < 10) ? `0${month}` : `${month}`;
+
     const minutesString = (minutes < 10) ? `0${minutes}` : `${minutes}`;
     const secondsString = (seconds < 10) ? `0${seconds}` : `${seconds}`;
 
-    return `${day}.${month}.${year} ${hours}:${minutesString}:${secondsString}`;
+    return `${dayString}.${monthString}.${year} ${hours}:${minutesString}:${secondsString}`;
   }
 
   public getDate(date: Date): String {

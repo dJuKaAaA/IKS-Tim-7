@@ -1,8 +1,8 @@
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Route } from 'src/app/model/route.model';
 import { MapComponent } from '../map/map.component';
 import { Location } from 'src/app/model/location.model';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import { TomTomGeolocationService } from 'src/app/services/tom-tom-geolocation.service';
 import { MatDialog } from '@angular/material/dialog';
 import { environment } from 'src/environment/environment';
@@ -15,13 +15,22 @@ import { PassengerService } from 'src/app/services/passenger.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from 'src/app/services/auth.service';
 import { throwToolbarMixedModesError } from '@angular/material/toolbar';
+import { VehicleType } from 'src/app/model/vehicle-type';
+import { VehicleCreationFormComponent } from '../vehicle-creation-form/vehicle-creation-form.component';
+import { VehicleTypeService } from 'src/app/services/vehicle-type.service';
+import { ArrayDataSource } from '@angular/cdk/collections';
+import { Vehicle } from 'src/app/model/vehicle.model';
+import { RideRequest } from 'src/app/model/ride-request.model';
+import { RideService } from 'src/app/services/ride.service';
+import { Ride } from 'src/app/model/ride.model';
+import { DateTimeService } from 'src/app/services/date-time.service';
 
 @Component({
   selector: 'app-schedule-ride',
   templateUrl: './schedule-ride.component.html',
   styleUrls: ['./schedule-ride.component.css']
 })
-export class ScheduleRideComponent {
+export class ScheduleRideComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MapComponent) mapComponent: MapComponent;
   
@@ -43,6 +52,7 @@ export class ScheduleRideComponent {
 
   passengerInviteInput: string = "";
   invitedPassengers: Array<SimpleUser> = [];
+  schedulingPassenger: SimpleUser;
 
   @Input() loggedIn: boolean = false;
   @Input() startAddressControl: FormControl = new FormControl("");
@@ -51,23 +61,44 @@ export class ScheduleRideComponent {
   @Output() showRouteEmitter: EventEmitter<void> = new EventEmitter<void>();
   @Output() disabledStartAddressEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  rideDateControl: FormControl = new FormControl(new Date());
-  rideTimeControl: FormControl = new FormControl("");
+  rideDate: Date = new Date();
+  rideTime: string = "";
   invitedPassengerErrorMessage: string = "";
 
   babyTransport: boolean = false;
   petTransport: boolean = false;
 
-  vehicleType: string = "";
-
+  selectedVehicleType: VehicleType;
+  vehicleTypes: Array<VehicleType> = [];
 
   constructor(
     private geoLocationService: TomTomGeolocationService,
     private matDialog: MatDialog,
     private driverService: DriverService,
     private passengerService: PassengerService, 
-    private authService: AuthService) {
+    private authService: AuthService,
+    private vehicleTypeService: VehicleTypeService,
+    private rideService: RideService,
+    private dateTimeService: DateTimeService) {
 
+  }
+
+  ngOnInit() {
+    this.schedulingPassenger = { id: this.authService.getId(), email: this.authService.getEmail() };
+    this.invitedPassengers.push(this.schedulingPassenger);
+    this.vehicleTypeService.getAll().subscribe({
+      next: (vehicleTypes: Array<VehicleType>) => {
+        this.vehicleTypes = vehicleTypes;
+        if (this.vehicleTypes.length > 0) {
+          this.selectedVehicleType = this.vehicleTypes[0];
+        }
+      },
+      error: (error) => {
+        if (error instanceof HttpErrorResponse) {
+
+        }
+      }
+    })
   }
 
   ngAfterViewInit(): void {
@@ -88,13 +119,52 @@ export class ScheduleRideComponent {
 
   scheduleRide() {
     // getting ride date that the passenger picked
-    const rideDate: Date = this.rideDateControl.value;
-    const hours: number = +this.rideTimeControl.value.split(":")[0];
-    const minutes: number = +this.rideTimeControl.value.split(":")[1];
-    rideDate.setHours(hours);
-    rideDate.setMinutes(minutes);
+    if (!this.rideTime) {
+      this.matDialog.open(DialogComponent, {
+        data: {
+          header: "Invalid time!",
+          body: "You must specify the time of the ride"
+        }
+      });
+      return;
+    }
+    const hours: number = +this.rideTime.split(":")[0];
+    const minutes: number = +this.rideTime.split(":")[1];
+    this.rideDate.setHours(hours);
+    this.rideDate.setMinutes(minutes);
 
-    console.log(this.babyTransport, this.petTransport);
+    const rideRequest: RideRequest = {
+      startTime: this.dateTimeService.toString(this.rideDate),
+      locations: this.routes,
+      passengers: this.invitedPassengers,
+      vehicleType: this.selectedVehicleType.name,
+      babyTransport: this.babyTransport,
+      petTransport: this.petTransport
+    }
+
+    this.rideService.createRide(rideRequest).subscribe({
+      next: (result: Ride) => {
+        console.log(result);
+
+        this.matDialog.open(DialogComponent, {
+          data: {
+            header: "Success!",
+            body: "Ride successfully scheduled"
+          }
+        });
+      },
+      error: (error) => {
+        if (error instanceof HttpErrorResponse) {
+          // TODO: Show dialogs for errors after actual schedule ride functionality is implemented
+          this.matDialog.open(DialogComponent, {
+            data: {
+              header: "Error!",
+              body: error.error.message
+            }
+          });
+        }
+      }
+    })
 
 
   }
@@ -294,14 +364,14 @@ export class ScheduleRideComponent {
             body: "This user is already invited"
           }
         });
+        return;
       }
-      return;
     }
-    if (this.invitedPassengers.length >= 4) {
+    if (this.invitedPassengers.length >= 5) {
       this.matDialog.open(DialogComponent, {
         data: {
           header: "Max passenger capacity!",
-          body: "You can't invite more than 4 passengers"
+          body: "Max passenger capacity is 5"
         }
       });
       return;
@@ -321,7 +391,17 @@ export class ScheduleRideComponent {
   }
 
   removeInvitedPassenger(email: string) {
+    console.log(email);
     this.invitedPassengers = this.invitedPassengers.filter((passenger: SimpleUser) => {
+      if (email == this.authService.getEmail()) {
+        this.matDialog.open(DialogComponent, {
+          data: {
+            header: "Error",
+            body: "You can't remove yourself from the ride"
+          }
+        });
+        return true;
+      }
       if (passenger.email == email) {
         return false;
       }
@@ -329,8 +409,27 @@ export class ScheduleRideComponent {
     })
   }
 
+  getDepartureDate(): string {
+    return this.rideDate.toDateString();
+  }
+
+  getDepartureTime(): string {
+    return this.rideTime;
+  }
+
+  getEstimatedTimeInMinutes(): number {
+    return (this.route.estimatedTimeInMinutes || 0) + this.totalDuration;
+  }
+
+  getDistanceInMeters(): number {
+    return (this.route.distanceInMeters || 0) + this.totalDistance;
+  }
+  
+
   getEstimatedPrice(): number {
-    // TODO: Fetch estimated price when the user determines the routes and vehicle
+    if (this.routes.length > 0 && this.selectedVehicleType) {
+      return Math.round(this.selectedVehicleType.pricePerKm + this.getDistanceInMeters() / 1000 * 120); 
+    }
     return 0;
   }
 
@@ -341,4 +440,9 @@ export class ScheduleRideComponent {
   changePetTransport() {
     this.petTransport = !this.petTransport;
   }
+
+  setVehicleType(vehicleType: VehicleType) {
+    this.selectedVehicleType = vehicleType;
+  }
+
 }
