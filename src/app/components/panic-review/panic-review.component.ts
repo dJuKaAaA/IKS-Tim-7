@@ -11,7 +11,7 @@ export class PanicReviewComponent implements OnInit{
 
   @Output() public panicList : Panic[];
   @Input() public panicIndex : number;
-  @Output() unreviewedMessagesNumberEvent = new EventEmitter<number>();
+  @Output() unreviewedMessagesNumberEvent = new EventEmitter<{num: number, show: boolean}>();
 
   private unreviewedMessagesNumber : number = 0;
 
@@ -25,7 +25,10 @@ export class PanicReviewComponent implements OnInit{
             this.unreviewedMessagesNumber += 1;
           }
         }
-        this.unreviewedMessagesNumberEvent.emit(this.unreviewedMessagesNumber);
+        this.unreviewedMessagesNumberEvent.emit({
+          num : this.unreviewedMessagesNumber,
+          show: true,
+        });
       }
     })
   }
@@ -34,9 +37,11 @@ export class PanicReviewComponent implements OnInit{
 
   }
 
-  panicReviewed(){
-    this.unreviewedMessagesNumber -= 1;
-    this.unreviewedMessagesNumberEvent.emit(this.unreviewedMessagesNumber);
+  panicReviewed(obj: any){
+    this.unreviewedMessagesNumberEvent.emit({
+      num : this.unreviewedMessagesNumber += obj.num,
+      show: obj.show,
+    });
   }
 
 }
