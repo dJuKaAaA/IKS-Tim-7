@@ -52,23 +52,22 @@ export class ScheduleRideComponent {
     private driverService: DriverService) {
 
   }
-  
-  ngOnInit(): void {
-    
-    this.mapComponent.loadMap();
-  }
 
   ngAfterViewInit(): void {
-    this.mapComponent.loadMap();
-    this.driverService.fetchDriverActivityAndLocations().subscribe({
-      next: (response: PaginatedResponse<DriverActivityAndLocation>) => {
-        this.drivers = response.results;
-        for (let driver of this.drivers) {
-          let carIconSrc = driver.isActive ? environment.activeDriverMarker : environment.inactiveDriverMarker;
-          this.mapComponent.showMarker(driver.location, carIconSrc);
+    setTimeout(() => {
+
+      this.mapComponent.loadMap();
+      this.driverService.fetchDriverActivityAndLocations().subscribe({
+        next: (response: PaginatedResponse<DriverActivityAndLocation>) => {
+          this.drivers = response.results;
+          for (let driver of this.drivers) {
+            let carIconSrc = driver.isActive ? environment.activeDriverMarker : environment.inactiveDriverMarker;
+            this.mapComponent.showMarker(driver.location, carIconSrc);
+          }
         }
-      }
-    })
+      })
+    },
+      100);
   }
 
   scheduleRide() {
@@ -79,7 +78,6 @@ export class ScheduleRideComponent {
     const minutes: number = +this.rideTimeControl.value.split(":")[1];
     rideDate.setHours(hours);
     rideDate.setMinutes(minutes);
-    console.log(rideDate);
   }
   
   updateRoute(route: Route) {

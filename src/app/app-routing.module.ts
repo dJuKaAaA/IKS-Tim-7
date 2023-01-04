@@ -61,7 +61,7 @@ const routes: Routes = [
   { path: 'create-driver', component: DriverCreationComponent },
   { path: 'create-vehicle', component: VehicleCreationPageComponent },
   { path: 'passenger-home', component: PassengerHomeComponent },
-  { path: 'passenger-current-ride', component: PassengerCurrentRideComponent },
+  { path: 'passenger-current-ride/:id', component: PassengerCurrentRideComponent },
   { path: 'admin-chat', component: ChatComponent },
   { path: 'payment', component: PaymentComponent},
 ];

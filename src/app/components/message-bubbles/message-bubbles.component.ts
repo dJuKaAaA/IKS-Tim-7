@@ -6,7 +6,6 @@ import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 import { DateTimeService } from 'src/app/services/date-time.service';
 import { UserService } from 'src/app/services/user.service';
-import { RideDetailsComponent } from '../ride-details/ride-details.component';
 
 @Component({
   selector: 'app-message-bubbles',
@@ -16,14 +15,12 @@ import { RideDetailsComponent } from '../ride-details/ride-details.component';
 export class MessageBubblesComponent implements OnInit {
   
   @Input() messages: Array<Message> = [];
-  dummyArray: Array<number> = []
-  dummyMessageCount = 20;
   senderId: number;
   @Input() receiverId: number = -1;
   @Input() rideId: number = -1;
   @Input() messageType = "RIDE";
 
-  private serverUrl = environment.localhostApi + 'socket'
+  private serverUrl = environment.localhostApi + 'socket';
   private stompClient: any;
 
   typingMessageContent: string = "";
@@ -59,7 +56,7 @@ export class MessageBubblesComponent implements OnInit {
   }
 
   sendMessage() {
-    if (this.typingMessageContent == "") { 
+    if (this.typingMessageContent == "") {
       return;
     }
     let message: Message;

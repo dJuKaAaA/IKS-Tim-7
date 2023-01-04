@@ -1,15 +1,15 @@
+#map-and-rides-grid {
+    display: grid;
+    grid-template-columns: 65% 35%;
+    width: 100%;
+    height: 92vh;
+}
+
 #driver-map-container {
-    width: 65vw;
-    height: 88vh;
-    display: inline-block;
     margin: 2vh 1vw;
 }
 
 #scheduled-rides {
-    width: 30vw;
-    height: 82vh;
-    display: inline-block;
-    vertical-align: top;
     overflow-y: scroll;
     border-radius: 2vmin;
     margin: 5vh 1vw;

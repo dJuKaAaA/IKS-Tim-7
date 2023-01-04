@@ -6,12 +6,13 @@
     <div id="ride-information">
         <div id="route-details">
             <app-ride-details
-                [destination]="'N/A'"
-                [departure]="'N/A'"
-                [departureDate]="'N/A'"
-                [departureTime]="'N/A'"
-                [duration]="'N/A'"
-                [distance]="'N/A'">
+                [destination]="ride.locations[ride.locations.length - 1].destination.address"
+                [departure]="ride.locations[0].departure.address"
+                [departureDate]="rideDate.toDateString()"
+                [departureTime]="rideDate.toLocaleTimeString()"
+                [duration]="getTotalEstimatedTime() + ' min'"
+                [distance]="getTotalDistanceInMeters() + 'm'"
+                [price]="ride.totalCost + ' din'">
             </app-ride-details>
         </div>
         

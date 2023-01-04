@@ -22,9 +22,12 @@ export class TomTomGeolocationService {
     return this.http.get<TomTomGeolocationResponse>(request);
   }
 
+  // response.routes[0].summary.lengthInMeters for distance
+  // response.routes[0].legs[0].points for route points
+  // response.routes[0].summary.travelTimeInSeconds for travel time
   getRoute(startLatitude: number, startLongitude: number, endLatitude: number, endLongitude: number): Observable<any> {
     const request: string = `${environment.ttApiUrl}/routing/1/calculateRoute/${startLatitude},${startLongitude}:${endLatitude},${endLongitude}/json?key=${environment.ttApiKey}&travelMode=car`;
-    return this.http.get<any>(request);  // 'response.routes[0].summary.lengthInMeters' for distance
+    return this.http.get<any>(request);  
   }
 
   // copied and pasted code from tomtom api

@@ -12,9 +12,13 @@ import { AuthService } from 'src/app/services/auth.service';
 import { DateTimeService } from 'src/app/services/date-time.service';
 import { DriverService } from 'src/app/services/driver.service';
 import { RideService } from 'src/app/services/ride.service';
+import { TomTomGeolocationService } from 'src/app/services/tom-tom-geolocation.service';
 import { UserService } from 'src/app/services/user.service';
 import { ChatDialogComponent } from '../chat-dialog/chat-dialog.component';
 import { MapComponent } from '../map/map.component';
+import * as Stomp from 'stompjs';
+import * as SockJS from 'sockjs-client';
+import { environment } from 'src/environment/environment';
 
 @Component({
   selector: 'app-driver-current-ride',
@@ -25,12 +29,22 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MapComponent) mapComponent: MapComponent;
   @ViewChild('panicReasonForm') panicReasonForm: ElementRef;
+  
+  private serverUrl = environment.localhostApi + 'socket';
+  private stompClient: any;
 
   routes: Array<Route> = [];
   routeIndex: number = -1;
   ride: Ride = {} as Ride;
-  rideDate: Date; 
+  rideDate: Date;
   messages: Array<Message> = [];
+
+  // simulation attributes
+  private routePointsToTravelTo: Array<any> = [];
+  private routePointIndex: number = 0;
+  private simulationIntervalId: any = NaN;
+  private currentLocation: Location;
+  
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -40,6 +54,7 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit {
     private router: Router,
     private driverService: DriverService,
     private matDialog: MatDialog,
+    private geoLocationService: TomTomGeolocationService,
     private userService: UserService,
     private authService: AuthService) {}
 
@@ -64,19 +79,78 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit {
         this.messages = response.results;
       }
     })
-    this.mapComponent.loadMap();
+    this.initializeWebSocketConnection();
+  }
+
+  initializeWebSocketConnection() {
+    let ws = new SockJS(this.serverUrl);
+    this.stompClient = Stomp.over(ws);
+  }
+
+  sendLocationToSocket() {
+    this.stompClient.send("/socket-subscriber/driver/send/current/location", {}, JSON.stringify({
+      latitude: this.currentLocation.latitude,
+      longitude: this.currentLocation.longitude,
+      rideId: this.ride.id,
+      rideFinished: this.routeIndex >= this.routes.length - 1 && this.routePointIndex >= this.routePointsToTravelTo.length - 1
+    }));
   }
 
   ngAfterViewInit(): void {
-    this.mapComponent.loadMap();
+    setTimeout(() => {
+      this.mapComponent.loadMap();
+    },
+      100)
   }
 
   showNextRoute() {
     if (this.routeIndex < this.routes.length - 1) {
       this.routeIndex++;
+
+      // initializing car icon on map
+      if (this.routeIndex == 0) {
+        this.currentLocation = this.routes[0].departure;
+        this.mapComponent.showMarker(this.currentLocation, 'src/assets/icons8-taxi-96.png');
+      }
+
+      // removing previous and showing current route
       this.mapComponent.removeRoute(this.routes[this.routeIndex]);
       this.mapComponent.showRoute(this.routes[this.routeIndex]);
       this.mapComponent.focusOnPoint(this.routes[this.routeIndex].departure);
+      
+      // fetching data for movement simulation
+      this.geoLocationService.getRoute(
+        this.routes[this.routeIndex].departure.latitude, this.routes[this.routeIndex].departure.longitude,
+        this.routes[this.routeIndex].destination.latitude, this.routes[this.routeIndex].destination.longitude 
+      ).subscribe({
+        next: (response) => {
+          this.routePointIndex = 0;
+          this.routePointsToTravelTo = response.routes[0].legs[0].points;
+          const travelLength = response.routes[0].summary.travelTimeInSeconds;
+
+          // setting interval for movement simulation
+          this.simulationIntervalId = setInterval(() => {
+            const newLocation = new Location(
+              this.routePointsToTravelTo[this.routePointIndex].latitude,
+              this.routePointsToTravelTo[this.routePointIndex].longitude,
+              ""
+            );
+            this.mapComponent.updateMarkerLocation(
+              this.currentLocation,
+              newLocation);
+            this.currentLocation = newLocation;
+
+            // sending information about changed location to socket
+            this.sendLocationToSocket();
+
+            ++this.routePointIndex;
+            if (this.routePointIndex >= this.routePointsToTravelTo.length) {
+              clearInterval(this.simulationIntervalId);
+            }
+          },
+          (travelLength / this.routePointsToTravelTo.length) * 1000);
+        }
+      })
     }
   }
 
