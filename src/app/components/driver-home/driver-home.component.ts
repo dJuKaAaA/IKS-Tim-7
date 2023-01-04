@@ -5,11 +5,11 @@ import { Route } from 'src/app/model/route.model';
 import { DriverService } from 'src/app/services/driver.service';
 import { MapComponent } from '../map/map.component';
 import { AuthService } from 'src/app/services/auth.service';
-import { NgxMaterialTimepickerHoursFace } from 'ngx-material-timepicker/src/app/material-timepicker/components/timepicker-hours-face/ngx-material-timepicker-hours-face';
-import { DriverRideHistoryDetailsComponent } from '../driver-ride-history-details/driver-ride-history-details.component';
-import { FixedSizeVirtualScrollStrategy } from '@angular/cdk/scrolling';
 import { HttpErrorResponse } from '@angular/common/http';
 import { RideService } from 'src/app/services/ride.service';
+import * as Stomp from 'stompjs';
+import * as SockJS from 'sockjs-client';
+import { environment } from 'src/environment/environment';
 
 @Component({
   selector: 'app-driver-home',
@@ -19,6 +19,9 @@ import { RideService } from 'src/app/services/ride.service';
 export class DriverHomeComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MapComponent) mapComponent: MapComponent;
+
+  private serverUrl = environment.localhostApi + 'socket';
+  private stompClient: any;
 
   cardCount: number = 5;
   scheduledRides: Array<Ride> = [];
@@ -46,6 +49,7 @@ export class DriverHomeComponent implements OnInit, AfterViewInit {
         }
       }
     })
+    this.initializeWebSocketConnection();
   }
 
   ngAfterViewInit(): void {
@@ -65,6 +69,31 @@ export class DriverHomeComponent implements OnInit, AfterViewInit {
 
   accessCurrentRide() {
     this.router.navigate([`driver-current-ride/${this.activeRideId}`]);
+  }
+
+  initializeWebSocketConnection() {
+    let ws = new SockJS(this.serverUrl);
+    this.stompClient = Stomp.over(ws);
+
+    this.stompClient.connect({}, () => {
+      this.openSocket()
+    });
+  }
+
+  openSocket() {
+    this.stompClient.subscribe('/socket-scheduled-ride', (rideData: { body: string; }) => {
+      this.handleResult(rideData);
+    });
+  }
+
+  handleResult(rideData: { body: string; }) {
+    console.log("Hello from driver home");
+    if (rideData.body) {
+      let ride: Ride = JSON.parse(rideData.body);
+      if (ride.driver.id == this.authService.getId()) {
+        this.scheduledRides.push(ride);
+      }
+    }
   }
 
 }

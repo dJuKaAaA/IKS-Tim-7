@@ -77,6 +77,7 @@ import { UserCardComponent } from './components/user-card/user-card.component';
 import { ChatDialogComponent } from './components/chat-dialog/chat-dialog.component';
 import { PaymentComponent } from './components/payment/payment.component';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -163,7 +164,8 @@ import { MatMenuModule } from '@angular/material/menu';
     MatDatepickerModule,
     NgxMaterialTimepickerModule,
     MatNativeDateModule,
-    MatMenuModule
+    MatMenuModule,
+    MatSnackBarModule,
   ],
   providers: [
     {

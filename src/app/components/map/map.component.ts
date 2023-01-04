@@ -1,4 +1,4 @@
-import { AfterContentChecked, AfterContentInit, AfterViewChecked, AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import * as ttMap from '@tomtom-international/web-sdk-maps';
 import * as ttService from '@tomtom-international/web-sdk-services';
 import { TomTomGeolocationService } from 'src/app/services/tom-tom-geolocation.service';
@@ -17,6 +17,7 @@ import { DialogComponent } from '../dialog/dialog.component';
 export class MapComponent {
 
   private markers: Array<ttMap.Marker> = []
+  private routeLayers: Array<ttMap.Layer> = []
 
   @Input() startingLatitude: number = environment.startLatitude;
   @Input() startingLongitude: number = environment.startLongitude;
@@ -165,11 +166,19 @@ export class MapComponent {
     }
   }
 
-  private checkRouteExists(route: GGCJRoute): boolean {
-    return this.map.getLayer(route.toString())
+  private getRouteAsString(route: GGCJRoute): string {
+    return "(" + this.getLocationAsString(route.departure) + ", " + this.getLocationAsString(route.destination) + ")";
   }
 
-  public showRoute(route: GGCJRoute): void {
+  private getLocationAsString(location: GGCJLocation): string {
+    return "[" + location.latitude + ", " + location.longitude + "]";;
+  }
+
+  private checkRouteExists(route: GGCJRoute): boolean {
+    return this.map.getLayer(this.getRouteAsString(route))
+  }
+
+  public async showRoute(route: GGCJRoute) {
     if (this.checkRouteExists(route)) {
       this.matDialog.open(DialogComponent, {
         data: {
@@ -192,13 +201,13 @@ export class MapComponent {
         [route.destination.longitude, route.destination.latitude]
       ],
     }
-    ttService.services.calculateRoute(routeOptions).then(
+    await ttService.services.calculateRoute(routeOptions).then(
       (routeData: any) => {
         route.distanceInMeters = routeData.routes[0].summary.lengthInMeters;
         route.estimatedTimeInMinutes = Math.round(routeData.routes[0].summary.travelTimeInSeconds / 60);
         this.notifyRoute(route);
         const routeLayer: ttMap.Layer = {
-          'id': route.toString(),
+          'id': this.getRouteAsString(route),
           'type': 'line',
           'source': {
             'type': 'geojson',
@@ -210,6 +219,7 @@ export class MapComponent {
           }
         };
 
+        this.routeLayers.push(routeLayer);
         this.map.addLayer(routeLayer);
       }
     );
@@ -217,11 +227,25 @@ export class MapComponent {
 
   public removeRoute(route: GGCJRoute): void {
     if (this.checkRouteExists(route)) {
-      this.map.removeLayer(route.toString());
-      this.map.removeSource(route.toString());
+      this.routeLayers = this.routeLayers.filter((el) => {
+        if (el.id == this.getRouteAsString(route)) {
+          return false;
+        }
+        return true;
+      })
+      this.map.removeLayer(this.getRouteAsString(route));
+      this.map.removeSource(this.getRouteAsString(route));
       this.removeMarker(route.departure);
       this.removeMarker(route.destination);
     }
+  }
+
+  public removeAllRouteLayers() {
+    for (let routeLayer of this.routeLayers) {
+      this.map.removeLayer(routeLayer.id);
+      this.map.removeSource(routeLayer.id);
+    }
+    this.routeLayers = [];
   }
 
   public loadMap(): void {

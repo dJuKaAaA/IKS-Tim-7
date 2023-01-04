@@ -4,17 +4,13 @@ import { Ride } from 'src/app/model/ride.model';
 import { Route } from 'src/app/model/route.model';
 import { MapComponent } from '../map/map.component';
 import { PassengerService } from 'src/app/services/passenger.service';
-import { Passenger } from 'src/app/model/passenger.model';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { PassengerNarrowedInfo } from 'src/app/model/passenger-narrowed-info.model';
-import { DateTimePicker } from '@syncfusion/ej2-angular-calendars';
-import { throwToolbarMixedModesError } from '@angular/material/toolbar';
 import { RideService } from 'src/app/services/ride.service';
 import { DateTimeService } from 'src/app/services/date-time.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DriverService } from 'src/app/services/driver.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { ActivityDto } from 'src/app/model/activity-dto.model';
 
 const SHOW_PROFILE_INFO_ANIMATION_TIME: number = 300;
 const PASSENGER_INFO_HIDDEN_STATE: string = "hidden";
@@ -105,7 +101,7 @@ export class DriverScheduledRideCardComponent implements OnInit, AfterViewInit {
     private driverService: DriverService) { }
 
   ngOnInit(): void {
-    
+    this.canStartRide = !this.driverService.getHasActiveRide();
   }
 
   ngAfterViewInit(): void {
@@ -166,12 +162,11 @@ export class DriverScheduledRideCardComponent implements OnInit, AfterViewInit {
 
   }
 
-  showRideRoutes() {
+  async showRideRoutes() {
+    this.mapComponent.removeAllMarkers();
+    this.mapComponent.removeAllRouteLayers();
     for (let route of this.ride.locations) {
-      let r: Route = new Route(route.departure, route.destination, route.distanceInMeters, route.estimatedTimeInMinutes);
-      this.mapComponent.removeAllMarkers();  // if other types of markers need to be shown, remove this
-      this.mapComponent.removeRoute(r);
-      this.mapComponent.showRoute(r);
+      await this.mapComponent.showRoute(route);
     }
     this.mapComponent.focusOnPoint(this.ride.locations[0].departure);  // focus departure of first route
   }

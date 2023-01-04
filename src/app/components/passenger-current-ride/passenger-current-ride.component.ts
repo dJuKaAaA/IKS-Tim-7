@@ -60,7 +60,7 @@ export class PassengerCurrentRideComponent implements OnInit {
         }
       }
     })
-    this.userService.fetchMessages(3).subscribe({  // TODO: Change to this.authService.getId()
+    this.userService.fetchMessages(this.authService.getId()).subscribe({
       next: (response: PaginatedResponse<Message>) => {
         this.messages = response.results;
       }

@@ -5,7 +5,7 @@ import { Ride } from '../model/ride.model';
 import { Rides } from '../model/rides.model';
 import { environment } from 'src/environment/environment';
 import { Rejection } from '../model/rejection.model';
-import { RideRequest } from '../model/create-ride-dto.model';
+import { RideRequest } from '../model/ride-request.model';
 
 @Injectable({
   providedIn: 'root',
