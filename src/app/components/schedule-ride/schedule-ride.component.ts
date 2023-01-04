@@ -14,6 +14,7 @@ import { SimpleUser } from 'src/app/model/simple-user.model';
 import { PassengerService } from 'src/app/services/passenger.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from 'src/app/services/auth.service';
+import { throwToolbarMixedModesError } from '@angular/material/toolbar';
 
 @Component({
   selector: 'app-schedule-ride',
@@ -54,6 +55,12 @@ export class ScheduleRideComponent {
   rideTimeControl: FormControl = new FormControl("");
   invitedPassengerErrorMessage: string = "";
 
+  babyTransport: boolean = false;
+  petTransport: boolean = false;
+
+  vehicleType: string = "";
+
+
   constructor(
     private geoLocationService: TomTomGeolocationService,
     private matDialog: MatDialog,
@@ -81,13 +88,16 @@ export class ScheduleRideComponent {
   }
 
   scheduleRide() {
+    // getting ride date that the passenger picked
     const rideDate: Date = this.rideDateControl.value;
-    
-    // TODO: Validate the time
     const hours: number = +this.rideTimeControl.value.split(":")[0];
     const minutes: number = +this.rideTimeControl.value.split(":")[1];
     rideDate.setHours(hours);
     rideDate.setMinutes(minutes);
+
+    console.log(this.babyTransport, this.petTransport);
+
+
   }
   
   updateRoute(route: Route) {
@@ -318,5 +328,18 @@ export class ScheduleRideComponent {
       }
       return true;
     })
+  }
+
+  getEstimatedPrice(): number {
+    // TODO: Fetch estimated price when the user determines the routes and vehicle
+    return 0;
+  }
+
+  changeBabyTransport() {
+    this.babyTransport = !this.babyTransport;
+  }
+
+  changePetTransport() {
+    this.petTransport = !this.petTransport;
   }
 }

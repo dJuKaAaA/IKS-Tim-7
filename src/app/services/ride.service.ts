@@ -5,6 +5,7 @@ import { Ride } from '../model/ride.model';
 import { Rides } from '../model/rides.model';
 import { environment } from 'src/environment/environment';
 import { Rejection } from '../model/rejection.model';
+import { RideRequest } from '../model/create-ride-dto.model';
 
 @Injectable({
   providedIn: 'root',
@@ -47,4 +48,8 @@ export class RideService {
   public finishRide(id: number) {
     return this.http.put(environment.localhostApi + `ride/${id}/end`, {});
   }
+
+  public createRide(rideRequest: RideRequest): Observable<Ride> {
+    return this.http.post<Ride>(environment.localhostApi + `ride`, rideRequest);
+  } 
 }

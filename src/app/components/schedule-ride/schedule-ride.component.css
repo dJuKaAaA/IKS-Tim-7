@@ -77,7 +77,7 @@ h1 {
 }
 
 .invite-passengers-form {
-    margin: 2vh 0;
+    margin: 5vh 0;
     border-radius: 15px;
     border: 2px dashed rgb(190, 190, 190);
     padding: 3vh 1vw;
@@ -107,4 +107,24 @@ h1 {
 .invited-passenger-email:hover {
     cursor: pointer;
     background-color: rgb(170, 170, 170);
+}
+
+.transport-info-container {
+    margin: 5vh 0;
+    border-radius: 15px;
+    border: 2px dashed rgb(190, 190, 190);
+    padding: 3vh 1vw;
+}
+
+.transport-checkboxes {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.vehicle-type-container {
+    display: block;
+    margin: 5vh 0;
+    padding: 3vh 1vw;
+    border-radius: 15px;
+    border: 2px dashed rgb(190, 190, 190);
 }

@@ -39,7 +39,6 @@ export class LoginComponent {
         },
         error: (error) => {
           if (error instanceof HttpErrorResponse) {
-            console.log(error);
             this.hasError = true;
           }
         },
