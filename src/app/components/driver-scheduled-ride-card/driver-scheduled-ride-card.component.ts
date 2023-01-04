@@ -11,6 +11,9 @@ import { DateTimeService } from 'src/app/services/date-time.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DriverService } from 'src/app/services/driver.service';
 import { AuthService } from 'src/app/services/auth.service';
+import * as Stomp from 'stompjs';
+import * as SockJS from 'sockjs-client';
+import { environment } from 'src/environment/environment';
 
 const SHOW_PROFILE_INFO_ANIMATION_TIME: number = 300;
 const PASSENGER_INFO_HIDDEN_STATE: string = "hidden";
@@ -71,6 +74,9 @@ const ACCEPTED_STATE: string = 'accepted';
 })
 export class DriverScheduledRideCardComponent implements OnInit, AfterViewInit {
 
+  private serverUrl = environment.localhostApi + 'socket';
+  private stompClient: any;
+
   @Input() ride: Ride = {} as Ride;
   @Input() mapComponent: MapComponent;
 
@@ -102,6 +108,12 @@ export class DriverScheduledRideCardComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.canStartRide = !this.driverService.getHasActiveRide();
+    this.initializeWebSocketConnection();
+  }
+
+  initializeWebSocketConnection() {
+    let ws = new SockJS(this.serverUrl);
+    this.stompClient = Stomp.over(ws);
   }
 
   ngAfterViewInit(): void {
@@ -174,20 +186,24 @@ export class DriverScheduledRideCardComponent implements OnInit, AfterViewInit {
   rejectionState: string = NOT_REJECTED_STATE;
 
   rejectRide() {
-    this.rideService.rejectRide(this.ride.id).subscribe(() => {
+    this.rideService.rejectRide(this.ride.id).subscribe((ride: Ride) => {
       // sending information to parent about rejection
       this.rejectionState = REJECTED_STATE;
       setTimeout(() => {
         this.rejectionEmitter.emit(this.ride);
       },
         REJECTION_ANIMATION_TIME);
+
+      // notifying passenger via web sockets
+      this.stompClient.send("/socket-subscriber/send/ride/evaluation", {}, JSON.stringify(ride));
     });
   }
 
   acceptState: string = NOT_ACCEPTED_STATE;
 
   acceptRide() {
-    this.rideService.acceptRide(this.ride.id).subscribe(() => {
+    this.rideService.acceptRide(this.ride.id).subscribe((ride: Ride) => {
+      // sending information to parent about acceptance 
       this.acceptState = ACCEPT_MIDDLE_POINT;
       setTimeout(() => {
         this.acceptState = ACCEPTED_STATE
@@ -197,6 +213,9 @@ export class DriverScheduledRideCardComponent implements OnInit, AfterViewInit {
         this.ride.status = "ACCEPTED";
       }, 
         ACCEPT_ANIMATION_TIME);
+
+      // notifying passenger via web sockets
+      this.stompClient.send("/socket-subscriber/send/ride/evaluation", {}, JSON.stringify(ride));
     });
   }
 
