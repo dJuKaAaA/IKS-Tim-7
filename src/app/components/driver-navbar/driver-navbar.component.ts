@@ -54,11 +54,10 @@ export class DriverNavbarComponent implements OnInit, AfterViewInit {
   }
 
   handleResult(rideData: { body: string; }) {
-    console.log("Hello from driver navbar");
     if (rideData.body) {
       let ride: Ride = JSON.parse(rideData.body);
       if (ride.driver.id == this.authService.getId()) {
-        this.snackBar.open("You have new scheduled rides", "Close");
+        this.snackBar.open("You have new scheduled rides", "Dismiss");
       }
     }
   }

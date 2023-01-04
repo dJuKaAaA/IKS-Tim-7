@@ -29,16 +29,16 @@ export class RideService {
     );
   }
 
-  public rejectRide(id: number) {
-    return this.http.put(environment.localhostApi + `ride/${id}/withdraw`, {});
+  public rejectRide(id: number): Observable<Ride> {
+    return this.http.put<Ride>(environment.localhostApi + `ride/${id}/withdraw`, {});
   }
 
   public cancelRide(id: number, reason: Rejection) {  // TODO: Replace after iss assistents make up their minds on the contents of these dtos
     return this.http.put(environment.localhostApi + `ride/${id}/cancel`, reason);
   }
 
-  public acceptRide(id: number) {
-    return this.http.put(environment.localhostApi + `ride/${id}/accept`, {});
+  public acceptRide(id: number): Observable<Ride> {
+    return this.http.put<Ride>(environment.localhostApi + `ride/${id}/accept`, {});
   }
 
   public startRide(id: number) {
