@@ -31,7 +31,7 @@ const routes: Routes = [
     canActivate: [AlreadyAuthenticatedGuard],
   },
   { path: 'userRideHistory', component: RideHistoryInformationComponent },
-  { path: 'admin', component: AdminHomepageComponent },
+  { path: 'admin-home', component: AdminHomepageComponent },
   {
     path: 'register',
     component: RegisterComponent,

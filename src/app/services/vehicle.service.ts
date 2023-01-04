@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Vehicle } from '../model/vehicle.model';
 import { VehicleDTO } from '../model/vehicle-dto';
 import { environment } from 'src/environment/environment';
+import { VehiclePage } from '../model/vehicle-page';
 
 @Injectable({
   providedIn: 'root',
@@ -11,8 +12,8 @@ import { environment } from 'src/environment/environment';
 export class VehicleService {
   constructor(private http: HttpClient) {}
 
-  public getVehicles() : Observable<Vehicle[]>{
-    return this.http.get<Vehicle[]>(environment.localhostApi + "vehicle");
+  public getVehicles() : Observable<VehiclePage>{
+    return this.http.get<VehiclePage>(environment.localhostApi + "vehicle");
   }
 
   public setDriver(vehicleId : number, driverId : number) : Observable<Vehicle>{

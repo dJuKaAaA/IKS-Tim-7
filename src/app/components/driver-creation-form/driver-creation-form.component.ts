@@ -36,7 +36,8 @@ export class DriverCreationFormComponent implements OnInit{
 
   ngOnInit(): void {
     this.vehicleService.getVehicles().subscribe({
-      next: (vehicles) => {
+      next: (vehiclePage) => {
+        let vehicles = vehiclePage.results;
         for (let vehicle of vehicles){
           if(vehicle.driverId == null)
             this.availableVehicles.push(vehicle);
