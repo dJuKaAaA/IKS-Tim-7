@@ -78,6 +78,7 @@ import { Interceptor } from './auth/interceptor.interceptor';
 import { PanicReviewPageComponent } from './components/panic-review-page/panic-review-page.component';
 import { UserCardComponent } from './components/user-card/user-card.component';
 import { ChatDialogComponent } from './components/chat-dialog/chat-dialog.component';
+import { PaymentComponent } from './components/payment/payment.component';
 
 @NgModule({
   declarations: [
@@ -137,6 +138,7 @@ import { ChatDialogComponent } from './components/chat-dialog/chat-dialog.compon
     PanicReviewPageComponent,
     UserCardComponent,
     ChatDialogComponent,
+    PaymentComponent,
   ],
   imports: [
     BrowserModule,
