@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { AfterViewInit, Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { throwToolbarMixedModesError } from '@angular/material/toolbar';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -25,7 +25,7 @@ import { environment } from 'src/environment/environment';
   templateUrl: './driver-current-ride.component.html',
   styleUrls: ['./driver-current-ride.component.css']
 })
-export class DriverCurrentRideComponent implements OnInit, AfterViewInit {
+export class DriverCurrentRideComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild(MapComponent) mapComponent: MapComponent;
   @ViewChild('panicReasonForm') panicReasonForm: ElementRef;
@@ -42,7 +42,7 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit {
   // simulation attributes
   private routePointsToTravelTo: Array<any> = [];
   private routePointIndex: number = 0;
-  private simulationIntervalId: any = NaN;
+  private simulationIntervalId: any = null;
   private currentLocation: Location;
   
 
@@ -101,6 +101,13 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit {
       this.mapComponent.loadMap();
     },
       100)
+  }
+
+
+  ngOnDestroy(): void {
+    if (this.simulationIntervalId != null && this.routePointIndex < this.routePointsToTravelTo.length) {
+      clearInterval(this.simulationIntervalId);
+    }
   }
 
   showNextRoute() {

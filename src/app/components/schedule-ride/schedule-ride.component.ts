@@ -72,7 +72,6 @@ export class ScheduleRideComponent {
 
   ngAfterViewInit(): void {
     setTimeout(() => {
-
       this.mapComponent.loadMap();
       this.driverService.fetchDriverActivityAndLocations().subscribe({
         next: (response: PaginatedResponse<DriverActivityAndLocation>) => {

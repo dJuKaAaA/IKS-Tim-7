@@ -105,7 +105,7 @@ export class DriverScheduledRideCardComponent implements OnInit, AfterViewInit {
     private driverService: DriverService) { }
 
   ngOnInit(): void {
-    
+    this.canStartRide = !this.driverService.getHasActiveRide();
   }
 
   ngAfterViewInit(): void {
