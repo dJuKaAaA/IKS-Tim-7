@@ -6,6 +6,7 @@ import { Rides } from '../model/rides.model';
 import { environment } from 'src/environment/environment';
 import { Rejection } from '../model/rejection.model';
 import { RideRequest } from '../model/ride-request.model';
+import { RideAddDriver } from '../model/ride-add-driver';
 
 @Injectable({
   providedIn: 'root',
@@ -52,4 +53,8 @@ export class RideService {
   public createRide(rideRequest: RideRequest): Observable<Ride> {
     return this.http.post<Ride>(environment.localhostApi + `ride`, rideRequest);
   } 
+
+  public setDriver(rideAddDriver: RideAddDriver): Observable<Ride>{
+    return this.http.put<Ride>(environment.localhostApi + "ride/setDriver", rideAddDriver);
+  }
 }
