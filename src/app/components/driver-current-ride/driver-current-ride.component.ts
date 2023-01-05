@@ -186,6 +186,9 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit, OnDest
       next: (ride) => {
         this.driverService.setHasActiveRide(false);
         this.router.navigate(['driver-home']);
+        this.driverService.changeActivity(this.authService.getId(), { isActive: true }).subscribe(() => {
+          this.driverService.setIsActive(true);
+        });
       },
       error: (error) => {
         if (error instanceof HttpErrorResponse) {

@@ -1,5 +1,5 @@
 export interface WorkHours {
-    id:number,
-    start:string,
-    end:string,
+    id: number,
+    start: string,
+    end: string,
 }

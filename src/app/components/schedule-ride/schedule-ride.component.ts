@@ -22,8 +22,6 @@ import { Ride } from 'src/app/model/ride.model';
 import { DateTimeService } from 'src/app/services/date-time.service';
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
-import { TitleStrategy } from '@angular/router';
-import { Driver } from 'src/app/model/driver.model';
 
 @Component({
   selector: 'app-schedule-ride',
@@ -73,10 +71,6 @@ export class ScheduleRideComponent implements OnInit, AfterViewInit {
 
   selectedVehicleType: VehicleType;
   vehicleTypes: Array<VehicleType> = [];
-
-  private minLenght:number = 9999999
-  private bestDriverId:number = -1;
-  private almostFreeDrivers:DriverActivityAndLocation[] = [];
 
   constructor(
     private geoLocationService: TomTomGeolocationService,
@@ -152,86 +146,6 @@ export class ScheduleRideComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    this.findDrivers()
-
-  }
-
-  findDrivers(){
-    for(let driver of this.drivers){
-      if(driver.isActive){
-        this.rideService.getDriversActiveRide(driver.driverId).subscribe({
-          next: ride =>{
-            let date:Date = new Date();
-            let currentHours:number = date.getHours();
-            let currentMinutes:number = date.getMinutes();
-            let dateAndHours:string[] = ride.endTime.split(" ");
-            let hoursMinutesSeconds:string[] = dateAndHours[1].split(":"); 
-            let rideHours:string = hoursMinutesSeconds[0];
-            let rideMinutes: string = hoursMinutesSeconds[1];
-            if(currentHours - Number.parseInt(rideHours) == 0 && Number.parseInt(rideMinutes) - currentMinutes < 5){
-              this.almostFreeDrivers.push(driver);
-            }
-          },
-          error: ()=>{
-            this.checkIfCloser(driver);
-          }
-        });
-      }
-    }
-    setTimeout(()=>{this.registerTheRide()}, 500);
-  }
-
-  checkIfCloser(driver:DriverActivityAndLocation){
-    this.geoLocationService.getRoute(this.routes[0].departure.latitude, this.routes[0].departure.longitude, driver.location.latitude, driver.location.longitude).subscribe(data => {
-      if(data.routes[0].summary.lengthInMeters < this.minLenght){
-        console.log(data.routes[0].summary);
-        let departureTime:string = data.routes[0].summary.departureTime.split("T")[1];
-        let departureTimeSplit:string[] = departureTime.split(":"); 
-        let departureTimeHours = departureTimeSplit[0];
-        let departureTimeMinutes = departureTimeSplit[1];
-
-
-        let arrivalTime:string = data.routes[0].summary.arrivalTime.split("T")[1];
-        let arrivalTimeSplit:string[] = arrivalTime.split(":"); 
-        let arrivalTimeHours = arrivalTimeSplit[0];
-        let arrivalTimeMinutes = arrivalTimeSplit[1];
-
-        let hours = (Number.parseInt(arrivalTimeHours) - Number.parseInt(departureTimeHours));  
-        let minutes = Number.parseInt(arrivalTimeMinutes) - Number.parseInt(departureTimeMinutes);
-
-        let estimatedTimeInMinutes = hours * 60 + minutes;
-
-        this.checkIfDuringWorkHours(driver, estimatedTimeInMinutes);
-        this.minLenght = data.routes[0].summary.lengthInMeters;
-        this.bestDriverId = driver.driverId;
-      }
-    })
-  }
-
-  registerTheRide(){
-    if(this.bestDriverId == undefined){
-      for(let driver of this.almostFreeDrivers){
-        this.checkIfCloser(driver);
-      }
-    }
-
-    if(this.bestDriverId == -1){
-      alert("No drivers available in the next 5 minutes");
-      return;
-    }
-
-    this.saveRide();
-  }
-
-
-  checkIfDuringWorkHours(driver: DriverActivityAndLocation, estimatedTimeInMinutes:number){
-    this.driverService.getWorkHours(driver.driverId).subscribe(page => {
-      
-    });
-  }
-
-
-  saveRide(){
     const rideRequest: RideRequest = {
       startTime: this.dateTimeService.toString(this.rideDate),
       locations: this.routes,
@@ -240,11 +154,13 @@ export class ScheduleRideComponent implements OnInit, AfterViewInit {
       babyTransport: this.babyTransport,
       petTransport: this.petTransport
     }
+
     console.log(rideRequest);
+
     this.rideService.createRide(rideRequest).subscribe({
       next: (result: Ride) => {
-        // console.log(result);
-        this.rideService.setDriver({driverId: this.bestDriverId, rideId: result.id});
+        console.log(result);
+
         this.matDialog.open(DialogComponent, {
           data: {
             header: "Success!",

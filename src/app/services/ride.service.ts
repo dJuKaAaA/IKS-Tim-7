@@ -52,9 +52,5 @@ export class RideService {
 
   public createRide(rideRequest: RideRequest): Observable<Ride> {
     return this.http.post<Ride>(environment.localhostApi + `ride`, rideRequest);
-  } 
-
-  public setDriver(rideAddDriver: RideAddDriver): Observable<Ride>{
-    return this.http.put<Ride>(environment.localhostApi + "ride/setDriver", rideAddDriver);
   }
 }
