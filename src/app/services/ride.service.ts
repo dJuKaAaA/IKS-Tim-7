@@ -6,6 +6,7 @@ import { Rides } from '../model/rides.model';
 import { environment } from 'src/environment/environment';
 import { Rejection } from '../model/rejection.model';
 import { RideRequest } from '../model/ride-request.model';
+import { RideAddDriver } from '../model/ride-add-driver';
 
 @Injectable({
   providedIn: 'root',
