@@ -51,5 +51,5 @@ export class RideService {
 
   public createRide(rideRequest: RideRequest): Observable<Ride> {
     return this.http.post<Ride>(environment.localhostApi + `ride`, rideRequest);
-  } 
+  }
 }

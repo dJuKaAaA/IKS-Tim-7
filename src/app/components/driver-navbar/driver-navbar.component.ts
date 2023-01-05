@@ -102,7 +102,9 @@ export class DriverNavbarComponent implements OnInit, AfterViewInit {
   }
 
   logout() {
-    this.driverService.changeActivity(this.authService.getId(), { isActive: false });
+    this.driverService.changeActivity(this.authService.getId(), { isActive: false }).subscribe(() => {
+      this.driverService.setIsActive(false);
+    });
     localStorage.removeItem('user');
     this.router.navigate(['']);
   }

@@ -14,6 +14,7 @@ import { RideService } from './ride.service';
 import { AuthService } from './auth.service';
 import { PaginatedResponse } from '../model/paginated-response.model';
 import { DriverActivityAndLocation } from '../model/driver-activity-and-locations.model';
+import { WorkHours } from '../model/work-hours';
 
 @Injectable({
   providedIn: 'root',
@@ -172,6 +173,10 @@ export class DriverService {
 
   public fetchDriverActivityAndLocations(): Observable<PaginatedResponse<DriverActivityAndLocation>> {
     return this.http.get<PaginatedResponse<DriverActivityAndLocation>>(environment.localhostApi + `driver/activity-and-locations`);
+  }
+
+  public getWorkHours(id:number): Observable<PaginatedResponse<WorkHours>>{
+    return this.http.get<PaginatedResponse<WorkHours>>(environment.localhostApi + `driver/${id}/working-hour`);
   }
 
 }
