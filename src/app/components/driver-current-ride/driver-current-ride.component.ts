@@ -22,6 +22,8 @@ import { DialogComponent } from '../dialog/dialog.component';
 import { NotExpr } from '@angular/compiler';
 import { Note } from 'src/app/model/note.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { VehicleService } from 'src/app/services/vehicle.service';
+import { Vehicle } from 'src/app/model/vehicle.model';
 
 @Component({
   selector: 'app-driver-current-ride',
@@ -62,7 +64,7 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit, OnDest
     private geoLocationService: TomTomGeolocationService,
     private userService: UserService,
     private authService: AuthService,
-    private snackBar: MatSnackBar) {}
+    private vehicleService: VehicleService) {}
 
   ngOnInit(): void {
     const idUrlParam: any = this.activatedRoute.snapshot.paramMap.get("id");
@@ -147,6 +149,7 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit, OnDest
               this.routePointsToTravelTo[this.routePointIndex].longitude,
               ""
             );
+            this.updateVehiclePosition(newLocation);
             this.mapComponent.updateMarkerLocation(
               this.currentLocation,
               newLocation);
@@ -228,6 +231,28 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit, OnDest
         receiverId: 3
       }
     });
+  }
+
+  async updateVehiclePosition(location: Location) {
+    await this.geoLocationService.
+      reverseGeocode(location.latitude, location.longitude)
+      .toPromise()
+      .then((response) => {
+        if (response.addresses.length > 0) {
+          const address = response.addresses[0].address;
+          let fullAddress: string = address.freeformAddress + ", " + address.country;
+          location.address = fullAddress;
+        }
+      });
+    let vehicleId: number = NaN;
+    await this.driverService
+      .getVehicle(this.authService.getId())
+      .toPromise()
+      .then((response) => {
+        vehicleId = response?.id || -1;
+      })
+
+    this.vehicleService.setLocation(vehicleId, location).subscribe();
   }
 
 }

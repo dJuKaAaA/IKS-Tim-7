@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Vehicle } from '../model/vehicle.model';
 import { VehicleDTO } from '../model/vehicle-dto';
 import { environment } from 'src/environment/environment';
 import { VehiclePage } from '../model/vehicle-page';
+import { Location } from '../model/location.model';
 
 @Injectable({
   providedIn: 'root',
@@ -23,5 +24,9 @@ export class VehicleService {
   public save(vehicle:VehicleDTO):Observable<Vehicle>{
     console.log(vehicle);
     return this.http.post<Vehicle>(environment.localhostApi + "vehicle", vehicle);
+  }
+
+  public setLocation(id: number, location: Location) {
+    return this.http.put(environment.localhostApi + `vehicle/${id}/location`, location);
   }
 }
