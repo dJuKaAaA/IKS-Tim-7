@@ -1,7 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { throwToolbarMixedModesError } from '@angular/material/toolbar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from 'src/app/model/location.model';
 import { Message } from 'src/app/model/message.model';
@@ -19,6 +18,10 @@ import { MapComponent } from '../map/map.component';
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 import { environment } from 'src/environment/environment';
+import { DialogComponent } from '../dialog/dialog.component';
+import { NotExpr } from '@angular/compiler';
+import { Note } from 'src/app/model/note.model';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-driver-current-ride',
@@ -44,7 +47,9 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit, OnDest
   private routePointIndex: number = 0;
   private simulationIntervalId: any = null;
   private currentLocation: Location;
-  
+
+  panicText: string = "";
+  panicErrorMessage: string = "";
 
   constructor(
     private activatedRoute: ActivatedRoute,
@@ -56,7 +61,8 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit, OnDest
     private matDialog: MatDialog,
     private geoLocationService: TomTomGeolocationService,
     private userService: UserService,
-    private authService: AuthService) {}
+    private authService: AuthService,
+    private snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     const idUrlParam: any = this.activatedRoute.snapshot.paramMap.get("id");
@@ -74,7 +80,7 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit, OnDest
         }
       }
     })
-    this.userService.fetchMessages(2).subscribe({  // TODO: Change to this.authService.getId()
+    this.userService.fetchMessages(this.authService.getId()).subscribe({
       next: (response: PaginatedResponse<Message>) => {
         this.messages = response.results;
       }
@@ -102,7 +108,6 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit, OnDest
     },
       100)
   }
-
 
   ngOnDestroy(): void {
     if (this.simulationIntervalId != null && this.routePointIndex < this.routePointsToTravelTo.length) {
@@ -162,6 +167,24 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit, OnDest
   }
 
   sendPanic() {
+    this.panicErrorMessage = "";
+    this.rideService.panicProcedure(this.ride.id, { reason: this.panicText }).subscribe({
+      next: (ride: Ride) => {
+        // TODO: Decide whether to end the ride or continue 
+        this.closePanicReasonTextArea();
+        this.matDialog.open(DialogComponent, { 
+          data: {
+            header: "Panic!",
+            body: "Panic successfully sent"
+        }})
+        console.log(ride);
+      },
+      error: (error) => {
+        if (error instanceof HttpErrorResponse) {
+          this.panicErrorMessage = error.error.message;
+        }
+      }
+    })
 
   }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Message } from 'src/app/model/message.model';
 import { PaginatedResponse } from 'src/app/model/paginated-response.model';
@@ -18,6 +18,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { throwToolbarMixedModesError } from '@angular/material/toolbar';
 import { Location } from 'src/app/model/location.model';
 import { DialogComponent } from '../dialog/dialog.component';
+import { Note } from 'src/app/model/note.model';
 
 @Component({
   selector: 'app-passenger-current-ride',
@@ -35,7 +36,15 @@ export class PassengerCurrentRideComponent implements OnInit {
   private serverUrl = environment.localhostApi + 'socket';
   private stompClient: any;
 
-  private currentLocation: Location; 
+  private currentLocation: Location;
+
+  panicText: string = "";
+  panicErrorMessage: string = "";
+  @ViewChild('panicReasonForm') panicReasonForm: ElementRef;
+
+  reportText: string = "";
+  reportErrorMessage: string = "";
+  @ViewChild('reportForm') reportForm: ElementRef;
 
   constructor(
     private matDialog: MatDialog, 
@@ -43,7 +52,8 @@ export class PassengerCurrentRideComponent implements OnInit {
     private userService: UserService, 
     private activatedRoute: ActivatedRoute,
     private rideService: RideService,
-    private dateTimeService: DateTimeService) {}
+    private dateTimeService: DateTimeService,
+    private renderer: Renderer2) {}
 
   ngOnInit(): void {
     const idUrlParam: any = this.activatedRoute.snapshot.paramMap.get("id");
@@ -139,6 +149,81 @@ export class PassengerCurrentRideComponent implements OnInit {
         }
       });
     }
+  }
+
+  sendPanic() {
+    this.panicErrorMessage = "";
+    this.rideService.panicProcedure(this.ride.id, { reason: this.panicText }).subscribe({
+      next: (ride: Ride) => {
+        // TODO: Decide whether to end the ride or continue 
+        this.closePanicReasonTextArea();
+        this.matDialog.open(DialogComponent, { 
+          data: {
+            header: "Panic!",
+            body: "Panic successfully sent"
+        }})
+        console.log(ride);
+      },
+      error: (error) => {
+        if (error instanceof HttpErrorResponse) {
+          this.panicErrorMessage = error.error.message;
+        }
+      }
+    })
+  }
+
+  openPanicReasonTextArea() {
+    this.renderer.setStyle(
+      this.panicReasonForm.nativeElement,
+      'display',
+      'block'
+    )
+  }
+
+  closePanicReasonTextArea() {
+    this.renderer.setStyle(
+      this.panicReasonForm.nativeElement,
+      'display',
+      'none'
+    )
+  }
+
+  reportDriver() {
+    this.reportErrorMessage = "";
+    this.userService.sendNote(this.ride.driver.id, { message: this.reportText }).subscribe({
+      next: (note: Note) => {
+        // TODO: Decide whether to end the ride or continue 
+        this.closeReportTextArea();
+        this.matDialog.open(DialogComponent, { 
+          data: {
+            header: "Report!",
+            body: "Report successfully sent"
+        }})
+        this.stompClient.send("/socket-subscriber/send/note", {}, JSON.stringify(note));
+        console.log(note);
+      },
+      error: (error) => {
+        if (error instanceof HttpErrorResponse) {
+          this.reportErrorMessage = error.error.message;
+        }
+      }
+    })
+  }
+
+  openReportTextArea() {
+    this.renderer.setStyle(
+      this.reportForm.nativeElement,
+      'display',
+      'block'
+    )
+  }
+
+  closeReportTextArea() {
+    this.renderer.setStyle(
+      this.reportForm.nativeElement,
+      'display',
+      'none'
+    )
   }
 
 }

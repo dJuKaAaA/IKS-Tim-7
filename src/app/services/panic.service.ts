@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environment/environment';
+import { PaginatedResponse } from '../model/paginated-response.model';
 import { Panic } from '../model/panic';
-import { PanicPage } from '../model/panic-page';
 
 @Injectable({
   providedIn: 'root'
@@ -12,8 +12,8 @@ export class PanicService {
 
   constructor(private http : HttpClient) { }
 
-  getPanicMessages() : Observable<PanicPage>{
-    return this.http.get<PanicPage>(environment.localhostApi + "panic");
+  getPanicMessages() : Observable<PaginatedResponse<Panic>>{
+    return this.http.get<PaginatedResponse<Panic>>(environment.localhostApi + "panic");
   }
 
   update(panic : Panic) : Observable<string>{
