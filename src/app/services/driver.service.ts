@@ -40,22 +40,6 @@ export class DriverService {
     }
   }
 
-  // getIsActive(): boolean {
-  //   if (this.authService.getRole() == "ROLE_DRIVER") {
-  //     return this.isActive$.getValue();
-  //   } else {
-  //     throw Error("Only drivers can access this method");
-  //   }
-  // }
-
-  // setIsActive(isActive: boolean) {
-  //   if (this.authService.getRole() == "ROLE_DRIVER") {
-  //     this.isActive$.next(isActive);
-  //   } else {
-  //     throw Error("Only drivers can access this method");
-  //   }
-  // }
-
   constructor(private http: HttpClient, private reviewService: ReviewService, private rideService: RideService, private authService: AuthService) {
     if (this.authService.getRole() == "ROLE_DRIVER") {
       this.rideService.getDriversActiveRide(this.authService.getId()).subscribe({
@@ -68,11 +52,6 @@ export class DriverService {
           }
         }
       })
-      // this.fetchActivity(this.authService.getId()).subscribe({
-      //   next: (activity: ActivityDto) => {
-      //     this.setIsActive(activity.isActive);
-      //   }
-      // })
     }
  
   }

@@ -10,4 +10,6 @@ export const environment = {
     unregisteredUserHomePageBgImage: "src/assets/unregistered-home-bg-img.png",
     registerSideImg: "src/assets/register-side-img.png",
     taxiIcon: "src/assets/taxi.png",
+    socketUrl: 'http://localhost:8081/api/socket',
+    taxiMarker: 'src/assets/icons8-taxi-96.png',
 }; 

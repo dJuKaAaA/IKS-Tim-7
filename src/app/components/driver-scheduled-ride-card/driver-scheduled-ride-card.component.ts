@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, Renderer2, ElementRef, Output, EventEmitter, OnInit, AfterViewInit } from '@angular/core';
+import { Component, Input, ViewChild, Renderer2, ElementRef, Output, EventEmitter, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Ride } from 'src/app/model/ride.model';
 import { Route } from 'src/app/model/route.model';
@@ -8,12 +8,20 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { PassengerNarrowedInfo } from 'src/app/model/passenger-narrowed-info.model';
 import { RideService } from 'src/app/services/ride.service';
 import { DateTimeService } from 'src/app/services/date-time.service';
-import { HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { DriverService } from 'src/app/services/driver.service';
 import { AuthService } from 'src/app/services/auth.service';
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 import { environment } from 'src/environment/environment';
+import { Location } from 'src/app/model/location.model';
+import { TomTomGeolocationService } from 'src/app/services/tom-tom-geolocation.service';
+import { TomTomGeolocationResponse } from 'src/app/model/tom-tom-geolocation-response.model';
+import { Vehicle } from 'src/app/model/vehicle.model';
+import { VehicleService } from 'src/app/services/vehicle.service';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogComponent } from '../dialog/dialog.component';
+import { BehaviorSubject } from 'rxjs';
 
 const SHOW_PROFILE_INFO_ANIMATION_TIME: number = 300;
 const PASSENGER_INFO_HIDDEN_STATE: string = "hidden";
@@ -72,13 +80,13 @@ const ACCEPTED_STATE: string = 'accepted';
 
   ]
 })
-export class DriverScheduledRideCardComponent implements OnInit, AfterViewInit {
+export class DriverScheduledRideCardComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  private serverUrl = environment.localhostApi + 'socket';
   private stompClient: any;
 
   @Input() ride: Ride = {} as Ride;
   @Input() mapComponent: MapComponent;
+  @Input() driverLocation: Location = new Location(NaN, NaN, "");
 
   @Output() rejectionEmitter: EventEmitter<Ride> = new EventEmitter<Ride>();
 
@@ -92,10 +100,18 @@ export class DriverScheduledRideCardComponent implements OnInit, AfterViewInit {
   rejectionErrorMessage: string = "";
   canStartRide: boolean = true;
 
+  @Input() simulationIntervalId$: BehaviorSubject<any> = new BehaviorSubject<any>(undefined);
+
+  private routePointsToTravelTo: Array<any> = [];
+  private routePointIndex: number = 0;
+  private simulatingMovement: boolean = false;
+
   @ViewChild('rejectionReasonContainer') rejectionReasonContainer: ElementRef;
   @ViewChild('scheduledRide', { read: ElementRef }) scheduledRide: ElementRef;
   @ViewChild('passengerContainer') passengerContainer: ElementRef;
   @ViewChild('passengerProfileInfo', { read: ElementRef }) passengerProfileInfo: ElementRef;
+
+  @Output() driverLocationEmitter: EventEmitter<Location> = new EventEmitter<Location>();
 
   constructor(
     private router: Router,
@@ -104,7 +120,17 @@ export class DriverScheduledRideCardComponent implements OnInit, AfterViewInit {
     private rideService: RideService, 
     private dateTimeService: DateTimeService,
     private authService: AuthService,
-    private driverService: DriverService) { }
+    private driverService: DriverService,
+    private geoLocationService: TomTomGeolocationService,
+    private vehicleService: VehicleService,
+    private matDialog: MatDialog) { }
+
+  ngOnDestroy(): void {
+    if (this.simulationIntervalId$.getValue() != undefined) {
+      clearInterval(this.simulationIntervalId$.getValue());
+      this.simulationIntervalId$.next(undefined);
+    }
+  }
 
   ngOnInit(): void {
     this.canStartRide = !this.driverService.getHasActiveRide();
@@ -112,7 +138,7 @@ export class DriverScheduledRideCardComponent implements OnInit, AfterViewInit {
   }
 
   initializeWebSocketConnection() {
-    let ws = new SockJS(this.serverUrl);
+    let ws = new SockJS(environment.socketUrl);
     this.stompClient = Stomp.over(ws);
   }
 
@@ -141,16 +167,32 @@ export class DriverScheduledRideCardComponent implements OnInit, AfterViewInit {
     this.stompClient.send("/socket-subscriber/notify/start/ride", {}, JSON.stringify(ride));
   }
 
+  notifyPassengerArrivedAtDeparture(ride: Ride) {
+    this.stompClient.send("/socket-subscriber/notify/arrived/at/departure", {}, JSON.stringify(ride));
+  }
+
   startRide(): void {
-    this.rideService.startRide(this.ride.id).subscribe(() => {
-      this.driverService.changeActivity(this.authService.getId(), { isActive: false }).subscribe({
-        next: () => {
-          this.notifyPassengerStartRide(this.ride);
-          this.driverService.setHasActiveRide(true);
-          this.router.navigate([`driver-current-ride/${this.ride.id}`]);
+    /* Important notice: You can still click on the start ride button of the card  
+     * whose ride is not shown on the map
+     */
+    if (this.simulatingMovement) {
+      this.rideService.startRide(this.ride.id).subscribe(() => {
+        this.driverService.changeActivity(this.authService.getId(), { isActive: false }).subscribe({
+          next: () => {
+            this.notifyPassengerStartRide(this.ride);
+            this.driverService.setHasActiveRide(true);
+            this.router.navigate([`driver-current-ride/${this.ride.id}`]);
+          }
+        })
+      });
+    } else {
+      this.matDialog.open(DialogComponent, {
+        data: {
+          header: "You haven't arrived to your destination!",
+          body: "Arrive and wait for the passengers to enter before starting the ride"
         }
-      })
-    });
+      });
+    }
   }
 
   showRejectionReason(): void {
@@ -174,17 +216,16 @@ export class DriverScheduledRideCardComponent implements OnInit, AfterViewInit {
     }
   }
 
-  updateRoute(updatedRoute: Route) {
-
-  }
-
   async showRideRoutes() {
     this.mapComponent.removeAllMarkers();
     this.mapComponent.removeAllRouteLayers();
+    this.mapComponent.showMarker(this.driverLocation, environment.taxiMarker);
     for (let route of this.ride.locations) {
       await this.mapComponent.showRoute(route);
     }
-    this.mapComponent.focusOnPoint(this.ride.locations[0].departure);  // focus departure of first route
+    this.showDriverPathToDeparture();
+    this.mapComponent.focusOnPoint(this.driverLocation);
+    this.startMovementToDepartureSimulation();
   }
 
   rejectionState: string = NOT_REJECTED_STATE;
@@ -282,6 +323,88 @@ export class DriverScheduledRideCardComponent implements OnInit, AfterViewInit {
       profilePicture: "",
       fullName: ""
     };
+  }
+
+  showDriverPathToDeparture() {
+    this.mapComponent.showRoute(new Route(
+      this.driverLocation,
+      this.ride.locations[0].departure,
+      NaN,
+      NaN
+    ), 'blue')
+  }
+
+  startMovementToDepartureSimulation() {
+    const rideDeparture = this.ride.locations[0].departure;
+    this.geoLocationService.getRoute(
+      this.driverLocation.latitude, this.driverLocation.longitude,
+      rideDeparture.latitude, rideDeparture.longitude
+    ).subscribe({
+      next: (response) => {
+        // clearing previous interval if exists
+        if (this.simulationIntervalId$.getValue() != undefined) {
+          clearInterval(this.simulationIntervalId$.getValue());
+          this.simulationIntervalId$.next(undefined);
+        }
+
+        this.routePointsToTravelTo = response.routes[0].legs[0].points;
+        const travelLength = response.routes[0].summary.travelTimeInSeconds;
+        this.simulatingMovement = true;
+
+        this.simulationIntervalId$.next(setInterval(() => {
+          console.log(this.simulationIntervalId$.getValue());
+          const newLocation = new Location(
+            this.routePointsToTravelTo[this.routePointIndex].latitude,
+            this.routePointsToTravelTo[this.routePointIndex].longitude,
+            ""
+          );
+          this.updateVehiclePosition(newLocation);
+          this.mapComponent.updateMarkerLocation(
+            this.driverLocation,
+            newLocation);
+          this.driverLocation = newLocation;
+          this.driverLocationEmitter.emit(this.driverLocation);
+
+          ++this.routePointIndex;
+
+          if (this.routePointIndex >= this.routePointsToTravelTo.length) {
+            clearInterval(this.simulationIntervalId$.getValue());
+            this.simulatingMovement = false;
+            this.matDialog.open(DialogComponent, {
+              data: {
+                header: `Arrived at '${this.ride.locations[0].departure.address}'`,
+                body: `Wait for passengers to enter before clicking on start ride button`
+              }
+            });
+            this.simulationIntervalId$.next(undefined);
+            this.notifyPassengerArrivedAtDeparture(this.ride);
+          }
+        },
+        (travelLength / this.routePointsToTravelTo.length) * 1000));
+      }
+    })
+  }
+
+  async updateVehiclePosition(location: Location) {
+    await this.geoLocationService.
+      reverseGeocode(location.latitude, location.longitude)
+      .toPromise()
+      .then((response) => {
+        if (response.addresses.length > 0) {
+          const address = response.addresses[0].address;
+          let fullAddress: string = address.freeformAddress + ", " + address.country;
+          location.address = fullAddress;
+        }
+      });
+    let vehicleId: number = NaN;
+    await this.driverService
+      .getVehicle(this.authService.getId())
+      .toPromise()
+      .then((response) => {
+        vehicleId = response?.id || -1;
+      })
+
+    this.vehicleService.setLocation(vehicleId, location).subscribe();
   }
 
 }

@@ -26,7 +26,6 @@ export class DriverNavbarComponent implements OnInit, AfterViewInit {
 
   @ViewChild('activeTextContainer') activeTextContainer: ElementRef;
   
-  private serverUrl = environment.localhostApi + 'socket';
   private stompClient: any;
 
   taxiIcon: string = environment.taxiIcon;
@@ -48,7 +47,7 @@ export class DriverNavbarComponent implements OnInit, AfterViewInit {
   }
 
   initializeWebSocketConnection() {
-    let ws = new SockJS(this.serverUrl);
+    let ws = new SockJS(environment.socketUrl);
     this.stompClient = Stomp.over(ws);
 
     this.stompClient.connect({}, () => {

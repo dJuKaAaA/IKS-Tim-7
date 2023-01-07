@@ -19,7 +19,6 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class PassengerNavbarComponent implements OnInit {
 
-  private serverUrl = environment.localhostApi + 'socket';
   private stompClient: any;
 
   constructor(
@@ -52,7 +51,7 @@ export class PassengerNavbarComponent implements OnInit {
   }
 
   initializeWebSocketConnection() {
-    let ws = new SockJS(this.serverUrl);
+    let ws = new SockJS(environment.socketUrl);
     this.stompClient = Stomp.over(ws);
 
     this.stompClient.connect({}, () => {
@@ -76,6 +75,10 @@ export class PassengerNavbarComponent implements OnInit {
     this.stompClient.subscribe(`/socket-notify-start-ride/${this.authService.getId()}`,
      (rideData: { body: string; }) => {
       this.handleResultStartedRide(rideData);
+    });
+    this.stompClient.subscribe(`/socket-notify-arrived-at-departure/${this.authService.getId()}`,
+     (rideData: { body: string; }) => {
+      this.handleResultArrivedAtDeparture(rideData);
     });
     
   }
@@ -119,14 +122,22 @@ export class PassengerNavbarComponent implements OnInit {
   handleResultStartedRide(rideData: { body: string }) {
     if (rideData.body) {
       let ride: Ride = JSON.parse(rideData.body);
-      for (let passenger of ride.passengers) {
-        if (this.authService.getId() == passenger.id) {
-          this.router.navigate([`passenger-current-ride/${ride.id}`])
-          this.snackBar.open(`The driver has started the ride`, "Dismiss");
-          this.passengerService.setHasActiveRide(true);
-          break;
+      this.router.navigate([`passenger-current-ride/${ride.id}`])
+      this.snackBar.open(`The driver has started the ride`, "Dismiss");
+      this.passengerService.setHasActiveRide(true);
+    }
+  }
+
+  handleResultArrivedAtDeparture(rideData: { body: string }) {
+    if (rideData.body) {
+      let ride: Ride = JSON.parse(rideData.body);
+      this.matDialog.open(DialogComponent, {
+        data: {
+          header: "Driver arrived at departure point!",
+          body: `Driver arrived at ${ride.locations[0].departure.address}`
         }
-      }
+      });
+      this.passengerService.setHasActiveRide(true);
     }
   }
 

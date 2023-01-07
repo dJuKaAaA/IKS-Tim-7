@@ -20,7 +20,6 @@ export class MessageBubblesComponent implements OnInit {
   @Input() rideId: number = -1;
   @Input() messageType = "RIDE";
 
-  private serverUrl = environment.localhostApi + 'socket';
   private stompClient: any;
 
   typingMessageContent: string = "";
@@ -34,7 +33,7 @@ export class MessageBubblesComponent implements OnInit {
   }
 
   initializeWebSocketConnection() {
-    let ws = new SockJS(this.serverUrl);
+    let ws = new SockJS(environment.socketUrl);
     this.stompClient = Stomp.over(ws);
 
     this.stompClient.connect({}, () => {

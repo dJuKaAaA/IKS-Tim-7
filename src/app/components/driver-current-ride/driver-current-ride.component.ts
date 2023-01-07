@@ -24,6 +24,7 @@ import { Note } from 'src/app/model/note.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { VehicleService } from 'src/app/services/vehicle.service';
 import { Vehicle } from 'src/app/model/vehicle.model';
+import { TomTomGeolocationResponse } from 'src/app/model/tom-tom-geolocation-response.model';
 
 @Component({
   selector: 'app-driver-current-ride',
@@ -35,7 +36,6 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit {
   @ViewChild(MapComponent) mapComponent: MapComponent;
   @ViewChild('panicReasonForm') panicReasonForm: ElementRef;
   
-  private serverUrl = environment.localhostApi + 'socket';
   private stompClient: any;
 
   routes: Array<Route> = [];
@@ -97,7 +97,7 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit {
   }
 
   initializeWebSocketConnection() {
-    let ws = new SockJS(this.serverUrl);
+    let ws = new SockJS(environment.socketUrl);
     this.stompClient = Stomp.over(ws);
   }
 
@@ -118,7 +118,7 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit {
       this.driverService.getVehicle(this.authService.getId()).subscribe({
         next: (vehicle: Vehicle) => {
           this.currentLocation = vehicle.currentLocation;
-          this.mapComponent.showMarker(this.currentLocation, 'src/assets/icons8-taxi-96.png');
+          this.mapComponent.showMarker(this.currentLocation, environment.taxiMarker);
         }, error: (error) => {
           if (error instanceof HttpErrorResponse) {}
         }

@@ -35,7 +35,6 @@ export class PassengerCurrentRideComponent implements OnInit {
   messages: Array<Message> = [];
   rideDate: Date;
 
-  private serverUrl = environment.localhostApi + 'socket';
   private stompClient: any;
 
   private currentLocation: Location;
@@ -108,7 +107,7 @@ export class PassengerCurrentRideComponent implements OnInit {
           }
           for (let driver of response.results) {
             if (driver.driverId == this.ride.driver.id) {
-              this.mapComponent.showMarker(driver.location, 'src/assets/icons8-taxi-96.png');
+              this.mapComponent.showMarker(driver.location, environment.taxiIcon);
               this.currentLocation = driver.location;
             }
           }
@@ -135,7 +134,7 @@ export class PassengerCurrentRideComponent implements OnInit {
   }
 
   initializeWebSocketConnection() {
-    let ws = new SockJS(this.serverUrl);
+    let ws = new SockJS(environment.socketUrl);
     this.stompClient = Stomp.over(ws);
 
     this.stompClient.connect({}, () => {

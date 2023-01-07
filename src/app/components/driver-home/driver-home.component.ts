@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, TitleStrategy } from '@angular/router';
 import { Ride } from 'src/app/model/ride.model';
 import { Route } from 'src/app/model/route.model';
@@ -10,6 +10,9 @@ import { RideService } from 'src/app/services/ride.service';
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 import { environment } from 'src/environment/environment';
+import { Vehicle } from 'src/app/model/vehicle.model';
+import { Location } from 'src/app/model/location.model';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-driver-home',
@@ -20,13 +23,15 @@ export class DriverHomeComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MapComponent) mapComponent: MapComponent;
 
-  private serverUrl = environment.localhostApi + 'socket';
   private stompClient: any;
 
   cardCount: number = 5;
   scheduledRides: Array<Ride> = [];
   location: Location;
   activeRideId: number = NaN;
+  driverLocation: Location = new Location(NaN, NaN, "");
+
+  simulationIntervalId$: BehaviorSubject<any> = new BehaviorSubject<any>(undefined);
 
   constructor(
     private router: Router, 
@@ -55,6 +60,14 @@ export class DriverHomeComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     setTimeout(() => {
       this.mapComponent.loadMap();
+      this.driverService.getVehicle(this.authService.getId()).subscribe({
+        next: (vehicle: Vehicle) => {
+          this.driverLocation = vehicle.currentLocation;
+          this.mapComponent.showMarker(this.driverLocation, environment.taxiMarker);
+        }, error: (error) => {
+          if (error instanceof HttpErrorResponse) {}
+        }
+      })
     },
       100)
   }
@@ -72,7 +85,7 @@ export class DriverHomeComponent implements OnInit, AfterViewInit {
   }
 
   initializeWebSocketConnection() {
-    let ws = new SockJS(this.serverUrl);
+    let ws = new SockJS(environment.socketUrl);
     this.stompClient = Stomp.over(ws);
 
     this.stompClient.connect({}, () => {
@@ -98,6 +111,10 @@ export class DriverHomeComponent implements OnInit, AfterViewInit {
 
   hasActiveRide(): boolean {
     return this.driverService.getHasActiveRide();
+  }
+
+  updateDriverLocation(newDriverLocation: Location) {
+    this.driverLocation = newDriverLocation;
   }
 
 }

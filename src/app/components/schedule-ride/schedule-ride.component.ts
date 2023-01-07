@@ -33,7 +33,6 @@ export class ScheduleRideComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MapComponent) mapComponent: MapComponent;
 
-  private serverUrl = environment.localhostApi + 'socket';
   private stompClient: any;
   
   drivers: Array<DriverActivityAndLocation> = [];
@@ -482,7 +481,7 @@ export class ScheduleRideComponent implements OnInit, AfterViewInit {
   }
 
   initializeWebSocketConnection() {
-    let ws = new SockJS(this.serverUrl);
+    let ws = new SockJS(environment.socketUrl);
     this.stompClient = Stomp.over(ws);
   }
 
