@@ -23,6 +23,8 @@ import { PassengerCurrentRideComponent } from './components/passenger-current-ri
 import { ChatComponent } from './components/chat/chat.component';
 import { PanicReviewPageComponent } from './components/panic-review-page/panic-review-page.component';
 import { PaymentComponent } from './components/payment/payment.component';
+import { DriverInRideGuard } from './guard/driver-in-ride.guard';
+import { PassengerInRideGuard } from './guard/passenger-in-ride.guard';
 
 const routes: Routes = [
   {
@@ -37,7 +39,11 @@ const routes: Routes = [
     component: RegisterComponent,
     canActivate: [AlreadyAuthenticatedGuard],
   },
-  { path: 'driver-current-ride/:id', component: DriverCurrentRideComponent },
+  {
+    path: 'driver-current-ride/:id',
+    component: DriverCurrentRideComponent,
+    canActivate: [DriverInRideGuard]
+  },
   { path: 'editProfile', component: EditProfileComponent },
   { path: 'passenger-profile', component: PassengerProfileDetailsComponent },
   {
@@ -61,13 +67,17 @@ const routes: Routes = [
   { path: 'create-driver', component: DriverCreationComponent },
   { path: 'create-vehicle', component: VehicleCreationPageComponent },
   { path: 'passenger-home', component: PassengerHomeComponent },
-  { path: 'passenger-current-ride/:id', component: PassengerCurrentRideComponent },
+  { 
+    path: 'passenger-current-ride/:id', 
+    component: PassengerCurrentRideComponent,
+    canActivate: [PassengerInRideGuard] 
+  },
   { path: 'admin-chat', component: ChatComponent },
-  { path: 'payment', component: PaymentComponent},
+  { path: 'payment', component: PaymentComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

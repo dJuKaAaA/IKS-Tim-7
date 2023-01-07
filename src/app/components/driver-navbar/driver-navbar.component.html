@@ -1,7 +1,7 @@
 <mat-toolbar color="primary" class="navbar">
     <img src="src/assets/taxi.png" class="logo" (click)="navigateToHome()"/>
     <span>GoGoCarJet</span>
-    <mat-slide-toggle style="margin-left: 3vw;" [checked]="getIsActive()" (change)="changeActiveState()" [disabled]="getHasActiveRide()">
+    <mat-slide-toggle style="margin-left: 3vw;" [checked]="isActive" (change)="changeActiveState()">
         <span class="online-slide-toggle" #activeTextContainer>{{activeText}}</span>
     </mat-slide-toggle>
     

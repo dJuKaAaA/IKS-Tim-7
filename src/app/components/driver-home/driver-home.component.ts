@@ -26,7 +26,7 @@ export class DriverHomeComponent implements OnInit, AfterViewInit {
   cardCount: number = 5;
   scheduledRides: Array<Ride> = [];
   location: Location;
-  activeRideId: number = -1;
+  activeRideId: number = NaN;
 
   constructor(
     private router: Router, 
@@ -45,7 +45,7 @@ export class DriverHomeComponent implements OnInit, AfterViewInit {
       },
       error: (error) => {
         if (error instanceof HttpErrorResponse) {
-          this.activeRideId = -1;
+          this.activeRideId = NaN;
         }
       }
     })
@@ -81,7 +81,8 @@ export class DriverHomeComponent implements OnInit, AfterViewInit {
   }
 
   openSocket() {
-    this.stompClient.subscribe('/socket-scheduled-ride', (rideData: { body: string; }) => {
+    this.stompClient.subscribe(`/socket-scheduled-ride/to-driver/${this.authService.getId()}`,
+     (rideData: { body: string; }) => {
       this.handleResult(rideData);
     });
   }
@@ -93,6 +94,10 @@ export class DriverHomeComponent implements OnInit, AfterViewInit {
         this.scheduledRides.push(ride);
       }
     }
+  }
+
+  hasActiveRide(): boolean {
+    return this.driverService.getHasActiveRide();
   }
 
 }

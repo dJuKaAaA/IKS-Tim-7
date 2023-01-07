@@ -137,11 +137,15 @@ export class DriverScheduledRideCardComponent implements OnInit, AfterViewInit {
     }
   }
 
+  notifyPassengerStartRide(ride: Ride) {
+    this.stompClient.send("/socket-subscriber/notify/start/ride", {}, JSON.stringify(ride));
+  }
+
   startRide(): void {
     this.rideService.startRide(this.ride.id).subscribe(() => {
       this.driverService.changeActivity(this.authService.getId(), { isActive: false }).subscribe({
         next: () => {
-          this.driverService.setIsActive(false);
+          this.notifyPassengerStartRide(this.ride);
           this.driverService.setHasActiveRide(true);
           this.router.navigate([`driver-current-ride/${this.ride.id}`]);
         }

@@ -7,7 +7,9 @@
         </app-map>
     </div>
     <div id="route-information">
-        <div id="search-location-form-lower">
+        <p class="current-ride-redirect" *ngIf="hasActiveRide()" (click)="accessCurrentRide()">Access current ride</p>
+        
+        <div id="search-location-form">
             <app-address-route-form [startAddressControl]="startAddressControl" [endAddressControl]="endAddressControl"
                 [disableStartAddressField]="disableStartAddressField" (submitEmitter)="showRouteFromAddresses()">
 
@@ -19,22 +21,16 @@
             <button mat-raised-button color="primary" (click)="clearAllRoutes()">Clear all routes</button>
         </div>
 
-        <form class="datetime-form" *ngIf="loggedIn">
-            <h1>Pick date and time</h1>
-            <mat-form-field class="datetime-form-item">
-                <mat-label>Choose a date</mat-label>
-                <input matInput [matDatepicker]="datePicker" readonly [(ngModel)]="rideDate" name="ride-date">
-                <mat-datepicker-toggle matIconSuffix [for]="datePicker"></mat-datepicker-toggle>
-                <mat-datepicker #datePicker></mat-datepicker>
-                <mat-hint>MM/DD/YYYY</mat-hint>
-            </mat-form-field>
-
+        <form class="time-form" *ngIf="loggedIn">
+            <h1>Pick time</h1>
             <mat-form-field class="datetime-form-item">
                 <mat-label>Time</mat-label>
                 <input [ngxTimepicker]="timePicker" matInput [(ngModel)]="rideTime" name="ride-time" readonly [format]="24" />
                 <ngx-material-timepicker #timePicker></ngx-material-timepicker>
                 <mat-hint>HH:mm</mat-hint>
+                <button mat-button matSuffix (click)="clearScheduleTime()">Clear</button>
             </mat-form-field>
+            <p style="text-align: center; font-style: italic;">Leave blank to request a ride immediately</p>
         </form>
 
         <form class="invite-passengers-form" (submit)="invitePassenger()" *ngIf="loggedIn">
@@ -86,7 +82,7 @@
                 [price]="getEstimatedPrice() + ' din'">
             </app-ride-details>
         </div>
-        <button id="schedule-button" mat-raised-button color="primary" (click)="scheduleRide()" [disabled]="!loggedIn">
+        <button id="schedule-button" mat-raised-button color="primary" (click)="scheduleRide()" [disabled]="!loggedIn || hasActiveRide()">
             Schedule
         </button>
         <p id="unavailable-schedule-label" *ngIf="!loggedIn">

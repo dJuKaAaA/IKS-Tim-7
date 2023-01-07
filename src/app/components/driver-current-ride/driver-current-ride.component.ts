@@ -30,7 +30,7 @@ import { Vehicle } from 'src/app/model/vehicle.model';
   templateUrl: './driver-current-ride.component.html',
   styleUrls: ['./driver-current-ride.component.css']
 })
-export class DriverCurrentRideComponent implements OnInit, AfterViewInit, OnDestroy {
+export class DriverCurrentRideComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MapComponent) mapComponent: MapComponent;
   @ViewChild('panicReasonForm') panicReasonForm: ElementRef;
@@ -39,7 +39,7 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit, OnDest
   private stompClient: any;
 
   routes: Array<Route> = [];
-  routeIndex: number = -1;
+  routeIndex: number = 0;
   ride: Ride = {} as Ride;
   rideDate: Date;
   messages: Array<Message> = [];
@@ -87,6 +87,12 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit, OnDest
         this.messages = response.results;
       }
     })
+    if (localStorage.getItem('activeRideRouteIndex') != null) {
+      this.routeIndex = Number(localStorage.getItem('activeRideRouteIndex'));
+    }
+    if (localStorage.getItem('activeRideRoutePointIndex') != null) {
+      this.routePointIndex = Number(localStorage.getItem('activeRideRoutePointIndex'));
+    }
     this.initializeWebSocketConnection();
   }
 
@@ -99,74 +105,81 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit, OnDest
     this.stompClient.send("/socket-subscriber/driver/send/current/location", {}, JSON.stringify({
       latitude: this.currentLocation.latitude,
       longitude: this.currentLocation.longitude,
-      rideId: this.ride.id,
-      rideFinished: this.routeIndex >= this.routes.length - 1 && this.routePointIndex >= this.routePointsToTravelTo.length - 1
+      rideId: this.ride.id
     }));
   }
 
   ngAfterViewInit(): void {
     setTimeout(() => {
       this.mapComponent.loadMap();
+      for (let route of this.ride.locations) {
+        this.mapComponent.showRoute(route);
+      }
+      this.driverService.getVehicle(this.authService.getId()).subscribe({
+        next: (vehicle: Vehicle) => {
+          this.currentLocation = vehicle.currentLocation;
+          this.mapComponent.showMarker(this.currentLocation, 'src/assets/icons8-taxi-96.png');
+        }, error: (error) => {
+          if (error instanceof HttpErrorResponse) {}
+        }
+      })
+      // starting the simulation
+      this.rideSimulation();
     },
       100)
   }
 
-  ngOnDestroy(): void {
-    if (this.simulationIntervalId != null && this.routePointIndex < this.routePointsToTravelTo.length) {
-      clearInterval(this.simulationIntervalId);
-    }
-  }
+  rideSimulation() {
+    // fetching data for movement simulation
+    this.geoLocationService.getRoute(
+      this.routes[this.routeIndex].departure.latitude, this.routes[this.routeIndex].departure.longitude,
+      this.routes[this.routeIndex].destination.latitude, this.routes[this.routeIndex].destination.longitude 
+    ).subscribe({
+      next: (response) => {
+        this.routePointsToTravelTo = response.routes[0].legs[0].points;
+        const travelLength = response.routes[0].summary.travelTimeInSeconds;
 
-  showNextRoute() {
-    if (this.routeIndex < this.routes.length - 1) {
-      this.routeIndex++;
+        // setting interval for movement simulation
+        this.simulationIntervalId = setInterval(() => {
+          const newLocation = new Location(
+            this.routePointsToTravelTo[this.routePointIndex].latitude,
+            this.routePointsToTravelTo[this.routePointIndex].longitude,
+            ""
+          );
+          this.updateVehiclePosition(newLocation);
+          this.mapComponent.updateMarkerLocation(
+            this.currentLocation,
+            newLocation);
+          this.currentLocation = newLocation;
 
-      // initializing car icon on map
-      if (this.routeIndex == 0) {
-        this.currentLocation = this.routes[0].departure;
-        this.mapComponent.showMarker(this.currentLocation, 'src/assets/icons8-taxi-96.png');
-      }
+          // sending information about changed location to socket
+          this.sendLocationToSocket();
 
-      // removing previous and showing current route
-      this.mapComponent.removeRoute(this.routes[this.routeIndex]);
-      this.mapComponent.showRoute(this.routes[this.routeIndex]);
-      this.mapComponent.focusOnPoint(this.routes[this.routeIndex].departure);
-      
-      // fetching data for movement simulation
-      this.geoLocationService.getRoute(
-        this.routes[this.routeIndex].departure.latitude, this.routes[this.routeIndex].departure.longitude,
-        this.routes[this.routeIndex].destination.latitude, this.routes[this.routeIndex].destination.longitude 
-      ).subscribe({
-        next: (response) => {
-          this.routePointIndex = 0;
-          this.routePointsToTravelTo = response.routes[0].legs[0].points;
-          const travelLength = response.routes[0].summary.travelTimeInSeconds;
+          ++this.routePointIndex;
+          localStorage.setItem('activeRideRoutePointIndex', `${this.routePointIndex}`);
 
-          // setting interval for movement simulation
-          this.simulationIntervalId = setInterval(() => {
-            const newLocation = new Location(
-              this.routePointsToTravelTo[this.routePointIndex].latitude,
-              this.routePointsToTravelTo[this.routePointIndex].longitude,
-              ""
-            );
-            this.updateVehiclePosition(newLocation);
-            this.mapComponent.updateMarkerLocation(
-              this.currentLocation,
-              newLocation);
-            this.currentLocation = newLocation;
+          if (this.routePointIndex >= this.routePointsToTravelTo.length) {
+            clearInterval(this.simulationIntervalId);
+            if (this.routeIndex <= this.ride.locations.length - 1) {
 
-            // sending information about changed location to socket
-            this.sendLocationToSocket();
+              ++this.routeIndex;
+              localStorage.setItem('activeRideRouteIndex', `${this.routeIndex}`);
 
-            ++this.routePointIndex;
-            if (this.routePointIndex >= this.routePointsToTravelTo.length) {
-              clearInterval(this.simulationIntervalId);
+              this.routePointIndex = 0;
+              localStorage.setItem('activeRideRoutePointIndex', `${this.routePointIndex}`);
+              
+              this.rideSimulation();
+            } else {
+              // ride finished -> release items in local storage
+              localStorage.removeItem('activeRideRouteIndex');
+              localStorage.removeItem('activeRideRoutePointIndex');
             }
-          },
-          (travelLength / this.routePointsToTravelTo.length) * 1000);
-        }
-      })
-    }
+          }
+        },
+        (travelLength / this.routePointsToTravelTo.length) * 1000);
+      }
+    });
+
   }
 
   sendPanic() {
@@ -209,12 +222,23 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit, OnDest
 
   finishRide() {
     this.rideService.finishRide(this.ride.id).subscribe({
-      next: (ride) => {
+      next: () => {
+        if (localStorage.getItem('activeRideRouteIndex') != null) {
+          localStorage.removeItem('activeRideRouteIndex');
+        }
+        if (localStorage.getItem('activeRideRoutePointIndex') != null) {
+          localStorage.removeItem('activeRideRoutePointIndex');
+
+        }
+        clearInterval(this.simulationIntervalId);
         this.driverService.setHasActiveRide(false);
         this.router.navigate(['driver-home']);
-        this.driverService.changeActivity(this.authService.getId(), { isActive: true }).subscribe(() => {
-          this.driverService.setIsActive(true);
-        });
+        this.stompClient.send("/socket-subscriber/driver/send/current/location", {}, JSON.stringify({
+          latitude: this.currentLocation.latitude,
+          longitude: this.currentLocation.longitude,
+          rideId: this.ride.id,
+          passengers: this.ride.passengers
+        }));
       },
       error: (error) => {
         if (error instanceof HttpErrorResponse) {
@@ -253,6 +277,22 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit, OnDest
       })
 
     this.vehicleService.setLocation(vehicleId, location).subscribe();
+  }
+
+  getTotalDistanceInMeters(): number {
+    let distance = 0;
+    for (let route of this.ride.locations) {
+      distance += route.distanceInMeters;
+    }
+    return distance;
+  }
+
+  getTotalEstimatedTimeInMinutes(): number {
+    let estimatedTime = 0;
+    for (let route of this.ride.locations) {
+      estimatedTime += route.estimatedTimeInMinutes;
+    }
+    return estimatedTime;
   }
 
 }

@@ -58,4 +58,8 @@ export class RideService {
   public panicProcedure(id: number, panicDetails: { reason: string }): Observable<Ride> {
     return this.http.put<Ride>(environment.localhostApi + `ride/${id}/panic`, panicDetails);
   }
+
+  public getPassengersActiveRide(passengerId: number): Observable<Ride> {
+    return this.http.get<Ride>(environment.localhostApi + `ride/passenger/${passengerId}/active`);
+  }
 }
