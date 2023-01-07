@@ -136,6 +136,11 @@ export class MapComponent {
       const marker: ttMap.Marker = new ttMap.Marker({draggable: false})
         .setLngLat([location.longitude, location.latitude])
         .addTo(this.map);
+      if (!this.clickCreatesMarker) {
+        const popup = new ttMap.Popup({ anchor: 'bottom', offset: { bottom: [0, -40] } }).setText(location.address);        
+        marker.setPopup(popup);
+      }
+      marker.addTo(this.map);
       this.markers.push(marker);
     }
   }
@@ -178,7 +183,7 @@ export class MapComponent {
     return this.map.getLayer(this.getRouteAsString(route))
   }
 
-  public async showRoute(route: GGCJRoute) {
+  public async showRoute(route: GGCJRoute, routeLineColor: string = 'red') {
     if (this.checkRouteExists(route)) {
       this.matDialog.open(DialogComponent, {
         data: {
@@ -214,7 +219,7 @@ export class MapComponent {
             'data': routeData.toGeoJson(),
           },
           'paint': {
-            'line-color': 'red',
+            'line-color': routeLineColor,
             'line-width': 5
           }
         };

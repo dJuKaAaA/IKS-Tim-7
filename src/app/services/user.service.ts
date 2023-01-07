@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environment/environment';
 import { Message } from '../model/message.model';
+import { Note } from '../model/note.model';
 import { PaginatedResponse } from '../model/paginated-response.model';
 import { AuthService } from './auth.service';
 
@@ -24,6 +25,10 @@ export class UserService {
       type: message.type,
       rideId: message.rideId
     });
+  }
+
+  public sendNote(id: number, note: { message: string }): Observable<Note> {
+    return this.http.post<Note>(environment.localhostApi + `user/${id}/note`, note);
   }
 
 

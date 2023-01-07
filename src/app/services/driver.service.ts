@@ -14,7 +14,7 @@ import { RideService } from './ride.service';
 import { AuthService } from './auth.service';
 import { PaginatedResponse } from '../model/paginated-response.model';
 import { DriverActivityAndLocation } from '../model/driver-activity-and-locations.model';
-import { WorkHours } from '../model/work-hours';
+import { WorkHour } from '../model/work-hours';
 
 @Injectable({
   providedIn: 'root',
@@ -25,19 +25,19 @@ export class DriverService {
   private isActive$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
   getHasActiveRide(): boolean {
-    return this.hasActiveRide$.getValue();
+    if (this.authService.getRole() == "ROLE_DRIVER") {
+      return this.hasActiveRide$.getValue();
+    } else {
+      throw Error("Only drivers can access this method");
+    }
   }
 
   setHasActiveRide(hasActive: boolean) {
-    this.hasActiveRide$.next(hasActive);
-  }
-
-  getIsActive(): boolean {
-    return this.isActive$.getValue();
-  }
-
-  setIsActive(isActive: boolean) {
-    this.isActive$.next(isActive);
+    if (this.authService.getRole() == "ROLE_DRIVER") {
+      this.hasActiveRide$.next(hasActive);
+    } else {
+      throw Error("Only drivers can access this method");
+    }
   }
 
   constructor(private http: HttpClient, private reviewService: ReviewService, private rideService: RideService, private authService: AuthService) {
@@ -50,11 +50,6 @@ export class DriverService {
           if (error instanceof HttpErrorResponse) {
             this.setHasActiveRide(false);
           }
-        }
-      })
-      this.fetchActivity(this.authService.getId()).subscribe({
-        next: (activity: ActivityDto) => {
-          this.setIsActive(activity.isActive);
         }
       })
     }
@@ -175,8 +170,16 @@ export class DriverService {
     return this.http.get<PaginatedResponse<DriverActivityAndLocation>>(environment.localhostApi + `driver/activity-and-locations`);
   }
 
-  public getWorkHours(id:number): Observable<PaginatedResponse<WorkHours>>{
-    return this.http.get<PaginatedResponse<WorkHours>>(environment.localhostApi + `driver/${id}/working-hour`);
+  public getWorkHours(id: number): Observable<PaginatedResponse<WorkHour>>{
+    return this.http.get<PaginatedResponse<WorkHour>>(environment.localhostApi + `driver/${id}/working-hour`);
+  }
+
+  public startShift(id: number, body: { start: string }): Observable<WorkHour> {
+    return this.http.post<WorkHour>(environment.localhostApi + `driver/${id}/working-hour`, body);
+  }
+
+  public endShift(id: number, body: { end: string }): Observable<WorkHour> {
+    return this.http.put<WorkHour>(environment.localhostApi + `driver/${id}/working-hour`, body);
   }
 
 }

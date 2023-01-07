@@ -5,11 +5,14 @@
     </div>
 
     <div id="scheduled-rides">
-        <p class="current-ride-redirect" *ngIf="activeRideId != -1" (click)="accessCurrentRide()">Access current ride</p>
+        <p class="current-ride-redirect" *ngIf="hasActiveRide()" (click)="accessCurrentRide()">Access current ride</p>
         <app-driver-scheduled-ride-card *ngFor="let ride of scheduledRides"
             [ride]="ride"
             [mapComponent]="mapComponent"
-            (rejectionEmitter)="removeRideFromDisplay($event)">
+            (rejectionEmitter)="removeRideFromDisplay($event)"
+            [driverLocation]="driverLocation"
+            (driverLocationEmitter)="updateDriverLocation($event)"
+            [simulationIntervalId$]="simulationIntervalId$">
 
         </app-driver-scheduled-ride-card>
         <h1 class="no-rides-header" *ngIf="scheduledRides.length == 0">You have no scheduled rides</h1>

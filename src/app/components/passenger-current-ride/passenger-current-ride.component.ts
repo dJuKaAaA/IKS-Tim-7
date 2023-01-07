@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Message } from 'src/app/model/message.model';
 import { PaginatedResponse } from 'src/app/model/paginated-response.model';
@@ -18,6 +18,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { throwToolbarMixedModesError } from '@angular/material/toolbar';
 import { Location } from 'src/app/model/location.model';
 import { DialogComponent } from '../dialog/dialog.component';
+import { Note } from 'src/app/model/note.model';
+import { DriverService } from 'src/app/services/driver.service';
+import { DriverActivityAndLocation } from 'src/app/model/driver-activity-and-locations.model';
 
 @Component({
   selector: 'app-passenger-current-ride',
@@ -32,10 +35,17 @@ export class PassengerCurrentRideComponent implements OnInit {
   messages: Array<Message> = [];
   rideDate: Date;
 
-  private serverUrl = environment.localhostApi + 'socket';
   private stompClient: any;
 
-  private currentLocation: Location; 
+  private currentLocation: Location;
+
+  panicText: string = "";
+  panicErrorMessage: string = "";
+  @ViewChild('panicReasonForm') panicReasonForm: ElementRef;
+
+  reportText: string = "";
+  reportErrorMessage: string = "";
+  @ViewChild('reportForm') reportForm: ElementRef;
 
   constructor(
     private matDialog: MatDialog, 
@@ -43,7 +53,9 @@ export class PassengerCurrentRideComponent implements OnInit {
     private userService: UserService, 
     private activatedRoute: ActivatedRoute,
     private rideService: RideService,
-    private dateTimeService: DateTimeService) {}
+    private dateTimeService: DateTimeService,
+    private renderer: Renderer2,
+    private driverService: DriverService) {}
 
   ngOnInit(): void {
     const idUrlParam: any = this.activatedRoute.snapshot.paramMap.get("id");
@@ -52,7 +64,6 @@ export class PassengerCurrentRideComponent implements OnInit {
       next: (ride: Ride) => {
         this.ride = ride;
         this.rideDate = this.dateTimeService.toDate(this.ride.startTime);
-        this.currentLocation = this.ride.locations[0].departure;
       },
       error: (error) => {
         if (error instanceof HttpErrorResponse) {
@@ -84,12 +95,27 @@ export class PassengerCurrentRideComponent implements OnInit {
     return totalDistanceInMeters;
   }
 
-  ngAfterViewInit() {
-    setTimeout(() => {
+  async ngAfterViewInit() {
+    setTimeout(async () => {
       this.mapComponent.loadMap();
-      this.mapComponent.showMarker(this.currentLocation, 'src/assets/icons8-taxi-96.png');
+      await this.driverService
+        .fetchDriverActivityAndLocations()
+        .toPromise()
+        .then((response) => {
+          if (response == undefined) {
+            return;
+          }
+          for (let driver of response.results) {
+            if (driver.driverId == this.ride.driver.id) {
+              this.mapComponent.showMarker(driver.location, environment.taxiIcon);
+              this.currentLocation = driver.location;
+            }
+          }
+      }).catch((error) => {
+        if (error instanceof HttpErrorResponse) {}
+      })
       for (let route of this.ride.locations) {
-        setTimeout(() => {
+        setTimeout(async () => {
           this.mapComponent.showRoute(route);
         },
          100)
@@ -108,7 +134,7 @@ export class PassengerCurrentRideComponent implements OnInit {
   }
 
   initializeWebSocketConnection() {
-    let ws = new SockJS(this.serverUrl);
+    let ws = new SockJS(environment.socketUrl);
     this.stompClient = Stomp.over(ws);
 
     this.stompClient.connect({}, () => {
@@ -117,8 +143,8 @@ export class PassengerCurrentRideComponent implements OnInit {
   }
 
   openSocket() {
-    this.stompClient.subscribe(`/socket-driver-movement/${this.ride.id}`, (currentLocation: { body: string; }) => {
-      this.handleResult(currentLocation);
+    this.stompClient.subscribe(`/socket-driver-movement/to-ride/${this.ride.id}`, (notification: { body: string; }) => {
+      this.handleResult(notification);
     });
   }
 
@@ -131,14 +157,81 @@ export class PassengerCurrentRideComponent implements OnInit {
     );
     this.mapComponent.updateMarkerLocation(this.currentLocation, newLocation);
     this.currentLocation = newLocation;
-    if (information.rideFinished) {
-      this.matDialog.open(DialogComponent, {
-        data: {
-          header: "Finished!",
-          body: "The ride is finished"
+  }
+
+  sendPanic() {
+    this.panicErrorMessage = "";
+    this.rideService.panicProcedure(this.ride.id, { reason: this.panicText }).subscribe({
+      next: (ride: Ride) => {
+        // TODO: Decide whether to end the ride or continue 
+        this.closePanicReasonTextArea();
+        this.matDialog.open(DialogComponent, { 
+          data: {
+            header: "Panic!",
+            body: "Panic successfully sent"
+        }})
+        console.log(ride);
+      },
+      error: (error) => {
+        if (error instanceof HttpErrorResponse) {
+          this.panicErrorMessage = error.error.message;
         }
-      });
-    }
+      }
+    })
+  }
+
+  openPanicReasonTextArea() {
+    this.renderer.setStyle(
+      this.panicReasonForm.nativeElement,
+      'display',
+      'block'
+    )
+  }
+
+  closePanicReasonTextArea() {
+    this.renderer.setStyle(
+      this.panicReasonForm.nativeElement,
+      'display',
+      'none'
+    )
+  }
+
+  reportDriver() {
+    this.reportErrorMessage = "";
+    this.userService.sendNote(this.ride.driver.id, { message: this.reportText }).subscribe({
+      next: (note: Note) => {
+        // TODO: Decide whether to end the ride or continue 
+        this.closeReportTextArea();
+        this.matDialog.open(DialogComponent, { 
+          data: {
+            header: "Report!",
+            body: "Report successfully sent"
+        }})
+        this.stompClient.send("/socket-subscriber/send/note", {}, JSON.stringify(note));
+        console.log(note);
+      },
+      error: (error) => {
+        if (error instanceof HttpErrorResponse) {
+          this.reportErrorMessage = error.error.message;
+        }
+      }
+    })
+  }
+
+  openReportTextArea() {
+    this.renderer.setStyle(
+      this.reportForm.nativeElement,
+      'display',
+      'block'
+    )
+  }
+
+  closeReportTextArea() {
+    this.renderer.setStyle(
+      this.reportForm.nativeElement,
+      'display',
+      'none'
+    )
   }
 
 }

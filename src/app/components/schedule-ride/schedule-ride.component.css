@@ -17,7 +17,7 @@
     padding: 2vh 1vw;
 }
 
-#search-location-form-lower {
+#search-location-form {
     margin-bottom: 4vmin;
 }
 
@@ -57,7 +57,7 @@
     padding: 2vh 1.5vw;
 }
 
-.datetime-form {
+.time-form {
     display: block;
     margin: 5vh 0;
     padding: 3vh 1vw;
@@ -140,4 +140,16 @@ h2 {
     font-size: 1.25vw;
     width: 100%;
     text-align: center;
+}
+
+.current-ride-redirect {
+    display: flex;
+    justify-content: center;
+    font-size: 2vw;
+    margin: 5vh 0;
+}
+
+.current-ride-redirect:hover {
+    text-decoration: underline;
+    cursor: pointer;
 }

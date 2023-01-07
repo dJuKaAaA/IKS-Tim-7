@@ -15,13 +15,33 @@
                 [price]="ride.totalCost + ' din'">
             </app-ride-details>
         </div>
+
+        <form class="panic-submition" #panicReasonForm>
+            <mat-error *ngIf="panicErrorMessage != ''">{{panicErrorMessage}}</mat-error>
+            <label for="panic-text">Panic reason</label>
+            <textarea class="panic-reason" [(ngModel)]="panicText" name="panic-text"></textarea>
+            <div class="panic-buttons">
+                <button mat-button color="primary" (click)="sendPanic()">Send</button>
+                <button mat-button color="primary" (click)="closePanicReasonTextArea()">Close</button>
+            </div>
+        </form>
         
+        <form class="report-submition" #reportForm>
+            <mat-error *ngIf="reportErrorMessage != ''">{{reportErrorMessage}}</mat-error>
+            <label for="report-text">Report message</label>
+            <textarea class="report-message" [(ngModel)]="reportText" name="report-text"></textarea>
+            <div class="report-buttons">
+                <button mat-button color="primary" (click)="reportDriver()">Send</button>
+                <button mat-button color="primary" (click)="closeReportTextArea()">Close</button>
+            </div>
+        </form>
+
         <button mat-raised-button (click)="openChat()">Open support chat</button>
 
         <table id="button-layout">
             <tr>
-                <td><button mat-raised-button color="accent">Report</button></td>
-                <td><button mat-raised-button color="warn">Panic</button></td>
+                <td><button mat-raised-button color="accent" (click)="openReportTextArea()">Report</button></td>
+                <td><button mat-raised-button color="warn" (click)="openPanicReasonTextArea()">Panic</button></td>
             </tr>
         </table>
     </div>

@@ -22,6 +22,7 @@ import { Ride } from 'src/app/model/ride.model';
 import { DateTimeService } from 'src/app/services/date-time.service';
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-schedule-ride',
@@ -32,7 +33,6 @@ export class ScheduleRideComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MapComponent) mapComponent: MapComponent;
 
-  private serverUrl = environment.localhostApi + 'socket';
   private stompClient: any;
   
   drivers: Array<DriverActivityAndLocation> = [];
@@ -62,7 +62,6 @@ export class ScheduleRideComponent implements OnInit, AfterViewInit {
   @Output() showRouteEmitter: EventEmitter<void> = new EventEmitter<void>();
   @Output() disabledStartAddressEmitter: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  rideDate: Date = new Date();
   rideTime: string = "";
   invitedPassengerErrorMessage: string = "";
 
@@ -72,6 +71,8 @@ export class ScheduleRideComponent implements OnInit, AfterViewInit {
   selectedVehicleType: VehicleType;
   vehicleTypes: Array<VehicleType> = [];
 
+  activeRideId: number = NaN;
+
   constructor(
     private geoLocationService: TomTomGeolocationService,
     private matDialog: MatDialog,
@@ -80,7 +81,8 @@ export class ScheduleRideComponent implements OnInit, AfterViewInit {
     private authService: AuthService,
     private vehicleTypeService: VehicleTypeService,
     private rideService: RideService,
-    private dateTimeService: DateTimeService) {
+    private dateTimeService: DateTimeService,
+    private router: Router) {
 
   }
 
@@ -97,6 +99,16 @@ export class ScheduleRideComponent implements OnInit, AfterViewInit {
       error: (error) => {
         if (error instanceof HttpErrorResponse) {
 
+        }
+      }
+    });
+    this.rideService.getPassengersActiveRide(this.authService.getId()).subscribe({
+      next: (ride: Ride) => {
+        this.activeRideId = ride.id;
+      },
+      error: (error) => {
+        if (error instanceof HttpErrorResponse) {
+          this.activeRideId = NaN;
         }
       }
     })
@@ -119,21 +131,21 @@ export class ScheduleRideComponent implements OnInit, AfterViewInit {
       100);
   }
 
+  clearScheduleTime() {
+    this.rideTime = "";
+  }
+
   scheduleRide() {
     // getting ride date that the passenger picked
-    if (!this.rideTime) {
-      this.matDialog.open(DialogComponent, {
-        data: {
-          header: "Invalid time!",
-          body: "You must specify the time of the ride"
-        }
-      });
-      return;
+    let rideDate = new Date();
+    if (this.rideTime) {
+      const hours: number = +this.rideTime.split(":")[0];
+      const minutes: number = +this.rideTime.split(":")[1];
+      rideDate.setHours(hours);
+      rideDate.setMinutes(minutes); 
+    } else {
+      rideDate.setMinutes(rideDate.getMinutes() + 6);
     }
-    const hours: number = +this.rideTime.split(":")[0];
-    const minutes: number = +this.rideTime.split(":")[1];
-    this.rideDate.setHours(hours);
-    this.rideDate.setMinutes(minutes);
 
     // checking if the passenger selected any routes
     if (this.routes.length == 0) {
@@ -147,7 +159,7 @@ export class ScheduleRideComponent implements OnInit, AfterViewInit {
     }
 
     const rideRequest: RideRequest = {
-      startTime: this.dateTimeService.toString(this.rideDate),
+      startTime: this.dateTimeService.toString(rideDate),
       locations: this.routes,
       passengers: this.invitedPassengers,
       vehicleType: this.selectedVehicleType.name,
@@ -425,7 +437,7 @@ export class ScheduleRideComponent implements OnInit, AfterViewInit {
   }
 
   getDepartureDate(): string {
-    return this.rideDate.toDateString();
+    return (new Date()).toDateString();
   }
 
   getDepartureTime(): string {
@@ -433,11 +445,19 @@ export class ScheduleRideComponent implements OnInit, AfterViewInit {
   }
 
   getEstimatedTimeInMinutes(): number {
-    return (this.route.estimatedTimeInMinutes || 0) + this.totalDuration;
+    let estimatedTime = 0;
+    for (let route of this.routes) {
+      estimatedTime += route.estimatedTimeInMinutes;
+    }
+    return estimatedTime;
   }
 
   getDistanceInMeters(): number {
-    return (this.route.distanceInMeters || 0) + this.totalDistance;
+    let totalDistance = 0;
+    for (let route of this.routes) {
+      totalDistance += route.distanceInMeters;
+    }
+    return totalDistance;
   }
   
 
@@ -461,8 +481,22 @@ export class ScheduleRideComponent implements OnInit, AfterViewInit {
   }
 
   initializeWebSocketConnection() {
-    let ws = new SockJS(this.serverUrl);
+    let ws = new SockJS(environment.socketUrl);
     this.stompClient = Stomp.over(ws);
+  }
+
+  hasActiveRide(): boolean {
+    let hasActiveRide = false;
+    try {
+      hasActiveRide = this.passengerService.getHasActiveRide();
+    } catch (error) {
+      hasActiveRide = false;
+    }
+    return hasActiveRide;
+  }
+
+  accessCurrentRide() {
+    this.router.navigate([`passenger-current-ride/${this.activeRideId}`]);
   }
 
 }

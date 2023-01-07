@@ -37,7 +37,7 @@ export class AuthService {
       const id = helper.decodeToken(accessToken).id;
       return id;
     }
-    return -1;
+    return NaN;
   }
 
   getEmail(): string {

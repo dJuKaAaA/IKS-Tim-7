@@ -8,6 +8,11 @@ import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 import { Ride } from 'src/app/model/ride.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { DateTimeService } from 'src/app/services/date-time.service';
+import { WorkHour } from 'src/app/model/work-hours';
+import { HttpErrorResponse } from '@angular/common/http';
+import { DialogComponent } from '../dialog/dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 const ACTIVE: string = "ACTIVE";
 const INACTIVE: string = "INACTIVE";
@@ -21,25 +26,28 @@ export class DriverNavbarComponent implements OnInit, AfterViewInit {
 
   @ViewChild('activeTextContainer') activeTextContainer: ElementRef;
   
-  private serverUrl = environment.localhostApi + 'socket';
   private stompClient: any;
 
   taxiIcon: string = environment.taxiIcon;
   activeText: string = INACTIVE;
+  
+  isActive: boolean = this.authService.isLoggedIn();
 
   constructor(
     private renderer: Renderer2,
     private router: Router,
     private authService: AuthService,
     private driverService: DriverService,
-    private snackBar: MatSnackBar) {}
+    private snackBar: MatSnackBar,
+    private dateTimeService: DateTimeService,
+    private matDialog: MatDialog) {}
 
   ngOnInit() {
     this.initializeWebSocketConnection();
   }
 
   initializeWebSocketConnection() {
-    let ws = new SockJS(this.serverUrl);
+    let ws = new SockJS(environment.socketUrl);
     this.stompClient = Stomp.over(ws);
 
     this.stompClient.connect({}, () => {
@@ -48,7 +56,7 @@ export class DriverNavbarComponent implements OnInit, AfterViewInit {
   }
 
   openSocket() {
-    this.stompClient.subscribe(`/socket-scheduled-ride`, (rideData: { body: string; }) => {
+    this.stompClient.subscribe(`/socket-scheduled-ride/to-driver/${this.authService.getId()}`, (rideData: { body: string; }) => {
       this.handleResult(rideData);
     });
   }
@@ -65,7 +73,7 @@ export class DriverNavbarComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.driverService.fetchActivity(this.authService.getId()).subscribe({
       next: (activity: ActivityDto) => {
-        this.setActivityDisplay(activity.isActive);
+        this.setActivityDisplay();
       }
     })
   }
@@ -74,26 +82,23 @@ export class DriverNavbarComponent implements OnInit, AfterViewInit {
     return this.driverService.getHasActiveRide();
   }
 
-  getIsActive(): boolean {
-    try {
-      this.setActivityDisplay(this.driverService.getIsActive());
-    } catch (err) {}
-    return this.driverService.getIsActive();
-  }
-
   changeActiveState() {
-    const newActivityState = !this.driverService.getIsActive();
-    this.driverService.changeActivity(this.authService.getId(), { isActive: newActivityState } as ActivityDto).subscribe({
+    this.driverService.changeActivity(this.authService.getId(), { isActive: !this.isActive } as ActivityDto).subscribe({
       next: () => {
-        this.driverService.setIsActive(newActivityState);
-        this.setActivityDisplay(newActivityState);
+        this.isActive = !this.isActive;
+        this.setActivityDisplay();
+        if (this.isActive) {
+          this.startShift();
+        } else {
+          this.endShift();  
+        }
       }
     })
   }
 
-  setActivityDisplay(isActive: boolean) {
-    this.activeText = isActive ? ACTIVE : INACTIVE;
-    let color: string = isActive ? "rgb(24, 213, 24)" : "rgb(234, 22, 22)";
+  private setActivityDisplay() {
+    this.activeText = this.isActive ? ACTIVE : INACTIVE;
+    let color: string = this.isActive ? "rgb(24, 213, 24)" : "rgb(234, 22, 22)";
     this.renderer.setStyle(
       this.activeTextContainer.nativeElement,
       'color',
@@ -101,10 +106,45 @@ export class DriverNavbarComponent implements OnInit, AfterViewInit {
     )
   }
 
-  logout() {
-    this.driverService.changeActivity(this.authService.getId(), { isActive: false }).subscribe(() => {
-      this.driverService.setIsActive(false);
+  private startShift() {
+    const shiftStart = { start: this.dateTimeService.toString(new Date()) };
+    this.driverService.startShift(this.authService.getId(), shiftStart).subscribe({
+      next: (workHour: WorkHour) => {
+        this.snackBar.open(`Shift started at '${workHour.start}'`, "Dismiss");
+      }, error: (error) => {
+        if (error instanceof HttpErrorResponse) {
+          this.matDialog.open(DialogComponent, {
+            data: {
+              header: "Error!",
+              body: error.error.message
+            }
+          });
+        }
+      }
     });
+  }
+
+  private endShift() {
+    const shiftEnd = { end: this.dateTimeService.toString(new Date()) };
+    this.driverService.endShift(this.authService.getId(), shiftEnd).subscribe({
+      next: (workHour: WorkHour) => {
+        this.snackBar.open(`Shift ended at '${workHour.end}'`, "Dismiss");  
+      }, error: (error) => {
+        if (error instanceof HttpErrorResponse) {
+          this.matDialog.open(DialogComponent, {
+            data: {
+              header: "Error!",
+              body: error.error.message
+            }
+          });
+        }
+      }
+    });
+  }
+
+  logout() {
+    this.driverService.changeActivity(this.authService.getId(), { isActive: false }).subscribe();
+    this.endShift();
     localStorage.removeItem('user');
     this.router.navigate(['']);
   }
