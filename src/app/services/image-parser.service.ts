@@ -25,4 +25,8 @@ export class ImageParserService {
     });
     return observable;
   }
+
+  getImageUrl(imageString: string): string {
+    return `data:image/*;base64,${imageString}`
+  }
 }

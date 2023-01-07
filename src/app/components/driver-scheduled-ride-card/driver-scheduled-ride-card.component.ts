@@ -22,6 +22,7 @@ import { VehicleService } from 'src/app/services/vehicle.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../dialog/dialog.component';
 import { BehaviorSubject } from 'rxjs';
+import { ImageParserService } from 'src/app/services/image-parser.service';
 
 const SHOW_PROFILE_INFO_ANIMATION_TIME: number = 300;
 const PASSENGER_INFO_HIDDEN_STATE: string = "hidden";
@@ -123,7 +124,8 @@ export class DriverScheduledRideCardComponent implements OnInit, AfterViewInit, 
     private driverService: DriverService,
     private geoLocationService: TomTomGeolocationService,
     private vehicleService: VehicleService,
-    private matDialog: MatDialog) { }
+    private matDialog: MatDialog,
+    private imageParserService: ImageParserService) { }
 
   ngOnDestroy(): void {
     if (this.simulationIntervalId$.getValue() != undefined) {
@@ -405,6 +407,10 @@ export class DriverScheduledRideCardComponent implements OnInit, AfterViewInit, 
       })
 
     this.vehicleService.setLocation(vehicleId, location).subscribe();
+  }
+
+  getImage(imageString: string): string {
+    return this.imageParserService.getImageUrl(imageString);
   }
 
 }
