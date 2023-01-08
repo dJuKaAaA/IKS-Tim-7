@@ -5,6 +5,7 @@ import { environment } from 'src/environment/environment';
 import { Message } from '../model/message.model';
 import { Note } from '../model/note.model';
 import { PaginatedResponse } from '../model/paginated-response.model';
+import { SimpleUser } from '../model/simple-user.model';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -31,5 +32,16 @@ export class UserService {
     return this.http.post<Note>(environment.localhostApi + `user/${id}/note`, note);
   }
 
+  public sendResetMail(id: number) {
+    return this.http.get(environment.localhostApi + `user/${id}/resetPassword`);
+  }
+
+  public resetPassword(id: number, resetObj: { newPassword: string, code: string }) {
+    return this.http.put(environment.localhostApi + `user/${id}/resetPassword`, resetObj); 
+  }
+
+  public getByMail(user: { email: string }): Observable<SimpleUser> {
+    return this.http.post<SimpleUser>(environment.localhostApi + `user/id`, user);
+  } 
 
 }

@@ -62,7 +62,6 @@ export class RegisterComponent {
     if (this.formGroup.valid) {
       this.passengerService.create(passenger).subscribe({
         next: (result) => {
-          console.log(result);
           this.matDialog.open(DialogComponent, {
             data: {
               header: "Success! One more step...",

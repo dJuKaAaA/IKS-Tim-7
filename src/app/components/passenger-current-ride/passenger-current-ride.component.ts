@@ -20,7 +20,7 @@ import { Location } from 'src/app/model/location.model';
 import { DialogComponent } from '../dialog/dialog.component';
 import { Note } from 'src/app/model/note.model';
 import { DriverService } from 'src/app/services/driver.service';
-import { DriverActivityAndLocation } from 'src/app/model/driver-activity-and-locations.model';
+import { DriverLocation } from 'src/app/model/driver-location.model';
 
 @Component({
   selector: 'app-passenger-current-ride',
