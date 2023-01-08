@@ -3,6 +3,7 @@ form {
     background-color: white;
     padding: 3vh 1.5vw;
     border-radius: 2vw;
+    box-shadow: 5px 5px 10px rgb(80, 80, 80);
 }
 
 .user-info-input {

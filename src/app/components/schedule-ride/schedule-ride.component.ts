@@ -8,7 +8,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { environment } from 'src/environment/environment';
 import { DialogComponent } from '../dialog/dialog.component';
 import { DriverService } from 'src/app/services/driver.service';
-import { DriverActivityAndLocation } from 'src/app/model/driver-activity-and-locations.model';
+import { DriverLocation } from 'src/app/model/driver-location.model';
 import { PaginatedResponse } from 'src/app/model/paginated-response.model';
 import { SimpleUser } from 'src/app/model/simple-user.model';
 import { PassengerService } from 'src/app/services/passenger.service';
@@ -35,7 +35,7 @@ export class ScheduleRideComponent implements OnInit, AfterViewInit {
 
   private stompClient: any;
   
-  drivers: Array<DriverActivityAndLocation> = [];
+  drivers: Array<DriverLocation> = [];
   route: Route = new Route(
     new Location(NaN, NaN, ""),
     new Location(NaN, NaN, ""),
@@ -119,11 +119,12 @@ export class ScheduleRideComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.mapComponent.loadMap();
       this.driverService.fetchDriverActivityAndLocations().subscribe({
-        next: (response: PaginatedResponse<DriverActivityAndLocation>) => {
+        next: (response: PaginatedResponse<DriverLocation>) => {
           this.drivers = response.results;
           for (let driver of this.drivers) {
-            let carIconSrc = driver.isActive ? environment.activeDriverMarker : environment.inactiveDriverMarker;
-            this.mapComponent.showMarker(driver.location, carIconSrc);
+            if (driver.isActive) {
+              this.mapComponent.showMarker(driver.location, environment.taxiMarker);
+            }
           }
         }
       })
