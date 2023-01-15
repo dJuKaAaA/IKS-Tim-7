@@ -232,20 +232,6 @@ export class DriverScheduledRideCardComponent implements OnInit, AfterViewInit, 
 
   rejectionState: string = NOT_REJECTED_STATE;
 
-  rejectRide() {
-    this.rideService.rejectRide(this.ride.id).subscribe((ride: Ride) => {
-      // sending information to parent about rejection
-      this.rejectionState = REJECTED_STATE;
-      setTimeout(() => {
-        this.rejectionEmitter.emit(this.ride);
-      },
-        REJECTION_ANIMATION_TIME);
-
-      // notifying passenger via web sockets
-      this.stompClient.send("/socket-subscriber/send/ride/evaluation", {}, JSON.stringify(ride));
-    });
-  }
-
   acceptState: string = NOT_ACCEPTED_STATE;
 
   acceptRide() {
@@ -269,13 +255,14 @@ export class DriverScheduledRideCardComponent implements OnInit, AfterViewInit, 
   cancelRide() {
     this.rejectionErrorMessage = "";
     this.rideService.cancelRide(this.ride.id, { reason: this.rejectionReasonText, time: this.dateTimeService.toString(new Date()) }).subscribe({
-      next: () => {
+      next: (ride: Ride) => {
       // sending information to parent about cancellation
       this.rejectionState = REJECTED_STATE;
       setTimeout(() => {
         this.rejectionEmitter.emit(this.ride);
       },
         REJECTION_ANIMATION_TIME);
+      this.stompClient.send("/socket-subscriber/send/ride/evaluation", {}, JSON.stringify(ride));
       }, 
       error: (error) => {
         if (error instanceof HttpErrorResponse) {
