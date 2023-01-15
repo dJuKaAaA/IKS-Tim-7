@@ -13,7 +13,7 @@ import { DialogComponent } from '../dialog/dialog.component';
 })
 export class ForgotPasswordComponent {
 
-  email: string = "";
+  email: string = "";  
   resetCode: string = "";
   newPassword: string = "";
   confirmPassword: string = "";
@@ -21,7 +21,7 @@ export class ForgotPasswordComponent {
   constructor(
     private router: Router,
     private userService: UserService,
-    private matDialog: MatDialog) {}
+    private matDialog: MatDialog) { }
 
   backToHome() {
     this.router.navigate(['']);

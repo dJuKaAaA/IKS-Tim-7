@@ -86,7 +86,11 @@ export class PassengerNavbarComponent implements OnInit {
   handleResultRideEvaluation(rideData: { body: string; }) {
     if (rideData.body) {
       let ride: Ride = JSON.parse(rideData.body);
-      this.snackBar.open(`Your ride scheduled at '${ride.startTime}' has been ${ride.status}`, "Dismiss");
+      if (ride.status == "ACCEPTED") {
+        this.snackBar.open(`Your ride scheduled at '${ride.startTime}' has been ${ride.status}`, "Dismiss");
+      } else {
+        this.snackBar.open(`Your ride scheduled at '${ride.startTime}' has been ${ride.status}\nReason: ${ride.rejection.reason}`, "Dismiss");
+      }
     }
   }
 
