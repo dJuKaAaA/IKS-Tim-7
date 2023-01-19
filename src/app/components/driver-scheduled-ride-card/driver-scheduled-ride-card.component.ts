@@ -177,7 +177,7 @@ export class DriverScheduledRideCardComponent implements OnInit, AfterViewInit, 
     /* Important notice: You can still click on the start ride button of the card  
      * whose ride is not shown on the map
      */
-    if (this.simulatingMovement) {
+    if (!this.simulatingMovement) {
       this.rideService.startRide(this.ride.id).subscribe(() => {
         this.driverService.changeActivity(this.authService.getId(), { isActive: false }).subscribe({
           next: () => {

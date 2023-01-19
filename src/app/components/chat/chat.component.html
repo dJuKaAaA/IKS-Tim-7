@@ -1,11 +1,12 @@
 <div class="chat">
     
     <div class="user-selection">
-        <app-users-list></app-users-list>
+        <app-users-list (newItemEvent)="openChatWithUser($event)" [users]="users"></app-users-list>
     </div>
     
     <div class="message-bubbles">
-        <app-message-bubbles></app-message-bubbles>
+        <p class="user-full-name"><i>Chatting with:</i> <b style="margin-left: 1vw; font-size: 1.25vw;">{{userFullName}}</b></p>
+        <app-message-bubbles [receiverId]="receiverId" [messageType]="'SUPPORT'" [messages]="messages"></app-message-bubbles>
     </div>
 
 </div>

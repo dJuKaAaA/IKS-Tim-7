@@ -8,6 +8,11 @@
     margin: 2vh 0;
 }
 
+.user-full-name {
+    font-size: 1vw;
+    margin-left: 2vw;
+}
+
 .message-bubbles {
     margin: 2vh 1vw;
     height: 88vh;

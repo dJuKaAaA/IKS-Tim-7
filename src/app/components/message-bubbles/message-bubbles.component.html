@@ -26,6 +26,6 @@
     <mat-form-field class="message-input">
         <input placeholder="Type message..." matInput name="message-field" [(ngModel)]="typingMessageContent"
             autocomplete="off" />
-        <button type="submit" mat-button matSuffix>Send</button>
+        <button type="submit" mat-button matSuffix [disabled]="receiverId == -1">Send</button>
     </mat-form-field>
 </form>

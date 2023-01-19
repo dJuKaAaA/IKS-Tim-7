@@ -6,6 +6,7 @@ import { Message } from '../model/message.model';
 import { Note } from '../model/note.model';
 import { PaginatedResponse } from '../model/paginated-response.model';
 import { SimpleUser } from '../model/simple-user.model';
+import { User } from '../model/user';
 import { AuthService } from './auth.service';
 
 @Injectable({
@@ -19,8 +20,8 @@ export class UserService {
     return this.http.get<PaginatedResponse<Message>>(environment.localhostApi + `user/${id}/message`);
   }
 
-  public sendMessage(id: number, message: Message) {
-    return this.http.post(environment.localhostApi + `user/${id}/message`, {
+  public sendMessage(id: number, message: Message): Observable<Message> {
+    return this.http.post<Message>(environment.localhostApi + `user/${id}/message`, {
       receiverId: message.receiverId,
       message: message.message,
       type: message.type,
@@ -32,16 +33,17 @@ export class UserService {
     return this.http.post<Note>(environment.localhostApi + `user/${id}/note`, note);
   }
 
-  public sendResetMail(id: number) {
-    return this.http.get(environment.localhostApi + `user/${id}/resetPassword`);
+  public sendResetMail(email: string) {
+    return this.http.get(environment.localhostApi + `user/${email}/resetPassword`);
   }
 
-  public resetPassword(id: number, resetObj: { newPassword: string, code: string }) {
-    return this.http.put(environment.localhostApi + `user/${id}/resetPassword`, resetObj); 
+  public resetPassword(email: string, resetObj: { newPassword: string, code: string }) {
+    return this.http.put(environment.localhostApi + `user/${email}/resetPassword`, resetObj); 
   }
 
-  public getByMail(user: { email: string }): Observable<SimpleUser> {
-    return this.http.post<SimpleUser>(environment.localhostApi + `user/id`, user);
-  } 
+  public fetchUsers(): Observable<PaginatedResponse<User>> {
+    return this.http.get<PaginatedResponse<User>>(environment.localhostApi + `user`);
+  }
+
 
 }

@@ -28,29 +28,15 @@ export class ForgotPasswordComponent {
   }
 
   sendResetMail() {
-    this.userService.getByMail({ email: this.email }).subscribe({
-      next: (user: SimpleUser) => {
-        this.userService.sendResetMail(user.id).subscribe({
-          next: () => {
-            this.matDialog.open(DialogComponent, {
-              data: {
-                header: "Success!",
-                body: "Successfully sent activation code to your email"
-              }
-            });
-          }, error: (error) => {
-            if (error instanceof HttpErrorResponse) {
-              this.matDialog.open(DialogComponent, {
-                data: {
-                  header: "Error!",
-                  body: error.error.message
-                }
-              });
-            }
+    this.userService.sendResetMail(this.email).subscribe({
+      next: () => {
+        this.matDialog.open(DialogComponent, {
+          data: {
+            header: "Success!",
+            body: "Successfully sent activation code to your email"
           }
-        })
+        });
       }, error: (error) => {
-        console.log(error);
         if (error instanceof HttpErrorResponse) {
           this.matDialog.open(DialogComponent, {
             data: {
@@ -60,54 +46,32 @@ export class ForgotPasswordComponent {
           });
         }
       }
-    });
+    })
   }
 
   resetPassword() {
-    if (this.newPassword != this.confirmPassword) {
-      this.matDialog.open(DialogComponent, {
-        data: {
-          header: "Not confirmed!",
-          body: "New password and confirm password are not the same"
-        }
-      });
-      return;
-    }
-    this.userService.getByMail({ email: this.email }).subscribe({
-      next: (user: SimpleUser) => {
-        this.userService.resetPassword(user.id, { newPassword: this.newPassword, code: this.resetCode })
-          .subscribe({
-            next: () => {
-              this.matDialog.open(DialogComponent, {
-                data: {
-                  header: "Reset successful!",
-                  body: "Password successfully reset"
-                }
-              });
-              this.router.navigate(['']);
-            }, error: (error) => {
-              if (error instanceof HttpErrorResponse) {
-                console.log(error);
-                this.matDialog.open(DialogComponent, {
-                  data: {
-                    header: "Error!",
-                    body: error.error.message
-                  }
-                });
-              }
-            }
-          })
-      }, error: (error) => {
-        if (error instanceof HttpErrorResponse) {
+    this.userService.resetPassword(this.email, { newPassword: this.newPassword, code: this.resetCode })
+      .subscribe({
+        next: () => {
           this.matDialog.open(DialogComponent, {
             data: {
-              header: "Error!",
-              body: error.error.message
+              header: "Reset successful!",
+              body: "Password successfully reset"
             }
           });
+          this.router.navigate(['']);
+        }, error: (error) => {
+          if (error instanceof HttpErrorResponse) {
+            console.log(error);
+            this.matDialog.open(DialogComponent, {
+              data: {
+                header: "Error!",
+                body: error.error.message
+              }
+            });
+          }
         }
-      }
-    });
+      })
   }
 
 }

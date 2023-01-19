@@ -54,7 +54,9 @@ export class PassengerNavbarComponent implements OnInit {
     let ws = new SockJS(environment.socketUrl);
     this.stompClient = Stomp.over(ws);
 
-    this.stompClient.connect({}, () => {
+    const headers = { "Authorization": `Bearer ${this.authService.getToken()}` }
+    console.log(this.authService.getToken())
+    this.stompClient.connect(headers, () => {
       this.openSocket()
     });
   }

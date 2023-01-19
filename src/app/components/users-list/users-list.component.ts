@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Driver } from 'src/app/model/driver.model';
+import { User } from 'src/app/model/user';
 
 @Component({
   selector: 'app-users-list',
@@ -9,13 +10,12 @@ import { Driver } from 'src/app/model/driver.model';
 
 export class UsersListComponent {
   @Input()
-  public users : Driver[];
+  public users : User[];
 
   @Output() newItemEvent = new EventEmitter<number>();
 
   //Ova metoda se zove na klik i vraca index kliknutog usera, pa onda u parent komponenti obradite sta treba
   selectUser(index:number){
-    console.log(index);
     this.newItemEvent.emit(index);
   }
 }

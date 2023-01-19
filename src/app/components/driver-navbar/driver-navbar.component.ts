@@ -50,7 +50,8 @@ export class DriverNavbarComponent implements OnInit, AfterViewInit {
     let ws = new SockJS(environment.socketUrl);
     this.stompClient = Stomp.over(ws);
 
-    this.stompClient.connect({}, () => {
+    const headers = { "Authorization": `Bearer ${this.authService.getToken()}` }
+    this.stompClient.connect(headers, () => {
       this.openSocket()
     });
   }

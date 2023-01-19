@@ -6,6 +6,7 @@ import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 import { DateTimeService } from 'src/app/services/date-time.service';
 import { UserService } from 'src/app/services/user.service';
+import { throwToolbarMixedModesError } from '@angular/material/toolbar';
 
 @Component({
   selector: 'app-message-bubbles',
@@ -45,6 +46,9 @@ export class MessageBubblesComponent implements OnInit {
     this.stompClient.subscribe(`/socket-send-message/${this.senderId}`, (message: { body: string; }) => {
       this.handleResult(message);
     });
+    this.stompClient.subscribe(`/socket-send-message/${this.receiverId}`, (message: { body: string; }) => {
+      this.handleResult(message);
+    });
   }
 
   handleResult(message: { body: string; }) {
@@ -58,6 +62,7 @@ export class MessageBubblesComponent implements OnInit {
     if (this.typingMessageContent == "") {
       return;
     }
+    console.log(this.receiverId);
     let message: Message;
     if (this.rideId == -1) {
       message = {
@@ -77,9 +82,9 @@ export class MessageBubblesComponent implements OnInit {
         rideId: this.rideId
       };
     }
-    this.userService.sendMessage(this.senderId, message).subscribe({
-      next: () => {
-        this.stompClient.send("/socket-subscriber/send/message", {}, JSON.stringify(message));
+    this.userService.sendMessage(this.receiverId, message).subscribe({
+      next: (sentMessage: Message) => {
+        this.stompClient.send("/socket-subscriber/send/message", {}, JSON.stringify(sentMessage));
         this.typingMessageContent = "";
       }
     })
