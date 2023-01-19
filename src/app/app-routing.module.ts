@@ -86,7 +86,7 @@ const routes: Routes = [
   {
     path: 'forgot-password',
     component: ForgotPasswordComponent,
-    canActivate: [IsAuthenticatedGuard],
+    canActivate: [AlreadyAuthenticatedGuard],
   },
   {
     path: 'panic-review/:id',
