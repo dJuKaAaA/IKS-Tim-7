@@ -72,11 +72,7 @@ export class DriverNavbarComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.driverService.fetchActivity(this.authService.getId()).subscribe({
-      next: (activity: ActivityDto) => {
-        this.setActivityDisplay();
-      }
-    })
+    this.setActivityDisplay();
   }
 
   getHasActiveRide(): boolean {
@@ -84,17 +80,11 @@ export class DriverNavbarComponent implements OnInit, AfterViewInit {
   }
 
   changeActiveState() {
-    this.driverService.changeActivity(this.authService.getId(), { isActive: !this.isActive } as ActivityDto).subscribe({
-      next: () => {
-        this.isActive = !this.isActive;
-        this.setActivityDisplay();
-        if (this.isActive) {
-          this.startShift();
-        } else {
-          this.endShift();  
-        }
-      }
-    })
+    if (this.isActive) {
+      this.endShift();
+    } else {
+      this.startShift();
+    }
   }
 
   private setActivityDisplay() {
@@ -111,7 +101,9 @@ export class DriverNavbarComponent implements OnInit, AfterViewInit {
     const shiftStart = { start: this.dateTimeService.toString(new Date()) };
     this.driverService.startShift(this.authService.getId(), shiftStart).subscribe({
       next: (workHour: WorkHour) => {
+        this.isActive = true;
         this.snackBar.open(`Shift started at '${workHour.start}'`, "Dismiss");
+        this.setActivityDisplay();
       }, error: (error) => {
         if (error instanceof HttpErrorResponse) {
           this.matDialog.open(DialogComponent, {
@@ -129,7 +121,9 @@ export class DriverNavbarComponent implements OnInit, AfterViewInit {
     const shiftEnd = { end: this.dateTimeService.toString(new Date()) };
     this.driverService.endShift(this.authService.getId(), shiftEnd).subscribe({
       next: (workHour: WorkHour) => {
+        this.isActive = false;
         this.snackBar.open(`Shift ended at '${workHour.end}'`, "Dismiss");  
+        this.setActivityDisplay();
       }, error: (error) => {
         if (error instanceof HttpErrorResponse) {
           this.matDialog.open(DialogComponent, {
@@ -144,7 +138,6 @@ export class DriverNavbarComponent implements OnInit, AfterViewInit {
   }
 
   logout() {
-    this.driverService.changeActivity(this.authService.getId(), { isActive: false }).subscribe();
     this.endShift();
     localStorage.removeItem('user');
     this.router.navigate(['']);

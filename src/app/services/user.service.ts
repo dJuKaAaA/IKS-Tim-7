@@ -45,5 +45,4 @@ export class UserService {
     return this.http.get<PaginatedResponse<User>>(environment.localhostApi + `user`);
   }
 
-
 }

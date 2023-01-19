@@ -179,13 +179,9 @@ export class DriverScheduledRideCardComponent implements OnInit, AfterViewInit, 
      */
     if (!this.simulatingMovement) {
       this.rideService.startRide(this.ride.id).subscribe(() => {
-        this.driverService.changeActivity(this.authService.getId(), { isActive: false }).subscribe({
-          next: () => {
-            this.notifyPassengerStartRide(this.ride);
-            this.driverService.setHasActiveRide(true);
-            this.router.navigate([`driver-current-ride/${this.ride.id}`]);
-          }
-        })
+        this.notifyPassengerStartRide(this.ride);
+        this.driverService.setHasActiveRide(true);
+        this.router.navigate([`driver-current-ride/${this.ride.id}`])
       });
     } else {
       this.matDialog.open(DialogComponent, {

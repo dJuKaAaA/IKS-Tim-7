@@ -150,14 +150,6 @@ export class DriverService {
     return this.http.post<Driver>(environment.localhostApi + 'driver', driver);
   }
 
-  public fetchActivity(id: number): Observable<ActivityDto> {
-    return this.http.get<ActivityDto>(environment.localhostApi + `driver/${id}/activity`);
-  }
-
-  public changeActivity(id: number, activity: ActivityDto) {
-    return this.http.put(environment.localhostApi + `driver/${id}/activity`, activity);
-  }
-
   public getRides(id: number) {
     return this.http.get(environment.localhostApi + `driver/${id}/ride`);
   }

@@ -38,7 +38,12 @@ export class ChatComponent implements OnInit {
 
   openChatWithUser(userId: number) {
     this.receiverId = userId;
-    console.log(this.receiverId);
+    for (let user of this.users) {
+      if (user.id == this.receiverId) {
+        this.userFullName = user.name + " " + user.surname;
+        break;
+      }
+    }
     this.userService.fetchMessages(this.receiverId).subscribe({
       next: (response: PaginatedResponse<Message>) => {
         this.messages = response.results;

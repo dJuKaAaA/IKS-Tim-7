@@ -44,7 +44,6 @@ export class LoginComponent {
           if (this.authService.getRole() == 'ROLE_PASSENGER') {
             this.router.navigate(['passenger-home']);
           } else if (this.authService.getRole() == 'ROLE_DRIVER') {
-            this.driverService.changeActivity(this.authService.getId(), { isActive: true }).subscribe();
             const shiftStart = { start: this.dateTimeService.toString(new Date()) };
             this.driverService.startShift(this.authService.getId(), shiftStart).subscribe({
               next: (workHour: WorkHour) => {

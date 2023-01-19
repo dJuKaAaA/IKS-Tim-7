@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
-import { Panic } from 'src/app/model/panic';
 
 @Component({
   selector: 'app-admin-navbar',
@@ -16,6 +15,10 @@ export class AdminNavbarComponent{
   
 
   constructor(private router: Router) {}
+
+  openChat() {
+    this.router.navigate(['admin-chat']);
+  }
 
   logout() {
     localStorage.removeItem('user');
