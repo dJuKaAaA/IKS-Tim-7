@@ -138,14 +138,15 @@ export class ScheduleRideComponent implements OnInit, AfterViewInit {
 
   scheduleRide() {
     // getting ride date that the passenger picked
-    let rideDate = new Date();
+    let immediateScheduling = false;
+    let rideDate: Date = new Date();
     if (this.rideTime) {
       const hours: number = +this.rideTime.split(":")[0];
       const minutes: number = +this.rideTime.split(":")[1];
       rideDate.setHours(hours);
       rideDate.setMinutes(minutes); 
     } else {
-      rideDate.setMinutes(rideDate.getMinutes() + 6);
+      immediateScheduling = true;
     }
 
     // checking if the passenger selected any routes
@@ -160,7 +161,7 @@ export class ScheduleRideComponent implements OnInit, AfterViewInit {
     }
 
     const rideRequest: RideRequest = {
-      startTime: this.dateTimeService.toString(rideDate),
+      scheduledTime: immediateScheduling ? undefined : this.dateTimeService.toString(rideDate),
       locations: this.routes,
       passengers: this.invitedPassengers,
       vehicleType: this.selectedVehicleType.name,

@@ -88,7 +88,9 @@ export class DriverHomeComponent implements OnInit, AfterViewInit {
     let ws = new SockJS(environment.socketUrl);
     this.stompClient = Stomp.over(ws);
 
-    this.stompClient.connect({}, () => {
+    console.log("Odje se otvara socket konekcija linija 91 u driver-home-component.ts")
+    const headers = { "Authorization": `Bearer ${this.authService.getToken()}` }
+    this.stompClient.connect(headers, () => {
       this.openSocket()
     });
   }

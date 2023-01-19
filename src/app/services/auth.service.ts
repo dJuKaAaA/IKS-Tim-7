@@ -50,6 +50,15 @@ export class AuthService {
     return "";
   }
 
+  getToken(): string {
+      if (this.isLoggedIn()) {
+        const accessToken: any = localStorage.getItem('user');
+        const decodedItem = JSON.parse(accessToken);
+        return decodedItem.accessToken;
+    }
+    return "";
+  }
+
   isLoggedIn(): boolean {
     return localStorage.getItem('user') != null;
   }

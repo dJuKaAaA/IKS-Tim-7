@@ -10,7 +10,7 @@
     <a mat-button class="navbar-item">Ride history</a>
     <a mat-button class="navbar-item">Vehicle map</a>
     <a mat-button class="navbar-item">Register driver</a>
-    <a mat-button class="navbar-item">Chat</a>
+    <a mat-button class="navbar-item" (click)="openChat()">Chat</a>
     <a mat-button class="navbar-item" (click)="logout()">Log out</a>
     <div class = "navbar-item notification">
         <img mat-button src="src/assets/images/notifications.png" class="notification-img" (click)="changeState()">

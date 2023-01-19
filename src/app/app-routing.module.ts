@@ -17,14 +17,11 @@ import { DriverProfilePageComponent } from './components/driver-profile-page/dri
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { DriverCreationComponent } from './components/driver-creation/driver-creation.component';
 import { VehicleCreationPageComponent } from './components/vehicle-creation-page/vehicle-creation-page.component';
-import { PanicReviewComponent } from './components/panic-review/panic-review.component';
 import { PassengerHomeComponent } from './components/passenger-home/passenger-home.component';
 import { PassengerCurrentRideComponent } from './components/passenger-current-ride/passenger-current-ride.component';
 import { ChatComponent } from './components/chat/chat.component';
 import { PanicReviewPageComponent } from './components/panic-review-page/panic-review-page.component';
 import { PaymentComponent } from './components/payment/payment.component';
-import { DriverInRideGuard } from './guard/driver-in-ride.guard';
-import { PassengerInRideGuard } from './guard/passenger-in-ride.guard';
 
 const routes: Routes = [
   {
@@ -32,8 +29,16 @@ const routes: Routes = [
     component: UnregisteredHomeComponent,
     canActivate: [AlreadyAuthenticatedGuard],
   },
-  { path: 'userRideHistory', component: RideHistoryInformationComponent },
-  { path: 'admin-home', component: AdminHomepageComponent },
+  {
+    path: 'userRideHistory',
+    component: RideHistoryInformationComponent,
+    canActivate: [IsAuthenticatedGuard],
+  },
+  {
+    path: 'admin-home',
+    component: AdminHomepageComponent,
+    canActivate: [IsAuthenticatedGuard],
+  },
   {
     path: 'register',
     component: RegisterComponent,
@@ -42,38 +47,87 @@ const routes: Routes = [
   {
     path: 'driver-current-ride/:id',
     component: DriverCurrentRideComponent,
-    canActivate: [DriverInRideGuard]
   },
-  { path: 'editProfile', component: EditProfileComponent },
-  { path: 'passenger-profile', component: PassengerProfileDetailsComponent },
+  {
+    path: 'editProfile',
+    component: EditProfileComponent,
+    canActivate: [IsAuthenticatedGuard],
+  },
+  {
+    path: 'passenger-profile',
+    component: PassengerProfileDetailsComponent,
+    canActivate: [IsAuthenticatedGuard],
+  },
   {
     path: 'driver-home',
     component: DriverHomeComponent,
     canActivate: [IsAuthenticatedGuard],
   },
-  { path: 'driver-profile', component: DriverProfilePageComponent },
-  { path: 'driver-edit-profile', component: DriverEditProfileComponent },
+  {
+    path: 'driver-profile',
+    component: DriverProfilePageComponent,
+    canActivate: [IsAuthenticatedGuard],
+  },
+  {
+    path: 'driver-edit-profile',
+    component: DriverEditProfileComponent,
+    canActivate: [IsAuthenticatedGuard],
+  },
   {
     path: 'driver-ride-history-details',
     component: DriverRideHistoryDetailsComponent,
+    canActivate: [IsAuthenticatedGuard],
   },
   {
     path: 'passenger-ride-history-details',
     component: PassengerRideHistoryDetailsComponent,
+    canActivate: [IsAuthenticatedGuard],
   },
-  { path: 'forgot-password', component: ForgotPasswordComponent },
-  { path: 'panic-review/:id', component: PanicReviewPageComponent },
-  { path: 'ride-history', component: RideHistoryInformationComponent },
-  { path: 'create-driver', component: DriverCreationComponent },
-  { path: 'create-vehicle', component: VehicleCreationPageComponent },
-  { path: 'passenger-home', component: PassengerHomeComponent },
-  { 
-    path: 'passenger-current-ride/:id', 
+  {
+    path: 'forgot-password',
+    component: ForgotPasswordComponent,
+    canActivate: [AlreadyAuthenticatedGuard],
+  },
+  {
+    path: 'panic-review/:id',
+    component: PanicReviewPageComponent,
+    canActivate: [IsAuthenticatedGuard],
+  },
+  {
+    path: 'ride-history',
+    component: RideHistoryInformationComponent,
+    canActivate: [IsAuthenticatedGuard],
+  },
+  {
+    path: 'create-driver',
+    component: DriverCreationComponent,
+    canActivate: [IsAuthenticatedGuard],
+  },
+  {
+    path: 'create-vehicle',
+    component: VehicleCreationPageComponent,
+    canActivate: [IsAuthenticatedGuard],
+  },
+  {
+    path: 'passenger-home',
+    component: PassengerHomeComponent,
+    canActivate: [IsAuthenticatedGuard],
+  },
+  {
+    path: 'passenger-current-ride/:id',
     component: PassengerCurrentRideComponent,
-    canActivate: [PassengerInRideGuard] 
+    canActivate: [IsAuthenticatedGuard],
   },
-  { path: 'admin-chat', component: ChatComponent },
-  { path: 'payment', component: PaymentComponent },
+  {
+    path: 'admin-chat',
+    component: ChatComponent,
+    canActivate: [IsAuthenticatedGuard],
+  },
+  {
+    path: 'payment',
+    component: PaymentComponent,
+    canActivate: [IsAuthenticatedGuard],
+  },
 ];
 
 @NgModule({
