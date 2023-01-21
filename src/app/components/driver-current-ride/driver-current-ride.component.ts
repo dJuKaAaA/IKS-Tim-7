@@ -105,7 +105,8 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit {
     this.stompClient.send("/socket-subscriber/driver/send/current/location", {}, JSON.stringify({
       latitude: this.currentLocation.latitude,
       longitude: this.currentLocation.longitude,
-      rideId: this.ride.id
+      rideId: this.ride.id,
+      passengers: this.ride.passengers
     }));
   }
 
