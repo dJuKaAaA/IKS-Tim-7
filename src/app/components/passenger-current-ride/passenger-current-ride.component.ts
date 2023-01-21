@@ -107,7 +107,7 @@ export class PassengerCurrentRideComponent implements OnInit {
           }
           for (let driver of response.results) {
             if (driver.driverId == this.ride.driver.id) {
-              this.mapComponent.showMarker(driver.location, environment.taxiIcon);
+              this.mapComponent.showMarker(driver.location, environment.taxiMarker);
               this.currentLocation = driver.location;
             }
           }
