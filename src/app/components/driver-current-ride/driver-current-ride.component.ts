@@ -82,9 +82,10 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit {
         }
       }
     })
-    this.userService.fetchMessages(this.authService.getId()).subscribe({
-      next: (response: PaginatedResponse<Message>) => {
-        this.messages = response.results;
+    // admin id is 1 and this is the support chat with the admin
+    this.userService.fetchConversation(1).subscribe({
+      next: (response: Array<Message>) => {
+        this.messages = response;
       }
     })
     if (localStorage.getItem('activeRideRouteIndex') != null) {
@@ -253,7 +254,7 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit {
     this.matDialog.open(ChatDialogComponent, {
       data: {
         messages: this.messages,
-        receiverId: 3
+        receiverId: 1
       }
     });
   }

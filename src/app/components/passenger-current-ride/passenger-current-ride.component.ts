@@ -71,9 +71,10 @@ export class PassengerCurrentRideComponent implements OnInit {
         }
       }
     })
-    this.userService.fetchMessages(this.authService.getId()).subscribe({
-      next: (response: PaginatedResponse<Message>) => {
-        this.messages = response.results;
+    // admin id is 1 and this is the support chat with the admin
+    this.userService.fetchConversation(1).subscribe({
+      next: (response: Array<Message>) => {
+        this.messages = response;
       }
     })
     this.initializeWebSocketConnection();
