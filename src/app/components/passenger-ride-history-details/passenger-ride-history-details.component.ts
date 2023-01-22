@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { Driver } from 'src/app/model/driver.model';
 import { Review } from 'src/app/model/review.model';
+import { RideRequest } from 'src/app/model/ride-request.model';
 import { Ride } from 'src/app/model/ride.model';
 import { Vehicle } from 'src/app/model/vehicle.model';
 import { DateTimeService } from 'src/app/services/date-time.service';
@@ -70,13 +71,16 @@ export class PassengerRideHistoryDetailsComponent
     this.destination =
       this.ride.locations[this.ride.locations.length - 1].destination.address;
 
-    this.departureDate = this.ride.startTime.toString().split(' ')[0];
-    this.departureTime = this.ride.startTime.toString().split(' ')[1];
-    let [hours, minutes, seconds]: number[] = this.dateTimeService.getDiffDateTime(
-      this.dateTimeService.toDate(this.ride.endTime),
-      this.dateTimeService.toDate(this.ride.startTime)
-    );
-    this.duration = `${hours}h ${minutes}m ${seconds}s`;
+    if (this.ride.endTime != null) {
+      this.departureDate = this.ride.startTime.toString().split(' ')[0];
+      this.departureTime = this.ride.startTime.toString().split(' ')[1];
+      let [hours, minutes, seconds]: number[] =
+        this.dateTimeService.getDiffDateTime(
+          this.dateTimeService.toDate(this.ride.endTime),
+          this.dateTimeService.toDate(this.ride.startTime)
+        );
+      this.duration = `${hours}h ${minutes}m ${seconds}s`;
+    }
 
     this.ride.locations.forEach((route) => {
       this.mapComponent.showRouteFromAddresses(
@@ -98,5 +102,24 @@ export class PassengerRideHistoryDetailsComponent
     });
 
     this.mapComponent.loadMap();
+  }
+
+  public orderRide(): void {
+    let rideRequest: RideRequest = {} as RideRequest;
+    rideRequest.babyTransport = this.ride.babyTransport;
+    rideRequest.locations = this.ride.locations;
+    rideRequest.passengers = this.ride.passengers;
+    rideRequest.petTransport = this.ride.petTransport;
+    rideRequest.scheduledTime = this.ride.startTime;
+    rideRequest.vehicleType = this.ride.vehicleType;
+
+    this.rideService.createRide(rideRequest).subscribe(
+      (_) => {
+        alert('You have successfully order a ride!');
+      },
+      (err) => {
+        alert(err.error.message);
+      }
+    );
   }
 }

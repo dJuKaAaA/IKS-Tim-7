@@ -1,14 +1,21 @@
-<div id = "usersList">
-    <div class="user" *ngFor = "let user of users;" id = {{user.id}} (click) = "selectUser(user.id)">
-        <div class="imgSection">
-            <!-- <img src="/src/assets/images/profilePicture.jpg" alt="wtf"> -->
-        </div>
-        <div class="date">
-            <p>Tue</p>
-        </div>
-        <div class="textSection">
-            <p><b>{{user.name}} {{user.surname}}</b></p>
-            <p>{{user.email}}</p>
-        </div>
+<div id="usersList">
+  <div
+    class="user"
+    *ngFor="let user of users"
+    id="{{ user.id }}"
+    (click)="selectUser(user.id)"
+  >
+    <div class="imgSection">
+      <!-- <img src="/src/assets/images/profilePicture.jpg" alt="wtf"> -->
     </div>
+    <div class="date">
+      <p>Tue</p>
+    </div>
+    <div class="textSection">
+      <p>
+        <b>{{ user.name }} {{ user.surname }}</b>
+      </p>
+      <p>{{ user.email }}</p>
+    </div>
+  </div>
 </div>
