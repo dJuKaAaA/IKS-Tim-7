@@ -28,6 +28,7 @@ export interface TableElement {
 })
 export class RideHistoryInformationComponent implements OnInit {
   public ridesObject: Rides = {} as Rides;
+  public rides: Array<Ride> = [];
 
   public rides$: Observable<Array<Ride>>;
   public refreshRides$ = new BehaviorSubject<boolean>(true);
@@ -56,7 +57,7 @@ export class RideHistoryInformationComponent implements OnInit {
     private dateTimeService: DateTimeService,
     private authService: AuthService,
     private router: Router
-) {}
+  ) {}
 
   async ngOnInit() {
     this.ridesObject.totalCount = 0;
@@ -69,8 +70,15 @@ export class RideHistoryInformationComponent implements OnInit {
       .then((data) => {
         if (data != undefined) {
           this.ridesObject = data;
+          this.rides = this.ridesObject.results.filter((ride) => {
+            if (ride.status === 'FINISHED' || ride.status === 'REJECTED') {
+              return true;
+            }
+            return false;
+          });
+
           this.rides$ = this.refreshRides$.pipe(
-            switchMap((_) => of(this.ridesObject.results))
+            switchMap((_) => of(this.rides))
           );
         }
       });
@@ -113,15 +121,24 @@ export class RideHistoryInformationComponent implements OnInit {
       });
     });
 
-    console.log(ride.endTime);
-    this.destinationDate = this.dateTimeService.getDate(this.dateTimeService.toDate(ride.endTime));
-    this.destinationTime = this.dateTimeService.getTime(this.dateTimeService.toDate(ride.startTime));
+    this.destinationDate = '';
+    this.destinationTime = '';
+    this.travelDuration = '';
 
-    let [hours, minutes, seconds]: number[] = this.dateTimeService.getDiffDateTime(
-      this.dateTimeService.toDate(ride.endTime),
-      this.dateTimeService.toDate(ride.startTime)
-    );
-    this.travelDuration = `${hours}h ${minutes}m ${seconds}s`;
+    if (ride.endTime != null) {
+      this.destinationDate = this.dateTimeService.getDate(
+        this.dateTimeService.toDate(ride.endTime)
+      );
+      this.destinationTime = this.dateTimeService.getTime(
+        this.dateTimeService.toDate(ride.startTime)
+      );
+      let [hours, minutes, seconds]: number[] =
+        this.dateTimeService.getDiffDateTime(
+          this.dateTimeService.toDate(ride.endTime),
+          this.dateTimeService.toDate(ride.startTime)
+        );
+      this.travelDuration = `${hours}h ${minutes}m ${seconds}s`;
+    }
 
     this.price = String(ride.totalCost);
   }
@@ -160,35 +177,31 @@ export class RideHistoryInformationComponent implements OnInit {
   }
 
   private ascSortByStartDate() {
-    this.ridesObject.results.sort((a, b) =>
-      a.startTime > b.startTime ? 1 : -1
-    );
+    this.rides.sort((a, b) => (a.startTime > b.startTime ? 1 : -1));
     this.calculateReviews();
     this.refreshRides$.next(true);
   }
 
   private descSortByStartDate() {
-    this.ridesObject.results.sort((a, b) =>
-      a.startTime > b.startTime ? -1 : 1
-    );
+    this.rides.sort((a, b) => (a.startTime > b.startTime ? -1 : 1));
     this.calculateReviews();
     this.refreshRides$.next(true);
   }
 
   private ascSortByEndDate() {
-    this.ridesObject.results.sort((a, b) => (a.endTime > b.endTime ? 1 : -1));
+    this.rides.sort((a, b) => (a.endTime > b.endTime ? 1 : -1));
     this.calculateReviews();
     this.refreshRides$.next(true);
   }
 
   private descSortByEndDate() {
-    this.ridesObject.results.sort((a, b) => (a.endTime > b.endTime ? -1 : 1));
+    this.rides.sort((a, b) => (a.endTime > b.endTime ? -1 : 1));
     this.calculateReviews();
     this.refreshRides$.next(true);
   }
 
   private ascSortByRoutes() {
-    this.ridesObject.results.sort((a, b) =>
+    this.rides.sort((a, b) =>
       a.locations.length > b.locations.length ? 1 : -1
     );
     this.calculateReviews();
@@ -196,7 +209,7 @@ export class RideHistoryInformationComponent implements OnInit {
   }
 
   private descSortByRoutes() {
-    this.ridesObject.results.sort((a, b) =>
+    this.rides.sort((a, b) =>
       a.locations.length > b.locations.length ? -1 : 1
     );
     this.calculateReviews();

@@ -23,6 +23,7 @@
       [name]="driver.name"
       [surname]="driver.surname"
       [email]="driver.email"
+      [img]="driver.profilePicture"
     ></app-simple-user-info>
   </div>
 </div>
@@ -42,8 +43,9 @@
     <div class="btns">
       <div class="btn">
         <app-custom-btn1
-          [content]="'Order drive'"
+          [content]="'Order ride'"
           [customColor]="'btn-blue'"
+          (click)="orderRide()"
         ></app-custom-btn1>
       </div>
     </div>

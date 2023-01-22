@@ -25,6 +25,8 @@ export class DriverEditProfileComponent implements OnInit {
   shouldUploadFormBeDisplayed: boolean = false;
   profileInfo: boolean = true;
 
+  displayedProfileImage: String;
+
   driver: Driver;
   documents: Document[] = [];
 
@@ -32,20 +34,22 @@ export class DriverEditProfileComponent implements OnInit {
   deleteDocumentsIds = new Set<Number>();
   profileImage: String = '';
 
-  // TODO dodati poruku da li je prihvacen update profila
-  // TODO dodati validaciju formi
-  // TODO dodati redirekciju za change password
-  // TODO dodati pravu cenu
+  // TODO dodati redirekciju za change password, ako treba promeniti link
+
   constructor(
     private driverService: DriverService,
     private imageParserService: ImageParserService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {}
   ngOnInit(): void {
     const userId = this.authService.getId();
-    this.driverService
-      .getDriver(userId)
-      .subscribe((data) => (this.driver = data));
+    this.driverService.getDriver(userId).subscribe((data) => {
+      this.driver = data;
+      this.displayedProfileImage = this.imageParserService.getImageUrl(
+        this.driver.profilePicture
+      );
+    });
     this.driverService.getDocuments(userId).subscribe((data) => {
       this.documents = data;
     });
@@ -92,12 +96,37 @@ export class DriverEditProfileComponent implements OnInit {
     alert('Document is added!');
   }
 
-  changePassword(): void {}
+  changePassword(): void {
+    this.router.navigate([``]);
+  }
 
   updateProfile(): void {
-    let request: DriverProfileChangeRequest = {} as DriverProfileChangeRequest;
-    request.documents = [];
+    try {
+      let request: DriverProfileChangeRequest =
+        {} as DriverProfileChangeRequest;
+      request.documents = [];
 
+      this.updateDocuments(request);
+      this.updateProfileInfo(request);
+
+      console.log(request);
+      this.driverService
+        .saveDriverProfileChangeRequest(this.authService.getId(), request)
+        .subscribe(
+          (_) => {},
+          (err) => {
+            throw new Error(err.error.message);
+          }
+        );
+
+      alert('You have successfully send request for updating profile');
+      alert('Only last request will be recorded');
+    } catch (error) {
+      alert(error);
+    }
+  }
+
+  private updateDocuments(request: DriverProfileChangeRequest) {
     this.newDocuments.forEach((document) => {
       console.log(document);
       let documentChangeRequest = {} as DriverDocumentChangeRequest;
@@ -114,20 +143,43 @@ export class DriverEditProfileComponent implements OnInit {
       documentChangeRequest.documentImage = '';
       request.documents.push(documentChangeRequest);
     });
+  }
 
+  private updateProfileInfo(request: DriverProfileChangeRequest) {
+    if (this.driver.name === '') {
+      throw new Error('Error name field can not be empty');
+    }
+    if (this.driver.surname === '') {
+      throw new Error('Error last name field can not be empty');
+    }
+
+    let phoneRegex: RegExp = /^[0-9]{8,20}$/;
+    if (!phoneRegex.test(this.driver.telephoneNumber)) {
+      throw new Error('Phone must contain only digits');
+    }
+    if (this.driver.address === '') {
+      throw new Error('Error address field can not be empty');
+    }
+
+    let emailRegex: RegExp =
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+    if (!emailRegex.test(this.driver.email)) {
+      throw new Error('Email is in wrong format');
+    }
     request.firstName = this.driver.name;
+
     request.lastName = this.driver.surname;
-    request.profilePicture = this.profileImage;
+    if (this.profileImage != '') {
+      request.profilePicture = this.profileImage;
+    } else {
+      request.profilePicture = this.driver.profilePicture;
+    }
     request.phoneNumber = this.driver.telephoneNumber;
+
     request.email = this.driver.email;
+
     request.address = this.driver.address;
     request.status = 'PADDING';
     request.isMessageDisplayed = false;
-
-    console.log(request);
-    this.driverService.saveDriverProfileChangeRequest(1, request).subscribe();
-
-    alert('You have successfully send request for updating profile');
-    alert('Only last request will be recorded');
   }
 }
