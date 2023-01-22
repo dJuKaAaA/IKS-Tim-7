@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivityDto } from 'src/app/model/activity-dto.model';
 import { AuthService } from 'src/app/services/auth.service';
@@ -22,7 +22,7 @@ const INACTIVE: string = "INACTIVE";
   templateUrl: './driver-navbar.component.html',
   styleUrls: ['./driver-navbar.component.css']
 })
-export class DriverNavbarComponent implements OnInit, AfterViewInit {
+export class DriverNavbarComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild('activeTextContainer') activeTextContainer: ElementRef;
   
@@ -41,6 +41,10 @@ export class DriverNavbarComponent implements OnInit, AfterViewInit {
     private snackBar: MatSnackBar,
     private dateTimeService: DateTimeService,
     private matDialog: MatDialog) {}
+
+  ngOnDestroy(): void {
+    this.stompClient.disconnect();
+  }
 
   ngOnInit() {
     this.initializeWebSocketConnection();
