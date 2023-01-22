@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Message } from 'src/app/model/message.model';
 import { environment } from 'src/environment/environment';
 import { AuthService } from 'src/app/services/auth.service';
@@ -13,7 +13,7 @@ import { throwToolbarMixedModesError } from '@angular/material/toolbar';
   templateUrl: './message-bubbles.component.html',
   styleUrls: ['./message-bubbles.component.css']
 })
-export class MessageBubblesComponent implements OnInit {
+export class MessageBubblesComponent implements OnInit, OnDestroy {
   
   @Input() messages: Array<Message> = [];
   senderId: number;
@@ -29,6 +29,10 @@ export class MessageBubblesComponent implements OnInit {
     this.senderId = authService.getId();
   }
 
+  ngOnDestroy(): void {
+    this.stompClient.disconnect();
+  }
+
   ngOnInit(): void {
     this.initializeWebSocketConnection();
   }
@@ -38,15 +42,17 @@ export class MessageBubblesComponent implements OnInit {
     this.stompClient = Stomp.over(ws);
 
     this.stompClient.connect({}, () => {
-      this.openSocket()
+      this.openSocket();
     });
   }
 
+  public reopenSocket() {
+    this.stompClient.disconnect();
+    this.initializeWebSocketConnection();
+  }
+
   openSocket() {
-    this.stompClient.subscribe(`/socket-send-message/${this.senderId}`, (message: { body: string; }) => {
-      this.handleResult(message);
-    });
-    this.stompClient.subscribe(`/socket-send-message/${this.receiverId}`, (message: { body: string; }) => {
+    this.stompClient.subscribe(`/socket-send-message/sender/${this.receiverId}/receiver/${this.senderId}`, (message: { body: string; }) => {
       this.handleResult(message);
     });
   }
@@ -85,6 +91,7 @@ export class MessageBubblesComponent implements OnInit {
     this.userService.sendMessage(this.receiverId, message).subscribe({
       next: (sentMessage: Message) => {
         this.stompClient.send("/socket-subscriber/send/message", {}, JSON.stringify(sentMessage));
+        this.appendMessage(sentMessage);
         this.typingMessageContent = "";
       }
     })

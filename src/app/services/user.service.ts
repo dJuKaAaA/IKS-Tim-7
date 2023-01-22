@@ -16,6 +16,10 @@ export class UserService {
 
   constructor(private http: HttpClient, private authService: AuthService) { }
 
+  public fetchConversation(receiverId: number): Observable<Array<Message>> {
+    return this.http.get<Array<Message>>(environment.localhostApi + `user/${receiverId}/conversation`);
+  }
+
   public fetchMessages(id: number): Observable<PaginatedResponse<Message>> {
     return this.http.get<PaginatedResponse<Message>>(environment.localhostApi + `user/${id}/message`);
   }

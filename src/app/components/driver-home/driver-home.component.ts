@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router, TitleStrategy } from '@angular/router';
 import { Ride } from 'src/app/model/ride.model';
 import { Route } from 'src/app/model/route.model';
@@ -19,7 +19,7 @@ import { BehaviorSubject } from 'rxjs';
   templateUrl: './driver-home.component.html',
   styleUrls: ['./driver-home.component.css']
 })
-export class DriverHomeComponent implements OnInit, AfterViewInit {
+export class DriverHomeComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild(MapComponent) mapComponent: MapComponent;
 
@@ -38,6 +38,10 @@ export class DriverHomeComponent implements OnInit, AfterViewInit {
     private driverService: DriverService,
     private authService: AuthService,
     private rideService: RideService) { }
+
+  ngOnDestroy(): void {
+    this.stompClient.disconnect();
+  }
 
   ngOnInit(): void {
     // load ride data from RideService

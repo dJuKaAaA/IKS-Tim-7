@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
@@ -17,7 +17,7 @@ import { HttpErrorResponse } from '@angular/common/http';
   templateUrl: './passenger-navbar.component.html',
   styleUrls: ['./passenger-navbar.component.css']
 })
-export class PassengerNavbarComponent implements OnInit {
+export class PassengerNavbarComponent implements OnInit, OnDestroy {
 
   private stompClient: any;
 
@@ -28,6 +28,10 @@ export class PassengerNavbarComponent implements OnInit {
     private rideService: RideService,
     private matDialog: MatDialog,
     private passengerService: PassengerService) {}
+
+  ngOnDestroy(): void {
+    this.stompClient.disconnect();
+  }
 
   ngOnInit(): void {
     this.initializeWebSocketConnection();

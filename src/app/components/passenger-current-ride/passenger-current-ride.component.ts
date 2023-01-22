@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Message } from 'src/app/model/message.model';
 import { PaginatedResponse } from 'src/app/model/paginated-response.model';
@@ -27,7 +27,7 @@ import { DriverLocation } from 'src/app/model/driver-location.model';
   templateUrl: './passenger-current-ride.component.html',
   styleUrls: ['./passenger-current-ride.component.css']
 })
-export class PassengerCurrentRideComponent implements OnInit {
+export class PassengerCurrentRideComponent implements OnInit, OnDestroy {
 
   @ViewChild(MapComponent) mapComponent: MapComponent;
 
@@ -57,6 +57,10 @@ export class PassengerCurrentRideComponent implements OnInit {
     private renderer: Renderer2,
     private driverService: DriverService) {}
 
+  ngOnDestroy(): void {
+    this.stompClient.disconnect();
+  }
+
   ngOnInit(): void {
     const idUrlParam: any = this.activatedRoute.snapshot.paramMap.get("id");
     const id = (idUrlParam == null) ? -1 : +idUrlParam;
@@ -71,9 +75,10 @@ export class PassengerCurrentRideComponent implements OnInit {
         }
       }
     })
-    this.userService.fetchMessages(this.authService.getId()).subscribe({
-      next: (response: PaginatedResponse<Message>) => {
-        this.messages = response.results;
+    // admin id is 1 and this is the support chat with the admin
+    this.userService.fetchConversation(1).subscribe({
+      next: (response: Array<Message>) => {
+        this.messages = response;
       }
     })
     this.initializeWebSocketConnection();
