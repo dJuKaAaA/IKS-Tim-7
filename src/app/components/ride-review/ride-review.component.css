@@ -1,0 +1,35 @@
+.review-container{
+    display: grid;
+    grid-template-columns: 20% 30% 50%;
+}
+
+.line-height-50{
+    line-height: 55px;
+}
+
+p{
+    margin: 0px;
+    text-align: center;
+}
+
+input{
+    border: none;
+    border-bottom: 1px black solid;
+    transition: all 0.05s ease-in-out;
+    padding: 5px;
+    background: none;
+}
+
+input:focus{
+    outline: none;
+    border-bottom: 3px black solid;
+}
+
+.stars-container{
+    text-align: center;
+    border-bottom: 1px solid black;
+}
+
+.row-2{
+    grid-row: span 2;
+}
