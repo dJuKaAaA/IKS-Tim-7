@@ -22,6 +22,7 @@ import { PassengerCurrentRideComponent } from './components/passenger-current-ri
 import { ChatComponent } from './components/chat/chat.component';
 import { PanicReviewPageComponent } from './components/panic-review-page/panic-review-page.component';
 import { PaymentComponent } from './components/payment/payment.component';
+import { RideReviewComponent } from './components/ride-review/ride-review.component';
 
 const routes: Routes = [
   {
@@ -33,6 +34,10 @@ const routes: Routes = [
     path: 'userRideHistory',
     component: RideHistoryInformationComponent,
     canActivate: [IsAuthenticatedGuard],
+  },
+  {
+    path: 'rideReview',
+    component: RideReviewComponent
   },
   {
     path: 'admin-home',

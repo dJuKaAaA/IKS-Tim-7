@@ -1,4 +1,4 @@
-<div class="star-container" *ngIf="rating != undefined">
+<div class="star-container" #stars *ngIf="rating != undefined" (click) = "changeRating($event)">
   <div class="star" *ngFor="let _ of [].constructor(rating)">
     <img src="src/assets/gold-star.png" alt="" />
   </div>
