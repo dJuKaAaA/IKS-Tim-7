@@ -1,6 +1,6 @@
 .review-container{
     display: grid;
-    grid-template-columns: 20% 30% 50%;
+    grid-template-columns: 10% 30% 60%;
 }
 
 .line-height-50{
@@ -13,23 +13,46 @@ p{
 }
 
 input{
-    border: none;
-    border-bottom: 1px black solid;
-    transition: all 0.05s ease-in-out;
+    border: 1px rgb(32, 32, 32) solid;
+    border-radius: 5px;
     padding: 5px;
     background: none;
+    margin: 5px;
 }
 
-input:focus{
-    outline: none;
-    border-bottom: 3px black solid;
-}
 
 .stars-container{
     text-align: center;
-    border-bottom: 1px solid black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: all 200ms ease-in-out;
 }
 
 .row-2{
     grid-row: span 2;
+}
+.collumn-3{
+    grid-column: span 3;
+}
+
+#buttonContainer{
+    text-align: center;
+    margin-top: 10px;
+}
+
+#rate{
+    background: none;
+    font-size: 24px;
+    border: none;
+    cursor: pointer;
+}
+
+#rate:hover{
+    color: rgb(30, 64, 156);
+}
+
+.block{
+    display: block;
 }

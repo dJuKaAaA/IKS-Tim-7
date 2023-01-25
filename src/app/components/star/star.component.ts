@@ -1,5 +1,5 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
-import { elementAt } from 'rxjs';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { elementAt, reduce } from 'rxjs';
 
 @Component({
   selector: 'app-star',
@@ -8,13 +8,12 @@ import { elementAt } from 'rxjs';
 })
 export class StarComponent {
   @Input() rating: number = 0;
+  @Output() selectedRating: EventEmitter<number> = new EventEmitter(); 
   @ViewChild("stars") stars: ElementRef<HTMLDivElement>;
 
+
   changeRating(event:any){
-    console.log(event.clientX)
-    console.log(this.stars.nativeElement.getBoundingClientRect().x);
-    console.log(this.stars.nativeElement.getBoundingClientRect().width)
-    this.rating = (event.clientX - this.stars.nativeElement.getBoundingClientRect().x) * 5 / this.stars.nativeElement.getBoundingClientRect().width;
-    console.log(this.rating);
+    this.rating = (event.clientX - this.stars.nativeElement.getBoundingClientRect().x) * 5 / this.stars.nativeElement.getBoundingClientRect().width;  
+    this.selectedRating.emit(this.rating);
   }
 }
