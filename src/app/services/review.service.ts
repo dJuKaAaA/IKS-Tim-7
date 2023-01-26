@@ -29,4 +29,12 @@ export class ReviewService {
       environment.localhostApi + `review/vehicle/${vehicleId}`
     );
   }
+
+  public saveDriverReview(review: Review, rideId: number): Observable<Review>{
+    return this.http.post<Review>(environment.localhostApi + `review/${rideId}/driver`, review);
+  }
+
+  public saveVehicleReview(review: Review, rideId: number): Observable<Review>{
+    return this.http.post<Review>(environment.localhostApi + `review/${rideId}/vehicle`, review);
+  }
 }
