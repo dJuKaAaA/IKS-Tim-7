@@ -1,0 +1,10 @@
+<div class="grid-30-70">
+    <app-users-list *ngIf="passengers != undefined" [users] = "passengers" (newItemEvent)="selectUser($event)"></app-users-list>
+    <div id="passengerContainer" *ngIf="selectedPassengerId != -1">
+        <div id="centerContent">
+            <app-passenger-profile-details [passengerId] = "selectedPassengerId" [passenger]="selectedPassenger"></app-passenger-profile-details>
+            <button *ngIf="notBlocked" (click) = "block()"><b>BLOCK</b></button>
+            <p><i>{{message}}</i></p>
+        </div>
+    </div>
+</div>

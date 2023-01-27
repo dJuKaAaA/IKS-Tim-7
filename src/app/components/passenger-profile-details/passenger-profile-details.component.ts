@@ -11,10 +11,10 @@ import { ImageParserService } from 'src/app/services/image-parser.service';
   styleUrls: ['./passenger-profile-details.component.css'],
 })
 export class PassengerProfileDetailsComponent implements OnInit {
-  public passenger: Passenger;
+  @Input() public passenger: Passenger;
   public profilePicture: String;
 
-  @Input() passengerId: number;
+  @Input() passengerId: number = -1;
 
   constructor(
     private passengerService: PassengerService,
@@ -35,15 +35,20 @@ export class PassengerProfileDetailsComponent implements OnInit {
       },
       error: () => {
         if (this.passengerId == -1) return;
-        this.passengerService
-          .getPassenger(this.passengerId)
-          .subscribe((data) => {
-            this.passenger = data;
-          });
+        this.setData();
       },
     });
   }
   redirectToPassengerEditProfile(): void {
     this.router.navigate(['passenger-profile']);
+  }
+
+  setData(){
+    if(this.passengerId != -1)
+    this.passengerService
+          .getPassenger(this.passengerId)
+          .subscribe((data) => {
+            this.passenger = data;
+          });
   }
 }
