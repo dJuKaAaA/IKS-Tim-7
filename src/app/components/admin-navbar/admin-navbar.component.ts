@@ -20,6 +20,14 @@ export class AdminNavbarComponent{
     this.router.navigate(['admin-chat']);
   }
 
+  openPassengersList(){
+    this.router.navigate(['passengers-list']);
+  }
+
+  openDriversList(){
+    this.router.navigate(['drivers-list']);
+  }
+
   logout() {
     localStorage.removeItem('user');
     this.router.navigate(['']);

@@ -1,0 +1,10 @@
+<div class="grid-30-70">
+    <app-users-list *ngIf="drivers != undefined" [users] = "drivers" (newItemEvent)="selectUser($event)"></app-users-list>
+    <div id="passengerContainer" *ngIf="selectedDriver != undefined">
+        <div id="centerContent">
+            <app-driver-profile-details [driver] = "selectedDriver" [vehicle] = "vehicle" [documents] = "documents" [driverRating] = "driverRating" [vehicleRating] = "vehicleRating"></app-driver-profile-details>
+            <button *ngIf="notBlocked" (click) = "block()"><b>BLOCK</b></button>
+            <p><i>{{message}}</i></p>
+        </div>
+    </div>
+</div>
