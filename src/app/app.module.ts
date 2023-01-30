@@ -78,6 +78,7 @@ import { ChatDialogComponent } from './components/chat-dialog/chat-dialog.compon
 import { PaymentComponent } from './components/payment/payment.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { FinishedRideDialogComponent } from './components/finished-ride-dialog/finished-ride-dialog.component';
 
 @NgModule({
   declarations: [
@@ -135,6 +136,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
     UserCardComponent,
     ChatDialogComponent,
     PaymentComponent,
+    FinishedRideDialogComponent,
   ],
   imports: [
     BrowserModule,
