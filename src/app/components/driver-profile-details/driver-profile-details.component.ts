@@ -5,6 +5,7 @@ import { Driver } from 'src/app/model/driver.model';
 import { Vehicle } from 'src/app/model/vehicle.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { DriverService } from 'src/app/services/driver.service';
+import { ImageParserService } from 'src/app/services/image-parser.service';
 
 export interface SliderImage {
   image: String;
@@ -28,6 +29,8 @@ export class DriverProfileDetailsComponent implements OnInit {
 
   @Input() public driverId: number = 0;
 
+  public driverProfilePicture: String;
+
   imgSlider: boolean = false;
   profileInfo: boolean = true;
   vehicleDetails: boolean = false;
@@ -44,27 +47,31 @@ export class DriverProfileDetailsComponent implements OnInit {
   constructor(
     private driverService: DriverService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private imageParserService: ImageParserService
   ) {}
   ngOnInit(): void {
     const userId = this.authService.getId();
     this.driverService.getDriver(userId).subscribe({
-      next : driver =>{
+      next: (driver) => {
         this.fillUpTheHTML(userId);
       },
-      error : () => {
-        if(this.driverId != 0){
+      error: () => {
+        if (this.driverId != 0) {
           // console.log(this.driverId);
           this.fillUpTheHTML(this.driverId);
         }
-      }
-    })
+      },
+    });
   }
 
-  fillUpTheHTML(userId : number){
-    this.driverService
-      .getDriver(userId)
-      .subscribe((data) => (this.driver = data));
+  fillUpTheHTML(userId: number) {
+    this.driverService.getDriver(userId).subscribe((data) => {
+      this.driver = data;
+      this.driverProfilePicture = this.imageParserService.getImageUrl(
+        this.driver.profilePicture
+      );
+    });
     this.driverService
       .getAvgDriverRating(userId)
       .then((res) => (this.driverRating = res));
@@ -76,6 +83,7 @@ export class DriverProfileDetailsComponent implements OnInit {
     this.driverService
       .getVehicle(userId)
       .subscribe((data) => (this.vehicle = data));
+
     this.driverService.getDocuments(userId).subscribe((data) => {
       this.documents = data;
       this.fillUpDocuments();
@@ -85,8 +93,12 @@ export class DriverProfileDetailsComponent implements OnInit {
   fillUpDocuments() {
     this.documents.forEach((element) => {
       this.imgCollection.push({
-        image: element.documentImage,
-        thumbImage: element.documentImage,
+        image: this.imageParserService.getImageUrl(
+          element.documentImage as string
+        ),
+        thumbImage: this.imageParserService.getImageUrl(
+          element.documentImage as string
+        ),
         title: element.name,
         alt: element.name,
       });

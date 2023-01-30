@@ -1,0 +1,58 @@
+.review-container{
+    display: grid;
+    grid-template-columns: 10% 30% 60%;
+}
+
+.line-height-50{
+    line-height: 55px;
+}
+
+p{
+    margin: 0px;
+    text-align: center;
+}
+
+input{
+    border: 1px rgb(32, 32, 32) solid;
+    border-radius: 5px;
+    padding: 5px;
+    background: none;
+    margin: 5px;
+}
+
+
+.stars-container{
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    transition: all 200ms ease-in-out;
+}
+
+.row-2{
+    grid-row: span 2;
+}
+.collumn-3{
+    grid-column: span 3;
+}
+
+#buttonContainer{
+    text-align: center;
+    margin-top: 10px;
+}
+
+#rate{
+    background: none;
+    font-size: 24px;
+    border: none;
+    cursor: pointer;
+}
+
+#rate:hover{
+    color: rgb(30, 64, 156);
+}
+
+.block{
+    display: block;
+}

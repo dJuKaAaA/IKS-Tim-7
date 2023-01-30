@@ -1,0 +1,16 @@
+
+<form class="review-container" action="POST" #f = "ngForm" (ngSubmit)="onSubmit()" novalidate>
+    <p class = "line-height-50" style="color: {{driverTextColor}};"> <b>Driver</b> </p>
+    <div class="stars-container" style="bottom: {{driverRatingOffset}};">
+        <app-star (selectedRating)="setRatingDriver($event)"></app-star>
+    </div>
+    <input [(ngModel)] = "driverComment" name="driverComment" type="text" placeholder = "Comment:">
+    <p class = "line-height-50" style="color: {{vehicleTextColor}};"> <b>Vehicle</b> </p>
+    <div class="stars-container" style="bottom: {{vehicleRatingOffset}};">
+        <app-star (selectedRating)="setRatingVehicle($event)"></app-star>
+    </div>
+    <input [(ngModel)] = "vehicleComment" name = "vehicleComment" type="text" placeholder = "Comment:">
+    <div id="buttonContainer" class = "collumn-3">
+        <button type="submit" id = "rate">Rate</button>
+    </div>
+</form>

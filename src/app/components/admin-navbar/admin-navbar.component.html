@@ -9,7 +9,8 @@
     <a mat-button class="navbar-item">Home</a>
     <a mat-button class="navbar-item">Ride history</a>
     <a mat-button class="navbar-item">Vehicle map</a>
-    <a mat-button class="navbar-item">Register driver</a>
+    <a mat-button class="navbar-item" (click) = "openPassengersList()">Passengers</a>
+    <a mat-button class="navbar-item" (click) = "openDriversList()">Drivers</a>
     <a mat-button class="navbar-item" (click)="openChat()">Chat</a>
     <a mat-button class="navbar-item" (click)="logout()">Log out</a>
     <div class = "navbar-item notification">

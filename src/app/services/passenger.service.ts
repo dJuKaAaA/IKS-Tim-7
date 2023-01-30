@@ -9,6 +9,7 @@ import { SimpleUser } from '../model/simple-user.model';
 import { AuthService } from './auth.service';
 import { RideService } from './ride.service';
 import { Ride } from '../model/ride.model';
+import { PaginatedResponse } from '../model/paginated-response.model';
 
 @Injectable({
   providedIn: 'root',
@@ -67,5 +68,9 @@ export class PassengerService {
 
   public getByEmail(passenger: SimpleUser): Observable<SimpleUser> {
     return this.http.post<SimpleUser>(environment.localhostApi + `passenger/by-email`, passenger);
+  }
+
+  public getPassengers():Observable<PaginatedResponse<Passenger>>{
+    return this.http.get<PaginatedResponse<Passenger>>(environment.localhostApi+"passenger");
   }
 }

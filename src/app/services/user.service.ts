@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpStatusCode } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environment/environment';
@@ -47,6 +47,9 @@ export class UserService {
 
   public fetchUsers(): Observable<PaginatedResponse<User>> {
     return this.http.get<PaginatedResponse<User>>(environment.localhostApi + `user`);
+  }
+  public block(id:number): Observable<String>{
+    return this.http.put<String>(environment.localhostApi + `user/${id}/block`, {});
   }
 
 }

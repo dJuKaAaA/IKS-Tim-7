@@ -26,7 +26,19 @@ export class ImageParserService {
     return observable;
   }
 
+  public removeBase64FromImage(imageUrl: string): string {
+    return this.removeUpToDelimiter(imageUrl, ',');
+  }
+
   getImageUrl(imageString: string): string {
-    return `data:image/*;base64,${imageString}`
+    return `data:image/*;base64,${imageString}`;
+  }
+
+  private removeUpToDelimiter(string: string, delimiter: string) {
+    var index = string.indexOf(delimiter);
+    if (index !== -1) {
+      return string.substring(index + 1);
+    }
+    return string;
   }
 }

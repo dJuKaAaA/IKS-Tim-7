@@ -51,7 +51,11 @@ export class DriverRideHistoryDetailsComponent
     private tomTomService: TomTomGeolocationService,
     private dateTimeService: DateTimeService
   ) {}
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    setTimeout(() => {
+      this.mapComponent.loadMap();
+    }, 100);
+  }
 
   async ngAfterViewInit() {
     await this.rideService
@@ -85,13 +89,17 @@ export class DriverRideHistoryDetailsComponent
     this.destination =
       this.ride.locations[this.ride.locations.length - 1].destination.address;
 
-    this.departureDate = this.ride.startTime.toString().split(' ')[0];
-    this.departureTime = this.ride.startTime.toString().split(' ')[1];
-    let [hours, minutes, seconds]: number[] = this.dateTimeService.getDiffDateTime(
-      this.dateTimeService.toDate(this.ride.endTime),
-      this.dateTimeService.toDate(this.ride.startTime)
-    );
-    this.duration = `${hours}h ${minutes}m ${seconds}s`;
+    this.departureDate = this.ride.startTime.split(' ')[0];
+    this.departureTime = this.ride.startTime.split(' ')[1];
+
+    if (this.ride.endTime != null) {
+      let [hours, minutes, seconds]: number[] =
+        this.dateTimeService.getDiffDateTime(
+          this.dateTimeService.toDate(this.ride.endTime),
+          this.dateTimeService.toDate(this.ride.startTime)
+        );
+      this.duration = `${hours}h ${minutes}m ${seconds}s`;
+    }
 
     this.ride.locations.forEach((route) => {
       this.mapComponent.showRouteFromAddresses(
@@ -112,6 +120,9 @@ export class DriverRideHistoryDetailsComponent
               this.distance + response.routes[0].summary.lengthInMeters)
         );
     });
-    this.mapComponent.loadMap();
+
+    setTimeout(() => {
+      this.mapComponent.loadMap();
+    }, 100);
   }
 }

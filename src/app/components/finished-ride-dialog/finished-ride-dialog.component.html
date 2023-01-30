@@ -1,3 +1,9 @@
 <div>
     <app-payment></app-payment>
 </div>
+<div>
+    <app-ride-review (rated)="closeAfterReview($event)"></app-ride-review>
+</div>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close (click)="close()" class="close-button">Close</button>
+</div>

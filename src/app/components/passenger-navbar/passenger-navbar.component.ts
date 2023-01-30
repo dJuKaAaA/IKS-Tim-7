@@ -11,6 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from '../dialog/dialog.component';
 import { PassengerService } from 'src/app/services/passenger.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { FinishedRideDialogComponent } from '../finished-ride-dialog/finished-ride-dialog.component';
 
 @Component({
   selector: 'app-passenger-navbar',
@@ -115,12 +116,13 @@ export class PassengerNavbarComponent implements OnInit, OnDestroy {
            * that was recently active was marked as finished */
           if (error instanceof HttpErrorResponse) {
             // TODO: Instead of regular dialog; open the payment and rating dialog
-            this.matDialog.open(DialogComponent, {
-              data: {
-                header: "Finished!",
-                body: "The ride is finished"
-              }
-            });
+            // this.matDialog.open(DialogComponent, {
+            //   data: {
+            //     header: "Finished!",
+            //     body: "The ride is finished"
+            //   }
+            // });
+            this.matDialog.open(FinishedRideDialogComponent);
             this.passengerService.setHasActiveRide(false);
             this.router.navigate(['passenger-home']);
           }

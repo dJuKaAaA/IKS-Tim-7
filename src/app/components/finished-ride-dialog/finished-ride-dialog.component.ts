@@ -14,4 +14,10 @@ export class FinishedRideDialogComponent {
   close() {
     this.matDialogRef.close();
   }
+
+  closeAfterReview(rated: boolean) {
+    if (rated) {
+      this.close();
+    }
+  }
 }

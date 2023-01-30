@@ -1,12 +1,14 @@
 .star-container {
-  display: flex;
+  display: inline-block;
 }
 
 .star {
-  padding-left: 5px;
+  padding-left: 0px;
   margin-top: 7px;
+  text-align: center;
+  display: inline-block;
 }
 
 .star > img {
-  padding-left: 10px;
+  padding: 5px;
 }
