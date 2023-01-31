@@ -28,6 +28,10 @@ export class AdminNavbarComponent{
     this.router.navigate(['drivers-list']);
   }
 
+  openHomePage(){
+    this.router.navigate(['admin-home'])
+  }
+
   logout() {
     localStorage.removeItem('user');
     this.router.navigate(['']);

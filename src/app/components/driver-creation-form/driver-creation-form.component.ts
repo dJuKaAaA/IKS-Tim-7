@@ -22,14 +22,18 @@ export class DriverCreationFormComponent implements OnInit{
   }
   
   onSubmit(){
-    console.log(this.selectedVehicle);
-    console.log(this.user);
-    this.driverService.saveDriver(this.user).subscribe(driver => {
-      if(this.selectedVehicle.id == undefined)
-        return;
-      this.vehicleService.setDriver(this.selectedVehicle.id, driver.id).subscribe(vehicle => {
+    this.user.profilePicture = ""
+    this.driverService.saveDriver(this.user).subscribe({
+      next: driver=>{
         this.updateMessage = "Driver created successfully";
-      });
+        if(this.selectedVehicle.id == undefined)
+          return;
+        this.vehicleService.setDriver(this.selectedVehicle.id, driver.id).subscribe(vehicle => {
+        });
+      },
+      error: data=>{
+        this.updateMessage = "Error occured"
+      }
     });
 
   }

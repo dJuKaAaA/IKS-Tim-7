@@ -42,3 +42,17 @@
     flex-direction: column;
     flex-shrink: 0;
 }
+
+.text-align-center{
+    text-align: center;
+}
+
+#add-driver button{
+    margin: 10px;
+    padding: 5px 100px 5px 100px;
+    color:white;
+    border: none;
+    background-color: rgb(45, 58, 155);
+    border-radius: 5px;
+    cursor: pointer;
+}
