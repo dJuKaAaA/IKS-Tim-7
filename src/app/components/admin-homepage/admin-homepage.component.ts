@@ -58,6 +58,16 @@ export class AdminHomepageComponent implements OnInit, AfterViewInit{
         this.driverService.getAvgDriverRating(this.selectedDriver.id).then(rating => {this.driverRating = rating});
         this.driverService.getAvgVehicleRating(this.selectedDriver.id).then(rating => {this.vehicleRating = rating});
         this.driverService.getDocuments(this.selectedDriver.id).subscribe(document => {this.documents = document});
+
+        this.driverService.getVehicle(this.selectedDriver.id).subscribe({
+          next : vehicle => {
+              this.vehicle = vehicle;
+              this.updateMap(vehicle);
+          },
+          error : () => {
+              this.activeRideMessage = "This driver has no vehicles"
+          }
+        })
         //Dobavljanje aktivne voznje po id-ju vozaca
         this.rideService.getDriversActiveRide(this.selectedDriver.id).subscribe({
           next: ride => {
@@ -66,16 +76,6 @@ export class AdminHomepageComponent implements OnInit, AfterViewInit{
             //Postavljanje atributa koji se prosledjuju komponenti za prikaz podataka voznje
             console.log(ride.locations[0].departure);
             this.setRideParameters(ride);
-            //Dobavljanje vozila po id-ju vozaca
-            this.driverService.getVehicle(this.selectedDriver.id).subscribe({
-              next : vehicle => {
-                  this.vehicle = vehicle;
-                  this.updateMap(vehicle);
-              },
-              error : () => {
-
-              }
-            })
           },
           error: () =>{
             this.setDummyParameters()

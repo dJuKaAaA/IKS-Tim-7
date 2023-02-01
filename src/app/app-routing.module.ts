@@ -25,6 +25,7 @@ import { PaymentComponent } from './components/payment/payment.component';
 import { RideReviewComponent } from './components/ride-review/ride-review.component';
 import { PassengersListPageComponent } from './components/passengers-list-page/passengers-list-page.component';
 import { DriversListPageComponent } from './components/drivers-list-page/drivers-list-page.component';
+import { DriverChangeRequestReviewComponent } from './components/driver-change-request-review/driver-change-request-review.component';
 
 const routes: Routes = [
   {
@@ -35,6 +36,10 @@ const routes: Routes = [
   {
     path: 'passengers-list',
     component: PassengersListPageComponent
+  },
+  {
+    path: 'driver-change-request-review',
+    component: DriverChangeRequestReviewComponent
   },
   {
     path: 'drivers-list',

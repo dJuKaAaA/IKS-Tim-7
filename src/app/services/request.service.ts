@@ -21,6 +21,27 @@ export class RequestService {
     );
   }
 
+  public getRequestByDriverId(id:number):Observable<DriverProfileChangeRequest>{
+    return this.http.get<DriverProfileChangeRequest>(environment.localhostApi + `driver/request/${id}`)
+  }
+
+  public getAllRequests():Observable<DriverProfileChangeRequest[]>{
+    return this.http.get<DriverProfileChangeRequest[]>(environment.localhostApi + `driver/request`);
+  }
+
+  public getAllPendingRequests():Observable<DriverProfileChangeRequest[]> {
+    return this.http.get<DriverProfileChangeRequest[]>(environment.localhostApi + `driver/request/pending`);
+  }
+
+  public aprove(requestId:number){
+    return this.http.put(environment.localhostApi + `driver/request/${requestId}/approve`, "");
+  }
+
+  
+  public deny(requestId:number){
+    return this.http.put(environment.localhostApi + `driver/request/${requestId}/deny`, "");
+  }
+
   public getIsDriverHaveRequest(
     driverId: number
   ): Observable<RequestExistence> {

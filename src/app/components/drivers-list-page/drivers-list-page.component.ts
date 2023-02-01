@@ -5,6 +5,7 @@ import { Vehicle } from 'src/app/model/vehicle.model';
 import { DriverService } from 'src/app/services/driver.service';
 import { UserService } from 'src/app/services/user.service';
 import { Document } from 'src/app/model/document.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-drivers-list-page',
@@ -25,7 +26,7 @@ export class DriversListPageComponent {
   public notBlocked:boolean = true;
   public message:string = "";
 
-  constructor(private driverService:DriverService, private userService:UserService){
+  constructor(private driverService:DriverService, private userService:UserService, private router: Router){
   }
   ngOnInit(): void {
     this.driverService.getDrivers().subscribe({
@@ -61,5 +62,9 @@ export class DriversListPageComponent {
       }
     }
     );
+  }
+
+  goToDriverCreation(){
+    this.router.navigate(['create-driver']);
   }
 }

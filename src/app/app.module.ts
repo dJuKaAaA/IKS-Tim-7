@@ -82,6 +82,7 @@ import { FinishedRideDialogComponent } from './components/finished-ride-dialog/f
 import { RideReviewComponent } from './components/ride-review/ride-review.component';
 import { PassengersListPageComponent } from './components/passengers-list-page/passengers-list-page.component';
 import { DriversListPageComponent } from './components/drivers-list-page/drivers-list-page.component';
+import { DriverChangeRequestReviewComponent } from './components/driver-change-request-review/driver-change-request-review.component';
 
 @NgModule({
   declarations: [
@@ -143,6 +144,7 @@ import { DriversListPageComponent } from './components/drivers-list-page/drivers
     RideReviewComponent,
     PassengersListPageComponent,
     DriversListPageComponent,
+    DriverChangeRequestReviewComponent,
   ],
   imports: [
     BrowserModule,
