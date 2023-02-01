@@ -48,7 +48,10 @@ export class PassengerRideHistoryDetailsComponent
     await this.rideService
       .getRide(Number(sessionStorage.getItem('rideForDisplayDetails')))
       .toPromise()
-      .then((data) => (this.ride = data ?? ({} as Ride)));
+      .then((data) => {
+        this.ride = data ?? ({} as Ride);
+        if (this.ride) this.price = this.ride.totalCost;
+      });
 
     await this.driverService
       .getVehicle(this.ride.driver.id)
@@ -100,6 +103,8 @@ export class PassengerRideHistoryDetailsComponent
               this.distance + response.routes[0].summary.lengthInMeters)
         );
     });
+
+    console.log(this.ride.totalCost);
 
     this.mapComponent.loadMap();
   }
