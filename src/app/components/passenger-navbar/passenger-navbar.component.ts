@@ -54,6 +54,10 @@ export class PassengerNavbarComponent implements OnInit, OnDestroy {
   navigateToProfileInfo() {
     this.router.navigate(['passenger-profile'])
   }
+  
+  navigateToReportCharts() {
+    this.router.navigate(['report-charts'])
+  }
 
   initializeWebSocketConnection() {
     let ws = new SockJS(environment.socketUrl);
@@ -152,5 +156,7 @@ export class PassengerNavbarComponent implements OnInit, OnDestroy {
       this.passengerService.setHasActiveRide(true);
     }
   }
+
+  
 
 }
