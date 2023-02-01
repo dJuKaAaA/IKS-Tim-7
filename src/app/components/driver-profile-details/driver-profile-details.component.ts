@@ -83,6 +83,7 @@ export class DriverProfileDetailsComponent implements OnInit {
     this.driverService
       .getVehicle(userId)
       .subscribe((data) => (this.vehicle = data));
+
     this.driverService.getDocuments(userId).subscribe((data) => {
       this.documents = data;
       this.fillUpDocuments();
@@ -95,7 +96,9 @@ export class DriverProfileDetailsComponent implements OnInit {
         image: this.imageParserService.getImageUrl(
           element.documentImage as string
         ),
-        thumbImage: element.documentImage,
+        thumbImage: this.imageParserService.getImageUrl(
+          element.documentImage as string
+        ),
         title: element.name,
         alt: element.name,
       });

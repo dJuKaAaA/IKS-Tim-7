@@ -78,6 +78,7 @@ import { ChatDialogComponent } from './components/chat-dialog/chat-dialog.compon
 import { PaymentComponent } from './components/payment/payment.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { FinishedRideDialogComponent } from './components/finished-ride-dialog/finished-ride-dialog.component';
 import { RideReviewComponent } from './components/ride-review/ride-review.component';
 import { PassengersListPageComponent } from './components/passengers-list-page/passengers-list-page.component';
 import { DriversListPageComponent } from './components/drivers-list-page/drivers-list-page.component';
@@ -139,6 +140,7 @@ import { DriverChangeRequestReviewComponent } from './components/driver-change-r
     UserCardComponent,
     ChatDialogComponent,
     PaymentComponent,
+    FinishedRideDialogComponent,
     RideReviewComponent,
     PassengersListPageComponent,
     DriversListPageComponent,

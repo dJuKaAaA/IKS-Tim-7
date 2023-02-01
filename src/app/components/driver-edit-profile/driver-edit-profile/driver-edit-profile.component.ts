@@ -7,6 +7,7 @@ import { Driver, NoIdDriver } from 'src/app/model/driver.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { DriverService } from 'src/app/services/driver.service';
 import { ImageParserService } from 'src/app/services/image-parser.service';
+import { RequestService } from 'src/app/services/request.service';
 
 export interface SliderImage {
   image: String;
@@ -38,6 +39,7 @@ export class DriverEditProfileComponent implements OnInit {
 
   constructor(
     private driverService: DriverService,
+    private requestService: RequestService,
     private imageParserService: ImageParserService,
     private authService: AuthService,
     private router: Router
@@ -53,6 +55,16 @@ export class DriverEditProfileComponent implements OnInit {
     this.driverService.getDocuments(userId).subscribe((data) => {
       this.documents = data;
     });
+
+    this.requestService.getIsDriverHaveRequest(userId).subscribe((data) => {
+      let isExist: boolean = data.exist;
+
+      if (isExist == true) {
+        alert('Your request is being processed');
+      } else {
+        alert('All your requests have been processed');
+      }
+    });
   }
 
   onProfileImageSelected(event: any): void {
@@ -63,6 +75,9 @@ export class DriverEditProfileComponent implements OnInit {
         .convertToBase64(newProfileImage)
         .subscribe((img) => {
           this.profileImage = img;
+          this.profileImage = this.imageParserService.removeBase64FromImage(
+            this.profileImage as string
+          );
         });
       alert('Profile image added');
     }
@@ -132,7 +147,10 @@ export class DriverEditProfileComponent implements OnInit {
       let documentChangeRequest = {} as DriverDocumentChangeRequest;
       documentChangeRequest.documentId = NaN;
       documentChangeRequest.name = document.name;
-      documentChangeRequest.documentImage = document.documentImage;
+      documentChangeRequest.documentImage =
+        this.imageParserService.removeBase64FromImage(
+          document.documentImage as string
+        );
       request.documents.push(documentChangeRequest);
     });
 
@@ -172,9 +190,11 @@ export class DriverEditProfileComponent implements OnInit {
     if (this.profileImage != '') {
       request.profilePicture = this.profileImage;
     } else {
-      request.profilePicture = this.driver.profilePicture;
+      request.profilePicture = this.imageParserService.removeBase64FromImage(
+        this.driver.profilePicture
+      );
     }
-    request.phoneNumber = this.driver.telephoneNumber;
+    request.phoneNumber = '0604672999';
 
     request.email = this.driver.email;
 
