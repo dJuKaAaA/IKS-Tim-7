@@ -159,4 +159,8 @@ export class DriverNavbarComponent implements OnInit, AfterViewInit, OnDestroy {
     this.router.navigate(['driver-profile'])
   }
 
+  navigateToReportCharts() {
+    this.router.navigate(['report-charts'])
+  }
+
 }

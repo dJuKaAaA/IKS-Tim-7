@@ -83,6 +83,7 @@ import { RideReviewComponent } from './components/ride-review/ride-review.compon
 import { PassengersListPageComponent } from './components/passengers-list-page/passengers-list-page.component';
 import { DriversListPageComponent } from './components/drivers-list-page/drivers-list-page.component';
 import { DriverChangeRequestReviewComponent } from './components/driver-change-request-review/driver-change-request-review.component';
+import { UserStatisticsComponent } from './components/user-statistics/user-statistics.component';
 
 @NgModule({
   declarations: [
@@ -145,6 +146,7 @@ import { DriverChangeRequestReviewComponent } from './components/driver-change-r
     PassengersListPageComponent,
     DriversListPageComponent,
     DriverChangeRequestReviewComponent,
+    UserStatisticsComponent,
   ],
   imports: [
     BrowserModule,
