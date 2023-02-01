@@ -1,0 +1,46 @@
+.chart-container {
+    width: 80%;
+    height: 70%;
+    margin: 0 5%;
+    padding: 5%;
+}
+
+.buttons {
+    margin-top: 3%;
+    margin-bottom: 1%;
+    display: flex;
+    justify-content: space-evenly;
+    text-align: center;
+}
+
+.date-range-picker {
+    margin: 1% 0;
+    display: flex;
+    justify-content:center; 
+}
+
+.date-picker {
+    margin: 0 1vw;
+}
+
+form {
+    width: 100%;
+    margin: 5vh 0;
+    text-align: center;
+}
+
+.display-button {
+    font-size: 1.25vw;
+    padding: 3vh 3vw;
+}
+
+.average-and-sum-container {
+    margin: 5vh 0;
+    display: flex;
+    justify-content:center; 
+}
+
+.average-and-sum-container p {
+    margin: 0 1vw;
+    font-size: 1vw;
+}

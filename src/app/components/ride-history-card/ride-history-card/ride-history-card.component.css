@@ -34,6 +34,7 @@
 }
 
 .card-text {
+  margin-top: 8px;
   font-family: "Roboto";
   font-style: normal;
   font-weight: 500;
@@ -45,4 +46,9 @@
   text-transform: uppercase;
   color: #000000;
   text-shadow: 2.5px 2.5px 5px rgba(255, 255, 255, 0.5);
+}
+
+.star-container {
+  display: flex;
+  flex-direction: column;
 }

@@ -31,6 +31,10 @@ export class AdminNavbarComponent{
   openHomePage(){
     this.router.navigate(['admin-home']);
   }
+  
+  openReportCharts() {
+    this.router.navigate(['report-charts'])
+  }
 
   logout() {
     localStorage.removeItem('user');

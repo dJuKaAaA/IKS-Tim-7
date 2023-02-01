@@ -1,0 +1,29 @@
+
+<form>
+    <div class="date-range-picker">
+        <mat-form-field class="date-picker">
+            <mat-label>Start range</mat-label>
+            <input matInput [matDatepicker]="startDatePicker" placeholder="Choose a date" readonly [(ngModel)]="startDate" name="start-date">
+            <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #startDatePicker></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field class="date-picker">
+            <mat-label>End range</mat-label>
+            <input matInput [matDatepicker]="endDatePicker" placeholder="Choose a date" readonly [(ngModel)]="endDate" name="end-date">
+            <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+            <mat-datepicker #endDatePicker></mat-datepicker>
+        </mat-form-field>
+    </div>
+</form>
+<div class="buttons">
+    <button mat-raised-button color="primary" class="display-button" (click)="showDistanceTraveledChart()">Distance Traveled</button>
+    <button mat-raised-button color="primary" class="display-button" (click)="showNumberOfRidesChart()">Number of Rides</button>
+    <button mat-raised-button color="primary" class="display-button" (click)="showFinancialsChart()">{{ financialsChartLabel }}</button>
+</div>
+<div class="average-and-sum-container">
+    <p>Total sum: <b>{{totalValue}}</b></p>
+    <p>Average per day: <b>{{averageValue}}</b></p>
+</div>
+<div class="chart-container">
+    <canvas id="MyChart" #MyChart >{{ chart }}</canvas>
+</div>
