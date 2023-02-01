@@ -61,7 +61,10 @@ export class DriverRideHistoryDetailsComponent
     await this.rideService
       .getRide(Number(sessionStorage.getItem('rideForDisplayDetails')))
       .toPromise()
-      .then((data) => (this.ride = data ?? ({} as Ride)));
+      .then((data) => {
+        this.ride = data ?? ({} as Ride);
+        this.price = this.ride.totalCost;
+      });
 
     await this.driverService
       .getVehicle(this.ride.driver.id)

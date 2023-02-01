@@ -111,6 +111,7 @@ export class RideHistoryInformationComponent implements OnInit {
   }
 
   displayRoutesInTable(ride: Ride) {
+    console.log(ride);
     this.currentDisplayedRide = ride;
     this.dataSource = [];
     ride.locations.forEach((route, index) => {
