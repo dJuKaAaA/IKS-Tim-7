@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environment/environment';
 import { DriverProfileChangeRequest } from '../model/driver-profile-change-request.model';
-import { RequestExistence } from '../model/RequestExistence';
+import { RequestExistence } from '../model/requestExistence';
 
 @Injectable({
   providedIn: 'root',

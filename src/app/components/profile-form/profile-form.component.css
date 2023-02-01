@@ -53,8 +53,11 @@ p b {
   color: #3f51b5;
 }
 
-#profilePicture {
+.profilePictureDiv img{
+  height: 100px;
   width: 100px;
+  border-radius: 100%;
+  cursor: pointer;
 }
 
 a {

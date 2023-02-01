@@ -74,11 +74,17 @@
     float: left;
     margin-right: 25px;
     background-color: none;
-    background-image: url("/src/assets/images/profilePicture.jpg");
+    /* background-image: url("/src/assets/images/profilePicture.jpg"); */
     background-size: cover;
     background-position: -17px;
     border-radius: 100%;
     box-shadow: 15px 15px 20px gray;
+}
+
+.imgSection img{
+    width: 75px;
+    height: 75px;
+    border-radius: 100%;
 }
 
 

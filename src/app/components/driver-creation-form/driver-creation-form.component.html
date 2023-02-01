@@ -1,51 +1,60 @@
 <form action="PUT" #f = "ngForm" (ngSubmit)="onSubmit()" novalidate>
   <div id="centerContainer">
       <div class="gridArea">
-          <h1 class="marginTopMedium">Create a driver</h1>
-          <input type="image" [(ngModel)] = "user.profilePicture" name = "profilePicture" img id = "profilePicture" src="/src/assets/images/Group13.png" alt="ej" class="marginBottomMedium">
-          <div class="textFieldBox">
-              <p>First name</p>
-              <input [(ngModel)]  = "user.name" name = "firstName" type="text" id = "name">
-          </div>
-          <div class="textFieldBox">
-              <p>Last name</p>
-              <input [(ngModel)]  = "user.surname" name = "surname" type = "text" id="lastName">
-          </div>
-          <div class="textFieldBox">
-              <p>Phone number</p>
-              <input [(ngModel)]  = "user.telephoneNumber" name = "phoneNumber" id="PhoneNumber">
-          </div>
-          <div class="textFieldBox">
-              <p>Email</p>
-              <input [(ngModel)]  = "user.email" name = "email" id="Email">
-          </div>
-          <div class="textFieldBox">
-              <p>Password</p>
-              <input [(ngModel)]  = "user.password" name = "password" id="Password">
-          </div>
-          <div class="textFieldBox">
-              <p>Confirm password</p>
-              <input [(ngModel)]  = "confirmedPassword" name = "confirmedPassword" id="ConfirmedPassword">
-          </div>
-          <div class="textFieldBox">
-              <p>Adress</p>
-              <input [(ngModel)] = "user.address" name="address" id="Address">
-          </div>
-          <div class="textFieldBox">
-            <p>Vehicle</p>
-            <select [(ngModel)] = "selectedVehicle" name = "vehicle" id="Vehicle">
-                <option *ngFor="let v of availableVehicles" [ngValue]="v">Licence plate: {{v.licenseNumber}}</option>
-            </select>
+            <h1 class="marginTopMedium">Create a driver</h1>
+            <div class = "profileImageDiv">
+                <img class = "profilePicture" *ngIf = "user.profilePicture != null" (click) = "profilePic.click()" src="{{profilePicture}}" class="marginBottomMedium">
+                <img class = "profilePicture" *ngIf = "user.profilePicture == null" (click) = "profilePic.click()" src = "/src/assets/images/profileImageDefault.png">
+                <input type="file"
+                name="profile-picture-file"
+                accept=".jpg,.png,.jpeg"
+                id="fileId"
+                style="display: none"
+                (change)="onProfileImageSelected($event)"
+                #profilePic>
+            </div>
+            <div class="textFieldBox">
+                <p>First name</p>
+                <input [(ngModel)]  = "user.name" name = "firstName" type="text" id = "name">
+            </div>
+            <div class="textFieldBox">
+                <p>Last name</p>
+                <input [(ngModel)]  = "user.surname" name = "surname" type = "text" id="lastName">
+            </div>
+            <div class="textFieldBox">
+                <p>Phone number</p>
+                <input [(ngModel)]  = "user.telephoneNumber" name = "phoneNumber" id="PhoneNumber">
+            </div>
+            <div class="textFieldBox">
+                <p>Email</p>
+                <input [(ngModel)]  = "user.email" name = "email" id="Email">
+            </div>
+            <div class="textFieldBox">
+                <p>Password</p>
+                <input [(ngModel)]  = "user.password" name = "password" id="Password" type="password">
+            </div>
+            <div class="textFieldBox">
+                <p>Confirm password</p>
+                <input [(ngModel)]  = "confirmedPassword" name = "confirmedPassword" id="ConfirmedPassword" type="password">
+            </div>
+            <div class="textFieldBox">
+                <p>Adress</p>
+                <input [(ngModel)] = "user.address" name="address" id="Address">
+            </div>
+            <div class="textFieldBox">
+                <p>Vehicle</p>
+                <select [(ngModel)] = "selectedVehicle" name = "vehicle" id="Vehicle">
+                    <option *ngFor="let v of availableVehicles" [ngValue]="v">Licence plate: {{v.licenseNumber}}</option>
+                </select>
+            </div>
+            <p id = "successNotification"> <i>{{updateMessage}}</i></p>
+            <div class = "marginBottomMedium">
+                <a class = "vehicleLinks" href = "create-vehicle"><i>Create a new vehicle</i></a>
+            </div>
         </div>
-        <p id = "successNotification"> <i>{{updateMessage}}</i></p>
-        <div class = "marginBottomMedium">
-            <a class = "vehicleLinks" href = "#"><i>See vehicle details</i></a>
-            <a class = "vehicleLinks" href = "#"><i>Create a new vehicle</i></a>
+        <p id = "successNotification"><i>{{message}}</i></p>
+        <div class="buttonSection marginBottomLarge">
+            <button type="submit" name="create" id = "submit">CREATE</button>
         </div>
-      </div>
-      <p id = "successNotification"><i>{{message}}</i></p>
-      <div class="buttonSection marginBottomLarge">
-          <button type="submit" name="create" id = "submit">CREATE</button>
-      </div>
   </div>  
 </form>

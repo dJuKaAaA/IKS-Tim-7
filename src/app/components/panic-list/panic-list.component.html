@@ -1,6 +1,7 @@
 <div id = "panicList">
     <div class="panic" *ngFor = "let panic of panicList;" id = {{panic.id}} (click) = "selectPanic(panic.id)">
         <div class="imgSection">
+            <img src="{{panic.user.profilePicture}}" alt="">
         </div>
         <div class="date">
             <p>Tue</p>

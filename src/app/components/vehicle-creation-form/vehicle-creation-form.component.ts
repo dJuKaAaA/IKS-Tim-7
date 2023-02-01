@@ -16,7 +16,6 @@ export class VehicleCreationFormComponent implements OnInit{
   public model:string = "";
   public passengerSeats:number;
   public licensePlate:string = "";
-  public router:Router;
   public lastPage:string = "";
   public vehicleType:string;
   public babyTransport:boolean = false;
@@ -24,7 +23,7 @@ export class VehicleCreationFormComponent implements OnInit{
   public currentLocation:Location = new Location(	45.25685617386568, 19.84799528633145, "Zmaj Jovina 26");
   public vehicleTypes : VehicleType[];
 
-  constructor(private vehicleService : VehicleService, private vehicleTypeService : VehicleTypeService){
+  constructor(private vehicleService : VehicleService, private vehicleTypeService : VehicleTypeService, private router:Router){
   }
   ngOnInit(): void {
     this.vehicleTypeService.getAll().subscribe(vehicleTypes => {
@@ -42,8 +41,15 @@ export class VehicleCreationFormComponent implements OnInit{
       babyTransport : this.babyTransport,
       petTransport : this.petTransport
     };
-    this.vehicleService.save(vehicle).subscribe(data => {
-      this.message = "Vehicle created succesfully";
-    });
+    this.vehicleService.save(vehicle).subscribe({
+      next: ()=>{
+        this.message = "Vehicle created succesfully";
+        this.router.navigate(["create-driver"]);
+      },
+      error: (error) => {
+        this.message = error.error.message
+      }
+    }
+    );
   }
 }

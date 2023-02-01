@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { Panic } from 'src/app/model/panic';
+import { ImageParserService } from 'src/app/services/image-parser.service';
 import { PanicService } from 'src/app/services/panic.service';
 
 @Component({
@@ -9,7 +10,7 @@ import { PanicService } from 'src/app/services/panic.service';
   styleUrls: ['./panic-list.component.css']
 })
 export class PanicListComponent {
-  constructor(private panicService : PanicService, private router : Router){
+  constructor(private panicService : PanicService, private router : Router, private imageParserService: ImageParserService){
 
   }
 
@@ -38,5 +39,10 @@ export class PanicListComponent {
         this.PanicReviewedEvent.emit({show:show, num:-1});
       }
     })
+  }
+
+  getImg(index:number){
+    console.log(this.panicList[index]);
+    return this.imageParserService.getImageUrl(this.panicList[index].user.profilePicture);
   }
 }
