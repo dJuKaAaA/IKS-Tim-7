@@ -29,7 +29,7 @@ export class DriverProfileDetailsComponent implements OnInit {
 
   @Input() public driverId: number = 0;
 
-  public driverProfilePicture: String;
+  @Input() public driverProfilePicture: String;
 
   imgSlider: boolean = false;
   profileInfo: boolean = true;
@@ -71,6 +71,7 @@ export class DriverProfileDetailsComponent implements OnInit {
       this.driverProfilePicture = this.imageParserService.getImageUrl(
         this.driver.profilePicture
       );
+      console.log(this.driverProfilePicture);
     });
     this.driverService
       .getAvgDriverRating(userId)

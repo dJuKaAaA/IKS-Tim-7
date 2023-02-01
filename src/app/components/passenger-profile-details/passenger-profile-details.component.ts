@@ -40,7 +40,7 @@ export class PassengerProfileDetailsComponent implements OnInit {
     });
   }
   redirectToPassengerEditProfile(): void {
-    this.router.navigate(['passenger-profile']);
+    this.router.navigate(['editProfile']);
   }
 
   setData(){
@@ -49,6 +49,7 @@ export class PassengerProfileDetailsComponent implements OnInit {
           .getPassenger(this.passengerId)
           .subscribe((data) => {
             this.passenger = data;
+            this.profilePicture = this.imageParserService.getImageUrl(this.passenger.profilePicture);
           });
   }
 }

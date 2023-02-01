@@ -110,7 +110,7 @@ export class PassengerRideHistoryDetailsComponent
     rideRequest.locations = this.ride.locations;
     rideRequest.passengers = this.ride.passengers;
     rideRequest.petTransport = this.ride.petTransport;
-    rideRequest.scheduledTime = this.ride.startTime;
+    rideRequest.scheduledTime = undefined;
     rideRequest.vehicleType = this.ride.vehicleType;
 
     this.rideService.createRide(rideRequest).subscribe(
