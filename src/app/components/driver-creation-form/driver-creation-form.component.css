@@ -114,6 +114,13 @@
     display: inline;
   }
 
+  .profileImageDiv img{
+    height: 100px;
+    width: 100px;
+    border-radius: 100%;
+    cursor: pointer;
+  }
+
   
   @media screen and (max-width: 1200px) {
     .gridArea {

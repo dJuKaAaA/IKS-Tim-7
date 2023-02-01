@@ -55,13 +55,7 @@ export class DriverProfileDetailsComponent implements OnInit {
     this.driverService.getDriver(userId).subscribe({
       next: (driver) => {
         this.fillUpTheHTML(userId);
-      },
-      error: () => {
-        if (this.driverId != 0) {
-          // console.log(this.driverId);
-          this.fillUpTheHTML(this.driverId);
-        }
-      },
+      }
     });
   }
 

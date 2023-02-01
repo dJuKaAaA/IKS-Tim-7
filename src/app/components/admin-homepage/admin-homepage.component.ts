@@ -7,6 +7,7 @@ import { Document } from 'src/app/model/document.model';
 import { DriverService } from 'src/app/services/driver.service';
 import { RideService } from 'src/app/services/ride.service';
 import { MapComponent } from '../map/map.component';
+import { ImageParserService } from 'src/app/services/image-parser.service';
 
 @Component({
   selector: 'app-admin-homepage',
@@ -36,7 +37,7 @@ export class AdminHomepageComponent implements OnInit, AfterViewInit{
 
 
   
-  constructor(private driverService : DriverService, private rideService : RideService){
+  constructor(private driverService : DriverService, private rideService : RideService, private imageParserService:ImageParserService){
     this.driverService = driverService;
     this.rideService = rideService;
   }
@@ -110,6 +111,15 @@ export class AdminHomepageComponent implements OnInit, AfterViewInit{
     this.departureTime = ride.startTime + "";
     this.departureDate = ride.startTime + "";
     this.duration = ride.estimatedTimeInMinutes+"min";
+  }
+
+  getImage(){
+    if(this.selectedDriver != null)
+      return this.imageParserService.getImageUrl(
+        this.selectedDriver.profilePicture
+      );
+    else
+        return ""
   }
 
 }

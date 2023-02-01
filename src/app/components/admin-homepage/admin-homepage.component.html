@@ -4,7 +4,7 @@
             <app-users-list [users] = "drivers" (newItemEvent)="updateCurrentDriver($event)"></app-users-list>
         </div>
         <div id="rightSection">
-            <app-driver-profile-details [driver] = "selectedDriver" [vehicle] = "vehicle" [documents] = "documents" [driverRating] = "driverRating" [vehicleRating] = "vehicleRating"></app-driver-profile-details>
+            <app-driver-profile-details [driverProfilePicture]="getImage()" [driver] = "selectedDriver" [vehicle] = "vehicle" [documents] = "documents" [driverRating] = "driverRating" [vehicleRating] = "vehicleRating"></app-driver-profile-details>
         </div>  
     </div>
     <div id="rideInformation">

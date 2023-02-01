@@ -60,6 +60,8 @@ export class RideReviewComponent {
         alert(data);
       });
     }
+
+    this.rated.emit(true);
     
   }
 

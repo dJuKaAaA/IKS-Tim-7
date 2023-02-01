@@ -50,6 +50,7 @@ export class PassengerProfileDetailsComponent implements OnInit {
           .subscribe((data) => {
             this.passenger = data;
             this.profilePicture = this.imageParserService.getImageUrl(this.passenger.profilePicture);
+            alert(this.profilePicture);
           });
   }
 }

@@ -29,7 +29,7 @@ export class AdminNavbarComponent{
   }
 
   openHomePage(){
-    this.router.navigate(['admin-home'])
+    this.router.navigate(['admin-home']);
   }
   
   openReportCharts() {

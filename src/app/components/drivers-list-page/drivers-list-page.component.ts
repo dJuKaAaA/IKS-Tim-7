@@ -55,10 +55,10 @@ export class DriversListPageComponent {
   block(){
     this.userService.block(this.selectedDriver.id).subscribe({
       next: data =>{
-        this.message = "Passenger succesfully blocked";
+        this.message = "Driver succesfully blocked";
       },
-      error: data => {
-        this.message = "This user is already blocked";
+      error: error => {
+        this.message = error.error.message;
       }
     }
     );
@@ -67,4 +67,5 @@ export class DriversListPageComponent {
   goToDriverCreation(){
     this.router.navigate(['create-driver']);
   }
+
 }

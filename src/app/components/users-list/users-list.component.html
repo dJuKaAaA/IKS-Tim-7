@@ -1,12 +1,7 @@
 <div id="usersList">
-  <div
-    class="user"
-    *ngFor="let user of users"
-    id="{{ user.id }}"
-    (click)="selectUser(user.id)"
-  >
+  <div class="user" *ngFor="let user of users; let ind = index;" id="{{ user.id }}" (click)="selectUser(user.id)">
     <div class="imgSection">
-      <!-- <img src="/src/assets/images/profilePicture.jpg" alt="wtf"> -->
+      <img src="{{getImage(ind)}}">
     </div>
     <div class="date">
       <p>Tue</p>
