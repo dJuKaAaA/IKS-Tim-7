@@ -44,3 +44,7 @@ form {
     margin: 0 1vw;
     font-size: 1vw;
 }
+
+.email-text-field {
+    width: 30vw;
+}

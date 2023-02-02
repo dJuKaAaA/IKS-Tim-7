@@ -15,13 +15,20 @@
         </mat-form-field>
     </div>
 </form>
+<form *ngIf="authService.getRole() == 'ROLE_ADMIN'">
+    <mat-form-field class="email-text-field">
+        <mat-label>User email</mat-label>
+        <input matInput type="email" [(ngModel)]="userEmail" name="user-email" />
+    </mat-form-field>
+    <p>Leave blank to show a chart containing data summary on both passengers and drivers</p>
+</form>
 <div class="buttons">
     <button mat-raised-button color="primary" class="display-button" (click)="showDistanceTraveledChart()">Distance Traveled</button>
     <button mat-raised-button color="primary" class="display-button" (click)="showNumberOfRidesChart()">Number of Rides</button>
     <button mat-raised-button color="primary" class="display-button" (click)="showFinancialsChart()">{{ financialsChartLabel }}</button>
 </div>
 <div class="average-and-sum-container">
-    <p>Total sum: <b>{{totalValue}}</b></p>
+    <p>Total sum: <b>{{sumValue}}</b></p>
     <p>Average per day: <b>{{averageValue}}</b></p>
 </div>
 <div class="chart-container">
