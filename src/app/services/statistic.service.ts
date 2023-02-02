@@ -35,4 +35,28 @@ export class StatisticService {
   public getFinancialsPerDayByEmail(email: string, createReport: CreateReport): Observable<Array<ResponseReport>> {
     return this.http.post<Array<ResponseReport>>(environment.localhostApi + `statistic/financialsPerDayByEmail/${email}`, createReport);
   }
+
+  public getDistanceTraveledPerDayAllDrivers(createReport: CreateReport): Observable<Array<ResponseReport>> {
+    return this.http.post<Array<ResponseReport>>(environment.localhostApi + 'statistic/traveledDistancePerDay/drivers', createReport);
+  }
+
+  public getNumberOfRidesPerDayAllDrivers(createReport: CreateReport): Observable<Array<ResponseReport>> {
+    return this.http.post<Array<ResponseReport>>(environment.localhostApi + 'statistic/numberOfRidesPerDay/drivers', createReport);
+  }
+  
+  public getFinancialsPerDayAllDrivers(createReport: CreateReport): Observable<Array<ResponseReport>> {
+    return this.http.post<Array<ResponseReport>>(environment.localhostApi + 'statistic/financialsPerDay/drivers', createReport);
+  }
+
+  public getDistanceTraveledPerDayAllPassengers(createReport: CreateReport): Observable<Array<ResponseReport>> {
+    return this.http.post<Array<ResponseReport>>(environment.localhostApi + 'statistic/traveledDistancePerDay/passengers', createReport);
+  }
+
+  public getNumberOfRidesPerDayAllPassengers(createReport: CreateReport): Observable<Array<ResponseReport>> {
+    return this.http.post<Array<ResponseReport>>(environment.localhostApi + 'statistic/numberOfRidesPerDay/passengers', createReport);
+  }
+  
+  public getFinancialsPerDayAllPassengers(createReport: CreateReport): Observable<Array<ResponseReport>> {
+    return this.http.post<Array<ResponseReport>>(environment.localhostApi + 'statistic/financialsPerDay/passengers', createReport);
+  }
 }

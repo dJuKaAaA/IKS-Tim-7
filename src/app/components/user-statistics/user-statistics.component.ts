@@ -1,15 +1,12 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { throwToolbarMixedModesError } from '@angular/material/toolbar';
 import { Chart } from 'chart.js/auto';
-import { DriverListDTO } from 'src/app/model/driver-list-dto';
+import { sum } from 'lodash';
 import { CreateReport } from 'src/app/model/report/create-report.model';
 import { ResponseReport } from 'src/app/model/report/response-report.model';
 import { AuthService } from 'src/app/services/auth.service';
 import { DateTimeService } from 'src/app/services/date-time.service';
-import { DriverService } from 'src/app/services/driver.service';
-import { PassengerService } from 'src/app/services/passenger.service';
 import { StatisticService } from 'src/app/services/statistic.service';
 import { DialogComponent } from '../dialog/dialog.component';
 
@@ -50,9 +47,7 @@ export class UserStatisticsComponent implements OnInit {
     public authService: AuthService,
     private statisticService: StatisticService,
     private dateTimeService: DateTimeService,
-    private matDialog: MatDialog,
-    private driverService: DriverService,
-    private passengerServie: PassengerService
+    private matDialog: MatDialog
   ) { }
 
   ngOnInit() {
@@ -164,34 +159,69 @@ export class UserStatisticsComponent implements OnInit {
     }
   }
 
-  private allUsersDataDistanceTraveledChart() {
+  private async allUsersDataDistanceTraveledChart() {
+    let chartData: Array<ChartDataModel> = [];
+    const createReport = this.getCreateReportObject();
+    const chartDataLabelDrivers: string = "Distance Traveled (Drivers)";
+    const chartDataLabelPassengers: string = "Distance Traveled (Passengers)";
+    const backgroundColorDrivers = 'blue';
+    const backgroundColorPassengers = 'darkblue';
 
+    let sumValue = 0;
+    let averageValue = 0;
+
+    await this.statisticService.getDistanceTraveledPerDayAllDrivers(createReport)
+      .toPromise()
+      .then((response: any) => {
+        const statisticTotals = this.getStatisticTotals(response);
+        sumValue += statisticTotals.sum;
+        averageValue += statisticTotals.average;
+
+        this.setChartDateLabels(response);
+        chartData.push(this.getChartDataModel(response, chartDataLabelDrivers, backgroundColorDrivers));
+      });
+
+    await this.statisticService.getDistanceTraveledPerDayAllPassengers(createReport)
+      .toPromise()
+      .then((response: any) => {
+        const statisticTotals = this.getStatisticTotals(response);
+        sumValue += statisticTotals.sum;
+        averageValue += statisticTotals.average;
+
+        this.setChartDateLabels(response);
+        chartData.push(this.getChartDataModel(response, chartDataLabelPassengers, backgroundColorPassengers));
+      });
+
+    this.sumValue = sumValue;
+    this.averageValue = averageValue;
+
+    this.renderChart(...chartData);
   }
 
   private showDistanceTraveledChartForRegularUser() {
     const createReport: CreateReport = this.getCreateReportObject();
-      this.statisticService.getDistanceTraveledPerDay(this.authService.getId(), createReport).subscribe({
-        next: (response: Array<ResponseReport>) => {
-          const chartDataLabel: string = "Distance Traveled";
-          const backgroundColor = 'blue';
+    this.statisticService.getDistanceTraveledPerDay(this.authService.getId(), createReport).subscribe({
+      next: (response: Array<ResponseReport>) => {
+        const chartDataLabel: string = "Distance Traveled";
+        const backgroundColor = 'blue';
 
-          const statisticTotals = this.getStatisticTotals(response);
-          this.sumValue = statisticTotals.sum;
-          this.averageValue = statisticTotals.average;
+        const statisticTotals = this.getStatisticTotals(response);
+        this.sumValue = statisticTotals.sum;
+        this.averageValue = statisticTotals.average;
 
-          this.setChartDateLabels(response);
-          this.renderChart(this.getChartDataModel(response, chartDataLabel, backgroundColor));
-        }, error: (error) => {
-          if (error instanceof HttpErrorResponse) {
-            this.matDialog.open(DialogComponent, {
-              data: {
-                header: "Error!",
-                body: error.error.message
-              }
-            });
-          }
+        this.setChartDateLabels(response);
+        this.renderChart(this.getChartDataModel(response, chartDataLabel, backgroundColor));
+      }, error: (error) => {
+        if (error instanceof HttpErrorResponse) {
+          this.matDialog.open(DialogComponent, {
+            data: {
+              header: "Error!",
+              body: error.error.message
+            }
+          });
         }
-      })
+      }
+    })
   }
 
   showNumberOfRidesChart() {
@@ -233,34 +263,69 @@ export class UserStatisticsComponent implements OnInit {
     }
   }
 
-  private allUsersDataNumberOfRidesChart() {
+  private async allUsersDataNumberOfRidesChart() {
+    let chartData: Array<ChartDataModel> = [];
+    const createReport = this.getCreateReportObject();
+    const chartDataLabelDrivers: string = "Number of Rides (Drivers)";
+    const chartDataLabelPassengers: string = "Number of Rides (Passengers)";
+    const backgroundColorDrivers = 'red';
+    const backgroundColorPassengers = 'darkred';
 
+    let sumValue = 0;
+    let averageValue = 0;
+
+    await this.statisticService.getNumberOfRidesPerDayAllDrivers(createReport)
+      .toPromise()
+      .then((response: any) => {
+        const statisticTotals = this.getStatisticTotals(response);
+        sumValue += statisticTotals.sum;
+        averageValue += statisticTotals.average;
+
+        this.setChartDateLabels(response);
+        chartData.push(this.getChartDataModel(response, chartDataLabelDrivers, backgroundColorDrivers));
+      });
+
+    await this.statisticService.getNumberOfRidesPerDayAllPassengers(createReport)
+      .toPromise()
+      .then((response: any) => {
+        const statisticTotals = this.getStatisticTotals(response);
+        sumValue += statisticTotals.sum;
+        averageValue += statisticTotals.average;
+
+        this.setChartDateLabels(response);
+        chartData.push(this.getChartDataModel(response, chartDataLabelPassengers, backgroundColorPassengers));
+      });
+
+    this.sumValue = sumValue;
+    this.averageValue = averageValue;
+
+    this.renderChart(...chartData);
   }
 
   private showNumberOfRidesChartForRegularUser() {
     const createReport: CreateReport = this.getCreateReportObject();
-      this.statisticService.getNumberOfRidesPerDay(this.authService.getId(), createReport).subscribe({
-        next: (response: Array<ResponseReport>) => {
-          const chartDataLabel: string = "Number of Rides";
-          const backgroundColor = 'red';
+    this.statisticService.getNumberOfRidesPerDay(this.authService.getId(), createReport).subscribe({
+      next: (response: Array<ResponseReport>) => {
+        const chartDataLabel: string = "Number of Rides";
+        const backgroundColor = 'red';
 
-          const statisticTotals = this.getStatisticTotals(response);
-          this.sumValue = statisticTotals.sum;
-          this.averageValue = statisticTotals.average;
+        const statisticTotals = this.getStatisticTotals(response);
+        this.sumValue = statisticTotals.sum;
+        this.averageValue = statisticTotals.average;
 
-          this.setChartDateLabels(response);
-          this.renderChart(this.getChartDataModel(response, chartDataLabel, backgroundColor));
-        }, error: (error) => {
-          if (error instanceof HttpErrorResponse) {
-            this.matDialog.open(DialogComponent, {
-              data: {
-                header: "Error!",
-                body: error.error.message
-              }
-            });
-          }
+        this.setChartDateLabels(response);
+        this.renderChart(this.getChartDataModel(response, chartDataLabel, backgroundColor));
+      }, error: (error) => {
+        if (error instanceof HttpErrorResponse) {
+          this.matDialog.open(DialogComponent, {
+            data: {
+              header: "Error!",
+              body: error.error.message
+            }
+          });
         }
-      })
+      }
+    })
   }
 
   showFinancialsChart() {
@@ -276,12 +341,12 @@ export class UserStatisticsComponent implements OnInit {
     if (this.userEmail.trim() == "") {
       this.allUsersDataFinancialsChart();
     } else {
-    const createReport: CreateReport = this.getCreateReportObject();
+      const createReport: CreateReport = this.getCreateReportObject();
       this.statisticService.getFinancialsPerDayByEmail(this.userEmail, createReport).subscribe({
         next: (response: Array<ResponseReport>) => {
           const chartDataLabel: string = this.financialsChartLabel;
           const backgroundColor = 'green';
-          
+
           const statisticTotals = this.getStatisticTotals(response);
           this.sumValue = statisticTotals.sum;
           this.averageValue = statisticTotals.average;
@@ -299,37 +364,72 @@ export class UserStatisticsComponent implements OnInit {
           }
         }
       })
-  }
     }
+  }
 
-  private allUsersDataFinancialsChart() {
+  private async allUsersDataFinancialsChart() {
+    let chartData: Array<ChartDataModel> = [];
+    const createReport = this.getCreateReportObject();
+    const chartDataLabelDrivers: string = "Income (Drivers)";
+    const chartDataLabelPassengers: string = "Expenses (Passengers)";
+    const backgroundColorDrivers = 'green';
+    const backgroundColorPassengers = 'darkgreen';
 
+    let sumValue = 0;
+    let averageValue = 0;
+
+    await this.statisticService.getFinancialsPerDayAllDrivers(createReport)
+      .toPromise()
+      .then((response: any) => {
+        const statisticTotals = this.getStatisticTotals(response);
+        sumValue += statisticTotals.sum;
+        averageValue += statisticTotals.average;
+
+        this.setChartDateLabels(response);
+        chartData.push(this.getChartDataModel(response, chartDataLabelDrivers, backgroundColorDrivers));
+      });
+
+    await this.statisticService.getFinancialsPerDayAllPassengers(createReport)
+      .toPromise()
+      .then((response: any) => {
+        const statisticTotals = this.getStatisticTotals(response);
+        sumValue += statisticTotals.sum;
+        averageValue += statisticTotals.average;
+
+        this.setChartDateLabels(response);
+        chartData.push(this.getChartDataModel(response, chartDataLabelPassengers, backgroundColorPassengers));
+      });
+
+    this.sumValue = sumValue;
+    this.averageValue = averageValue;
+
+    this.renderChart(...chartData);
   }
 
   private showFinancialsChartForRegularUser() {
     const createReport: CreateReport = this.getCreateReportObject();
-      this.statisticService.getFinancialsPerDay(this.authService.getId(), createReport).subscribe({
-        next: (response: Array<ResponseReport>) => {
-          const chartDataLabel: string = this.financialsChartLabel;
-          const backgroundColor = 'green';
-          
-          const statisticTotals = this.getStatisticTotals(response);
-          this.sumValue = statisticTotals.sum;
-          this.averageValue = statisticTotals.average;
+    this.statisticService.getFinancialsPerDay(this.authService.getId(), createReport).subscribe({
+      next: (response: Array<ResponseReport>) => {
+        const chartDataLabel: string = this.financialsChartLabel;
+        const backgroundColor = 'green';
 
-          this.setChartDateLabels(response);
-          this.renderChart(this.getChartDataModel(response, chartDataLabel, backgroundColor));
-        }, error: (error) => {
-          if (error instanceof HttpErrorResponse) {
-            this.matDialog.open(DialogComponent, {
-              data: {
-                header: "Error!",
-                body: error.error.message
-              }
-            });
-          }
+        const statisticTotals = this.getStatisticTotals(response);
+        this.sumValue = statisticTotals.sum;
+        this.averageValue = statisticTotals.average;
+
+        this.setChartDateLabels(response);
+        this.renderChart(this.getChartDataModel(response, chartDataLabel, backgroundColor));
+      }, error: (error) => {
+        if (error instanceof HttpErrorResponse) {
+          this.matDialog.open(DialogComponent, {
+            data: {
+              header: "Error!",
+              body: error.error.message
+            }
+          });
         }
-      })
+      }
+    })
   }
 
 }
