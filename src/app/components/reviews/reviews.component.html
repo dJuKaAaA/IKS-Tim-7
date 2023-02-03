@@ -1,5 +1,8 @@
 <div class="container">
   <div class="rating-element" *ngFor="let review of reviews">
+    <div class="passenger-email-container">
+        {{review.passenger?.email}}
+    </div>
     <div class="rating">
       <div>
         <h4>RATING:</h4>

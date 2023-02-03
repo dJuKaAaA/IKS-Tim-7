@@ -1,14 +1,17 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Driver } from 'src/app/model/driver.model';
 import { Review } from 'src/app/model/review.model';
 import { RideRequest } from 'src/app/model/ride-request.model';
+import { RideReview } from 'src/app/model/ride-review.model';
 import { Ride } from 'src/app/model/ride.model';
 import { Vehicle } from 'src/app/model/vehicle.model';
 import { DateTimeService } from 'src/app/services/date-time.service';
 import { DriverService } from 'src/app/services/driver.service';
 import { ReviewService } from 'src/app/services/review.service';
 import { RideService } from 'src/app/services/ride.service';
-import { TomTomGeolocationService } from 'src/app/services/tom-tom-geolocation.service';
+import { DialogComponent } from '../dialog/dialog.component';
 import { MapComponent } from '../map/map.component';
 
 @Component({
@@ -17,15 +20,15 @@ import { MapComponent } from '../map/map.component';
   styleUrls: ['./passenger-ride-history-details.component.css'],
 })
 export class PassengerRideHistoryDetailsComponent
-  implements OnInit, AfterViewInit
+  implements AfterViewInit
 {
   @ViewChild(MapComponent) mapComponent: MapComponent;
 
   public ride: Ride = {} as Ride;
   public driver: Driver = {} as Driver;
   public vehicle: Vehicle = {} as Vehicle;
-  public driverReviews: Review[];
-  public vehicleReviews: Review[];
+  public driverReviews: Review[] = [];
+  public vehicleReviews: Review[] = [];
 
   public departure: string;
   public destination: string;
@@ -39,11 +42,10 @@ export class PassengerRideHistoryDetailsComponent
     private rideService: RideService,
     private driverService: DriverService,
     private reviewService: ReviewService,
-    private tomTomService: TomTomGeolocationService,
-    private dateTimeService: DateTimeService
+    private dateTimeService: DateTimeService,
+    private matDialog: MatDialog
   ) {}
 
-  ngOnInit(): void {}
   async ngAfterViewInit() {
     await this.rideService
       .getRide(Number(sessionStorage.getItem('rideForDisplayDetails')))
@@ -62,13 +64,24 @@ export class PassengerRideHistoryDetailsComponent
       .getDriver(this.ride.driver.id)
       .subscribe((data) => (this.driver = data));
 
-    this.reviewService
-      .getDriverReviews(this.ride.driver.id)
-      .subscribe((data) => (this.driverReviews = data.results));
+    this.reviewService.getReviews(this.ride.id).subscribe({
+      next: (rideReviews: Array<RideReview>) => {
+        for (let review of rideReviews) {
+          this.driverReviews.push(review.driverReview);
+          this.vehicleReviews.push(review.vehicleReview);
+        }
 
-    this.reviewService
-      .getVehicleReviews(this.vehicle.id)
-      .subscribe((data) => (this.vehicleReviews = data.results));
+      }, error: (error) => {
+        if (error instanceof HttpErrorResponse) {
+          this.matDialog.open(DialogComponent, {
+            data: {
+              header: "Error!",
+              body: error.error.message
+            }
+          });
+        }
+      }
+    })
 
     this.departure = this.ride.locations[0].departure.address;
     this.destination =
@@ -85,28 +98,13 @@ export class PassengerRideHistoryDetailsComponent
       this.duration = `${hours}h ${minutes}m ${seconds}s`;
     }
 
-    this.ride.locations.forEach((route) => {
-      this.mapComponent.showRouteFromAddresses(
-        route.departure.address,
-        route.destination.address
-      );
-      this.tomTomService
-        .getRoute(
-          route.departure.latitude,
-          route.departure.longitude,
-          route.destination.latitude,
-          route.destination.longitude
-        )
-        .subscribe(
-          (response) =>
-            (this.distance =
-              this.distance + response.routes[0].summary.lengthInMeters)
-        );
-    });
-
-    console.log(this.ride.totalCost);
-
-    this.mapComponent.loadMap();
+    setTimeout(() => {
+      this.mapComponent.loadMap();
+      this.ride.locations.forEach(route => {
+        this.mapComponent.showRoute(route);
+      })
+      this.mapComponent.focusOnPoint(this.ride.locations[0].departure);
+    }, 100);
   }
 
   public orderRide(): void {
