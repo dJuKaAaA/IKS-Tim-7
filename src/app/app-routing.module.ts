@@ -28,6 +28,9 @@ import { DriversListPageComponent } from './components/drivers-list-page/drivers
 import { DriverChangeRequestReviewComponent } from './components/driver-change-request-review/driver-change-request-review.component';
 import { UserStatisticsComponent } from './components/user-statistics/user-statistics.component';
 import { FavoriteLocationsComponent } from './components/favorite-locations/favorite-locations.component';
+import { AdminPagesGuard } from './guard/admin-pages.guard';
+import { DriverPagesGuard } from './guard/driver-pages.guard';
+import { PassengerPagesGuard } from './guard/passenger-pages.guard';
 
 const routes: Routes = [
   {
@@ -37,7 +40,8 @@ const routes: Routes = [
   },
   {
     path: 'passengers-list',
-    component: PassengersListPageComponent
+    component: PassengersListPageComponent,
+    canActivate: [IsAuthenticatedGuard, AdminPagesGuard]
   },
   {
     path: 'driver-change-request-review',
@@ -45,7 +49,8 @@ const routes: Routes = [
   },
   {
     path: 'drivers-list',
-    component: DriversListPageComponent
+    component: DriversListPageComponent,
+    canActivate: [IsAuthenticatedGuard, AdminPagesGuard]
   },
   {
     path: 'userRideHistory',
@@ -53,13 +58,9 @@ const routes: Routes = [
     canActivate: [IsAuthenticatedGuard],
   },
   {
-    path: 'rideReview',
-    component: RideReviewComponent
-  },
-  {
     path: 'admin-home',
     component: AdminHomepageComponent,
-    canActivate: [IsAuthenticatedGuard],
+    canActivate: [IsAuthenticatedGuard, AdminPagesGuard],
   },
   {
     path: 'register',
@@ -69,41 +70,42 @@ const routes: Routes = [
   {
     path: 'driver-current-ride/:id',
     component: DriverCurrentRideComponent,
+    canActivate: [IsAuthenticatedGuard, DriverPagesGuard]
   },
   {
     path: 'editProfile',
     component: EditProfileComponent,
-    canActivate: [IsAuthenticatedGuard],
+    canActivate: [IsAuthenticatedGuard, PassengerPagesGuard],
   },
   {
     path: 'passenger-profile',
     component: PassengerProfileDetailsComponent,
-    canActivate: [IsAuthenticatedGuard],
+    canActivate: [IsAuthenticatedGuard, PassengerPagesGuard],
   },
   {
     path: 'driver-home',
     component: DriverHomeComponent,
-    canActivate: [IsAuthenticatedGuard],
+    canActivate: [IsAuthenticatedGuard, DriverPagesGuard],
   },
   {
     path: 'driver-profile',
     component: DriverProfilePageComponent,
-    canActivate: [IsAuthenticatedGuard],
+    canActivate: [IsAuthenticatedGuard, DriverPagesGuard],
   },
   {
     path: 'driver-edit-profile',
     component: DriverEditProfileComponent,
-    canActivate: [IsAuthenticatedGuard],
+    canActivate: [IsAuthenticatedGuard, DriverPagesGuard],
   },
   {
     path: 'driver-ride-history-details',
     component: DriverRideHistoryDetailsComponent,
-    canActivate: [IsAuthenticatedGuard],
+    canActivate: [IsAuthenticatedGuard, DriverPagesGuard],
   },
   {
     path: 'passenger-ride-history-details',
     component: PassengerRideHistoryDetailsComponent,
-    canActivate: [IsAuthenticatedGuard],
+    canActivate: [IsAuthenticatedGuard, PassengerPagesGuard],
   },
   {
     path: 'forgot-password',
@@ -113,7 +115,7 @@ const routes: Routes = [
   {
     path: 'panic-review/:id',
     component: PanicReviewPageComponent,
-    canActivate: [IsAuthenticatedGuard],
+    canActivate: [IsAuthenticatedGuard, AdminPagesGuard],
   },
   {
     path: 'ride-history',
@@ -123,32 +125,27 @@ const routes: Routes = [
   {
     path: 'create-driver',
     component: DriverCreationComponent,
-    canActivate: [IsAuthenticatedGuard],
+    canActivate: [IsAuthenticatedGuard, AdminPagesGuard],
   },
   {
     path: 'create-vehicle',
     component: VehicleCreationPageComponent,
-    canActivate: [IsAuthenticatedGuard],
+    canActivate: [IsAuthenticatedGuard, AdminPagesGuard],
   },
   {
     path: 'passenger-home',
     component: PassengerHomeComponent,
-    canActivate: [IsAuthenticatedGuard],
+    canActivate: [IsAuthenticatedGuard, PassengerPagesGuard],
   },
   {
     path: 'passenger-current-ride/:id',
     component: PassengerCurrentRideComponent,
-    canActivate: [IsAuthenticatedGuard],
+    canActivate: [IsAuthenticatedGuard, PassengerPagesGuard],
   },
   {
     path: 'admin-chat',
     component: ChatComponent,
-    canActivate: [IsAuthenticatedGuard],
-  },
-  {
-    path: 'payment',
-    component: PaymentComponent,
-    canActivate: [IsAuthenticatedGuard],
+    canActivate: [IsAuthenticatedGuard, AdminPagesGuard],
   },
   {
     path: 'report-charts',
@@ -158,7 +155,7 @@ const routes: Routes = [
   {
     path: 'favorite-locations',
     component: FavoriteLocationsComponent,
-    canActivate: [IsAuthenticatedGuard],
+    canActivate: [IsAuthenticatedGuard, PassengerPagesGuard],
   }
 ];
 
