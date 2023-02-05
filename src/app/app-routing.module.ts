@@ -27,6 +27,7 @@ import { PassengersListPageComponent } from './components/passengers-list-page/p
 import { DriversListPageComponent } from './components/drivers-list-page/drivers-list-page.component';
 import { DriverChangeRequestReviewComponent } from './components/driver-change-request-review/driver-change-request-review.component';
 import { UserStatisticsComponent } from './components/user-statistics/user-statistics.component';
+import { FavoriteLocationsComponent } from './components/favorite-locations/favorite-locations.component';
 
 const routes: Routes = [
   {
@@ -152,6 +153,11 @@ const routes: Routes = [
   {
     path: 'report-charts',
     component: UserStatisticsComponent,
+    canActivate: [IsAuthenticatedGuard],
+  },
+  {
+    path: 'favorite-locations',
+    component: FavoriteLocationsComponent,
     canActivate: [IsAuthenticatedGuard],
   }
 ];

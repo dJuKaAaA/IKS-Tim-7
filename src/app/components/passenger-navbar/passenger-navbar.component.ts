@@ -51,6 +51,10 @@ export class PassengerNavbarComponent implements OnInit, OnDestroy {
     this.router.navigate(['userRideHistory'])
   }
 
+  navigateToFavoriteLocations() {
+    this.router.navigate(['favorite-locations']);
+  }
+
   navigateToProfileInfo() {
     this.router.navigate(['passenger-profile'])
   }

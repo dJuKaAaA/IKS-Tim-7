@@ -84,6 +84,8 @@ import { PassengersListPageComponent } from './components/passengers-list-page/p
 import { DriversListPageComponent } from './components/drivers-list-page/drivers-list-page.component';
 import { DriverChangeRequestReviewComponent } from './components/driver-change-request-review/driver-change-request-review.component';
 import { UserStatisticsComponent } from './components/user-statistics/user-statistics.component';
+import { FavoriteLocationCardComponent } from './components/favorite-location-card/favorite-location-card.component';
+import { FavoriteLocationsComponent } from './components/favorite-locations/favorite-locations.component';
 
 @NgModule({
   declarations: [
@@ -147,6 +149,8 @@ import { UserStatisticsComponent } from './components/user-statistics/user-stati
     DriversListPageComponent,
     DriverChangeRequestReviewComponent,
     UserStatisticsComponent,
+    FavoriteLocationCardComponent,
+    FavoriteLocationsComponent,
   ],
   imports: [
     BrowserModule,

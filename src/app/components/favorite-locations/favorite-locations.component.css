@@ -1,0 +1,13 @@
+h1 {
+    text-align: center;
+    font-size: 3vw;
+    margin: 5vh 0;
+}
+
+.main-content {
+    width: 90vw;
+    height: 70vh;
+    overflow-y: scroll;
+    text-align: center;
+    margin: 0 auto;
+} 
