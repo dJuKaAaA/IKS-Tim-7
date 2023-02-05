@@ -215,7 +215,7 @@ export class ScheduleRideComponent implements OnInit, AfterViewInit {
                 this.matDialog.open(DialogComponent, {
                   data: {
                     header: "Success!",
-                    body: "Successfully added this ride to favorite ride"
+                    body: "Successfully added to favorite locations"
                   }
                 });
             }, error: (error) => {

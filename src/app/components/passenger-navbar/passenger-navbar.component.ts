@@ -118,19 +118,18 @@ export class PassengerNavbarComponent implements OnInit, OnDestroy {
 
   handleResultActiveRideFinished(data: { body: string }) {
     if (data.body) {
+      const information = JSON.parse(data.body);
+
       this.rideService.getPassengersActiveRide(this.authService.getId()).subscribe({
         error: (error) => {
           /* if this method is called and the passenger doesn't have an active ride; then ride 
            * that was recently active was marked as finished */
           if (error instanceof HttpErrorResponse) {
-            // TODO: Instead of regular dialog; open the payment and rating dialog
-            // this.matDialog.open(DialogComponent, {
-            //   data: {
-            //     header: "Finished!",
-            //     body: "The ride is finished"
-            //   }
-            // });
-            this.matDialog.open(FinishedRideDialogComponent);
+            this.matDialog.open(FinishedRideDialogComponent, {
+              data: {
+                rideId: information.rideId
+              }
+            });
             this.passengerService.setHasActiveRide(false);
             this.router.navigate(['passenger-home']);
           }

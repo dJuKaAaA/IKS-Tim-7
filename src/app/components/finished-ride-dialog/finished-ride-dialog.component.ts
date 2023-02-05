@@ -9,8 +9,8 @@ import { DialogComponent } from '../dialog/dialog.component';
 })
 export class FinishedRideDialogComponent {
 
-  constructor(private matDialogRef: MatDialogRef<DialogComponent>) {}
-    
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { rideId: number}, 
+    private matDialogRef: MatDialogRef<DialogComponent>) {}
   close() {
     this.matDialogRef.close();
   }
