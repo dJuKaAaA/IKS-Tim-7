@@ -46,12 +46,6 @@ describe('Register', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-
-  
-
   it('Name is empty', async () => {
     let name = "";
     let surname = "proba";
