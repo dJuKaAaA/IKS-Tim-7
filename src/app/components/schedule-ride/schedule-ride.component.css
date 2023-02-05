@@ -72,7 +72,7 @@ h1 {
     font-style: italic;
 }
 
-.datetime-form-item {
+.time-form-item {
     width: 95%;
 }
 
@@ -152,4 +152,9 @@ h2 {
 .current-ride-redirect:hover {
     text-decoration: underline;
     cursor: pointer;
+}
+
+.favorite-location-name-input {
+    margin-top: 1vh;
+    width: 100%;
 }

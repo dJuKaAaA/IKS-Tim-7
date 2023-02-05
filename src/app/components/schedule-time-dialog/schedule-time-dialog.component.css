@@ -1,0 +1,29 @@
+.close-button {
+    width: 50%;
+    margin: auto;
+}
+
+.time-form {
+    display: block;
+    margin: 5vh 1vw;
+    width: 25vw;
+    padding: 3vh 1vw;
+    border-radius: 15px;
+}
+
+.time-form-item {
+    width: 100%;
+}
+
+.schedule-ride-label {
+    text-align: center;
+    margin-top: 5vh;
+    font-size: 2vw;
+}
+
+.schedule-button {
+    width: 80%;
+    margin: 0 10%;
+    font-size: 1vw;
+    padding: 3vh 0;
+}
