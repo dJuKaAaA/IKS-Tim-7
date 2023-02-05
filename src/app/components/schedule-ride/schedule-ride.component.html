@@ -82,6 +82,13 @@
                 [price]="getEstimatedPrice() + ' din'">
             </app-ride-details>
         </div>
+        <mat-checkbox [checked]="markedAsFavorite" (change)="markAsFavorite()">Mark as favorite</mat-checkbox>
+        <form *ngIf="markedAsFavorite">
+            <mat-form-field class="favorite-location-name-input">
+                <mat-label>Favorite location name</mat-label>
+                <input matInput [(ngModel)]="favoriteLocationName" name="favorite-location-name"/>
+            </mat-form-field>
+        </form>
         <button id="schedule-button" mat-raised-button color="primary" (click)="scheduleRide()" [disabled]="!loggedIn || hasActiveRide()">
             Schedule
         </button>

@@ -153,3 +153,8 @@ h2 {
     text-decoration: underline;
     cursor: pointer;
 }
+
+.favorite-location-name-input {
+    margin-top: 1vh;
+    width: 100%;
+}

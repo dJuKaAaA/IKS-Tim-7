@@ -23,6 +23,9 @@ import { DateTimeService } from 'src/app/services/date-time.service';
 import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 import { Router } from '@angular/router';
+import { create } from 'lodash';
+import { FavoriteLocation } from 'src/app/model/favorite-location.model';
+import { NgxMatDatetimeContent } from '@angular-material-components/datetime-picker';
 
 @Component({
   selector: 'app-schedule-ride',
@@ -34,7 +37,7 @@ export class ScheduleRideComponent implements OnInit, AfterViewInit {
   @ViewChild(MapComponent) mapComponent: MapComponent;
 
   private stompClient: any;
-  
+
   drivers: Array<DriverLocation> = [];
   route: Route = new Route(
     new Location(NaN, NaN, ""),
@@ -73,11 +76,18 @@ export class ScheduleRideComponent implements OnInit, AfterViewInit {
 
   activeRideId: number = NaN;
 
+  markedAsFavorite: boolean = false;
+  favoriteLocationName: string = "";
+
+  markAsFavorite() {
+    this.markedAsFavorite = !this.markedAsFavorite;
+  }
+
   constructor(
     private geoLocationService: TomTomGeolocationService,
     private matDialog: MatDialog,
     private driverService: DriverService,
-    private passengerService: PassengerService, 
+    private passengerService: PassengerService,
     private authService: AuthService,
     private vehicleTypeService: VehicleTypeService,
     private rideService: RideService,
@@ -144,7 +154,7 @@ export class ScheduleRideComponent implements OnInit, AfterViewInit {
       const hours: number = +this.rideTime.split(":")[0];
       const minutes: number = +this.rideTime.split(":")[1];
       rideDate.setHours(hours);
-      rideDate.setMinutes(minutes); 
+      rideDate.setMinutes(minutes);
     } else {
       immediateScheduling = true;
     }
@@ -159,6 +169,15 @@ export class ScheduleRideComponent implements OnInit, AfterViewInit {
       });
       return;
     }
+    if (this.markedAsFavorite && this.favoriteLocationName.trim() == "") {
+      this.matDialog.open(DialogComponent, {
+        data: {
+          header: "Invalid!",
+          body: "Favorite location name must be provided"
+        }
+      });
+      return;
+    }
 
     const rideRequest: RideRequest = {
       scheduledTime: immediateScheduling ? undefined : this.dateTimeService.toString(rideDate),
@@ -169,12 +188,18 @@ export class ScheduleRideComponent implements OnInit, AfterViewInit {
       petTransport: this.petTransport
     }
 
-    console.log(rideRequest);
+    const favoriteLocation: FavoriteLocation = {
+      favoriteName: this.favoriteLocationName,
+      scheduledTime: immediateScheduling ? undefined : this.dateTimeService.toString(rideDate),
+      locations: this.routes,
+      passengers: this.invitedPassengers,
+      vehicleType: this.selectedVehicleType.name,
+      babyTransport: this.babyTransport,
+      petTransport: this.petTransport
+    }
 
     this.rideService.createRide(rideRequest).subscribe({
       next: (result: Ride) => {
-        console.log(result);
-
         this.matDialog.open(DialogComponent, {
           data: {
             header: "Success!",
@@ -182,6 +207,28 @@ export class ScheduleRideComponent implements OnInit, AfterViewInit {
           }
         });
         this.stompClient.send("/socket-subscriber/send/scheduled/ride", {}, JSON.stringify(result));
+
+        if (this.markedAsFavorite) {
+          this.rideService.createFavoriteLocation(favoriteLocation).subscribe({
+            next: () => {
+                this.matDialog.open(DialogComponent, {
+                  data: {
+                    header: "Success!",
+                    body: "Successfully added this ride to favorite ride"
+                  }
+                });
+            }, error: (error) => {
+              if (error instanceof HttpErrorResponse) {
+                this.matDialog.open(DialogComponent, {
+                  data: {
+                    header: "Could not create favorite location but scheduled the ride",
+                    body: error.error.message
+                  }
+                });
+              }
+            }
+          })
+        }
       },
       error: (error) => {
         if (error instanceof HttpErrorResponse) {
@@ -196,7 +243,7 @@ export class ScheduleRideComponent implements OnInit, AfterViewInit {
       }
     });
   }
-  
+
   updateRoute(route: Route) {
     // mapComponent.showRoute changes values of passed route for some reason so this emitter fetches that changed data
     this.route = route;
@@ -215,8 +262,8 @@ export class ScheduleRideComponent implements OnInit, AfterViewInit {
       });
       return;
     }
-    
-    const isLocationValid = function(location: Location): boolean {
+
+    const isLocationValid = function (location: Location): boolean {
       return (Number.isNaN(location.longitude) || Number.isNaN(location.latitude));
     }
 
@@ -252,7 +299,7 @@ export class ScheduleRideComponent implements OnInit, AfterViewInit {
       });
       return;
     }
-    
+
     // after validations, we show the route on the map
     if (!this.disableStartAddressField) {
       this.route.departure = startLocation;
@@ -416,7 +463,7 @@ export class ScheduleRideComponent implements OnInit, AfterViewInit {
         if (error instanceof HttpErrorResponse) {
           this.invitedPassengerErrorMessage = error.error.message;
         }
-      } 
+      }
     })
   }
 
@@ -461,11 +508,11 @@ export class ScheduleRideComponent implements OnInit, AfterViewInit {
     }
     return totalDistance;
   }
-  
+
 
   getEstimatedPrice(): number {
     if (this.routes.length > 0 && this.selectedVehicleType) {
-      return Math.round(this.selectedVehicleType.pricePerKm + this.getDistanceInMeters() / 1000 * 120); 
+      return Math.round(this.selectedVehicleType.pricePerKm + this.getDistanceInMeters() / 1000 * 120);
     }
     return 0;
   }

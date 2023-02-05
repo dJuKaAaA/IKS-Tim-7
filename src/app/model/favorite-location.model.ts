@@ -1,4 +1,4 @@
-import { Route } from "@angular/router";
+import { Route } from "./route.model";
 import { SimpleUser } from "./simple-user.model";
 
 export interface FavoriteLocation {
@@ -8,4 +8,5 @@ export interface FavoriteLocation {
     vehicleType: string,
     babyTransport: boolean,
     petTransport: boolean,
+    scheduledTime: string | undefined
 }
