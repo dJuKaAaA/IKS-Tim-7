@@ -13,6 +13,7 @@ import { ReviewService } from 'src/app/services/review.service';
 import { RideService } from 'src/app/services/ride.service';
 import { DialogComponent } from '../dialog/dialog.component';
 import { MapComponent } from '../map/map.component';
+import { ScheduleTimeDialogComponent } from '../schedule-time-dialog/schedule-time-dialog.component';
 
 @Component({
   selector: 'app-passenger-ride-history-details',
@@ -116,13 +117,11 @@ export class PassengerRideHistoryDetailsComponent
     rideRequest.scheduledTime = undefined;
     rideRequest.vehicleType = this.ride.vehicleType;
 
-    this.rideService.createRide(rideRequest).subscribe(
-      (_) => {
-        alert('You have successfully order a ride!');
-      },
-      (err) => {
-        alert(err.error.message);
-      }
-    );
+    this.matDialog.open(ScheduleTimeDialogComponent, {
+        data: {
+          rideRequest: rideRequest
+        }
+      });
+    
   }
 }

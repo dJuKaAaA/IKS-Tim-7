@@ -1,0 +1,15 @@
+<h1 class="schedule-ride-label"><i>Schedule ride</i></h1>
+<form class="time-form">
+  <h1>Pick time</h1>
+  <mat-form-field class="time-form-item">
+    <mat-label>Time</mat-label>
+    <input matInput [(ngModel)]="rideTime" name="ride-time" />
+    <mat-hint>HH:mm</mat-hint>
+    <button mat-button matSuffix (click)="clearScheduleTime()">Clear</button>
+  </mat-form-field>
+  <p style="text-align: center; font-style: italic;">Leave blank to request a ride immediately</p>
+</form>
+<button mat-raised-button color="primary" class="schedule-button" (click)="scheduleRide()">Schedule</button>
+<div mat-dialog-actions>
+  <button mat-button mat-dialog-close (click)="close()" class="close-button">Close</button>
+</div>

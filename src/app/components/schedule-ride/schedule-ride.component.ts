@@ -150,6 +150,7 @@ export class ScheduleRideComponent implements OnInit, AfterViewInit {
     // getting ride date that the passenger picked
     let immediateScheduling = false;
     let rideDate: Date = new Date();
+    this.rideTime = this.rideTime.trim();
     if (this.rideTime) {
       const hours: number = +this.rideTime.split(":")[0];
       const minutes: number = +this.rideTime.split(":")[1];

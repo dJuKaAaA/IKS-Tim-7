@@ -86,6 +86,7 @@ import { DriverChangeRequestReviewComponent } from './components/driver-change-r
 import { UserStatisticsComponent } from './components/user-statistics/user-statistics.component';
 import { FavoriteLocationCardComponent } from './components/favorite-location-card/favorite-location-card.component';
 import { FavoriteLocationsComponent } from './components/favorite-locations/favorite-locations.component';
+import { ScheduleTimeDialogComponent } from './components/schedule-time-dialog/schedule-time-dialog.component';
 
 @NgModule({
   declarations: [
@@ -151,6 +152,7 @@ import { FavoriteLocationsComponent } from './components/favorite-locations/favo
     UserStatisticsComponent,
     FavoriteLocationCardComponent,
     FavoriteLocationsComponent,
+    ScheduleTimeDialogComponent,
   ],
   imports: [
     BrowserModule,
