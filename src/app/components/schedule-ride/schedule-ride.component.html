@@ -23,7 +23,7 @@
 
         <form class="time-form" *ngIf="loggedIn">
             <h1>Pick time</h1>
-            <mat-form-field class="datetime-form-item">
+            <mat-form-field class="time-form-item">
                 <mat-label>Time</mat-label>
                 <input [ngxTimepicker]="timePicker" matInput [(ngModel)]="rideTime" name="ride-time" readonly [format]="24" />
                 <ngx-material-timepicker #timePicker></ngx-material-timepicker>
@@ -82,6 +82,13 @@
                 [price]="getEstimatedPrice() + ' din'">
             </app-ride-details>
         </div>
+        <mat-checkbox *ngIf="loggedIn" [checked]="markedAsFavorite" (change)="markAsFavorite()">Mark as favorite</mat-checkbox>
+        <form *ngIf="loggedIn && markedAsFavorite">
+            <mat-form-field class="favorite-location-name-input">
+                <mat-label>Favorite location name</mat-label>
+                <input matInput [(ngModel)]="favoriteLocationName" name="favorite-location-name"/>
+            </mat-form-field>
+        </form>
         <button id="schedule-button" mat-raised-button color="primary" (click)="scheduleRide()" [disabled]="!loggedIn || hasActiveRide()">
             Schedule
         </button>

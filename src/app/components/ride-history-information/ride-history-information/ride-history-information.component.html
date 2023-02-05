@@ -73,8 +73,8 @@
   <div class="div2">
     <div *ngFor="let ride of rides$ | async; let indexOfElement = index">
       <app-ride-history-card
-        [vehicleRating]="avgVehicleReviewRating[indexOfElement]"
-        [driverRating]="avgDriverReviewRating[indexOfElement]"
+        [vehicleRating]="avgVehicleReviewRating['' + ride.id]"
+        [driverRating]="avgDriverReviewRating['' + ride.id]"
         [ride]="ride"
         (routeEvent)="displayRoutesInTable($event)"
       ></app-ride-history-card>

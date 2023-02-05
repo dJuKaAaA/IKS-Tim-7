@@ -13,7 +13,7 @@ export class StarComponent {
 
 
   changeRating(event:any){
-    this.rating = (event.clientX - this.stars.nativeElement.getBoundingClientRect().x) * 5 / this.stars.nativeElement.getBoundingClientRect().width;  
+    this.rating = Math.round((event.clientX - this.stars.nativeElement.getBoundingClientRect().x) * 5 / this.stars.nativeElement.getBoundingClientRect().width);
     this.selectedRating.emit(this.rating);
   }
 }

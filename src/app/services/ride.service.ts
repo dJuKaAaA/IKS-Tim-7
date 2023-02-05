@@ -8,6 +8,7 @@ import { Rejection } from '../model/rejection.model';
 import { RideRequest } from '../model/ride-request.model';
 import { RideAddDriver } from '../model/ride-add-driver';
 import { Panic } from '../model/panic';
+import { FavoriteLocation } from '../model/favorite-location.model';
 
 @Injectable({
   providedIn: 'root',
@@ -61,5 +62,17 @@ export class RideService {
 
   public getPassengersActiveRide(passengerId: number): Observable<Ride> {
     return this.http.get<Ride>(environment.localhostApi + `ride/passenger/${passengerId}/active`);
+  }
+
+  public getFavoriteLocationsByPassengerId(passengerId: number): Observable<Array<FavoriteLocation>> {
+    return this.http.get<Array<FavoriteLocation>>(environment.localhostApi + `ride/passenger/${passengerId}/favorites`)
+  }
+
+  public createFavoriteLocation(favoriteLocation: FavoriteLocation): Observable<FavoriteLocation> {
+    return this.http.post<FavoriteLocation>(environment.localhostApi + `ride/favorites`, favoriteLocation);
+  }
+
+  public getAllRides(): Observable<Rides> {
+    return this.http.get<Rides>(environment.localhostApi + 'ride/everybody');
   }
 }
