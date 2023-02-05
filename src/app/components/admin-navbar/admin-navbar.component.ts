@@ -16,6 +16,10 @@ export class AdminNavbarComponent{
 
   constructor(private router: Router) {}
 
+  openRideHistory() {
+    this.router.navigate(['userRideHistory']);
+  }
+
   openChat() {
     this.router.navigate(['admin-chat']);
   }

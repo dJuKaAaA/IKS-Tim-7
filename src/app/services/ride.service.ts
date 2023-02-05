@@ -71,4 +71,8 @@ export class RideService {
   public createFavoriteLocation(favoriteLocation: FavoriteLocation): Observable<FavoriteLocation> {
     return this.http.post<FavoriteLocation>(environment.localhostApi + `ride/favorites`, favoriteLocation);
   }
+
+  public getAllRides(): Observable<Rides> {
+    return this.http.get<Rides>(environment.localhostApi + 'ride/everybody');
+  }
 }

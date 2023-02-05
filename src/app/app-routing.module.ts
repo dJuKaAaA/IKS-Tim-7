@@ -31,6 +31,7 @@ import { FavoriteLocationsComponent } from './components/favorite-locations/favo
 import { AdminPagesGuard } from './guard/admin-pages.guard';
 import { DriverPagesGuard } from './guard/driver-pages.guard';
 import { PassengerPagesGuard } from './guard/passenger-pages.guard';
+import { AdminRideHistoryDetailsComponent } from './components/admin-ride-history-details/admin-ride-history-details.component';
 
 const routes: Routes = [
   {
@@ -156,6 +157,11 @@ const routes: Routes = [
     path: 'favorite-locations',
     component: FavoriteLocationsComponent,
     canActivate: [IsAuthenticatedGuard, PassengerPagesGuard],
+  },
+  {
+    path: 'admin-ride-history-details',
+    component: AdminRideHistoryDetailsComponent,
+    canActivate: [IsAuthenticatedGuard, AdminPagesGuard]
   }
 ];
 

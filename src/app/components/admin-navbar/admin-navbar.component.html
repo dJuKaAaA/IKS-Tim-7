@@ -6,10 +6,10 @@
 
     </div>
 
-    <a mat-button class="navbar-item">Ride history</a>
-    <a mat-button class="navbar-item" (click) = "openPassengersList()">Passengers</a>
-    <a mat-button class="navbar-item" (click) = "openDriversList()">Drivers</a>
-    <a mat-button class="navbar-item" (click) = "openReportCharts()">Charts</a>
+    <a mat-button class="navbar-item" (click)="openRideHistory()">Ride history</a>
+    <a mat-button class="navbar-item" (click)="openPassengersList()">Passengers</a>
+    <a mat-button class="navbar-item" (click)="openDriversList()">Drivers</a>
+    <a mat-button class="navbar-item" (click)="openReportCharts()">Charts</a>
     <a mat-button class="navbar-item" (click)="openChat()">Chat</a>
     <a mat-button class="navbar-item" (click)="logout()">Log out</a>
     <div class = "navbar-item notification">
