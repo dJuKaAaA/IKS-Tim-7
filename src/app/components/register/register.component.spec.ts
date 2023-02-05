@@ -19,11 +19,14 @@ import { WorkHour } from 'src/app/model/work-hours';
 import { HttpErrorResponse } from '@angular/common/http';
 import { By } from '@angular/platform-browser';
 import { RegisterComponent } from './register.component';
+import { UserService } from 'src/app/services/user.service';
+import { Passenger } from 'src/app/model/passenger.model';
+import { PassengerService } from 'src/app/services/passenger.service';
 
 describe('Register', () => {
   let component: RegisterComponent;
   let fixture: ComponentFixture<RegisterComponent>;
-  let dialog:any;
+  let dialog: any;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
@@ -59,15 +62,15 @@ describe('Register', () => {
     let router = fixture.debugElement.injector.get(Router);
 
     component.formGroup.setValue({
-      name:name,
-      surname:surname,
-      telephoneNumber:telephoneNumber,
-      email:email,
-      address:address,
-      password:password,
-      confirmPassword:confirmPassword,
-      profilePicture:profilePicture
-  
+      name: name,
+      surname: surname,
+      telephoneNumber: telephoneNumber,
+      email: email,
+      address: address,
+      password: password,
+      confirmPassword: confirmPassword,
+      profilePicture: profilePicture
+
     });
 
     spyOn(router, 'navigate').and.stub();
@@ -93,15 +96,15 @@ describe('Register', () => {
     let router = fixture.debugElement.injector.get(Router);
 
     component.formGroup.setValue({
-      name:name,
-      surname:surname,
-      telephoneNumber:telephoneNumber,
-      email:email,
-      address:address,
-      password:password,
-      confirmPassword:confirmPassword,
-      profilePicture:profilePicture
-  
+      name: name,
+      surname: surname,
+      telephoneNumber: telephoneNumber,
+      email: email,
+      address: address,
+      password: password,
+      confirmPassword: confirmPassword,
+      profilePicture: profilePicture
+
     });
 
     spyOn(router, 'navigate').and.stub();
@@ -127,15 +130,15 @@ describe('Register', () => {
     let router = fixture.debugElement.injector.get(Router);
 
     component.formGroup.setValue({
-      name:name,
-      surname:surname,
-      telephoneNumber:telephoneNumber,
-      email:email,
-      address:address,
-      password:password,
-      confirmPassword:confirmPassword,
-      profilePicture:profilePicture
-  
+      name: name,
+      surname: surname,
+      telephoneNumber: telephoneNumber,
+      email: email,
+      address: address,
+      password: password,
+      confirmPassword: confirmPassword,
+      profilePicture: profilePicture
+
     });
 
     spyOn(router, 'navigate').and.stub();
@@ -161,15 +164,15 @@ describe('Register', () => {
     let router = fixture.debugElement.injector.get(Router);
 
     component.formGroup.setValue({
-      name:name,
-      surname:surname,
-      telephoneNumber:telephoneNumber,
-      email:email,
-      address:address,
-      password:password,
-      confirmPassword:confirmPassword,
-      profilePicture:profilePicture
-  
+      name: name,
+      surname: surname,
+      telephoneNumber: telephoneNumber,
+      email: email,
+      address: address,
+      password: password,
+      confirmPassword: confirmPassword,
+      profilePicture: profilePicture
+
     });
 
     spyOn(router, 'navigate').and.stub();
@@ -195,15 +198,15 @@ describe('Register', () => {
     let router = fixture.debugElement.injector.get(Router);
 
     component.formGroup.setValue({
-      name:name,
-      surname:surname,
-      telephoneNumber:telephoneNumber,
-      email:email,
-      address:address,
-      password:password,
-      confirmPassword:confirmPassword,
-      profilePicture:profilePicture
-  
+      name: name,
+      surname: surname,
+      telephoneNumber: telephoneNumber,
+      email: email,
+      address: address,
+      password: password,
+      confirmPassword: confirmPassword,
+      profilePicture: profilePicture
+
     });
 
     spyOn(router, 'navigate').and.stub();
@@ -229,15 +232,15 @@ describe('Register', () => {
     let router = fixture.debugElement.injector.get(Router);
 
     component.formGroup.setValue({
-      name:name,
-      surname:surname,
-      telephoneNumber:telephoneNumber,
-      email:email,
-      address:address,
-      password:password,
-      confirmPassword:confirmPassword,
-      profilePicture:profilePicture
-  
+      name: name,
+      surname: surname,
+      telephoneNumber: telephoneNumber,
+      email: email,
+      address: address,
+      password: password,
+      confirmPassword: confirmPassword,
+      profilePicture: profilePicture
+
     });
 
     spyOn(router, 'navigate').and.stub();
@@ -252,7 +255,7 @@ describe('Register', () => {
 
   it('Confirm password does not match password', async () => {
     let name = "proba";
-    let surname = "";
+    let surname = "proba";
     let telephoneNumber = "0608286030"
     let email = "email.e@email.com";
     let address = "Cara Lazara 38"
@@ -264,15 +267,15 @@ describe('Register', () => {
     let matDialog = fixture.debugElement.injector.get(MatDialog);
 
     component.formGroup.setValue({
-      name:name,
-      surname:surname,
-      telephoneNumber:telephoneNumber,
-      email:email,
-      address:address,
-      password:password,
-      confirmPassword:confirmPassword,
-      profilePicture:profilePicture
-  
+      name: name,
+      surname: surname,
+      telephoneNumber: telephoneNumber,
+      email: email,
+      address: address,
+      password: password,
+      confirmPassword: confirmPassword,
+      profilePicture: profilePicture
+
     });
 
     spyOn(router, 'navigate').and.stub();
@@ -282,6 +285,59 @@ describe('Register', () => {
     fixture.detectChanges();
 
     expect(router.navigate).not.toHaveBeenCalled();
-    expect(dialog.openDialogs.lenght).toBeFalsy();
+    expect(dialog.openDialogs.length).toBeTruthy();
+  });
+
+  it('Account is created successfully', async () => {
+    let name = "Borivoje";
+    let surname = "Musk";
+    let telephoneNumber = "+38182349248"
+    let email = "borivoje.musk@email.com";
+    let address = "TESLA"
+    let password = "Nekatamosifra123";
+    let confirmPassword = "Nekatamosifra123";
+    let profilePicture = "";
+
+    let router = fixture.debugElement.injector.get(Router);
+    let matDialog = fixture.debugElement.injector.get(MatDialog);
+    let passengerService = fixture.debugElement.injector.get(PassengerService);
+
+    component.formGroup.setValue({
+      name: name,
+      surname: surname,
+      telephoneNumber: telephoneNumber,
+      email: email,
+      address: address,
+      password: password,
+      confirmPassword: confirmPassword,
+      profilePicture: profilePicture
+
+    });
+
+    const passenger: Passenger = {
+      name: "Borivoje",
+      surname: "Musk",
+      telephoneNumber: "+38182349248",
+      email: "borivoje.musk@email.com",
+      address: "TESLA",
+      password: "Nekatamosifra123",
+      profilePicture: ""
+    }
+
+    spyOn(router, 'navigate').and.stub();
+    spyOn(passengerService, 'create').and.returnValue(of(passenger));
+
+    component.createAccount();
+
+    fixture.detectChanges();
+    fixture.whenStable().then(() => {
+      expect(component.formGroup.valid).toBeTruthy();
+      expect(dialog.openDialogs.length).toBeTruthy();
+      expect(passenger.name).toEqual(component.formGroup.controls['name'].value);
+      expect(passenger.surname).toEqual(component.formGroup.controls['surname'].value);
+      expect(passenger.telephoneNumber).toEqual(component.formGroup.controls['telephoneNumber'].value);
+      expect(passenger.email).toEqual(component.formGroup.controls['email'].value);
+      expect(passenger.address).toEqual(component.formGroup.controls['address'].value);
+    })
   });
 });
