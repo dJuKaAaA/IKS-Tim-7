@@ -42,8 +42,8 @@ export class DriversListPageComponent {
       next: driver => {
         this.selectedDriver = driver;
         //Dobavljanje ocena za vozaca i vozilo i vozaceva dokumenta
-        this.driverService.getAvgDriverRating(this.selectedDriver.id).then(rating => {this.driverRating = rating});
-        this.driverService.getAvgVehicleRating(this.selectedDriver.id).then(rating => {this.vehicleRating = rating});
+        this.driverService.getAvgDriverRating(this.selectedDriver.id).then(rating => {this.driverRating = Math.round(rating)});
+        this.driverService.getAvgVehicleRating(this.selectedDriver.id).then(rating => {this.vehicleRating = Math.round(rating)});
         this.driverService.getDocuments(this.selectedDriver.id).subscribe(document => {this.documents = document});
       },
       error: () => {

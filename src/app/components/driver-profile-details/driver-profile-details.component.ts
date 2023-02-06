@@ -49,14 +49,16 @@ export class DriverProfileDetailsComponent implements OnInit {
     private authService: AuthService,
     private router: Router,
     private imageParserService: ImageParserService
-  ) {}
+  ) { }
   ngOnInit(): void {
-    const userId = this.authService.getId();
-    this.driverService.getDriver(userId).subscribe({
-      next: (driver) => {
-        this.fillUpTheHTML(userId);
-      }
-    });
+    if (this.authService.getRole() == "ROLE_DRIVER") {
+      const userId = this.authService.getId();
+      this.driverService.getDriver(userId).subscribe({
+        next: (driver) => {
+          this.fillUpTheHTML(userId);
+        }
+      });
+    }
   }
 
   fillUpTheHTML(userId: number) {
@@ -69,11 +71,11 @@ export class DriverProfileDetailsComponent implements OnInit {
     });
     this.driverService
       .getAvgDriverRating(userId)
-      .then((res) => (this.driverRating = res));
+      .then((res) => (this.driverRating = Math.round(res)));
 
     this.driverService
       .getAvgVehicleRating(userId)
-      .then((res) => (this.vehicleRating = res));
+      .then((res) => (this.vehicleRating = Math.round(res)));
 
     this.driverService
       .getVehicle(userId)

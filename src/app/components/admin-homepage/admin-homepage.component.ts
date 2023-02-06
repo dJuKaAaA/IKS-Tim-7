@@ -35,8 +35,6 @@ export class AdminHomepageComponent implements OnInit, AfterViewInit{
   activeRideMessage : string = "";
   activeRide : Ride;
 
-
-  
   constructor(private driverService : DriverService, private rideService : RideService, private imageParserService:ImageParserService){
     this.driverService = driverService;
     this.rideService = rideService;
@@ -56,8 +54,8 @@ export class AdminHomepageComponent implements OnInit, AfterViewInit{
       next: driver => {
         this.selectedDriver = driver;
         //Dobavljanje ocena za vozaca i vozilo i vozaceva dokumenta
-        this.driverService.getAvgDriverRating(this.selectedDriver.id).then(rating => {this.driverRating = rating});
-        this.driverService.getAvgVehicleRating(this.selectedDriver.id).then(rating => {this.vehicleRating = rating});
+        this.driverService.getAvgDriverRating(this.selectedDriver.id).then(rating => {this.driverRating = Math.round(rating)});
+        this.driverService.getAvgVehicleRating(this.selectedDriver.id).then(rating => {this.vehicleRating = Math.round(rating)});
         this.driverService.getDocuments(this.selectedDriver.id).subscribe(document => {this.documents = document});
 
         this.driverService.getVehicle(this.selectedDriver.id).subscribe({

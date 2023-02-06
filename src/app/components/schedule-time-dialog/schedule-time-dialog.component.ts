@@ -8,7 +8,7 @@ import { RideService } from 'src/app/services/ride.service';
 import { environment } from 'src/environment/environment';
 import { DialogComponent } from '../dialog/dialog.component'
 import * as Stomp from 'stompjs';
-import * as SockJS from 'sockjs-client';import { NgxMaterialTimepickerComponent } from 'ngx-material-timepicker';
+import * as SockJS from 'sockjs-client'; import { NgxMaterialTimepickerComponent } from 'ngx-material-timepicker';
 import { split } from 'lodash';
 ;
 
@@ -18,21 +18,21 @@ import { split } from 'lodash';
   styleUrls: ['./schedule-time-dialog.component.css']
 })
 export class ScheduleTimeDialogComponent implements OnInit {
-  
+
   rideTime: string = "";
   private stompClient: any;
   @ViewChild('timePicker') timepicker: NgxMaterialTimepickerComponent;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: { rideRequest: RideRequest }, 
+  constructor(@Inject(MAT_DIALOG_DATA) public data: { rideRequest: RideRequest },
     private matDialogRef: MatDialogRef<ScheduleTimeDialogComponent>,
     private dateTimeService: DateTimeService,
     private rideService: RideService,
-    private matDialog: MatDialog) {}
+    private matDialog: MatDialog) { }
 
   ngOnInit(): void {
     this.initializeWebSocketConnection();
   }
-    
+
   initializeWebSocketConnection() {
     let ws = new SockJS(environment.socketUrl);
     this.stompClient = Stomp.over(ws);
@@ -71,29 +71,28 @@ export class ScheduleTimeDialogComponent implements OnInit {
       if (hoursString == "" || minutesString == "") {
         return { time: undefined };
       }
-      return { time: `${hoursString}:${minutesString}:00`}
+      return { time: `${hoursString}:${minutesString}:00` }
     }
 
     return { time: undefined }
   }
 
   scheduleRide() {
-    const rideTime = this.getStartTimeFromString(this.rideTime).time;
-    if (rideTime == undefined) {
-      this.matDialog.open(DialogComponent, {
+    let immediateScheduling = false;
+    let rideDate: Date = new Date();
+    if (this.rideTime) {
+      const rideTime = this.getStartTimeFromString(this.rideTime).time;
+      if (rideTime == undefined) {
+        this.matDialog.open(DialogComponent, {
           data: {
             header: "Invalid",
             body: "Invalid time format"
           }
         });
-      return;
-    }
-
-    let immediateScheduling = false;
-    let rideDate: Date = new Date();
-    if (this.rideTime) {
-      const hours: number = +this.rideTime.split(":")[0];
-      const minutes: number = +this.rideTime.split(":")[1];
+        return;
+      }
+      const hours: number = +rideTime.split(":")[0];
+      const minutes: number = +rideTime.split(":")[1];
       rideDate.setHours(hours);
       rideDate.setMinutes(minutes);
     } else {

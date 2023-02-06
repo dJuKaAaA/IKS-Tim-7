@@ -200,6 +200,7 @@ export class PassengerCurrentRideComponent implements OnInit, OnDestroy {
       'display',
       'none'
     )
+    this.panicText = "";
   }
 
   reportDriver() {
@@ -238,6 +239,7 @@ export class PassengerCurrentRideComponent implements OnInit, OnDestroy {
       'display',
       'none'
     )
+    this.reportText = "";
   }
 
 }

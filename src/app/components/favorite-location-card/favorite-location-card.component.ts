@@ -17,10 +17,10 @@ export class FavoriteLocationCardComponent implements OnInit {
 
   constructor(
     private matDialog: MatDialog
-  ) {}
+  ) { }
 
   ngOnInit() {
-    
+
   }
 
   openScheduleTimeDialog() {
@@ -32,11 +32,11 @@ export class FavoriteLocationCardComponent implements OnInit {
       babyTransport: this.favoriteLocation.babyTransport,
       petTransport: this.favoriteLocation.petTransport
     }
-      this.matDialog.open(ScheduleTimeDialogComponent, {
-        data: {
-          rideRequest: rideRequest
-        }
-      });
+    this.matDialog.open(ScheduleTimeDialogComponent, {
+      data: {
+        rideRequest: rideRequest
+      }
+    });
   }
 
 }
