@@ -220,6 +220,7 @@ export class DriverCurrentRideComponent implements OnInit, AfterViewInit {
       'display',
       'none'
     )
+    this.panicText = "";
   }
 
   finishRide() {

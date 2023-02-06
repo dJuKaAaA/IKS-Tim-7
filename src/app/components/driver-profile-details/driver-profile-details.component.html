@@ -22,11 +22,11 @@
     <div *ngIf="driver != undefined">
       <div class="star-align">
         <p>Driver rating:</p>
-        <app-star class="star-padding" [rating]="driverRating"></app-star>
+        <app-star class="star-padding" [rating]="driverRating" [clickable]="false"></app-star>
       </div>
       <div class="star-align">
         <p>Vehicle rating:</p>
-        <app-star [rating]="vehicleRating"></app-star>
+        <app-star [rating]="vehicleRating" [clickable]="false"></app-star>
       </div>
     </div>
     <div class="alignBottom">
