@@ -6,6 +6,7 @@ import { DriverService } from 'src/app/services/driver.service';
 import { UserService } from 'src/app/services/user.service';
 import { Document } from 'src/app/model/document.model';
 import { Router } from '@angular/router';
+import { ImageParserService } from 'src/app/services/image-parser.service';
 
 @Component({
   selector: 'app-drivers-list-page',
@@ -26,7 +27,7 @@ export class DriversListPageComponent {
   public notBlocked:boolean = true;
   public message:string = "";
 
-  constructor(private driverService:DriverService, private userService:UserService, private router: Router){
+  constructor(private driverService:DriverService, private userService:UserService, private router: Router, private imageParserService:ImageParserService){
   }
   ngOnInit(): void {
     this.driverService.getDrivers().subscribe({
@@ -41,9 +42,10 @@ export class DriversListPageComponent {
     ({
       next: driver => {
         this.selectedDriver = driver;
+        console.log(this.selectedDriver);
         //Dobavljanje ocena za vozaca i vozilo i vozaceva dokumenta
-        this.driverService.getAvgDriverRating(this.selectedDriver.id).then(rating => {this.driverRating = rating});
-        this.driverService.getAvgVehicleRating(this.selectedDriver.id).then(rating => {this.vehicleRating = rating});
+        this.driverService.getAvgDriverRating(this.selectedDriver.id).then(rating => {this.driverRating = Math.round(rating)});
+        this.driverService.getAvgVehicleRating(this.selectedDriver.id).then(rating => {this.vehicleRating = Math.round(rating)});
         this.driverService.getDocuments(this.selectedDriver.id).subscribe(document => {this.documents = document});
       },
       error: () => {
@@ -66,6 +68,10 @@ export class DriversListPageComponent {
 
   goToDriverCreation(){
     this.router.navigate(['create-driver']);
+  }
+
+  getImg(){
+    return this.imageParserService.getImageUrl(this.selectedDriver.profilePicture);
   }
 
 }

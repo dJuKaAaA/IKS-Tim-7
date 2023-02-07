@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, Output } from '@angular/core';
 import { SimpleUser } from 'src/app/model/simple-user.model';
 import { User } from 'src/app/model/user';
+import { ImageParserService } from 'src/app/services/image-parser.service';
 
 @Component({
   selector: 'app-user-card',
@@ -16,6 +17,10 @@ export class UserCardComponent implements OnInit{
   public setTag:boolean = false;
   public showProfile:boolean = false;
 
+  constructor(private imageParserService : ImageParserService){
+
+  }
+
   ngOnInit(): void {
     // console.log(this.user);
     this.outputId = this.id;
@@ -27,5 +32,9 @@ export class UserCardComponent implements OnInit{
 
   displayProfile(): void{
     this.showProfile = !this.showProfile;
+  }
+
+  getImg(user:User){
+    return this.imageParserService.getImageUrl(user.profilePicture);
   }
 }
