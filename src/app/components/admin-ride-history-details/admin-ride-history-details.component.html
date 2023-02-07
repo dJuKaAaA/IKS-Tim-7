@@ -1,0 +1,41 @@
+<div class="top">
+  <div class="reviews-container">
+    <div class="reviews">
+      <h2>Driver Reviews</h2>
+      <hr />
+      <div class="review-container">
+        <app-reviews [reviews]="driverReviews"></app-reviews>
+      </div>
+    </div>
+
+    <div class="reviews">
+      <h2>Vehicle Reviews</h2>
+      <hr />
+      <div class="review-container">
+        <app-reviews [reviews]="vehicleReviews"></app-reviews>
+      </div>
+    </div>
+  </div>
+  <div class="driver-info-container">
+    <h2>Users</h2>
+    <hr />
+    <div class="review-container">
+      <app-simple-users-info [passengers]="users"></app-simple-users-info>
+    </div>
+  </div>
+</div>
+
+<div class="bottom">
+  <div class="map"><app-map></app-map></div>
+  <div class="ride-info">
+    <app-ride-details
+      [departure]="departure"
+      [destination]="destination"
+      [departureDate]="departureDate"
+      [departureTime]="departureTime"
+      [duration]="duration"
+      [distance]="distance.toString() + 'm'"
+      [price]="price.toString()"
+    ></app-ride-details>
+  </div>
+</div>

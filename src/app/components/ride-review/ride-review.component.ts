@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ReviewService } from 'src/app/services/review.service';
 import { Review } from 'src/app/model/review.model';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-ride-review',
@@ -8,6 +9,7 @@ import { Review } from 'src/app/model/review.model';
   styleUrls: ['./ride-review.component.css']
 })
 export class RideReviewComponent {
+
   @Input() currentRideId: number;
   public driverComment:string = "";
   public vehicleComment:string = "";
@@ -19,6 +21,7 @@ export class RideReviewComponent {
   public driverRatingOffset:string = "0px";
   private vehicleReview:Review;
   private driverReview:Review;
+
   @Output() rated: EventEmitter<boolean> = new EventEmitter();
 
   constructor(private reviewService : ReviewService){
@@ -49,15 +52,23 @@ export class RideReviewComponent {
 
     if(this.vehicleRating != -1){
       this.vehicleReview = {rating:this.vehicleRating, comment:this.vehicleComment};
-      this.reviewService.saveVehicleReview(this.vehicleReview, this.currentRideId).subscribe(data => {
-        alert(data);
+      this.reviewService.saveVehicleReview(this.vehicleReview, this.currentRideId).subscribe({
+        error: (error) => {
+          if (error instanceof HttpErrorResponse) {
+            alert(error.error.message);
+          }
+        }
       });
     }
 
     if(this.driverRating != -1){
       this.driverReview = {rating:this.driverRating, comment:this.driverComment};
-      this.reviewService.saveDriverReview(this.driverReview, this.currentRideId).subscribe(data => {
-        alert(data);
+      this.reviewService.saveDriverReview(this.driverReview, this.currentRideId).subscribe({
+        error: (error) => {
+          if (error instanceof HttpErrorResponse) {
+            alert(error.error.message);
+          }
+        }
       });
     }
 

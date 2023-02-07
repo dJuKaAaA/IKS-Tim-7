@@ -96,6 +96,10 @@ export class DriverRideHistoryDetailsComponent
       }
     })
 
+    for (let route of this.ride.locations) {
+      this.distance += route.distanceInMeters;
+    }
+
     this.departure = this.ride.locations[0].departure.address;
     this.destination =
       this.ride.locations[this.ride.locations.length - 1].destination.address;

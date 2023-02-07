@@ -1,0 +1,39 @@
+<mat-card class="favorite-location-card">
+    <mat-card-title class="favorite-location-name vert-margin">
+        {{favoriteLocation.favoriteName}}
+    </mat-card-title>
+    <mat-card-content class="favorite-location-routes vert-margin">
+        <h2><i>Routes</i></h2>
+        <mat-table #table [dataSource]="favoriteLocation.locations">
+
+            <!-- Name Column -->
+            <ng-container matColumnDef="departure">
+              <mat-header-cell *matHeaderCellDef> Departure </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.departure.address}} </mat-cell>
+            </ng-container>
+        
+            <!-- Weight Column -->
+            <ng-container matColumnDef="destination">
+              <mat-header-cell *matHeaderCellDef> Destination </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element.destination.address}} </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="routeTableColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: routeTableColumns;"></mat-row>
+          </mat-table>
+    </mat-card-content>
+    <mat-card-content class="vert-margin">
+        <h2><i>Vehicle type</i></h2>
+        <p>{{favoriteLocation.vehicleType}}</p>
+    </mat-card-content>
+    <mat-card-content class="vert-margin">
+        <h2><i>Allowed transport</i></h2>
+        <div class="favorite-location-allowed-transport">
+            <mat-checkbox [checked]="favoriteLocation.babyTransport" [disabled]="true">Baby transport</mat-checkbox>
+            <mat-checkbox [checked]="favoriteLocation.petTransport" [disabled]="true">Pet transport</mat-checkbox>
+        </div>
+    </mat-card-content>
+    <mat-card-content class="vert-margin">
+        <button color="primary" mat-raised-button class="schedule-button" (click)="openScheduleTimeDialog()">Schedule</button>
+    </mat-card-content>
+</mat-card>

@@ -35,8 +35,8 @@ export class RideHistoryInformationComponent implements OnInit {
 
   public currentDisplayedRide: Ride;
   public rideReviews: RideReview[] = [];
-  public avgVehicleReviewRating: number[] = [];
-  public avgDriverReviewRating: number[] = [];
+  public avgVehicleReviewRating: any = {};
+  public avgDriverReviewRating: any = {};
 
   public sortCriteria: String = '';
   public destinationDate: String = '';
@@ -57,31 +57,52 @@ export class RideHistoryInformationComponent implements OnInit {
     private dateTimeService: DateTimeService,
     private authService: AuthService,
     private router: Router
-  ) {}
+  ) { }
 
   async ngOnInit() {
     this.ridesObject.totalCount = 0;
     this.ridesObject.results = [];
     const userId = this.authService.getId();
 
-    await this.rideService
-      .getRides(userId)
-      .toPromise()
-      .then((data) => {
-        if (data != undefined) {
-          this.ridesObject = data;
-          this.rides = this.ridesObject.results.filter((ride) => {
-            if (ride.status === 'FINISHED' || ride.status === 'REJECTED') {
-              return true;
-            }
-            return false;
-          });
+    if (this.authService.getRole() == 'ROLE_ADMIN') {
+      await this.rideService
+        .getAllRides()
+        .toPromise()
+        .then((data) => {
+          if (data != undefined) {
+            this.ridesObject = data;
+            this.rides = this.ridesObject.results.filter((ride) => {
+              if (ride.status === 'FINISHED' || ride.status === 'REJECTED') {
+                return true;
+              }
+              return false;
+            });
 
-          this.rides$ = this.refreshRides$.pipe(
-            switchMap((_) => of(this.rides))
-          );
-        }
-      });
+            this.rides$ = this.refreshRides$.pipe(
+              switchMap((_) => of(this.rides))
+            );
+          }
+        });
+    } else {
+      await this.rideService
+        .getRides(userId)
+        .toPromise()
+        .then((data) => {
+          if (data != undefined) {
+            this.ridesObject = data;
+            this.rides = this.ridesObject.results.filter((ride) => {
+              if (ride.status === 'FINISHED' || ride.status === 'REJECTED') {
+                return true;
+              }
+              return false;
+            });
+
+            this.rides$ = this.refreshRides$.pipe(
+              switchMap((_) => of(this.rides))
+            );
+          }
+        });
+    }
 
     this.calculateReviews();
   }
@@ -100,18 +121,13 @@ export class RideHistoryInformationComponent implements OnInit {
           driverReviews.push(review.driverReview);
         });
 
-        this.avgVehicleReviewRating.push(
-          Math.round(this.getAvgRatingForReview(vehicleReviews))
-        );
-        this.avgDriverReviewRating.push(
-          Math.round(this.getAvgRatingForReview(driverReviews))
-        );
+        this.avgVehicleReviewRating[`${ride.id}`] = Math.round(this.getAvgRatingForReview(vehicleReviews))
+        this.avgDriverReviewRating[`${ride.id}`] = Math.round(this.getAvgRatingForReview(driverReviews))
       });
     });
   }
 
   displayRoutesInTable(ride: Ride) {
-    console.log(ride);
     this.currentDisplayedRide = ride;
     this.dataSource = [];
     ride.locations.forEach((route, index) => {
@@ -164,6 +180,9 @@ export class RideHistoryInformationComponent implements OnInit {
       this.router.navigate(['/driver-ride-history-details']);
     else if (this.authService.getRole() === 'ROLE_PASSENGER')
       this.router.navigate(['passenger-ride-history-details']);
+    else if (this.authService.getRole() === 'ROLE_ADMIN') {
+      this.router.navigate(['admin-ride-history-details'])
+    }
   }
 
   private getAvgRatingForReview(reviews: Review[]): number {
